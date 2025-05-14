@@ -3,33 +3,31 @@
   ...
 }:
 {
-  flake.modules.nixos."hosts/apollo".imports =
-    with config.flake.modules.nixos;
-    [
-      # Modules
+  unify.hosts.nixos.apollo = {
+    users.pol.modules = config.unify.hosts.nixos.apollo.modules;
+
+    modules = with config.unify.modules; [
       base
-      desktop
+      ai
       dev
       facter
       guacamole
       openssh
+      pol
       shell
       vpn
-
-      # Users
-      root
-      pol
-    ]
-    # Specific Home-Manager modules
-    ++ [
-      {
-        home-manager.users.pol.imports = with config.flake.modules.homeManager; [
-          base
-          desktop
-          dev
-          facter
-          shell
-        ];
-      }
     ];
+
+    tags = [
+      "base"
+      "ai"
+      "dev"
+      "facter"
+      "guacamole"
+      "openssh"
+      "shell"
+    ];
+
+    fqdn = "apollo.netbird.cloud";
+  };
 }
