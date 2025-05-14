@@ -3,41 +3,30 @@
   ...
 }:
 {
-  flake.modules.nixos."hosts/x13".imports =
-    # Import the nixos modules for the host `x13`.
-    with config.flake.modules.nixos;
-    [
-      # Modules
+  unify.hosts.nixos.x13 = {
+    users.pol.modules = config.unify.hosts.nixos.x13.modules;
+
+    modules = with config.unify.modules; [
       base
-      bluetooth
       desktop
-      displaylink
       dev
+      email
       facter
       fwupd
+      games
+      messaging
+      pol
       shell
       sound
       vpn
-
-      # Users
-      root
-      pol
-    ]
-    # Specific Home-Manager modules
-    ++ [
-      {
-        home-manager.users.pol.imports = with config.flake.modules.homeManager; [
-          base
-          desktop
-          dev
-          email
-          facter
-          messaging
-          games
-          shell
-          vpn
-          work
-        ];
-      }
+      work
     ];
+
+    tags = [
+      "desktop"
+      "laptop"
+    ];
+
+    fqdn = "x13.netbird.cloud";
+  };
 }
