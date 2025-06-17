@@ -3,8 +3,14 @@ GITHUB_REVIEWER=${args[--reviewer]}
 readonly GITHUB_REVIEWER
 GITHUB_ASSIGNEE=${args[--assignee]}
 readonly GITHUB_ASSIGNEE
+IMPURE=${args[--impure]:-0}
 all_attrs=()
 eval "all_attrs=(${args[attributes]})"
+
+NIX_FLAGS=()
+if [ "$IMPURE" -eq 1 ]; then
+  NIX_FLAGS=(--impure)
+fi
 
 # --- Runtime Setup ---
 # This section now runs ONLY when main is called, after arg validation.
@@ -36,7 +42,7 @@ for attr in "${all_attrs[@]}"; do
   echo "Building current state for attribute: $attr"
   local slug
   slug=$(attr_to_slug "$attr")
-  if ! nix build ".#${attr}" --quiet --out-link "$TMP_DIR/$slug.current" 2>/dev/null; then
+  if ! nix build ".#${attr}" "${NIX_FLAGS[@]}" --quiet --out-link "$TMP_DIR/$slug.current" 2>/dev/null; then
     echo "WARNING: Initial build failed for '$attr'. It will be skipped." >&2
   else
     successful_attrs+=("$attr")
@@ -61,7 +67,7 @@ if [ ${#successful_attrs[@]} -gt 0 ]; then
     echo "Building next state for attribute: $attr"
     local slug
     slug=$(attr_to_slug "$attr")
-    if ! nix build ".#${attr}" --quiet --out-link "$TMP_DIR/$slug.next" 2>/dev/null; then
+    if ! nix build ".#${attr}" "${NIX_FLAGS[@]}" --quiet --out-link "$TMP_DIR/$slug.next" 2>/dev/null; then
       echo "WARNING: Post-update build failed for '$attr'." >&2
     fi
   done

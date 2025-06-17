@@ -19,6 +19,9 @@ flags:
     arg: reviewer
     help: Username to add as a reviewer to the pull request
     required: false
+  - long: --impure
+    help: Enable impure flag for Nix commands (nix build and nix eval)
+    required: false
 examples:
   - gh-flake-update nixosConfigurations.x13.config.system.build.toplevel
 environment_variables:
