@@ -41,7 +41,7 @@
       };
 
     homeManager.desktop =
-      { pkgs, ... }:
+      { pkgs, lib, ... }:
       {
         nixpkgs = {
           config.allowUnfree = true;
@@ -50,32 +50,43 @@
           ];
         };
 
-        home.packages = with pkgs; [
-          kdePackages.akonadi-search
-          kdePackages.akregator
-          kdePackages.ark
-          kdePackages.filelight
-          kdePackages.kate
-          kdePackages.kcalc
-          kdePackages.kdialog
-          kdePackages.kgpg
-          kdePackages.kpipewire
-          kdePackages.krdc
-          kdePackages.krfb
-          kdePackages.ksystemlog
-          kdePackages.kweather
-          kdePackages.okular
-          kdePackages.plasma-browser-integration
-          kdePackages.sddm-kcm
-          kdePackages.spectacle
-          kdePackages.xdg-desktop-portal-kde
-          kdePackages.yakuake
-          krita
-          vlc
-          winbox4
-          zotero
-          pkgs.local.gh-flake-update
-        ];
+        home = {
+          activation = {
+            # Remove ksycoca cache on activation
+            # So that KDE applications can pick up new .desktop files
+            # And it doesn't break my favorite applications shortcuts
+            nuke-ksycoca = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+              rm -fv $XDG_CACHE_HOME/ksycoca*
+            '';
+          };
+
+          packages = with pkgs; [
+            kdePackages.akonadi-search
+            kdePackages.akregator
+            kdePackages.ark
+            kdePackages.filelight
+            kdePackages.kate
+            kdePackages.kcalc
+            kdePackages.kdialog
+            kdePackages.kgpg
+            kdePackages.kpipewire
+            kdePackages.krdc
+            kdePackages.krfb
+            kdePackages.ksystemlog
+            kdePackages.kweather
+            kdePackages.okular
+            kdePackages.plasma-browser-integration
+            kdePackages.sddm-kcm
+            kdePackages.spectacle
+            kdePackages.xdg-desktop-portal-kde
+            kdePackages.yakuake
+            krita
+            vlc
+            winbox4
+            zotero
+            pkgs.local.gh-flake-update
+          ];
+        };
       };
   };
 }
