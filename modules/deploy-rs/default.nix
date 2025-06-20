@@ -20,13 +20,13 @@
       prefix = "hosts/";
     in
     {
-      deploy.nodes = lib.pipe (config.flake.modules.nixos) [
+      deploy.nodes = lib.pipe config.flake.modules.nixos [
         (lib.filterAttrs (name: _: lib.hasPrefix prefix name))
         (lib.mapAttrs' (
           name: module:
           let
             hostname = lib.removePrefix prefix name;
-            system = inputs.self.nixosConfigurations.${hostname}.config.nixpkgs.hostPlatform.system;
+            inherit (inputs.self.nixosConfigurations.${hostname}.config.nixpkgs.hostPlatform) system;
           in
           {
             name = hostname;

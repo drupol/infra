@@ -4,7 +4,7 @@
 }:
 {
   flake.modules.nixos."hosts/nixos".imports =
-    with (config.flake.modules.nixos);
+    with config.flake.modules.nixos;
     [
       # Modules
       base

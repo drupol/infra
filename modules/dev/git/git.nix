@@ -266,7 +266,7 @@ topLevel@{
               };
               signing = {
                 signByDefault = true;
-                key = topLevel.config.flake.meta.users.${config.home.username}.key;
+                inherit (topLevel.config.flake.meta.users.${config.home.username}) key;
               };
               commit = {
                 gpgsign = true;

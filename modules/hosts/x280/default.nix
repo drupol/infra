@@ -4,7 +4,7 @@
 }:
 {
   flake.modules.nixos."hosts/x280".imports =
-    with (config.flake.modules.nixos);
+    with config.flake.modules.nixos;
     [
       # Modules
       base

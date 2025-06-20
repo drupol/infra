@@ -12,6 +12,7 @@
           nixfmt.enable = true;
           prettier.enable = true;
           shfmt.enable = true;
+          statix.enable = true;
           yamlfmt.enable = true;
         };
         settings = {
