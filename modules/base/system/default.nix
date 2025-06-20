@@ -22,13 +22,6 @@
 
           # See https://github.com/NixOS/nixpkgs/pull/415640
           rebuild.enableNg = true;
-
-          # See https://github.com/NixOS/nixpkgs/pull/308801
-          # See https://github.com/NixOS/nixpkgs/pull/339727
-          switch = {
-            enable = false;
-            enableNg = true;
-          };
         };
       };
     };
