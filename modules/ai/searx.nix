@@ -49,12 +49,12 @@
 
       caddy = {
         enable = true;
-        virtualHosts."http://192.168.2.164".extraConfig = ''
+        virtualHosts."http://".extraConfig = ''
           handle_path /searx/* {
             reverse_proxy 127.0.0.1:3002
           }
         '';
-        virtualHosts."https://192.168.2.164".extraConfig = ''
+        virtualHosts."https://".extraConfig = ''
           handle_path /searx/* {
             reverse_proxy 127.0.0.1:3002
           }

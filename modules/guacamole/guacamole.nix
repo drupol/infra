@@ -16,7 +16,7 @@
 
     services.caddy = {
       enable = true;
-      virtualHosts."0.0.0.0:80".extraConfig = ''
+      virtualHosts."http://".extraConfig = ''
         handle_path /* {
           rewrite * /guacamole{path}
           reverse_proxy 127.0.0.1:8080 {
