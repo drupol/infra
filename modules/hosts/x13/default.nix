@@ -18,7 +18,6 @@
       shell
       sound
       vpn
-      virtualisation
 
       # Users
       root
