@@ -23,7 +23,7 @@
       deploy.nodes = lib.pipe config.flake.modules.nixos [
         (lib.filterAttrs (name: _: lib.hasPrefix prefix name))
         (lib.mapAttrs' (
-          name: module:
+          name: _module:
           let
             hostname = lib.removePrefix prefix name;
             inherit (inputs.self.nixosConfigurations.${hostname}.config.nixpkgs.hostPlatform) system;

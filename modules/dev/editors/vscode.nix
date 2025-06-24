@@ -17,7 +17,7 @@
       {
         nixpkgs = {
           overlays = [
-            (final: prev: {
+            (final: _prev: {
               master = import inputs.nixpkgs-master {
                 inherit (final) config system;
               };
