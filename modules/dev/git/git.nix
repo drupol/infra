@@ -1,5 +1,4 @@
-topLevel:
-{
+topLevel: {
   flake.modules = {
     homeManager.dev =
       { config, ... }:
