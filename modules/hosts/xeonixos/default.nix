@@ -14,7 +14,6 @@
       guacamole
       openssh
       shell
-      virtualisation
       vpn
 
       # Users
