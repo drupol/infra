@@ -36,7 +36,7 @@
       };
 
     homeManager.desktop =
-      { pkgs, lib, ... }:
+      { pkgs, lib, config, ... }:
       {
         nixpkgs = {
           config.allowUnfree = true;
@@ -51,7 +51,7 @@
             # So that KDE applications can pick up new .desktop files
             # And it doesn't break my favorite applications shortcuts
             nuke-ksycoca = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
-              rm -fv $XDG_CACHE_HOME/ksycoca*
+              rm -fv ${config.xdg.cacheHome}/ksycoca*
             '';
           };
 
