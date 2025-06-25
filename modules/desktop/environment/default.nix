@@ -33,11 +33,6 @@
             };
           };
         };
-
-        # Only for Winbox
-        networking = {
-          firewall.allowedUDPPorts = [ 5678 ];
-        };
       };
 
     homeManager.desktop =
@@ -82,7 +77,6 @@
             kdePackages.yakuake
             krita
             vlc
-            winbox4
             zotero
             pkgs.local.gh-flake-update
           ];
