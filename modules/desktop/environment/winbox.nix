@@ -10,4 +10,10 @@
         };
       };
   };
+
+  nixpkgs = {
+    allowedUnfreePackages = [
+      "winbox"
+    ];
+  };
 }
