@@ -36,7 +36,12 @@
       };
 
     homeManager.desktop =
-      { pkgs, lib, config, ... }:
+      {
+        pkgs,
+        lib,
+        config,
+        ...
+      }:
       {
         nixpkgs = {
           config.allowUnfree = true;
