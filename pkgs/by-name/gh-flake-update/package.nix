@@ -5,6 +5,7 @@
   makeBinaryWrapper,
   gh,
   gitMinimal,
+  shellcheck,
   nvd,
   versionCheckHook,
 }:
@@ -22,7 +23,7 @@ stdenvNoCC.mkDerivation {
   buildPhase = ''
     runHook preBuild
 
-    bashly build
+    bashly build -q
 
     runHook postBuild
   '';
@@ -42,6 +43,18 @@ stdenvNoCC.mkDerivation {
       }
 
     runHook postInstall
+  '';
+
+  doCheck = true;
+  nativeCheckInputs = [
+    shellcheck
+  ];
+  checkPhase = ''
+    runHook preCheck
+
+    shellcheck ./gh-flake-update
+
+    runHook postCheck
   '';
 
   doInstallCheck = true;

@@ -1,4 +1,7 @@
 # shellcheck shell=bash
+declare -A build_failures
+declare -a successful_attrs=()
+
 GITHUB_REVIEWER=${args[--reviewer]}
 readonly GITHUB_REVIEWER
 GITHUB_ASSIGNEE=${args[--assignee]}
@@ -36,14 +39,14 @@ cd "$WORKTREE_DIR" || {
   exit 1
 }
 
-declare -a successful_attrs=()
 echo "--- Building 'current' configurations (pre-update) ---"
 for attr in "${all_attrs[@]}"; do
   echo "Building current state for attribute: $attr"
   local slug
   slug=$(attr_to_slug "$attr")
-  if ! nix build ".#${attr}" "${NIX_FLAGS[@]}" --quiet --out-link "$TMP_DIR/$slug.current" 2>/dev/null; then
+  if ! build_output=$(nix build ".#${attr}" "${NIX_FLAGS[@]}" --quiet --out-link "$TMP_DIR/$slug.current" 2>&1); then
     echo "WARNING: Initial build failed for '$attr'. It will be skipped." >&2
+    build_failures["$attr"]="$build_output"
   else
     successful_attrs+=("$attr")
   fi
@@ -62,20 +65,21 @@ fi
 
 if [ ${#successful_attrs[@]} -gt 0 ]; then
   echo "--- Building 'next' configurations (post-update) ---"
-  # ... (rest of logic is unchanged) ...
   for attr in "${successful_attrs[@]}"; do
     echo "Building next state for attribute: $attr"
     local slug
     slug=$(attr_to_slug "$attr")
-    if ! nix build ".#${attr}" "${NIX_FLAGS[@]}" --quiet --out-link "$TMP_DIR/$slug.next" 2>/dev/null; then
+    if ! build_output=$(nix build ".#${attr}" "${NIX_FLAGS[@]}" --quiet --out-link "$TMP_DIR/$slug.next" 2>&1); then
       echo "WARNING: Post-update build failed for '$attr'." >&2
+      # shellcheck disable=SC2034
+      build_failures["$attr"]="$build_output"
     fi
   done
 fi
 
 echo "--- Generating content for commit and PR body ---"
 echo -e "$COMMIT_TITLE\n\n$flake_update_output" >"$COMMIT_MESSAGE_FILE"
-generate_pr_body "$flake_update_output" all_attrs >"$PR_BODY_FILE"
+generate_pr_body "$flake_update_output" all_attrs build_failures >"$PR_BODY_FILE"
 
 echo "--- Committing and Pushing ---"
 git add flake.lock

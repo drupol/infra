@@ -3,6 +3,7 @@
 generate_pr_body() {
   local flake_update_output=$1
   local -n all_attrs_ref=$2
+  local -n build_failures_ref=$3
   local attr_reports=""
 
   for attr in "${all_attrs_ref[@]}"; do
@@ -11,7 +12,20 @@ generate_pr_body() {
     local current_build_path="$TMP_DIR/$slug.current"
     local next_build_path="$TMP_DIR/$slug.next"
 
-    if [ ! -L "$current_build_path" ]; then
+    if [[ -v "build_failures_ref[$attr]" ]]; then
+      attr_reports+=$(
+        cat <<-EOF
+<details>
+<summary>Attribute: <code>${attr}</code> (Build Failed)</summary>
+
+\`\`\`console
+${build_failures_ref[$attr]}
+\`\`\`
+
+</details>
+EOF
+      )
+    elif [ ! -L "$current_build_path" ]; then
       attr_reports+=$(
         cat <<-EOF
 <details>
