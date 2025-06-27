@@ -180,6 +180,9 @@
                 "font.name.sans-serif.x-western" = "${defaultFont}";
                 "font.name.serif.x-western" = "${defaultFont}";
                 "browser.display.use_document_fonts" = 0;
+
+                # Disable mailto popup
+                "network.protocol-handler.external.mailto" = false;
               };
             };
           };
