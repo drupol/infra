@@ -9,6 +9,7 @@ jobs:
     steps:
       - name: Check out repository code
         uses: actions/checkout@v4
+      - uses: wimpysworld/nothing-but-nix@main
       - uses: cachix/install-nix-action@v31
       - name: Configure Git
         run: |
