@@ -35,7 +35,6 @@
           messaging
           games
           shell
-          vpn
           work
         ];
       }

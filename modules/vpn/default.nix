@@ -3,15 +3,8 @@
     nixos.vpn = {
       services.netbird = {
         enable = true;
+        ui.enable = true;
       };
     };
-
-    homeManager.vpn =
-      { pkgs, ... }:
-      {
-        home.packages = with pkgs; [
-          netbird-ui
-        ];
-      };
   };
 }
