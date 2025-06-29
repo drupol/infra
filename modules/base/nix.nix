@@ -27,6 +27,7 @@
             "flakes"
           ];
           warn-dirty = false;
+          tarball-ttl = 60 * 60 * 24;
         };
       };
     };
