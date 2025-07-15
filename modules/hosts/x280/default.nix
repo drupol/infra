@@ -30,7 +30,6 @@
           dev
           facter
           shell
-          vpn
         ];
       }
     ];
