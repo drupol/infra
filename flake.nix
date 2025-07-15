@@ -43,6 +43,11 @@
     treefmt-nix.url = "github:numtide/treefmt-nix";
 
     make-shell.url = "github:nicknovitski/make-shell";
+
+    lazy-apps = {
+      url = "sourcehut:~rycee/lazy-apps";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs = inputs: inputs.flake-parts.lib.mkFlake { inherit inputs; } (inputs.import-tree ./modules);
