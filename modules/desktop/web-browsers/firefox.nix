@@ -183,6 +183,9 @@
 
                 # Disable mailto popup
                 "network.protocol-handler.external.mailto" = false;
+
+                # Don't use the built-in password manager.
+                "signon.rememberSignons" = false;
               };
             };
           };
