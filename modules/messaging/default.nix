@@ -17,7 +17,6 @@
           pkgs.local.chromium-meet
           pkgs.local.chromium-protonmail
           pkgs.local.chromium-teams
-          pkgs.local.chromium-telegram
           pkgs.signal-desktop
         ];
       };
