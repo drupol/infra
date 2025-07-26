@@ -1,14 +1,16 @@
-{
+topLevel: {
   flake.modules = {
-    homeManager.dev = {
-      programs = {
-        gpg = {
-          enable = true;
-          settings = {
-            default-key = "0AAF2901E8040715";
+    homeManager.dev =
+      { config, ... }:
+      {
+        programs = {
+          gpg = {
+            enable = true;
+            settings = {
+              default-key = (topLevel.config.flake.meta.users.${config.home.username}).key;
+            };
           };
         };
       };
-    };
   };
 }
