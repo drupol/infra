@@ -44,6 +44,9 @@
               };
               version = "2";
             };
+            file_types = {
+              Dockerfile = [ "*Containerfile*" ];
+            };
             # assistant = {
             #   default_model = {
             #     provider = "zed.dev";
