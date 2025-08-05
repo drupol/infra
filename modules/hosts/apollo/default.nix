@@ -11,6 +11,7 @@
       desktop
       dev
       facter
+      guacamole
       openssh
       shell
       vpn
