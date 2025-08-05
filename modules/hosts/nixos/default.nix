@@ -24,7 +24,6 @@
       {
         home-manager.users.pol.imports = with config.flake.modules.homeManager; [
           base
-          dev
           facter
           shell
         ];
