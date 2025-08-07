@@ -10,6 +10,9 @@ topLevel: {
               default-key = topLevel.config.flake.meta.users.${config.home.username}.key;
             };
           };
+          keychain = {
+            enable = true;
+          };
         };
       };
   };

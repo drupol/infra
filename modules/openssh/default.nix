@@ -6,6 +6,7 @@
         openFirewall = true;
         settings = {
           X11Forwarding = true;
+          StreamLocalBindUnlink = "yes";
         };
       };
     };
