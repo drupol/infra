@@ -5,6 +5,7 @@
         enable = true;
         ui.enable = true;
       };
+      networking.firewall.checkReversePath = false;
     };
   };
 }
