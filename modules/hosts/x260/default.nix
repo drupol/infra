@@ -3,34 +3,32 @@
   ...
 }:
 {
-  flake.modules.nixos."hosts/x260".imports =
-    with config.flake.modules.nixos;
-    [
-      # Modules
+  unify.hosts.nixos.x260 = {
+    users.pol.modules = config.unify.hosts.nixos.x260.modules;
+
+    modules = with config.unify.modules; [
       base
       bluetooth
       desktop
       dev
       facter
       fwupd
+      pol
       shell
       sound
-      vpn
-
-      # Users
-      root
-      pol
-    ]
-    # Specific Home-Manager modules
-    ++ [
-      {
-        home-manager.users.pol.imports = with config.flake.modules.homeManager; [
-          base
-          desktop
-          dev
-          facter
-          shell
-        ];
-      }
     ];
+
+    tags = [
+      "base"
+      "bluetooth"
+      "desktop"
+      "dev"
+      "facter"
+      "fwupd"
+      "shell"
+      "sound"
+    ];
+
+    fqdn = "x260.netbird.cloud";
+  };
 }
