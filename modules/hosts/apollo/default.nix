@@ -29,6 +29,7 @@
           dev
           facter
           shell
+          thunderbird
         ];
       }
     ];
