@@ -4,9 +4,8 @@
       services.netbird = {
         enable = true;
         ui.enable = true;
+        useRoutingFeatures = "both";
       };
-      # Required for the Netbird "exit node" feature to work
-      networking.firewall.checkReversePath = "loose";
     };
   };
 }
