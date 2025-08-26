@@ -248,7 +248,9 @@ topLevel: {
               };
               pull = {
                 default = "matching";
+                autoSetupRemote = true;
                 rebase = true;
+                useForceIfIncludes = true;
               };
               rebase = {
                 instructionFormat = "(%an <%ae>) %s";
