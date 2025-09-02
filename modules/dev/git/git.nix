@@ -253,6 +253,8 @@ topLevel: {
                 useForceIfIncludes = true;
               };
               rebase = {
+                autostash = true;
+                autosquash = true;
                 instructionFormat = "(%an <%ae>) %s";
                 updateRefs = true;
               };
