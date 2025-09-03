@@ -6,12 +6,12 @@
   gh,
   gitMinimal,
   shellcheck,
-  nvd,
+  dix,
   versionCheckHook,
 }:
 stdenvNoCC.mkDerivation {
   pname = "gh-flake-update";
-  version = "0.0.1";
+  version = "0.0.2";
 
   src = ./.;
 
@@ -38,7 +38,7 @@ stdenvNoCC.mkDerivation {
         lib.makeBinPath [
           gh
           gitMinimal
-          nvd
+          dix
         ]
       }
 

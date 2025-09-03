@@ -1,6 +1,6 @@
 name: gh-flake-update
 help: Create a pull request to update flake attributes in a GitHub repository, with a diff of the changes.
-version: 0.0.1
+version: 0.0.2
 args:
   - name: attributes
     required: true
@@ -28,3 +28,7 @@ environment_variables:
   - name: GH_TOKEN
     help: Github API token
     required: false
+dependencies:
+  - gh
+  - git
+  - dix

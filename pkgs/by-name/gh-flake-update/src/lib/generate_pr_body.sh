@@ -52,7 +52,7 @@ EOF
 <summary>Attribute: <code>${attr}</code> (Diff)</summary>
 
 \`\`\`console
-$(nvd diff "$current_build_path" "$next_build_path" || echo "nvd diff command failed for $attr")
+$(dix "$current_build_path" "$next_build_path" || echo "dix command failed for $attr")
 \`\`\`
 
 </details>
