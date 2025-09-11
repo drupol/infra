@@ -11,11 +11,6 @@
         frequency = "weekly";
         store.cleanup = true;
       };
-      gpg-agent = {
-        enable = true;
-        enableSshSupport = true;
-        sshKeys = [ "143BC4FB7B3AC7C4F902ADCB579D2F66CDA1844A" ];
-      };
     };
   };
 }

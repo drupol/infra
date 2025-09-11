@@ -10,8 +10,13 @@ topLevel: {
               default-key = topLevel.config.flake.meta.users.${config.home.username}.key;
             };
           };
-          keychain = {
+        };
+
+        services = {
+          gpg-agent = {
             enable = true;
+            enableSshSupport = true;
+            sshKeys = config.flake.meta.users.${config.home.username}.keygrip;
           };
         };
       };
