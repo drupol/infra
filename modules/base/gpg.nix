@@ -16,7 +16,7 @@ topLevel: {
           gpg-agent = {
             enable = true;
             enableSshSupport = true;
-            sshKeys = config.flake.meta.users.${config.home.username}.keygrip;
+            sshKeys = topLevel.config.flake.meta.users.${config.home.username}.keygrip;
           };
         };
       };
