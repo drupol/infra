@@ -1,7 +1,7 @@
 { pkgs }:
 
 pkgs.nix-webapps-lib.mkChromiumApp {
-  appName = "webmail-umons";
+  appName = "umons-webmail";
   categories = [
     "Network"
     "Email"

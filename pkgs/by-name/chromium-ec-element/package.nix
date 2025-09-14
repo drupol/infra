@@ -1,14 +1,14 @@
 { pkgs }:
 
 pkgs.nix-webapps-lib.mkChromiumApp {
-  appName = "element-ec";
+  appName = "ec-element";
   categories = [
     "Network"
     "Chat"
     "InstantMessaging"
   ];
   class = "chrome-chat.contact.ec.europa.eu__-Default";
-  desktopName = "Element European Commission";
+  desktopName = "Matrix @ European Commission";
   icon = ./Element_logo.svg;
   url = "https://chat.contact.ec.europa.eu";
 }
