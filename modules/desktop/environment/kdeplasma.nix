@@ -95,15 +95,13 @@
         };
 
         configFile = {
-          kwalletrc = {
-            Wallet = {
-              "First Use" = false;
-            };
-          };
-
-          kscreenlockerrc = {
-            Daemon = {
-              Timeout = 15;
+          kdeglobals = {
+            "KFileDialog Settings" = {
+              "Sort directories first" = true;
+              "Show Speedbar" = true;
+              "View Style" = "DetailTree";
+              "Show Inline Previews" = true;
+              "Breadcrumb Navigation" = true;
             };
           };
 
@@ -116,6 +114,24 @@
             };
           };
 
+          kscreenlockerrc = {
+            Daemon = {
+              Timeout = 15;
+            };
+          };
+
+          kwalletrc = {
+            Wallet = {
+              Enabled = true;
+              "First Use" = false;
+              "Close When Idle" = false;
+              "Close on Screensaver" = false;
+              "Leave Open" = true;
+              "Prompt on Open" = false;
+            };
+            "org.freedesktop.secrets"."apiEnabled" = true;
+          };
+
           kwinrc = {
             Desktops = {
               Number = "1";
@@ -124,6 +140,21 @@
             EdgeBarrier = {
               CornerBarrier = "false";
               EdgeBarrier = "0";
+            };
+          };
+
+          plasma-localerc = {
+            Formats = {
+              LANG = "en_US.UTF-8";
+            };
+          };
+
+          plasmarc = {
+            PlasmaToolTips = {
+              Delay = 1;
+            };
+            Theme = {
+              name = "breeze-dark";
             };
           };
 
@@ -159,20 +190,6 @@
               toggle-window-state = "Meta+Space";
             };
           };
-          plasma-localerc = {
-            Formats = {
-              LANG = "en_US.UTF-8";
-            };
-          };
-          plasmarc = {
-            PlasmaToolTips = {
-              Delay = 1;
-            };
-            Theme = {
-              name = "breeze-dark";
-            };
-          };
-
         };
       };
 
