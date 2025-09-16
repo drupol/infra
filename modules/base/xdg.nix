@@ -11,6 +11,9 @@
         videos = null;
         publicShare = null;
       };
+      autostart = {
+        enable = true;
+      };
     };
   };
 }
