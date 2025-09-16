@@ -96,16 +96,8 @@
         "KDE Keyboard Layout Switcher"."Switch keyboard layout to French" = [ ];
         "KDE Keyboard Layout Switcher"."Switch keyboard layout to French (legacy, alt.)" = [ ];
         "KDE Keyboard Layout Switcher"."Switch to Last-Used Keyboard Layout" = "Meta+Alt+L";
-        "KDE Keyboard Layout Switcher"."Switch to Next Keyboard Layout" =
-          "Ctrl+Alt+K\\, Meta+Alt+K,Meta+Alt+K";
+        "KDE Keyboard Layout Switcher"."Switch to Next Keyboard Layout" = "Meta+Alt+K";
         "kaccess"."Toggle Screen Reader On and Off" = "Meta+Alt+S";
-        "kcm_touchpad"."Disable Touchpad" = "Touchpad Off";
-        "kcm_touchpad"."Enable Touchpad" = "Touchpad On";
-        "kcm_touchpad"."Toggle Touchpad" = [
-          "Touchpad Toggle\\, Touchpad Toggle"
-          "Meta+Ctrl+Zenkaku Hankaku,Touchpad Toggle"
-          "Meta+Ctrl+Zenkaku Hankaku"
-        ];
         "kmix"."decrease_microphone_volume" = "Microphone Volume Down";
         "kmix"."decrease_volume" = "Volume Down";
         "kmix"."decrease_volume_small" = "Shift+Volume Down";
@@ -113,34 +105,35 @@
         "kmix"."increase_volume" = "Volume Up";
         "kmix"."increase_volume_small" = "Shift+Volume Up";
         "kmix"."mic_mute" = [
-          "Microphone Mute\\, Microphone Mute"
+          "Microphone Mute"
           "Meta+Volume Mute,Microphone Mute"
           "Meta+Volume Mute,Mute Microphone"
         ];
         "kmix"."mute" = "Volume Mute";
-        "ksmserver"."Halt Without Confirmation" = "none,,Shut Down Without Confirmation";
+        "ksmserver"."Halt Without Confirmation" = [ ];
         "ksmserver"."Lock Session" = [
           "Meta+L"
           "Ctrl+Alt+L"
-          "Screensaver,Meta+L"
+          ""
+          "Screensaver\\, ,Meta+L"
           "Screensaver,Lock Session"
         ];
         "ksmserver"."Log Out" = "Ctrl+Alt+Del";
-        "ksmserver"."Log Out Without Confirmation" = "none,,Log Out Without Confirmation";
-        "ksmserver"."LogOut" = "none,,Log Out";
-        "ksmserver"."Reboot" = "none,,Reboot";
-        "ksmserver"."Reboot Without Confirmation" = "none,,Reboot Without Confirmation";
-        "ksmserver"."Shut Down" = "none,,Shut Down";
-        "kwin"."Activate Window Demanding Attention" =
-          "Ctrl+Alt+A\\, Meta+Ctrl+A,Meta+Ctrl+A,Activate Window Demanding Attention";
+        "ksmserver"."Log Out Without Confirmation" = [ ];
+        "ksmserver"."LogOut" = [ ];
+        "ksmserver"."Reboot" = [ ];
+        "ksmserver"."Reboot Without Confirmation" = [ ];
+        "ksmserver"."Shut Down" = [ ];
+        "kwin"."Activate Window Demanding Attention" = "Meta+Ctrl+A";
         "kwin"."Cycle Overview" = [ ];
         "kwin"."Cycle Overview Opposite" = [ ];
-        "kwin"."Decrease Opacity" = "none,,Decrease Opacity of Active Window by 5%";
+        "kwin"."Decrease Opacity" = [ ];
         "kwin"."Edit Tiles" = "Meta+T";
         "kwin"."Expose" = "Ctrl+F9";
         "kwin"."ExposeAll" = [
           "Ctrl+F10"
-          "Launch (C),Ctrl+F10"
+          ""
+          "Launch (C)\\, ,Ctrl+F10"
           "Launch (C),Toggle Present Windows (All desktops)"
         ];
         "kwin"."ExposeClass" = "Ctrl+F7";
@@ -148,9 +141,9 @@
         "kwin"."FlipSwitchAll" = [ ];
         "kwin"."FlipSwitchCurrent" = [ ];
         "kwin"."Grid View" = "Meta+G";
-        "kwin"."Increase Opacity" = "none,,Increase Opacity of Active Window by 5%";
+        "kwin"."Increase Opacity" = [ ];
         "kwin"."Invert Screen Colors" = [ ];
-        "kwin"."Kill Window" = "Ctrl+Alt+Esc\\, Meta+Ctrl+Esc,Meta+Ctrl+Esc,Kill Window";
+        "kwin"."Kill Window" = "Meta+Ctrl+Esc";
         "kwin"."Move Tablet to Next Output" = [ ];
         "kwin"."MoveMouseToCenter" = "Meta+F6";
         "kwin"."MoveMouseToFocus" = "Meta+F5";
@@ -159,160 +152,178 @@
         "kwin"."MoveZoomRight" = [ ];
         "kwin"."MoveZoomUp" = [ ];
         "kwin"."Overview" = "Meta+W";
-        "kwin"."Setup Window Shortcut" = "none,,Setup Window Shortcut";
+        "kwin"."Setup Window Shortcut" = [ ];
         "kwin"."Show Desktop" = "Meta+D";
-        "kwin"."ShowDesktopGrid" = "Ctrl+F8,none";
-        "kwin"."Suspend Compositing" = "Alt+Shift+F12,none";
-        "kwin"."Switch One Desktop Down" = "none,Meta+Ctrl+Down,Switch One Desktop Down";
-        "kwin"."Switch One Desktop Up" = "none,Meta+Ctrl+Up,Switch One Desktop Up";
-        "kwin"."Switch One Desktop to the Left" = "none,Meta+Ctrl+Left,Switch One Desktop to the Left";
-        "kwin"."Switch One Desktop to the Right" = "none,Meta+Ctrl+Right,Switch One Desktop to the Right";
+        "kwin"."ShowDesktopGrid" = "Ctrl+F8\\, ,none";
+        "kwin"."Suspend Compositing" = "Alt+Shift+F12\\, ,none";
+        "kwin"."Switch One Desktop Down" = "\\, Meta+Ctrl+Down\\, ,Meta+Ctrl+Down,Switch One Desktop Down";
+        "kwin"."Switch One Desktop Up" = "\\, Meta+Ctrl+Up\\, ,Meta+Ctrl+Up,Switch One Desktop Up";
+        "kwin"."Switch One Desktop to the Left" =
+          "\\, Meta+Ctrl+Left\\, ,Meta+Ctrl+Left,Switch One Desktop to the Left";
+        "kwin"."Switch One Desktop to the Right" =
+          "\\, Meta+Ctrl+Right\\, ,Meta+Ctrl+Right,Switch One Desktop to the Right";
         "kwin"."Switch Window Down" = "Meta+Alt+Down";
         "kwin"."Switch Window Left" = "Meta+Alt+Left";
         "kwin"."Switch Window Right" = "Meta+Alt+Right";
         "kwin"."Switch Window Up" = "Meta+Alt+Up";
         "kwin"."Switch to Desktop 1" = "Ctrl+F1";
-        "kwin"."Switch to Desktop 10" = "none,,Switch to Desktop 10";
-        "kwin"."Switch to Desktop 11" = "none,,Switch to Desktop 11";
-        "kwin"."Switch to Desktop 12" = "none,,Switch to Desktop 12";
-        "kwin"."Switch to Desktop 13" = "none,,Switch to Desktop 13";
-        "kwin"."Switch to Desktop 14" = "none,,Switch to Desktop 14";
-        "kwin"."Switch to Desktop 15" = "none,,Switch to Desktop 15";
-        "kwin"."Switch to Desktop 16" = "none,,Switch to Desktop 16";
-        "kwin"."Switch to Desktop 17" = "none,,Switch to Desktop 17";
-        "kwin"."Switch to Desktop 18" = "none,,Switch to Desktop 18";
-        "kwin"."Switch to Desktop 19" = "none,,Switch to Desktop 19";
+        "kwin"."Switch to Desktop 10" = [ ];
+        "kwin"."Switch to Desktop 11" = [ ];
+        "kwin"."Switch to Desktop 12" = [ ];
+        "kwin"."Switch to Desktop 13" = [ ];
+        "kwin"."Switch to Desktop 14" = [ ];
+        "kwin"."Switch to Desktop 15" = [ ];
+        "kwin"."Switch to Desktop 16" = [ ];
+        "kwin"."Switch to Desktop 17" = [ ];
+        "kwin"."Switch to Desktop 18" = [ ];
+        "kwin"."Switch to Desktop 19" = [ ];
         "kwin"."Switch to Desktop 2" = "Ctrl+F2";
-        "kwin"."Switch to Desktop 20" = "none,,Switch to Desktop 20";
+        "kwin"."Switch to Desktop 20" = [ ];
         "kwin"."Switch to Desktop 3" = "Ctrl+F3";
         "kwin"."Switch to Desktop 4" = "Ctrl+F4";
-        "kwin"."Switch to Desktop 5" = "none,,Switch to Desktop 5";
-        "kwin"."Switch to Desktop 6" = "none,,Switch to Desktop 6";
-        "kwin"."Switch to Desktop 7" = "none,,Switch to Desktop 7";
-        "kwin"."Switch to Desktop 8" = "none,,Switch to Desktop 8";
-        "kwin"."Switch to Desktop 9" = "none,,Switch to Desktop 9";
-        "kwin"."Switch to Next Desktop" = "none,,Switch to Next Desktop";
-        "kwin"."Switch to Next Screen" = "none,,Switch to Next Screen";
-        "kwin"."Switch to Previous Desktop" = "none,,Switch to Previous Desktop";
-        "kwin"."Switch to Previous Screen" = "none,,Switch to Previous Screen";
-        "kwin"."Switch to Screen 0" = "none,,Switch to Screen 0";
-        "kwin"."Switch to Screen 1" = "none,,Switch to Screen 1";
-        "kwin"."Switch to Screen 2" = "none,,Switch to Screen 2";
-        "kwin"."Switch to Screen 3" = "none,,Switch to Screen 3";
-        "kwin"."Switch to Screen 4" = "none,,Switch to Screen 4";
-        "kwin"."Switch to Screen 5" = "none,,Switch to Screen 5";
-        "kwin"."Switch to Screen 6" = "none,,Switch to Screen 6";
-        "kwin"."Switch to Screen 7" = "none,,Switch to Screen 7";
-        "kwin"."Switch to Screen Above" = "none,,Switch to Screen Above";
-        "kwin"."Switch to Screen Below" = "none,,Switch to Screen Below";
-        "kwin"."Switch to Screen to the Left" = "none,,Switch to Screen to the Left";
-        "kwin"."Switch to Screen to the Right" = "none,,Switch to Screen to the Right";
+        "kwin"."Switch to Desktop 5" = [ ];
+        "kwin"."Switch to Desktop 6" = [ ];
+        "kwin"."Switch to Desktop 7" = [ ];
+        "kwin"."Switch to Desktop 8" = [ ];
+        "kwin"."Switch to Desktop 9" = [ ];
+        "kwin"."Switch to Next Desktop" = [ ];
+        "kwin"."Switch to Next Screen" = [ ];
+        "kwin"."Switch to Previous Desktop" = [ ];
+        "kwin"."Switch to Previous Screen" = [ ];
+        "kwin"."Switch to Screen 0" = [ ];
+        "kwin"."Switch to Screen 1" = [ ];
+        "kwin"."Switch to Screen 2" = [ ];
+        "kwin"."Switch to Screen 3" = [ ];
+        "kwin"."Switch to Screen 4" = [ ];
+        "kwin"."Switch to Screen 5" = [ ];
+        "kwin"."Switch to Screen 6" = [ ];
+        "kwin"."Switch to Screen 7" = [ ];
+        "kwin"."Switch to Screen Above" = [ ];
+        "kwin"."Switch to Screen Below" = [ ];
+        "kwin"."Switch to Screen to the Left" = [ ];
+        "kwin"."Switch to Screen to the Right" = [ ];
         "kwin"."Toggle Night Color" = [ ];
-        "kwin"."Toggle Window Raise/Lower" = "none,,Toggle Window Raise/Lower";
+        "kwin"."Toggle Window Raise/Lower" = [ ];
         "kwin"."ToggleCurrentThumbnail" = "Meta+Ctrl+T";
         "kwin"."Walk Through Desktop List" = [ ];
         "kwin"."Walk Through Desktop List (Reverse)" = [ ];
         "kwin"."Walk Through Desktops" = [ ];
         "kwin"."Walk Through Desktops (Reverse)" = [ ];
-        "kwin"."Walk Through Windows" = "Alt+Tab";
-        "kwin"."Walk Through Windows (Reverse)" =
-          "Alt+Shift+Backtab\\, Alt+Shift+Tab,Alt+Shift+Tab,Walk Through Windows (Reverse)";
-        "kwin"."Walk Through Windows Alternative" = "none,,Walk Through Windows Alternative";
+        "kwin"."Walk Through Windows" = [
+          "Alt+Tab,Meta+Tab"
+          "Alt+Tab,Walk Through Windows"
+        ];
+        "kwin"."Walk Through Windows (Reverse)" = [
+          "Meta+Shift+Tab"
+          "Alt+Shift+Tab,Meta+Shift+Tab"
+          "Alt+Shift+Tab,Walk Through Windows (Reverse)"
+        ];
+        "kwin"."Walk Through Windows Alternative" = ",none,Walk Through Windows Alternative";
         "kwin"."Walk Through Windows Alternative (Reverse)" =
-          "none,,Walk Through Windows Alternative (Reverse)";
-        "kwin"."Walk Through Windows of Current Application" =
-          "none,Alt+`,Walk Through Windows of Current Application";
-        "kwin"."Walk Through Windows of Current Application (Reverse)" = "Alt+~";
+          ",none,Walk Through Windows Alternative (Reverse)";
+        "kwin"."Walk Through Windows of Current Application" = [
+          "\\, Alt+`\\, ,Meta+`"
+          "Alt+`,Walk Through Windows of Current Application"
+        ];
+        "kwin"."Walk Through Windows of Current Application (Reverse)" = [
+          "Alt+~,Meta+~"
+          "Alt+~,Walk Through Windows of Current Application (Reverse)"
+        ];
         "kwin"."Walk Through Windows of Current Application Alternative" =
-          "none,,Walk Through Windows of Current Application Alternative";
+          ",none,Walk Through Windows of Current Application Alternative";
         "kwin"."Walk Through Windows of Current Application Alternative (Reverse)" =
-          "none,,Walk Through Windows of Current Application Alternative (Reverse)";
-        "kwin"."Window Above Other Windows" = "none,,Keep Window Above Others";
-        "kwin"."Window Below Other Windows" = "none,,Keep Window Below Others";
+          ",none,Walk Through Windows of Current Application Alternative (Reverse)";
+        "kwin"."Window Above Other Windows" = [ ];
+        "kwin"."Window Below Other Windows" = [ ];
         "kwin"."Window Close" = "Alt+F4";
-        "kwin"."Window Fullscreen" = "none,,Make Window Fullscreen";
-        "kwin"."Window Grow Horizontal" = "none,,Expand Window Horizontally";
-        "kwin"."Window Grow Vertical" = "none,,Expand Window Vertically";
-        "kwin"."Window Lower" = "none,,Lower Window";
+        "kwin"."Window Custom Quick Tile Bottom" = "none,,Custom Quick Tile Window to the Bottom";
+        "kwin"."Window Custom Quick Tile Left" = "none,,Custom Quick Tile Window to the Left";
+        "kwin"."Window Custom Quick Tile Right" = "none,,Custom Quick Tile Window to the Right";
+        "kwin"."Window Custom Quick Tile Top" = "none,,Custom Quick Tile Window to the Top";
+        "kwin"."Window Fullscreen" = [ ];
+        "kwin"."Window Grow Horizontal" = [ ];
+        "kwin"."Window Grow Vertical" = [ ];
+        "kwin"."Window Lower" = [ ];
         "kwin"."Window Maximize" = "Meta+PgUp";
-        "kwin"."Window Maximize Horizontal" = "none,,Maximize Window Horizontally";
-        "kwin"."Window Maximize Vertical" = "none,,Maximize Window Vertically";
+        "kwin"."Window Maximize Horizontal" = [ ];
+        "kwin"."Window Maximize Vertical" = [ ];
         "kwin"."Window Minimize" = "Meta+PgDown";
-        "kwin"."Window Move" = "none,,Move Window";
-        "kwin"."Window Move Center" = "none,,Move Window to the Center";
-        "kwin"."Window No Border" = "none,,Toggle Window Titlebar and Frame";
-        "kwin"."Window On All Desktops" = "none,,Keep Window on All Desktops";
+        "kwin"."Window Move" = [ ];
+        "kwin"."Window Move Center" = [ ];
+        "kwin"."Window No Border" = [ ];
+        "kwin"."Window On All Desktops" = [ ];
         "kwin"."Window One Desktop Down" = "Meta+Ctrl+Shift+Down";
         "kwin"."Window One Desktop Up" = "Meta+Ctrl+Shift+Up";
         "kwin"."Window One Desktop to the Left" = "Meta+Ctrl+Shift+Left";
         "kwin"."Window One Desktop to the Right" = "Meta+Ctrl+Shift+Right";
-        "kwin"."Window One Screen Down" = "none,,Move Window One Screen Down";
-        "kwin"."Window One Screen Up" = "none,,Move Window One Screen Up";
-        "kwin"."Window One Screen to the Left" = "none,,Move Window One Screen to the Left";
-        "kwin"."Window One Screen to the Right" = "none,,Move Window One Screen to the Right";
+        "kwin"."Window One Screen Down" = [ ];
+        "kwin"."Window One Screen Up" = [ ];
+        "kwin"."Window One Screen to the Left" = [ ];
+        "kwin"."Window One Screen to the Right" = [ ];
         "kwin"."Window Operations Menu" = "Alt+F3";
-        "kwin"."Window Pack Down" = "none,,Move Window Down";
-        "kwin"."Window Pack Left" = "none,,Move Window Left";
-        "kwin"."Window Pack Right" = "none,,Move Window Right";
-        "kwin"."Window Pack Up" = "none,,Move Window Up";
+        "kwin"."Window Pack Down" = [ ];
+        "kwin"."Window Pack Left" = [ ];
+        "kwin"."Window Pack Right" = [ ];
+        "kwin"."Window Pack Up" = [ ];
         "kwin"."Window Quick Tile Bottom" = "Meta+Down";
-        "kwin"."Window Quick Tile Bottom Left" = "none,,Quick Tile Window to the Bottom Left";
-        "kwin"."Window Quick Tile Bottom Right" = "none,,Quick Tile Window to the Bottom Right";
+        "kwin"."Window Quick Tile Bottom Left" = [ ];
+        "kwin"."Window Quick Tile Bottom Right" = [ ];
         "kwin"."Window Quick Tile Left" = "Meta+Left";
         "kwin"."Window Quick Tile Right" = "Meta+Right";
         "kwin"."Window Quick Tile Top" = "Meta+Up";
-        "kwin"."Window Quick Tile Top Left" = "none,,Quick Tile Window to the Top Left";
-        "kwin"."Window Quick Tile Top Right" = "none,,Quick Tile Window to the Top Right";
-        "kwin"."Window Raise" = "none,,Raise Window";
-        "kwin"."Window Resize" = "none,,Resize Window";
-        "kwin"."Window Shade" = "none,,Shade Window";
-        "kwin"."Window Shrink Horizontal" = "none,,Shrink Window Horizontally";
-        "kwin"."Window Shrink Vertical" = "none,,Shrink Window Vertically";
-        "kwin"."Window to Desktop 1" = "none,,Window to Desktop 1";
-        "kwin"."Window to Desktop 10" = "none,,Window to Desktop 10";
-        "kwin"."Window to Desktop 11" = "none,,Window to Desktop 11";
-        "kwin"."Window to Desktop 12" = "none,,Window to Desktop 12";
-        "kwin"."Window to Desktop 13" = "none,,Window to Desktop 13";
-        "kwin"."Window to Desktop 14" = "none,,Window to Desktop 14";
-        "kwin"."Window to Desktop 15" = "none,,Window to Desktop 15";
-        "kwin"."Window to Desktop 16" = "none,,Window to Desktop 16";
-        "kwin"."Window to Desktop 17" = "none,,Window to Desktop 17";
-        "kwin"."Window to Desktop 18" = "none,,Window to Desktop 18";
-        "kwin"."Window to Desktop 19" = "none,,Window to Desktop 19";
-        "kwin"."Window to Desktop 2" = "none,,Window to Desktop 2";
-        "kwin"."Window to Desktop 20" = "none,,Window to Desktop 20";
-        "kwin"."Window to Desktop 3" = "none,,Window to Desktop 3";
-        "kwin"."Window to Desktop 4" = "none,,Window to Desktop 4";
-        "kwin"."Window to Desktop 5" = "none,,Window to Desktop 5";
-        "kwin"."Window to Desktop 6" = "none,,Window to Desktop 6";
-        "kwin"."Window to Desktop 7" = "none,,Window to Desktop 7";
-        "kwin"."Window to Desktop 8" = "none,,Window to Desktop 8";
-        "kwin"."Window to Desktop 9" = "none,,Window to Desktop 9";
-        "kwin"."Window to Next Desktop" = "none,,Window to Next Desktop";
+        "kwin"."Window Quick Tile Top Left" = [ ];
+        "kwin"."Window Quick Tile Top Right" = [ ];
+        "kwin"."Window Raise" = [ ];
+        "kwin"."Window Resize" = [ ];
+        "kwin"."Window Shade" = [ ];
+        "kwin"."Window Shrink Horizontal" = [ ];
+        "kwin"."Window Shrink Vertical" = [ ];
+        "kwin"."Window to Desktop 1" = [ ];
+        "kwin"."Window to Desktop 10" = [ ];
+        "kwin"."Window to Desktop 11" = [ ];
+        "kwin"."Window to Desktop 12" = [ ];
+        "kwin"."Window to Desktop 13" = [ ];
+        "kwin"."Window to Desktop 14" = [ ];
+        "kwin"."Window to Desktop 15" = [ ];
+        "kwin"."Window to Desktop 16" = [ ];
+        "kwin"."Window to Desktop 17" = [ ];
+        "kwin"."Window to Desktop 18" = [ ];
+        "kwin"."Window to Desktop 19" = [ ];
+        "kwin"."Window to Desktop 2" = [ ];
+        "kwin"."Window to Desktop 20" = [ ];
+        "kwin"."Window to Desktop 3" = [ ];
+        "kwin"."Window to Desktop 4" = [ ];
+        "kwin"."Window to Desktop 5" = [ ];
+        "kwin"."Window to Desktop 6" = [ ];
+        "kwin"."Window to Desktop 7" = [ ];
+        "kwin"."Window to Desktop 8" = [ ];
+        "kwin"."Window to Desktop 9" = [ ];
+        "kwin"."Window to Next Desktop" = [ ];
         "kwin"."Window to Next Screen" = "Meta+Shift+Right";
-        "kwin"."Window to Previous Desktop" = "none,,Window to Previous Desktop";
+        "kwin"."Window to Previous Desktop" = [ ];
         "kwin"."Window to Previous Screen" = "Meta+Shift+Left";
         "kwin"."Window to Screen %1" = [ ];
-        "kwin"."Window to Screen 0" = "none,,Move Window to Screen 0";
-        "kwin"."Window to Screen 1" = "none,,Move Window to Screen 1";
-        "kwin"."Window to Screen 2" = "none,,Move Window to Screen 2";
-        "kwin"."Window to Screen 3" = "none,,Move Window to Screen 3";
-        "kwin"."Window to Screen 4" = "none,,Move Window to Screen 4";
-        "kwin"."Window to Screen 5" = "none,,Move Window to Screen 5";
-        "kwin"."Window to Screen 6" = "none,,Move Window to Screen 6";
-        "kwin"."Window to Screen 7" = "none,,Move Window to Screen 7";
-        "kwin"."view_actual_size" = "Meta+0";
+        "kwin"."Window to Screen 0" = [ ];
+        "kwin"."Window to Screen 1" = [ ];
+        "kwin"."Window to Screen 2" = [ ];
+        "kwin"."Window to Screen 3" = [ ];
+        "kwin"."Window to Screen 4" = [ ];
+        "kwin"."Window to Screen 5" = [ ];
+        "kwin"."Window to Screen 6" = [ ];
+        "kwin"."Window to Screen 7" = [ ];
+        "kwin"."disableInputCapture" = "Meta+Shift+Esc";
+        "kwin"."view_actual_size" = ",Meta+0,Zoom to Actual Size";
         "kwin"."view_zoom_in" = [
-          "Meta+=\\, Meta++"
-          "Meta+=\\, Zoom In,Meta++"
+          "Meta++"
+          "Meta+=,Meta++"
           "Meta+=,Zoom In"
         ];
         "kwin"."view_zoom_out" = "Meta+-";
-        "mediacontrol"."mediavolumedown" = "none,,Media volume down";
-        "mediacontrol"."mediavolumeup" = "none,,Media volume up";
+        "mediacontrol"."mediavolumedown" = [ ];
+        "mediacontrol"."mediavolumeup" = [ ];
         "mediacontrol"."nextmedia" = "Media Next";
         "mediacontrol"."pausemedia" = "Media Pause";
-        "mediacontrol"."playmedia" = "none,,Play media playback";
+        "mediacontrol"."playmedia" = [ ];
         "mediacontrol"."playpausemedia" = "Media Play";
         "mediacontrol"."previousmedia" = "Media Previous";
         "mediacontrol"."stopmedia" = "Media Stop";
@@ -330,16 +341,18 @@
         "org_kde_powerdevil"."Turn Off Screen" = [ ];
         "org_kde_powerdevil"."powerProfile" = [
           "Battery"
-          "Meta+B,Battery"
+          ""
+          "Meta+B\\, ,Battery"
           "Meta+B,Switch Power Profile"
         ];
         "plasmashell"."activate application launcher" = [
           "Meta"
-          "Alt+F1,Meta"
+          ""
+          "Alt+F1\\, ,Meta"
           "Alt+F1,Activate Application Launcher"
         ];
         "plasmashell"."activate task manager entry 1" = "Meta+1";
-        "plasmashell"."activate task manager entry 10" = "none,Meta+0,Activate Task Manager Entry 10";
+        "plasmashell"."activate task manager entry 10" = "\\, Meta+0\\, ,,Activate Task Manager Entry 10";
         "plasmashell"."activate task manager entry 2" = "Meta+2";
         "plasmashell"."activate task manager entry 3" = "Meta+3";
         "plasmashell"."activate task manager entry 4" = "Meta+4";
@@ -348,25 +361,23 @@
         "plasmashell"."activate task manager entry 7" = "Meta+7";
         "plasmashell"."activate task manager entry 8" = "Meta+8";
         "plasmashell"."activate task manager entry 9" = "Meta+9";
-        "plasmashell"."clear-history" = "none,,Clear Clipboard History";
-        "plasmashell"."clipboard_action" =
-          "Ctrl+Alt+X\\, Meta+Ctrl+X,Meta+Ctrl+X,Automatic Action Popup Menu";
+        "plasmashell"."clear-history" = "\\, ,,Clear Clipboard History";
+        "plasmashell"."clipboard_action" = "Meta+Ctrl+X";
         "plasmashell"."cycle-panels" = "Meta+Alt+P";
-        "plasmashell"."cycleNextAction" = "none,,Next History Item";
-        "plasmashell"."cyclePrevAction" = "none,,Previous History Item";
-        "plasmashell"."edit_clipboard" = [ ];
-        "plasmashell"."manage activities" = "none,Meta+Q,Show Activity Switcher";
+        "plasmashell"."cycleNextAction" = [ ];
+        "plasmashell"."cyclePrevAction" = [ ];
+        "plasmashell"."edit_clipboard" = "none,,Edit Contents…";
+        "plasmashell"."manage activities" = "\\, Meta+Q\\, ,Meta+Q,Show Activity Switcher";
         "plasmashell"."next activity" = [ ];
         "plasmashell"."previous activity" = [ ];
-        "plasmashell"."repeat_action" =
-          "Ctrl+Alt+R\\, Meta+Ctrl+R,Meta+Ctrl+R,Manually Invoke Action on Current Clipboard";
+        "plasmashell"."repeat_action" = [ ];
         "plasmashell"."show dashboard" = "Ctrl+F12";
-        "plasmashell"."show-barcode" = "none,,Show Barcode…";
-        "plasmashell"."show-on-mouse-pos" = "none,Meta+V,Show Clipboard Items at Mouse Position";
-        "plasmashell"."stop current activity" = "none,Meta+S,Stop Current Activity";
-        "plasmashell"."switch to next activity" = "none,,Switch to Next Activity";
-        "plasmashell"."switch to previous activity" = "none,,Switch to Previous Activity";
-        "plasmashell"."toggle do not disturb" = "none,,Toggle do not disturb";
+        "plasmashell"."show-barcode" = [ ];
+        "plasmashell"."show-on-mouse-pos" = "\\, Meta+V\\, ,Meta+V,Show Clipboard Items at Mouse Position";
+        "plasmashell"."stop current activity" = "\\, Meta+S\\, ,Meta+S,Stop Current Activity";
+        "plasmashell"."switch to next activity" = [ ];
+        "plasmashell"."switch to previous activity" = [ ];
+        "plasmashell"."toggle do not disturb" = [ ];
         "services/krunner.desktop"."RunClipboard" = "Alt+Shift+F2";
         "services/krunner.desktop"."_launch" = [
           ""
@@ -422,7 +433,7 @@
         "services/services.org.kde.plasma.emojier.desktop"."_launch" = "Meta+.";
         "yakuake"."toggle-window-state" = [
           "Meta+Space"
-          "F12,F12,Open/Retract Yakuake"
+          "F12\\, F12\\, ,F12,Open/Retract Yakuake"
         ];
       };
       configFile = {
@@ -432,6 +443,7 @@
           "*~,*.part,*.o,*.la,*.lo,*.loT,*.moc,moc_*.cpp,qrc_*.cpp,ui_*.h,cmake_install.cmake,CMakeCache.txt,CTestTestfile.cmake,libtool,config.status,confdefs.h,autom4te,conftest,confstat,Makefile.am,*.gcode,.ninja_deps,.ninja_log,build.ninja,*.csproj,*.m4,*.rej,*.gmo,*.pc,*.omf,*.aux,*.tmp,*.po,*.vm*,*.nvram,*.rcore,*.swp,*.swap,lzo,litmain.sh,*.orig,.histfile.*,.xsession-errors*,*.map,*.so,*.a,*.db,*.qrc,*.ini,*.init,*.img,*.vdi,*.vbox*,vbox.log,*.qcow2,*.vmdk,*.vhd,*.vhdx,*.sql,*.sql.gz,*.ytdl,*.class,*.pyc,*.pyo,*.elc,*.qmlc,*.jsc,*.fastq,*.fq,*.gb,*.fasta,*.fna,*.gbff,*.faa,po,CVS,.svn,.git,_darcs,.bzr,.hg,CMakeFiles,CMakeTmp,CMakeTmpQmake,.moc,.obj,.pch,.uic,.npm,.yarn,.yarn-cache,__pycache__,node_modules,node_packages,nbproject,core-dumps,lost+found";
         "baloofilerc"."General"."exclude filters version" = 8;
         "baloofilerc"."General"."exclude foldersx5b$ex5d" = "$HOME/";
+        "baloofilerc"."General"."index hidden folders" = true;
         "baloofilerc"."General"."only basic indexing" = true;
         "dolphinrc"."Desktop Entry"."DefaultProfile" = "";
         "dolphinrc"."DetailsMode"."PreviewSize" = 22;
@@ -441,6 +453,7 @@
         "dolphinrc"."KFileDialog Settings"."Places Icons Static Size" = 22;
         "dolphinrc"."Open-with settings"."CompletionMode" = 1;
         "dolphinrc"."Open-with settings"."History" = "visu,visual";
+        "dolphinrc"."Search"."Location" = "Everywhere";
         "dolphinrc"."Search"."What" = "Content";
         "dolphinrc"."SettingsDialog"."eDP-1 Height 1920x1080" = 440;
         "dolphinrc"."SettingsDialog"."eDP-1 Width 1920x1080" = 585;
@@ -493,10 +506,18 @@
         "kded5rc"."Module-device_automounter"."autoload" = false;
         "kded5rc"."PlasmaBrowserIntegration"."shownCount" = 3;
         "kdeglobals"."DirSelect Dialog"."DirSelectDialog Size" = "825,584";
+        "kdeglobals"."DirSelect Dialog"."Splitter State" =
+          "\x00\x00\x00\xff\x00\x00\x00\x01\x00\x00\x00\x02\x00\x00\x00\x91\x00\x00\x02\xa8\x00\xff\xff\xff\xff\x01\x00\x00\x00\x01\x00";
         "kdeglobals"."General"."AllowKDEAppsToRememberWindowPositions" = true;
         "kdeglobals"."General"."BrowserApplication" = "firefox.desktop";
         "kdeglobals"."General"."XftHintStyle" = "hintslight";
         "kdeglobals"."General"."XftSubPixel" = "none";
+        "kdeglobals"."General"."fixed" = "Aporetic Sans Mono,10,-1,5,400,0,0,0,0,0,0,0,0,0,0,1";
+        "kdeglobals"."General"."font" = "Aporetic Sans Mono,10,-1,5,400,0,0,0,0,0,0,0,0,0,0,1";
+        "kdeglobals"."General"."menuFont" = "Aporetic Sans Mono,10,-1,5,400,0,0,0,0,0,0,0,0,0,0,1";
+        "kdeglobals"."General"."smallestReadableFont" =
+          "Aporetic Sans Mono,8,-1,5,400,0,0,0,0,0,0,0,0,0,0,1";
+        "kdeglobals"."General"."toolBarFont" = "Aporetic Sans Mono,10,-1,5,400,0,0,0,0,0,0,0,0,0,0,1";
         "kdeglobals"."KDE"."AnimationDurationFactor" = 0.25;
         "kdeglobals"."KDE"."SingleClick" = false;
         "kdeglobals"."KFileDialog Settings"."Allow Expansion" = false;
@@ -517,10 +538,11 @@
         "kdeglobals"."KFileDialog Settings"."Sort reversed" = true;
         "kdeglobals"."KFileDialog Settings"."Speedbar Width" = 105;
         "kdeglobals"."KFileDialog Settings"."View Style" = "Simple";
-        "kdeglobals"."KScreen"."ScreenScaleFactors" = "eDP-1=1;DP-3=1;";
+        "kdeglobals"."KScreen"."ScreenScaleFactors" = "eDP-1\x3d1;DP-3\x3d1;";
         "kdeglobals"."KShortcutsDialog Settings"."Dialog Size" = "876,614";
         "kdeglobals"."WM"."activeBackground" = "49,54,59";
         "kdeglobals"."WM"."activeBlend" = "252,252,252";
+        "kdeglobals"."WM"."activeFont" = "Aporetic Sans Mono,10,-1,5,400,0,0,0,0,0,0,0,0,0,0,1";
         "kdeglobals"."WM"."activeForeground" = "252,252,252";
         "kdeglobals"."WM"."inactiveBackground" = "42,46,50";
         "kdeglobals"."WM"."inactiveBlend" = "161,169,177";
@@ -590,6 +612,7 @@
         "kiorc"."Confirmations"."ConfirmEmptyTrash" = true;
         "klaunchrc"."BusyCursorSettings"."Bouncing" = false;
         "klaunchrc"."FeedbackStyle"."BusyCursor" = false;
+        "krunnerrc"."General"."historyBehavior" = "ImmediateCompletion";
         "krunnerrc"."Plugins"."CharacterRunnerEnabled" = true;
         "krunnerrc"."Plugins"."DictionaryEnabled" = false;
         "krunnerrc"."Plugins"."Kill RunnerEnabled" = true;
@@ -618,8 +641,11 @@
         "krunnerrc"."Plugins"."unitconverterEnabled" = true;
         "krunnerrc"."Plugins"."webshortcutsEnabled" = true;
         "krunnerrc"."Plugins"."windowsEnabled" = true;
+        "kscreenlockerrc"."Daemon"."Timeout" = 15;
         "ksmserverrc"."SubSession: 9bf60ab2-2e77-4ef0-945f-1713bcdbd756"."count" = 0;
         "ksmserverrc"."SubSession: b04cdf06-f69b-4426-a388-d784c86899b5"."count" = 0;
+        "ksplashrc"."KSplash"."Engine" = "none";
+        "ksplashrc"."KSplash"."Theme" = "none";
         "kwalletrc"."Wallet"."First Use" = false;
         "kwinrc"."Compositing"."OpenGLIsUnsafe" = false;
         "kwinrc"."Desktops"."Id_1" = "a1941d3b-435b-4b34-b4cf-3f14379a2361";
@@ -650,16 +676,35 @@
         "kwinrc"."ElectricBorders"."BottomRight" = "ShowDesktop";
         "kwinrc"."MouseBindings"."CommandActiveTitlebar2" = "Toggle raise and lower";
         "kwinrc"."MouseBindings"."CommandInactiveTitlebar2" = "Toggle raise and lower";
+        "kwinrc"."Plugins"."blurEnabled" = false;
+        "kwinrc"."Plugins"."cubeEnabled" = false;
         "kwinrc"."Plugins"."desktopgridEnabled" = false;
+        "kwinrc"."Plugins"."diminactiveEnabled" = false;
+        "kwinrc"."Plugins"."dimscreenEnabled" = false;
+        "kwinrc"."Plugins"."fadeEnabled" = false;
+        "kwinrc"."Plugins"."fadedesktopEnabled" = false;
+        "kwinrc"."Plugins"."fallapartEnabled" = false;
         "kwinrc"."Plugins"."frozenappEnabled" = false;
+        "kwinrc"."Plugins"."glideEnabled" = false;
         "kwinrc"."Plugins"."kwin4_effect_dialogparentEnabled" = false;
         "kwinrc"."Plugins"."kwin4_effect_fadingpopupsEnabled" = false;
         "kwinrc"."Plugins"."kwin4_effect_morphingpopupsEnabled" = false;
         "kwinrc"."Plugins"."kwin4_effect_translucencyEnabled" = true;
+        "kwinrc"."Plugins"."magiclampEnabled" = false;
         "kwinrc"."Plugins"."overviewEnabled" = true;
+        "kwinrc"."Plugins"."scaleEnabled" = false;
+        "kwinrc"."Plugins"."shakecursorEnabled" = false;
         "kwinrc"."Plugins"."sheetEnabled" = true;
+        "kwinrc"."Plugins"."showfpsEnabled" = false;
+        "kwinrc"."Plugins"."slideEnabled" = false;
+        "kwinrc"."Plugins"."slidebackEnabled" = false;
         "kwinrc"."Plugins"."slidingpopupsEnabled" = false;
+        "kwinrc"."Plugins"."snaphelperEnabled" = false;
+        "kwinrc"."Plugins"."squashEnabled" = false;
         "kwinrc"."Plugins"."thumbnailasideEnabled" = true;
+        "kwinrc"."Plugins"."translucencyEnabled" = false;
+        "kwinrc"."Plugins"."wobblywindowsEnabled" = false;
+        "kwinrc"."ScreenEdges"."RemainActiveOnFullscreen" = true;
         "kwinrc"."SubSession: 9bf60ab2-2e77-4ef0-945f-1713bcdbd756"."active" = "-1";
         "kwinrc"."SubSession: 9bf60ab2-2e77-4ef0-945f-1713bcdbd756"."count" = 0;
         "kwinrc"."SubSession: b04cdf06-f69b-4426-a388-d784c86899b5"."count" = 0;
@@ -676,11 +721,17 @@
           "{\"layoutDirection\":\"horizontal\",\"tiles\":[{\"width\":0.25},{\"width\":0.5},{\"width\":0.25}]}";
         "kwinrc"."Tiling.ff51ace0-88bb-54af-9479-58ed034df9d9"."tiles" =
           "{\"layoutDirection\":\"horizontal\",\"tiles\":[{\"width\":0.5},{\"width\":0.5}]}";
+        "kwinrc"."Tiling/01821215-c5eb-5a7d-b447-b724c603acef"."tiles" =
+          "{\"layoutDirection\":\"horizontal\",\"tiles\":[{\"width\":0.25},{\"width\":0.5},{\"width\":0.25}]}";
         "kwinrc"."Tiling/01dbfba4-436a-53cb-ab87-922fbc62a69c"."tiles" =
           "{\"layoutDirection\":\"horizontal\",\"tiles\":[{\"width\":0.25},{\"width\":0.5},{\"width\":0.25}]}";
         "kwinrc"."Tiling/027410f6-ed9e-5e32-9991-042825800a73"."tiles" =
           "{\"layoutDirection\":\"horizontal\",\"tiles\":[{\"width\":0.25},{\"width\":0.5},{\"width\":0.25}]}";
         "kwinrc"."Tiling/03e6f8b6-ad3b-555c-a022-efd290e473c5"."tiles" =
+          "{\"layoutDirection\":\"horizontal\",\"tiles\":[{\"width\":0.25},{\"width\":0.5},{\"width\":0.25}]}";
+        "kwinrc"."Tiling/06e592f4-0639-5b2e-a350-b46c6cd79976"."tiles" =
+          "{\"layoutDirection\":\"horizontal\",\"tiles\":[{\"width\":0.25},{\"width\":0.5},{\"width\":0.25}]}";
+        "kwinrc"."Tiling/08fe3223-9046-5232-ab81-485ad69670e3"."tiles" =
           "{\"layoutDirection\":\"horizontal\",\"tiles\":[{\"width\":0.25},{\"width\":0.5},{\"width\":0.25}]}";
         "kwinrc"."Tiling/09d3007a-f68e-5822-ad60-e87514665af4"."tiles" =
           "{\"layoutDirection\":\"horizontal\",\"tiles\":[{\"width\":0.25},{\"width\":0.5},{\"width\":0.25}]}";
@@ -708,6 +759,8 @@
           "{\"layoutDirection\":\"horizontal\",\"tiles\":[{\"width\":0.25},{\"width\":0.5},{\"width\":0.25}]}";
         "kwinrc"."Tiling/190411f6-46ba-51da-bad4-3ccdb9d3b47a"."tiles" =
           "{\"layoutDirection\":\"horizontal\",\"tiles\":[{\"width\":0.25},{\"width\":0.5},{\"width\":0.25}]}";
+        "kwinrc"."Tiling/1a73fc26-760a-5022-acc0-f05425cbc853"."tiles" =
+          "{\"layoutDirection\":\"horizontal\",\"tiles\":[{\"width\":0.25},{\"width\":0.5},{\"width\":0.25}]}";
         "kwinrc"."Tiling/1fdb9895-7960-51a3-ba35-15aaab2e31f4"."tiles" =
           "{\"layoutDirection\":\"horizontal\",\"tiles\":[{\"width\":0.25},{\"width\":0.5},{\"width\":0.25}]}";
         "kwinrc"."Tiling/1ff3f2c8-07d7-568d-bfba-5ffc27ce9a8f"."tiles" =
@@ -716,11 +769,17 @@
           "{\"layoutDirection\":\"horizontal\",\"tiles\":[{\"width\":0.5854166666666671},{\"layoutDirection\":\"vertical\",\"tiles\":[{\"height\":0.5},{\"height\":0.5}],\"width\":0.41458333333333286}]}";
         "kwinrc"."Tiling/21bc033f-27c0-5a26-a300-7d6ea2d06bab"."tiles" =
           "{\"layoutDirection\":\"horizontal\",\"tiles\":[{\"width\":0.25},{\"width\":0.5},{\"width\":0.25}]}";
+        "kwinrc"."Tiling/22f7da7f-5e78-5de2-93bb-a99e78cf9c88"."tiles" =
+          "{\"layoutDirection\":\"horizontal\",\"tiles\":[{\"width\":0.25},{\"width\":0.5},{\"width\":0.25}]}";
+        "kwinrc"."Tiling/22f9a0d6-a0d2-5f1e-8c18-2688b03eebce"."tiles" =
+          "{\"layoutDirection\":\"horizontal\",\"tiles\":[{\"width\":0.25},{\"width\":0.5},{\"width\":0.25}]}";
         "kwinrc"."Tiling/2329d4df-d4b3-537e-abee-aa16206ca3a5"."tiles" =
           "{\"layoutDirection\":\"horizontal\",\"tiles\":[{\"width\":0.25},{\"width\":0.5},{\"width\":0.25}]}";
         "kwinrc"."Tiling/232e1435-7d00-5c4c-af8e-10eb866334d9"."tiles" =
           "{\"layoutDirection\":\"horizontal\",\"tiles\":[{\"width\":0.25},{\"width\":0.5},{\"width\":0.25}]}";
         "kwinrc"."Tiling/23ae3a8b-4cf4-515e-9c19-24b391246a0f"."tiles" =
+          "{\"layoutDirection\":\"horizontal\",\"tiles\":[{\"width\":0.25},{\"width\":0.5},{\"width\":0.25}]}";
+        "kwinrc"."Tiling/25d94789-787d-59c4-8b20-7a4f74a82713"."tiles" =
           "{\"layoutDirection\":\"horizontal\",\"tiles\":[{\"width\":0.25},{\"width\":0.5},{\"width\":0.25}]}";
         "kwinrc"."Tiling/2852b5a7-a246-55db-9a19-fb17f333a54d"."tiles" =
           "{\"layoutDirection\":\"horizontal\",\"tiles\":[{\"width\":0.25},{\"width\":0.5},{\"width\":0.25}]}";
@@ -730,9 +789,13 @@
           "{\"layoutDirection\":\"horizontal\",\"tiles\":[{\"layoutDirection\":\"vertical\",\"tiles\":[{\"height\":0.5},{\"height\":0.5}],\"width\":0.5},{\"width\":0.5}]}";
         "kwinrc"."Tiling/29cd54b1-0ece-5edb-895d-ea0b00f8c30f"."tiles" =
           "{\"layoutDirection\":\"horizontal\",\"tiles\":[{\"width\":0.25},{\"width\":0.5},{\"width\":0.25}]}";
+        "kwinrc"."Tiling/29f0f879-92ee-51dd-bead-cda5ec38ce9f"."tiles" =
+          "{\"layoutDirection\":\"horizontal\",\"tiles\":[{\"width\":0.25},{\"width\":0.5},{\"width\":0.25}]}";
         "kwinrc"."Tiling/2b3ceef7-9fb6-5b6e-afc3-4334faab9450"."tiles" =
           "{\"layoutDirection\":\"horizontal\",\"tiles\":[{\"width\":0.25},{\"width\":0.5},{\"width\":0.25}]}";
         "kwinrc"."Tiling/2c6e7bb5-8c9a-5df3-94dc-91ddc2b72d3c"."tiles" =
+          "{\"layoutDirection\":\"horizontal\",\"tiles\":[{\"width\":0.25},{\"width\":0.5},{\"width\":0.25}]}";
+        "kwinrc"."Tiling/2d6d7c5e-b6af-5bb1-91c8-9e6b2c0d00ca"."tiles" =
           "{\"layoutDirection\":\"horizontal\",\"tiles\":[{\"width\":0.25},{\"width\":0.5},{\"width\":0.25}]}";
         "kwinrc"."Tiling/2ddf7232-2469-5be2-9b3e-e26b685b5e26"."tiles" =
           "{\"layoutDirection\":\"horizontal\",\"tiles\":[{\"width\":0.25},{\"width\":0.5},{\"width\":0.25}]}";
@@ -744,19 +807,33 @@
           "{\"layoutDirection\":\"horizontal\",\"tiles\":[{\"width\":0.25},{\"width\":0.5},{\"width\":0.25}]}";
         "kwinrc"."Tiling/325f4145-9131-510c-b54b-a63009fd0808"."tiles" =
           "{\"layoutDirection\":\"horizontal\",\"tiles\":[{\"width\":0.25},{\"width\":0.5},{\"width\":0.25}]}";
+        "kwinrc"."Tiling/328e862a-7f66-570a-8ba0-fbc4b024f00d"."tiles" =
+          "{\"layoutDirection\":\"horizontal\",\"tiles\":[{\"width\":0.25},{\"width\":0.5},{\"width\":0.25}]}";
+        "kwinrc"."Tiling/36567587-77a3-53e6-8edd-ace45ce9dd23"."tiles" =
+          "{\"layoutDirection\":\"horizontal\",\"tiles\":[{\"width\":0.25},{\"width\":0.5},{\"width\":0.25}]}";
+        "kwinrc"."Tiling/3694e9eb-ebe1-5be5-8c7c-aebff8c73898"."tiles" =
+          "{\"layoutDirection\":\"horizontal\",\"tiles\":[{\"width\":0.25},{\"width\":0.5},{\"width\":0.25}]}";
         "kwinrc"."Tiling/39e67734-a788-5ae9-8700-0390d661561c"."tiles" =
           "{\"layoutDirection\":\"horizontal\",\"tiles\":[{\"width\":0.25},{\"width\":0.5},{\"width\":0.25}]}";
         "kwinrc"."Tiling/3a89bf7f-bd05-52bb-a315-d5601d5cfa16"."tiles" =
           "{\"layoutDirection\":\"horizontal\",\"tiles\":[{\"width\":0.25},{\"width\":0.5},{\"width\":0.25}]}";
         "kwinrc"."Tiling/3ae1e3ee-7481-513e-b231-11b8b73d62f4"."tiles" =
           "{\"layoutDirection\":\"horizontal\",\"tiles\":[{\"width\":0.25},{\"width\":0.5},{\"width\":0.25}]}";
+        "kwinrc"."Tiling/3b2cbfbd-05d0-52aa-9251-da2095181135"."tiles" =
+          "{\"layoutDirection\":\"horizontal\",\"tiles\":[{\"width\":0.25},{\"width\":0.5},{\"width\":0.25}]}";
         "kwinrc"."Tiling/3b4b155c-3d2d-5ac1-b2ea-763a7cc6f9e8"."tiles" =
           "{\"layoutDirection\":\"horizontal\",\"tiles\":[{\"width\":0.25},{\"width\":0.5},{\"width\":0.25}]}";
         "kwinrc"."Tiling/3e30a286-c29e-56d5-8596-0cbb33a7d88f"."tiles" =
           "{\"layoutDirection\":\"horizontal\",\"tiles\":[{\"width\":0.25},{\"width\":0.5},{\"width\":0.25}]}";
+        "kwinrc"."Tiling/3e8bff49-b594-56b6-bd2b-67e49af20180"."tiles" =
+          "{\"layoutDirection\":\"horizontal\",\"tiles\":[{\"width\":0.25},{\"width\":0.5},{\"width\":0.25}]}";
         "kwinrc"."Tiling/3f34d9cb-534f-5a02-a830-ee9f937b7743"."tiles" =
           "{\"layoutDirection\":\"horizontal\",\"tiles\":[{\"width\":0.25},{\"width\":0.5},{\"width\":0.25}]}";
         "kwinrc"."Tiling/3f3c104e-5206-5c43-bf1b-a46b3e69d8ca"."tiles" =
+          "{\"layoutDirection\":\"horizontal\",\"tiles\":[{\"width\":0.25},{\"width\":0.5},{\"width\":0.25}]}";
+        "kwinrc"."Tiling/411dc4f3-903d-55a5-8f88-926eddfd941d"."tiles" =
+          "{\"layoutDirection\":\"horizontal\",\"tiles\":[{\"width\":0.25},{\"width\":0.5},{\"width\":0.25}]}";
+        "kwinrc"."Tiling/41875d65-9d46-5a24-b2a1-d6ac9bdc6363"."tiles" =
           "{\"layoutDirection\":\"horizontal\",\"tiles\":[{\"width\":0.25},{\"width\":0.5},{\"width\":0.25}]}";
         "kwinrc"."Tiling/41e80e0d-6e0e-557b-8a90-a4fafca659fd"."tiles" =
           "{\"layoutDirection\":\"horizontal\",\"tiles\":[{\"width\":0.25},{\"width\":0.5},{\"width\":0.25}]}";
@@ -766,7 +843,11 @@
           "{\"layoutDirection\":\"horizontal\",\"tiles\":[{\"width\":0.25},{\"width\":0.5},{\"width\":0.25}]}";
         "kwinrc"."Tiling/466c46cc-38c9-5d0f-b917-31679aa0953d"."tiles" =
           "{\"layoutDirection\":\"horizontal\",\"tiles\":[{\"width\":0.25},{\"width\":0.5},{\"width\":0.25}]}";
+        "kwinrc"."Tiling/46dba445-cef9-5357-82a5-022d020a78d1"."tiles" =
+          "{\"layoutDirection\":\"horizontal\",\"tiles\":[{\"width\":0.25},{\"width\":0.5},{\"width\":0.25}]}";
         "kwinrc"."Tiling/4867a3a8-0b2b-503f-988d-f74dd63dc8e5"."tiles" =
+          "{\"layoutDirection\":\"horizontal\",\"tiles\":[{\"width\":0.25},{\"width\":0.5},{\"width\":0.25}]}";
+        "kwinrc"."Tiling/49349ed5-a8f4-5105-8739-175bcc9c22a7"."tiles" =
           "{\"layoutDirection\":\"horizontal\",\"tiles\":[{\"width\":0.25},{\"width\":0.5},{\"width\":0.25}]}";
         "kwinrc"."Tiling/49c8d4f9-d401-5d7b-9848-24d8108bcebe"."tiles" =
           "{\"layoutDirection\":\"horizontal\",\"tiles\":[{\"width\":0.25},{\"width\":0.5},{\"width\":0.25}]}";
@@ -774,19 +855,35 @@
           "{\"layoutDirection\":\"horizontal\",\"tiles\":[{\"width\":0.25},{\"width\":0.5},{\"width\":0.25}]}";
         "kwinrc"."Tiling/4f4f7a57-2736-576a-815b-907136ab6c80"."tiles" =
           "{\"layoutDirection\":\"horizontal\",\"tiles\":[{\"width\":0.25},{\"width\":0.5},{\"width\":0.25}]}";
+        "kwinrc"."Tiling/4fd33090-0e53-595d-89e5-add07aead641"."tiles" =
+          "{\"layoutDirection\":\"horizontal\",\"tiles\":[{\"width\":0.25},{\"width\":0.5},{\"width\":0.25}]}";
         "kwinrc"."Tiling/500e94ae-95df-5e53-b53d-939a042a513c"."tiles" =
           "{\"layoutDirection\":\"horizontal\",\"tiles\":[{\"width\":0.25},{\"width\":0.5},{\"width\":0.25}]}";
         "kwinrc"."Tiling/507a76a5-0609-5a68-9ce4-85fbfde5672e"."tiles" =
           "{\"layoutDirection\":\"horizontal\",\"tiles\":[{\"width\":0.25},{\"width\":0.5},{\"width\":0.25}]}";
         "kwinrc"."Tiling/50a578ba-fcf3-5ca7-b21f-34d832b28e27"."tiles" =
           "{\"layoutDirection\":\"horizontal\",\"tiles\":[{\"width\":0.25},{\"width\":0.5},{\"width\":0.25}]}";
+        "kwinrc"."Tiling/50e4c005-a3b7-5030-b7a0-778a65e0cb68"."tiles" =
+          "{\"layoutDirection\":\"horizontal\",\"tiles\":[{\"width\":0.25},{\"width\":0.5},{\"width\":0.25}]}";
+        "kwinrc"."Tiling/5182a633-4d26-5eff-af32-cddbbf66cc9d"."tiles" =
+          "{\"layoutDirection\":\"horizontal\",\"tiles\":[{\"width\":0.25},{\"width\":0.5},{\"width\":0.25}]}";
         "kwinrc"."Tiling/52243872-d575-54bc-ba46-435cfb8ac7df"."tiles" =
           "{\"layoutDirection\":\"horizontal\",\"tiles\":[{\"width\":0.25},{\"width\":0.5},{\"width\":0.25}]}";
         "kwinrc"."Tiling/52d11e28-3221-53e8-bde8-b496226053c7"."tiles" =
           "{\"layoutDirection\":\"horizontal\",\"tiles\":[{\"width\":0.25},{\"width\":0.5},{\"width\":0.25}]}";
+        "kwinrc"."Tiling/53a05986-3ec9-5d6f-b1a7-7acdf7a11e07"."tiles" =
+          "{\"layoutDirection\":\"horizontal\",\"tiles\":[{\"width\":0.25},{\"width\":0.5},{\"width\":0.25}]}";
         "kwinrc"."Tiling/554d163c-1cca-50f3-83ce-b2a152d20ad8"."tiles" =
           "{\"layoutDirection\":\"horizontal\",\"tiles\":[{\"width\":0.25},{\"width\":0.5},{\"width\":0.25}]}";
+        "kwinrc"."Tiling/58217ffb-7493-58f7-a6d0-40defadad790"."tiles" =
+          "{\"layoutDirection\":\"horizontal\",\"tiles\":[{\"width\":0.25},{\"width\":0.5},{\"width\":0.25}]}";
+        "kwinrc"."Tiling/59e6b77d-0dc1-5d59-a038-fec9aec4ca81"."tiles" =
+          "{\"layoutDirection\":\"horizontal\",\"tiles\":[{\"width\":0.25},{\"width\":0.5},{\"width\":0.25}]}";
+        "kwinrc"."Tiling/5aaff381-1a4c-594c-8ec9-40df43a047cf"."tiles" =
+          "{\"layoutDirection\":\"horizontal\",\"tiles\":[{\"width\":0.25},{\"width\":0.5},{\"width\":0.25}]}";
         "kwinrc"."Tiling/5b04aace-7938-55f5-8e8d-25a21399df35"."tiles" =
+          "{\"layoutDirection\":\"horizontal\",\"tiles\":[{\"width\":0.25},{\"width\":0.5},{\"width\":0.25}]}";
+        "kwinrc"."Tiling/5b53dc67-d50e-5587-ae46-b879087b702f"."tiles" =
           "{\"layoutDirection\":\"horizontal\",\"tiles\":[{\"width\":0.25},{\"width\":0.5},{\"width\":0.25}]}";
         "kwinrc"."Tiling/5b7a5ba4-43cc-5910-8e98-f358f9d54b43"."tiles" =
           "{\"layoutDirection\":\"horizontal\",\"tiles\":[{\"width\":0.25},{\"width\":0.5},{\"width\":0.25}]}";
@@ -794,17 +891,31 @@
           "{\"layoutDirection\":\"horizontal\",\"tiles\":[{\"width\":0.25},{\"width\":0.5},{\"width\":0.25}]}";
         "kwinrc"."Tiling/5ced05e4-8f6f-5e78-a2b6-6f85be17b684"."tiles" =
           "{\"layoutDirection\":\"horizontal\",\"tiles\":[{\"width\":0.25},{\"width\":0.5},{\"width\":0.25}]}";
+        "kwinrc"."Tiling/5e7771ef-c768-5854-a78a-3170bd76d373"."tiles" =
+          "{\"layoutDirection\":\"horizontal\",\"tiles\":[{\"width\":0.25},{\"width\":0.5},{\"width\":0.25}]}";
         "kwinrc"."Tiling/614092be-b127-584a-b315-3ac87eabff3a"."tiles" =
           "{\"layoutDirection\":\"horizontal\",\"tiles\":[{\"width\":0.25},{\"width\":0.5},{\"width\":0.25}]}";
         "kwinrc"."Tiling/628e1af5-667e-5121-96fd-afcf5633296d"."tiles" =
           "{\"layoutDirection\":\"horizontal\",\"tiles\":[{\"width\":0.25},{\"width\":0.5},{\"width\":0.25}]}";
         "kwinrc"."Tiling/62b48fa0-8638-5b99-bbd5-9599042d5bca"."tiles" =
           "{\"layoutDirection\":\"horizontal\",\"tiles\":[{\"width\":0.25},{\"width\":0.5},{\"width\":0.25}]}";
+        "kwinrc"."Tiling/62d79e45-3887-5f59-9037-6c91a8cf50c1"."tiles" =
+          "{\"layoutDirection\":\"horizontal\",\"tiles\":[{\"width\":0.25},{\"width\":0.5},{\"width\":0.25}]}";
+        "kwinrc"."Tiling/637236e9-07c1-51f9-97f2-a92fc416073b"."tiles" =
+          "{\"layoutDirection\":\"horizontal\",\"tiles\":[{\"width\":0.25},{\"width\":0.5},{\"width\":0.25}]}";
         "kwinrc"."Tiling/64837fab-5010-5128-8b64-21690150a0f5"."tiles" =
+          "{\"layoutDirection\":\"horizontal\",\"tiles\":[{\"width\":0.25},{\"width\":0.5},{\"width\":0.25}]}";
+        "kwinrc"."Tiling/6637430b-d517-5e97-b01d-9a0ea0a2a8ff"."tiles" =
           "{\"layoutDirection\":\"horizontal\",\"tiles\":[{\"width\":0.25},{\"width\":0.5},{\"width\":0.25}]}";
         "kwinrc"."Tiling/665a6e20-a185-5406-88df-14452dc3c211"."tiles" =
           "{\"layoutDirection\":\"horizontal\",\"tiles\":[{\"width\":0.25},{\"width\":0.5},{\"width\":0.25}]}";
+        "kwinrc"."Tiling/693aa8f5-f049-5508-8c0a-6a148732cbc0"."tiles" =
+          "{\"layoutDirection\":\"horizontal\",\"tiles\":[{\"width\":0.25},{\"width\":0.5},{\"width\":0.25}]}";
+        "kwinrc"."Tiling/6bec2a62-4cbc-56fd-a56f-fb754067a714"."tiles" =
+          "{\"layoutDirection\":\"horizontal\",\"tiles\":[{\"width\":0.25},{\"width\":0.5},{\"width\":0.25}]}";
         "kwinrc"."Tiling/6dafe798-6a71-5d6a-ad71-bf9e2b7a0e4a"."tiles" =
+          "{\"layoutDirection\":\"horizontal\",\"tiles\":[{\"width\":0.25},{\"width\":0.5},{\"width\":0.25}]}";
+        "kwinrc"."Tiling/6e8b7015-6562-5421-9762-6323dbc36890"."tiles" =
           "{\"layoutDirection\":\"horizontal\",\"tiles\":[{\"width\":0.25},{\"width\":0.5},{\"width\":0.25}]}";
         "kwinrc"."Tiling/704cb693-0170-5b8f-9756-7223a8d8e75b"."tiles" =
           "{\"layoutDirection\":\"horizontal\",\"tiles\":[{\"width\":0.25},{\"width\":0.5},{\"width\":0.25}]}";
@@ -822,15 +933,29 @@
           "{\"layoutDirection\":\"horizontal\",\"tiles\":[{\"width\":0.25},{\"width\":0.5},{\"width\":0.25}]}";
         "kwinrc"."Tiling/81ddbfaf-0528-5688-aecf-d0c9a6a112b4"."tiles" =
           "{\"layoutDirection\":\"horizontal\",\"tiles\":[{\"width\":0.25},{\"width\":0.5},{\"width\":0.25}]}";
+        "kwinrc"."Tiling/81fc61ce-488b-51c3-95ce-2842b0409efe"."tiles" =
+          "{\"layoutDirection\":\"horizontal\",\"tiles\":[{\"width\":0.25},{\"width\":0.5},{\"width\":0.25}]}";
+        "kwinrc"."Tiling/82251085-51c3-50e6-b740-7c431a570c42"."tiles" =
+          "{\"layoutDirection\":\"horizontal\",\"tiles\":[{\"width\":0.25},{\"width\":0.5},{\"width\":0.25}]}";
+        "kwinrc"."Tiling/82ce960b-f9b3-59cb-8af3-1615e183b4e4"."tiles" =
+          "{\"layoutDirection\":\"horizontal\",\"tiles\":[{\"width\":0.25},{\"width\":0.5},{\"width\":0.25}]}";
         "kwinrc"."Tiling/86d0be1c-332d-5f7e-89e5-f1db5d6708aa"."tiles" =
+          "{\"layoutDirection\":\"horizontal\",\"tiles\":[{\"width\":0.25},{\"width\":0.5},{\"width\":0.25}]}";
+        "kwinrc"."Tiling/8a79993b-59d4-5cef-b96e-8e9581b70463"."tiles" =
           "{\"layoutDirection\":\"horizontal\",\"tiles\":[{\"width\":0.25},{\"width\":0.5},{\"width\":0.25}]}";
         "kwinrc"."Tiling/8b9ba09a-a222-5109-853c-af6c8b5ec873"."tiles" =
           "{\"layoutDirection\":\"horizontal\",\"tiles\":[{\"width\":0.25},{\"width\":0.5},{\"width\":0.25}]}";
         "kwinrc"."Tiling/8be9fb61-3d3a-51f2-a11d-c7276bdb079d"."tiles" =
           "{\"layoutDirection\":\"horizontal\",\"tiles\":[{\"width\":0.6305232558139536},{\"width\":0.36947674418604637}]}";
+        "kwinrc"."Tiling/8c13094f-be44-5cfa-b7d5-822f2175f83e"."tiles" =
+          "{\"layoutDirection\":\"horizontal\",\"tiles\":[{\"width\":0.25},{\"width\":0.5},{\"width\":0.25}]}";
         "kwinrc"."Tiling/8d7250d5-5770-53ad-8aaa-23eab01cba21"."tiles" =
           "{\"layoutDirection\":\"horizontal\",\"tiles\":[{\"width\":0.25},{\"width\":0.5},{\"width\":0.25}]}";
+        "kwinrc"."Tiling/8dddbdc8-ebe0-510f-b4ee-93b1f31c8749"."tiles" =
+          "{\"layoutDirection\":\"horizontal\",\"tiles\":[{\"width\":0.25},{\"width\":0.5},{\"width\":0.25}]}";
         "kwinrc"."Tiling/8f8b707c-97bd-5292-8d22-879b3058e4a8"."tiles" =
+          "{\"layoutDirection\":\"horizontal\",\"tiles\":[{\"width\":0.25},{\"width\":0.5},{\"width\":0.25}]}";
+        "kwinrc"."Tiling/92a632b6-63e1-5f33-9300-a00b10b9801a"."tiles" =
           "{\"layoutDirection\":\"horizontal\",\"tiles\":[{\"width\":0.25},{\"width\":0.5},{\"width\":0.25}]}";
         "kwinrc"."Tiling/92f1f6cf-3d03-5b3b-91b9-e0ff4de2fb6d"."tiles" =
           "{\"layoutDirection\":\"horizontal\",\"tiles\":[{\"width\":0.25},{\"width\":0.5},{\"width\":0.25}]}";
@@ -848,7 +973,57 @@
           "{\"layoutDirection\":\"horizontal\",\"tiles\":[{\"width\":0.25},{\"width\":0.5},{\"width\":0.25}]}";
         "kwinrc"."Tiling/9cb15cf7-1af7-55b8-bc46-d1d6194fa432"."tiles" =
           "{\"layoutDirection\":\"horizontal\",\"tiles\":[{\"width\":0.25},{\"width\":0.5},{\"width\":0.25}]}";
+        "kwinrc"."Tiling/9f40d391-6b5b-5f46-9afb-4b1827cd02b1"."tiles" =
+          "{\"layoutDirection\":\"horizontal\",\"tiles\":[{\"width\":0.25},{\"width\":0.5},{\"width\":0.25}]}";
         "kwinrc"."Tiling/a0ae473b-ce90-5b68-a474-c18c85cfdfe6"."tiles" =
+          "{\"layoutDirection\":\"horizontal\",\"tiles\":[{\"width\":0.25},{\"width\":0.5},{\"width\":0.25}]}";
+        "kwinrc"."Tiling/a1941d3b-435b-4b34-b4cf-3f14379a2361/03614c7b-ec02-4d70-bcda-3f1ca2fac863"."tiles" =
+          "{\"layoutDirection\":\"horizontal\",\"tiles\":[{\"width\":0.25},{\"width\":0.5},{\"width\":0.25}]}";
+        "kwinrc"."Tiling/a1941d3b-435b-4b34-b4cf-3f14379a2361/2162a9f5-0c53-4a63-af08-1fdc717c976e"."tiles" =
+          "{\"layoutDirection\":\"horizontal\",\"tiles\":[{\"width\":0.25},{\"width\":0.5},{\"width\":0.25}]}";
+        "kwinrc"."Tiling/a1941d3b-435b-4b34-b4cf-3f14379a2361/2dfb4c5e-2429-4eeb-9522-477cf3187ed4"."tiles" =
+          "{\"layoutDirection\":\"horizontal\",\"tiles\":[{\"width\":0.5},{\"width\":0.5}]}";
+        "kwinrc"."Tiling/a1941d3b-435b-4b34-b4cf-3f14379a2361/2eaec272-2a5b-45a0-b24d-c6c2d5606230"."tiles" =
+          "{\"layoutDirection\":\"horizontal\",\"tiles\":[{\"width\":0.25},{\"width\":0.5},{\"width\":0.25}]}";
+        "kwinrc"."Tiling/a1941d3b-435b-4b34-b4cf-3f14379a2361/39ad61e9-e372-466a-81c2-720f306f17d1"."tiles" =
+          "{\"layoutDirection\":\"horizontal\",\"tiles\":[{\"width\":0.25},{\"width\":0.5},{\"width\":0.25}]}";
+        "kwinrc"."Tiling/a1941d3b-435b-4b34-b4cf-3f14379a2361/53c41be9-e90b-429f-be50-54dcf718ee60"."tiles" =
+          "{\"layoutDirection\":\"horizontal\",\"tiles\":[{\"width\":0.25},{\"width\":0.5},{\"width\":0.25}]}";
+        "kwinrc"."Tiling/a1941d3b-435b-4b34-b4cf-3f14379a2361/6e7b1b20-7b76-43e6-bded-d820f735af09"."tiles" =
+          "{\"layoutDirection\":\"horizontal\",\"tiles\":[{\"width\":0.5},{\"width\":0.5}]}";
+        "kwinrc"."Tiling/a1941d3b-435b-4b34-b4cf-3f14379a2361/7beace48-51e0-4732-ae01-7a3f8c94b6b6"."tiles" =
+          "{\"layoutDirection\":\"horizontal\",\"tiles\":[{\"width\":0.5},{\"width\":0.5}]}";
+        "kwinrc"."Tiling/a1941d3b-435b-4b34-b4cf-3f14379a2361/7e201411-4174-4085-993b-aceb29bd463e"."tiles" =
+          "{\"layoutDirection\":\"horizontal\",\"tiles\":[{\"width\":0.25},{\"width\":0.5},{\"width\":0.25}]}";
+        "kwinrc"."Tiling/a1941d3b-435b-4b34-b4cf-3f14379a2361/82105abb-7b9d-4af2-a9e1-f4821441a2c9"."tiles" =
+          "{\"layoutDirection\":\"horizontal\",\"tiles\":[{\"width\":0.25},{\"width\":0.5},{\"width\":0.25}]}";
+        "kwinrc"."Tiling/a1941d3b-435b-4b34-b4cf-3f14379a2361/8323eb6d-0105-4ee7-bb6d-c3171a482e17"."tiles" =
+          "{\"layoutDirection\":\"horizontal\",\"tiles\":[{\"width\":0.25},{\"width\":0.5},{\"width\":0.25}]}";
+        "kwinrc"."Tiling/a1941d3b-435b-4b34-b4cf-3f14379a2361/8f181034-ac61-405f-a484-43a080236845"."tiles" =
+          "{\"layoutDirection\":\"horizontal\",\"tiles\":[{\"width\":0.5},{\"width\":0.5}]}";
+        "kwinrc"."Tiling/a1941d3b-435b-4b34-b4cf-3f14379a2361/8fec064b-a93f-467b-9cd5-aef18d4fcad1"."tiles" =
+          "{\"layoutDirection\":\"horizontal\",\"tiles\":[{\"width\":0.25},{\"width\":0.5},{\"width\":0.25}]}";
+        "kwinrc"."Tiling/a1941d3b-435b-4b34-b4cf-3f14379a2361/abc84094-63a3-407f-bec3-bda53466e204"."tiles" =
+          "{\"layoutDirection\":\"horizontal\",\"tiles\":[{\"width\":0.25},{\"width\":0.5},{\"width\":0.25}]}";
+        "kwinrc"."Tiling/a1941d3b-435b-4b34-b4cf-3f14379a2361/b25fd7b6-aacf-45ad-97af-c78e37a07ba5"."tiles" =
+          "{\"layoutDirection\":\"horizontal\",\"tiles\":[{\"width\":0.5},{\"width\":0.5}]}";
+        "kwinrc"."Tiling/a1941d3b-435b-4b34-b4cf-3f14379a2361/b79cb133-a8f7-415c-97ad-dc0a732d25c0"."tiles" =
+          "{\"layoutDirection\":\"horizontal\",\"tiles\":[{\"width\":0.25},{\"width\":0.5},{\"width\":0.25}]}";
+        "kwinrc"."Tiling/a1941d3b-435b-4b34-b4cf-3f14379a2361/c5c1d4ad-0d84-43d4-8d56-c310ebf197cf"."tiles" =
+          "{\"layoutDirection\":\"horizontal\",\"tiles\":[{\"width\":0.25},{\"width\":0.5},{\"width\":0.25}]}";
+        "kwinrc"."Tiling/a1941d3b-435b-4b34-b4cf-3f14379a2361/cc5f56c0-90fb-4a17-ade8-aeacd1c9c3ee"."tiles" =
+          "{\"layoutDirection\":\"horizontal\",\"tiles\":[{\"width\":0.25},{\"width\":0.5},{\"width\":0.25}]}";
+        "kwinrc"."Tiling/a1941d3b-435b-4b34-b4cf-3f14379a2361/cd8180c3-6a76-4b9b-88a4-78f8946901bc"."tiles" =
+          "{\"layoutDirection\":\"horizontal\",\"tiles\":[{\"width\":0.25},{\"width\":0.5},{\"width\":0.25}]}";
+        "kwinrc"."Tiling/a1941d3b-435b-4b34-b4cf-3f14379a2361/d4007100-f955-485d-8020-fddfecba5489"."tiles" =
+          "{\"layoutDirection\":\"horizontal\",\"tiles\":[{\"width\":0.25},{\"width\":0.5},{\"width\":0.25}]}";
+        "kwinrc"."Tiling/a1941d3b-435b-4b34-b4cf-3f14379a2361/e1c060cd-d34b-4bfd-abaf-97882efb6c3c"."tiles" =
+          "{\"layoutDirection\":\"horizontal\",\"tiles\":[{\"width\":0.5},{\"width\":0.5}]}";
+        "kwinrc"."Tiling/a1941d3b-435b-4b34-b4cf-3f14379a2361/f68e00e1-b45f-4fba-80dd-4b6b4fea7a0c"."tiles" =
+          "{\"layoutDirection\":\"horizontal\",\"tiles\":[{\"width\":0.5},{\"width\":0.5}]}";
+        "kwinrc"."Tiling/a1941d3b-435b-4b34-b4cf-3f14379a2361/f75428a7-5ef6-455f-9de6-50ec7cdf0116"."tiles" =
+          "{\"layoutDirection\":\"horizontal\",\"tiles\":[{\"width\":0.25},{\"width\":0.5},{\"width\":0.25}]}";
+        "kwinrc"."Tiling/a1941d3b-435b-4b34-b4cf-3f14379a2361/f904952e-188c-4c0e-8e89-fe287739e43a"."tiles" =
           "{\"layoutDirection\":\"horizontal\",\"tiles\":[{\"width\":0.25},{\"width\":0.5},{\"width\":0.25}]}";
         "kwinrc"."Tiling/a2a76eb9-4db3-5bb9-a677-2b3d209541f2"."tiles" =
           "{\"layoutDirection\":\"horizontal\",\"tiles\":[{\"width\":0.25},{\"width\":0.5},{\"width\":0.25}]}";
@@ -860,6 +1035,8 @@
           "{\"layoutDirection\":\"horizontal\",\"tiles\":[{\"width\":0.25},{\"width\":0.5},{\"width\":0.25}]}";
         "kwinrc"."Tiling/ab419330-52c2-51de-b0bb-e654fe622bd7"."tiles" =
           "{\"layoutDirection\":\"horizontal\",\"tiles\":[{\"width\":0.25},{\"width\":0.5},{\"width\":0.25}]}";
+        "kwinrc"."Tiling/ae1a9bba-a4de-5a97-9a94-58dbd6b96412"."tiles" =
+          "{\"layoutDirection\":\"horizontal\",\"tiles\":[{\"width\":0.25},{\"width\":0.5},{\"width\":0.25}]}";
         "kwinrc"."Tiling/af628b49-50cd-5ad1-8932-2a5e6e96a208"."tiles" =
           "{\"layoutDirection\":\"horizontal\",\"tiles\":[{\"width\":0.25},{\"width\":0.5},{\"width\":0.25}]}";
         "kwinrc"."Tiling/b20678f1-6dc7-5cab-ba81-36a48f0c27ec"."tiles" =
@@ -868,7 +1045,11 @@
           "{\"layoutDirection\":\"horizontal\",\"tiles\":[{\"width\":0.25},{\"width\":0.5},{\"width\":0.25}]}";
         "kwinrc"."Tiling/b4d4cc3c-782b-5628-ac25-448a0335d16a"."tiles" =
           "{\"layoutDirection\":\"horizontal\",\"tiles\":[{\"width\":0.25},{\"width\":0.5},{\"width\":0.25}]}";
+        "kwinrc"."Tiling/b60fd221-1999-55e9-9e28-5d4f4489faaf"."tiles" =
+          "{\"layoutDirection\":\"horizontal\",\"tiles\":[{\"width\":0.25},{\"width\":0.5},{\"width\":0.25}]}";
         "kwinrc"."Tiling/b6626f98-a153-5f33-b09e-fc7b72791366"."tiles" =
+          "{\"layoutDirection\":\"horizontal\",\"tiles\":[{\"width\":0.25},{\"width\":0.5},{\"width\":0.25}]}";
+        "kwinrc"."Tiling/b731f09f-83c4-59f9-be6b-e0ba64c52c31"."tiles" =
           "{\"layoutDirection\":\"horizontal\",\"tiles\":[{\"width\":0.25},{\"width\":0.5},{\"width\":0.25}]}";
         "kwinrc"."Tiling/b74f89fd-fa7c-5a38-a259-c78634fa4685"."tiles" =
           "{\"layoutDirection\":\"horizontal\",\"tiles\":[{\"width\":0.25},{\"width\":0.5},{\"width\":0.25}]}";
@@ -881,6 +1062,10 @@
         "kwinrc"."Tiling/bcb2334f-5a4f-5e72-99ec-52a64167edd2"."tiles" =
           "{\"layoutDirection\":\"horizontal\",\"tiles\":[{\"width\":0.25},{\"width\":0.5},{\"width\":0.25}]}";
         "kwinrc"."Tiling/bef6c8af-adff-504e-b04a-10e922466b1d"."tiles" =
+          "{\"layoutDirection\":\"horizontal\",\"tiles\":[{\"width\":0.25},{\"width\":0.5},{\"width\":0.25}]}";
+        "kwinrc"."Tiling/bf3bfe1e-be16-596b-bb2e-b79567974b5e"."tiles" =
+          "{\"layoutDirection\":\"horizontal\",\"tiles\":[{\"width\":0.25},{\"width\":0.5},{\"width\":0.25}]}";
+        "kwinrc"."Tiling/c0fa06da-6741-5ad2-9da3-573bf726a56a"."tiles" =
           "{\"layoutDirection\":\"horizontal\",\"tiles\":[{\"width\":0.25},{\"width\":0.5},{\"width\":0.25}]}";
         "kwinrc"."Tiling/c47653fc-e05d-58f7-9959-0d15944332c0"."tiles" =
           "{\"layoutDirection\":\"horizontal\",\"tiles\":[{\"width\":0.25},{\"width\":0.5},{\"width\":0.25}]}";
@@ -896,6 +1081,8 @@
           "{\"layoutDirection\":\"horizontal\",\"tiles\":[{\"width\":0.25},{\"width\":0.5},{\"width\":0.25}]}";
         "kwinrc"."Tiling/cb7634ef-f8d4-5614-8f29-aaf4346e540a"."tiles" =
           "{\"layoutDirection\":\"horizontal\",\"tiles\":[{\"width\":0.25},{\"width\":0.5},{\"width\":0.25}]}";
+        "kwinrc"."Tiling/cc1f391a-8c80-5587-8f4d-076fb8dba1ab"."tiles" =
+          "{\"layoutDirection\":\"horizontal\",\"tiles\":[{\"width\":0.25},{\"width\":0.5},{\"width\":0.25}]}";
         "kwinrc"."Tiling/cead3c77-7c10-5ba6-96bc-e5970eccf1d4"."tiles" =
           "{\"layoutDirection\":\"horizontal\",\"tiles\":[{\"width\":0.25},{\"width\":0.5},{\"width\":0.25}]}";
         "kwinrc"."Tiling/cf062c3c-927e-5fe5-98d3-fe01f47d96c4"."tiles" =
@@ -909,6 +1096,10 @@
         "kwinrc"."Tiling/d39a901b-67c5-5d0d-b4ed-7d15536296f6"."tiles" =
           "{\"layoutDirection\":\"horizontal\",\"tiles\":[{\"width\":0.25},{\"width\":0.5},{\"width\":0.25}]}";
         "kwinrc"."Tiling/d46e7a4b-c979-5f93-b3df-1542caac1ade"."tiles" =
+          "{\"layoutDirection\":\"horizontal\",\"tiles\":[{\"width\":0.25},{\"width\":0.5},{\"width\":0.25}]}";
+        "kwinrc"."Tiling/d688384f-6a25-51b4-a189-0515d5c9e2b3"."tiles" =
+          "{\"layoutDirection\":\"horizontal\",\"tiles\":[{\"width\":0.25},{\"width\":0.5},{\"width\":0.25}]}";
+        "kwinrc"."Tiling/d7158948-a633-50a4-9c3c-db0928df4d25"."tiles" =
           "{\"layoutDirection\":\"horizontal\",\"tiles\":[{\"width\":0.25},{\"width\":0.5},{\"width\":0.25}]}";
         "kwinrc"."Tiling/d7b26256-be98-50a6-9236-45db4e790788"."tiles" =
           "{\"layoutDirection\":\"horizontal\",\"tiles\":[{\"width\":0.25},{\"width\":0.5},{\"width\":0.25}]}";
@@ -924,15 +1115,21 @@
           "{\"layoutDirection\":\"horizontal\",\"tiles\":[{\"width\":0.25},{\"width\":0.5},{\"width\":0.25}]}";
         "kwinrc"."Tiling/ddda5ad8-21af-5310-82ff-744d43106730"."tiles" =
           "{\"layoutDirection\":\"horizontal\",\"tiles\":[{\"width\":0.25},{\"width\":0.5},{\"width\":0.25}]}";
+        "kwinrc"."Tiling/de256041-b912-52da-9491-7b471da7a4a5"."tiles" =
+          "{\"layoutDirection\":\"horizontal\",\"tiles\":[{\"width\":0.25},{\"width\":0.5},{\"width\":0.25}]}";
         "kwinrc"."Tiling/e072be28-3d8f-5294-9ef5-78152e1dd9a3"."tiles" =
           "{\"layoutDirection\":\"horizontal\",\"tiles\":[{\"width\":0.25},{\"width\":0.5},{\"width\":0.25}]}";
         "kwinrc"."Tiling/e1f594ed-a0a9-5160-8735-49895b3bee7a"."tiles" =
           "{\"layoutDirection\":\"horizontal\",\"tiles\":[{\"width\":0.25},{\"width\":0.5},{\"width\":0.25}]}";
         "kwinrc"."Tiling/e201d704-0aca-51e9-ae3c-99d04ed62f31"."tiles" =
           "{\"layoutDirection\":\"horizontal\",\"tiles\":[{\"width\":0.25},{\"width\":0.5},{\"width\":0.25}]}";
+        "kwinrc"."Tiling/e3563ffa-9101-51d9-9f11-855b7fd885df"."tiles" =
+          "{\"layoutDirection\":\"horizontal\",\"tiles\":[{\"width\":0.25},{\"width\":0.5},{\"width\":0.25}]}";
         "kwinrc"."Tiling/e45f8981-fa37-5e66-94a7-96fe5b06cee5"."tiles" =
           "{\"layoutDirection\":\"horizontal\",\"tiles\":[{\"width\":0.25},{\"width\":0.5},{\"width\":0.25}]}";
         "kwinrc"."Tiling/e668b351-ede1-544a-a961-61ee5b8d7e49"."tiles" =
+          "{\"layoutDirection\":\"horizontal\",\"tiles\":[{\"width\":0.25},{\"width\":0.5},{\"width\":0.25}]}";
+        "kwinrc"."Tiling/e6ef3aec-be63-5919-afa8-1b92e9267b68"."tiles" =
           "{\"layoutDirection\":\"horizontal\",\"tiles\":[{\"width\":0.25},{\"width\":0.5},{\"width\":0.25}]}";
         "kwinrc"."Tiling/ebc4ad17-fa7f-534c-8490-8608afcc95b0"."tiles" =
           "{\"layoutDirection\":\"horizontal\",\"tiles\":[{\"width\":0.25},{\"width\":0.5},{\"width\":0.25}]}";
@@ -940,7 +1137,15 @@
           "{\"layoutDirection\":\"horizontal\",\"tiles\":[{\"width\":0.25},{\"width\":0.5},{\"width\":0.25}]}";
         "kwinrc"."Tiling/ed7cf186-b4ac-52d8-a437-9d6d60a62de2"."tiles" =
           "{\"layoutDirection\":\"horizontal\",\"tiles\":[{\"width\":0.25},{\"width\":0.5},{\"width\":0.25}]}";
+        "kwinrc"."Tiling/ee2a9677-9c95-57e6-9e72-0f67a58650ca"."tiles" =
+          "{\"layoutDirection\":\"horizontal\",\"tiles\":[{\"width\":0.25},{\"width\":0.5},{\"width\":0.25}]}";
+        "kwinrc"."Tiling/ef08564b-6808-5d7a-8ec0-78cc967bec0c"."tiles" =
+          "{\"layoutDirection\":\"horizontal\",\"tiles\":[{\"width\":0.25},{\"width\":0.5},{\"width\":0.25}]}";
         "kwinrc"."Tiling/f0c97499-1823-5a57-a2e9-a37dc5da6ab1"."tiles" =
+          "{\"layoutDirection\":\"horizontal\",\"tiles\":[{\"width\":0.25},{\"width\":0.5},{\"width\":0.25}]}";
+        "kwinrc"."Tiling/f3545943-599a-524e-84dd-00be7e9a11a3"."tiles" =
+          "{\"layoutDirection\":\"horizontal\",\"tiles\":[{\"width\":0.25},{\"width\":0.5},{\"width\":0.25}]}";
+        "kwinrc"."Tiling/f4780cf8-2649-559b-880d-955313c154de"."tiles" =
           "{\"layoutDirection\":\"horizontal\",\"tiles\":[{\"width\":0.25},{\"width\":0.5},{\"width\":0.25}]}";
         "kwinrc"."Tiling/f5e001b8-1794-59f8-b565-07cd897e4d71"."tiles" =
           "{\"layoutDirection\":\"horizontal\",\"tiles\":[{\"width\":0.25},{\"width\":0.5},{\"width\":0.25}]}";
@@ -974,27 +1179,28 @@
         "kxkbrc"."Layout"."ResetOldOptions" = false;
         "kxkbrc"."Layout"."SwitchMode" = "Global";
         "kxkbrc"."Layout"."Use" = true;
+        "kxkbrc"."Layout"."VariantList" = ",,,";
         "plasma-localerc"."Formats"."LANG" = "en_US.UTF-8";
         "plasmanotifyrc"."Applications.thunderbird"."ShowPopupsInDndMode" = true;
         "plasmanotifyrc"."Applications/firefox"."Seen" = true;
+        "plasmanotifyrc"."Applications/signal"."Seen" = true;
         "plasmanotifyrc"."Applications/thunderbird"."ShowPopupsInDndMode" = true;
         "plasmanotifyrc"."Notifications"."LowPriorityHistory" = true;
         "plasmanotifyrc"."Notifications"."NormalAlwaysOnTop" = true;
         "plasmaparc"."General"."RaiseMaximumVolume" = true;
+        "plasmarc"."PlasmaToolTips"."Delay" = 1;
         "plasmarc"."Theme"."name" = "breeze-dark";
         "plasmarc"."Wallpapers"."usersWallpapers" =
           "/home/pol/Pictures/Backgrounds/Starry Nebula 219.png,/home/pol/Pictures/Backgrounds/nix-snowflake-wallpaper.svg";
+        "spectaclerc"."Annotations"."annotationToolType" = 5;
         "spectaclerc"."Annotations"."rectangleFillColor" = "255,255,255,0";
         "spectaclerc"."Annotations"."rectangleShadow" = false;
         "spectaclerc"."Annotations"."rectangleStrokeColor" = "255,0,0";
+        "spectaclerc"."Annotations"."rectangleStrokeWidth" = 5;
         "spectaclerc"."Annotations"."textFont" = "Aporetic Sans Mono,22,-1,5,400,0,0,0,0,0,0,0,0,0,0,1";
         "spectaclerc"."Annotations"."textFontColor" = "255,0,0";
         "spectaclerc"."GuiConfig"."captureDelay" = 2;
         "spectaclerc"."GuiConfig"."captureMode" = 0;
-        "spectaclerc"."ImageSave"."lastImageSaveAsLocation" =
-          "file:///home/pol/Code/salsa/reproducible-website/images/reports/2024-09/Screenshot_20241002_111646.png";
-        "spectaclerc"."ImageSave"."lastImageSaveLocation" =
-          "file:///home/pol/Code/salsa/reproducible-website/images/reports/2024-09/Screenshot_20241002_111646.png";
         "spectaclerc"."ImageSave"."translatedScreenshotsFolder" = "Screenshots";
         "spectaclerc"."VideoSave"."translatedScreencastsFolder" = "Screencasts";
         "systemsettingsrc"."KFileDialog Settings"."detailViewIconSize" = 16;
@@ -1007,8 +1213,7 @@
         "dolphin/view_properties/global/.directory"."Dolphin"."HeaderColumnWidths" = "707,79,146";
         "dolphin/view_properties/global/.directory"."Dolphin"."SortOrder" = 1;
         "dolphin/view_properties/global/.directory"."Dolphin"."SortRole" = "modificationtime";
-        "kate/anonymous.katesession"."Document 0"."URL" =
-          "file:///home/pol/Downloads/3. MNIST_Classification_Torch_2024.ipynb";
+        "kate/anonymous.katesession"."Kate Plugins"."bookmarksplugin" = false;
         "kate/anonymous.katesession"."Kate Plugins"."cmaketoolsplugin" = false;
         "kate/anonymous.katesession"."Kate Plugins"."compilerexplorer" = false;
         "kate/anonymous.katesession"."Kate Plugins"."eslintplugin" = false;
@@ -1040,6 +1245,7 @@
         "kate/anonymous.katesession"."Kate Plugins"."rainbowparens" = false;
         "kate/anonymous.katesession"."Kate Plugins"."rbqlplugin" = false;
         "kate/anonymous.katesession"."Kate Plugins"."tabswitcherplugin" = true;
+        "kate/anonymous.katesession"."Kate Plugins"."templateplugin" = false;
         "kate/anonymous.katesession"."Kate Plugins"."textfilterplugin" = true;
         "kate/anonymous.katesession"."MainWindow0"."Active ViewSpace" = 0;
         "kate/anonymous.katesession"."MainWindow0"."Kate-MDI-H-Splitter" = "0,1830,0";
@@ -1126,12 +1332,8 @@
           "file:///home/pol/Downloads/3. MNIST_Classification_Torch_2024.ipynb";
         "kate/anonymous.katesession"."MainWindow0-ViewSpace 0"."View 0" =
           "file:///home/pol/Downloads/3. MNIST_Classification_Torch_2024.ipynb";
-        "kate/anonymous.katesession"."MainWindow0-ViewSpace 0 file:\\/\\/\\/home\\/pol\\/Downloads\\/3. MNIST_Classification_Torch_2024.ipynb"."CursorColumn" =
-          81;
-        "kate/anonymous.katesession"."MainWindow0-ViewSpace 0 file:\\/\\/\\/home\\/pol\\/Downloads\\/3. MNIST_Classification_Torch_2024.ipynb"."CursorLine" =
-          455;
-        "kate/anonymous.katesession"."MainWindow0-ViewSpace 0 file:\\/\\/\\/home\\/pol\\/Downloads\\/3. MNIST_Classification_Torch_2024.ipynb"."ScrollLine" =
-          397;
+        "kate/anonymous.katesession"."MainWindow0-ViewSpace 0 0"."CursorColumn" = 0;
+        "kate/anonymous.katesession"."MainWindow0-ViewSpace 0 0"."CursorLine" = 604;
         "kate/anonymous.katesession"."Open Documents"."Count" = 1;
         "kate/anonymous.katesession"."Open MainWindows"."Count" = 1;
         "kate/anonymous.katesession"."Plugin:katefilebrowserplugin:MainWindow:0"."Allow Expansion" = false;
@@ -1153,8 +1355,8 @@
         "kate/anonymous.katesession"."Plugin:katefilebrowserplugin:MainWindow:0"."filter history" = "";
         "kate/anonymous.katesession"."Plugin:katefilebrowserplugin:MainWindow:0"."highlight current file" =
           true;
-        "kate/anonymous.katesession"."Plugin:katefilebrowserplugin:MainWindow:0"."location" =
-          "file:///home/pol/Downloads/";
+        "kate/anonymous.katesession"."Plugin:katefilebrowserplugin:MainWindow:0"."url navigator editable" =
+          false;
         "kate/anonymous.katesession"."Plugin:kateprojectplugin:"."projects" = "";
         "kate/anonymous.katesession"."Plugin:katesearchplugin:MainWindow:0"."BinaryFiles" = false;
         "kate/anonymous.katesession"."Plugin:katesearchplugin:MainWindow:0"."CurrentExcludeFilter" = "-1";
