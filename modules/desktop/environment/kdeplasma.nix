@@ -210,13 +210,12 @@
         "kwin"."Walk Through Desktops" = [ ];
         "kwin"."Walk Through Desktops (Reverse)" = [ ];
         "kwin"."Walk Through Windows" = [
-          "Alt+Tab,Meta+Tab"
-          "Alt+Tab,Walk Through Windows"
+          "Meta+Tab"
+          "Meta+Tab,Walk Through Windows"
         ];
         "kwin"."Walk Through Windows (Reverse)" = [
           "Meta+Shift+Tab"
-          "Alt+Shift+Tab,Meta+Shift+Tab"
-          "Alt+Shift+Tab,Walk Through Windows (Reverse)"
+          "Meta+Shift+Tab,Walk Through Windows (Reverse)"
         ];
         "kwin"."Walk Through Windows Alternative" = ",none,Walk Through Windows Alternative";
         "kwin"."Walk Through Windows Alternative (Reverse)" =
@@ -433,7 +432,7 @@
         "services/services.org.kde.plasma.emojier.desktop"."_launch" = "Meta+.";
         "yakuake"."toggle-window-state" = [
           "Meta+Space"
-          "F12\\, F12\\, ,F12,Open/Retract Yakuake"
+          "F12,F12,Open/Retract Yakuake"
         ];
       };
       configFile = {
