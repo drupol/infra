@@ -183,9 +183,8 @@
               next-terminal = "Shift+Right";
               previous-terminal = "Shift+Left";
 
-              # Set them to 'none' because their defaults conflict with above shortcuts
-              move-session-left = "none";
-              move-session-right = "none";
+              move-session-left = "Ctrl+Left";
+              move-session-right = "Ctrl+Right";
 
               toggle-window-state = "Meta+Space";
             };
