@@ -3,33 +3,30 @@
   ...
 }:
 {
-  flake.modules.nixos."hosts/xeonixos".imports =
-    with config.flake.modules.nixos;
-    [
-      # Modules
+  unify.hosts.nixos.xeonixos = {
+    users.pol.modules = config.unify.hosts.nixos.xeonixos.modules;
+
+    modules = with config.unify.modules; [
       base
       desktop
       dev
       facter
       guacamole
       openssh
-      shell
-      vpn
-
-      # Users
-      root
       pol
-    ]
-    # Specific Home-Manager modules
-    ++ [
-      {
-        home-manager.users.pol.imports = with config.flake.modules.homeManager; [
-          base
-          desktop
-          dev
-          facter
-          shell
-        ];
-      }
+      shell
     ];
+
+    tags = [
+      "base"
+      "desktop"
+      "dev"
+      "facter"
+      "guacamole"
+      "openssh"
+      "shell"
+    ];
+
+    fqdn = "xeonixos.netbird.cloud";
+  };
 }

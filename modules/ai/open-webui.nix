@@ -5,7 +5,7 @@
     ];
   };
 
-  flake.modules.nixos.ai =
+  unify.modules.ai.nixos =
     { config, ... }:
     {
       services = {
@@ -53,9 +53,5 @@
           '';
         };
       };
-
-      networking.firewall.allowedTCPPorts = [
-        80
-      ];
     };
 }
