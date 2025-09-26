@@ -269,7 +269,7 @@
                 "workbench.colorCustomizations" = { };
                 "workbench.colorTheme" = "GitHub Dark Default";
                 "workbench.commandPalette.experimental.suggestCommands" = true;
-                "workbench.editor.enablePreview" = false; # Prevents temporary editor tabs
+                "workbench.editor.enablePreview" = true; # Prevents temporary editor tabs
                 "workbench.editor.highlightModifiedTabs" = true;
                 "workbench.iconTheme" = "material-icon-theme";
                 "workbench.panel.defaultLocation" = "bottom";
