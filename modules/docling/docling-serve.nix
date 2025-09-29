@@ -15,7 +15,7 @@
           };
           environment = {
             DOCLING_SERVE_ENABLE_UI = "True";
-            DOCLING_SERVE_MAX_SYNC_WAIT = 1200; # Default is 120
+            DOCLING_SERVE_MAX_SYNC_WAIT = "1200"; # Default is 120
           };
           openFirewall = true;
         };
