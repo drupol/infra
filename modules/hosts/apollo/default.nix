@@ -10,6 +10,7 @@
       base
       desktop
       dev
+      docling
       facter
       guacamole
       openssh

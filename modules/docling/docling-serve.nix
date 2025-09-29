@@ -1,5 +1,5 @@
 {
-  flake.modules.nixos.ai =
+  flake.modules.nixos.docling =
     { pkgs, ... }:
     {
       services = {
@@ -19,9 +19,5 @@
           openFirewall = true;
         };
       };
-
-      networking.firewall.allowedTCPPorts = [
-        5001
-      ];
     };
 }
