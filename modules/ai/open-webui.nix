@@ -39,7 +39,7 @@
             RAG_WEB_SEARCH_ENGINE = "searxng";
             RAG_WEB_SEARCH_RESULT_COUNT = "5";
             RESET_CONFIG_ON_START = "True";
-            SEARXNG_QUERY_URL = "http://127.0.0.1:3002/search?q=<query>";
+            SEARXNG_QUERY_URL = "http://apollo:3002/search?q=<query>";
             TIKA_SERVER_URL = "http://apollo:9998/";
             WEBUI_AUTH = "False";
             WEBUI_NAME = "LLM @ Home";
@@ -51,11 +51,15 @@
           virtualHosts."http://".extraConfig = ''
             reverse_proxy 127.0.0.1:8080
           '';
+          virtualHosts."https://".extraConfig = ''
+            reverse_proxy 127.0.0.1:8080
+          '';
         };
       };
 
       networking.firewall.allowedTCPPorts = [
         80
+        443
       ];
     };
 }
