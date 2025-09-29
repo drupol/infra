@@ -1,5 +1,5 @@
 {
-  flake.modules.nixos.ai = {
+  flake.modules.nixos.searx = {
     services = {
       searx = {
         enable = true;
@@ -16,7 +16,7 @@
 
           server = {
             port = 3002;
-            bind_address = "127.0.0.1";
+            bind_address = "0.0.0.0";
             secret_key = "spotting-gumminess-chamomile-unsuited-purple";
             image_proxy = true;
             base_url = "/searx";
@@ -46,25 +46,10 @@
           };
         };
       };
-
-      caddy = {
-        enable = true;
-        virtualHosts."http://".extraConfig = ''
-          handle_path /searx/* {
-            reverse_proxy 127.0.0.1:3002
-          }
-        '';
-        virtualHosts."https://".extraConfig = ''
-          handle_path /searx/* {
-            reverse_proxy 127.0.0.1:3002
-          }
-        '';
-      };
     };
 
     networking.firewall.allowedTCPPorts = [
-      80
-      443
+      3002
     ];
   };
 }

@@ -14,6 +14,7 @@
       facter
       guacamole
       openssh
+      searx
       shell
       tika
       vpn
