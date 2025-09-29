@@ -14,6 +14,7 @@
       guacamole
       openssh
       shell
+      tika
       vpn
 
       # Users

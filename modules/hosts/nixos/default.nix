@@ -7,8 +7,8 @@
     with config.flake.modules.nixos;
     [
       # Modules
-      base
       ai
+      base
       dev
       facter
       openssh
