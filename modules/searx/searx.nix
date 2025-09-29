@@ -46,6 +46,20 @@
           };
         };
       };
+
+      caddy = {
+        enable = true;
+        virtualHosts."http://".extraConfig = ''
+          handle_path /searx/* {
+            reverse_proxy 127.0.0.1:3002
+          }
+        '';
+        virtualHosts."https://".extraConfig = ''
+          handle_path /searx/* {
+            reverse_proxy 127.0.0.1:3002
+          }
+        '';
+      };
     };
 
     networking.firewall.allowedTCPPorts = [
