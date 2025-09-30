@@ -4,7 +4,7 @@
       { pkgs, lib, ... }:
       {
         home.packages = with pkgs; [
-          etlegacy
+          master.pkgsi686Linux.etlegacy
         ];
 
         xdg.desktopEntries.et-fr-beginner-xps = {
@@ -15,6 +15,11 @@
           terminal = false;
         };
       };
+
+    nixos.games = {
+      # Only to play enemy territory with Jaymod
+      hardware.graphics.enable32Bit = true;
+    };
   };
 
   nixpkgs.allowedUnfreePackages = [
