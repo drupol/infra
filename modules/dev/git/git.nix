@@ -9,7 +9,8 @@ topLevel: {
             userName = topLevel.config.flake.meta.users.${config.home.username}.name;
             userEmail = topLevel.config.flake.meta.users.${config.home.username}.email;
             ignores = [
-              ".direnv"
+              ".direnv/"
+              "result"
             ];
             aliases = {
               ll = "log --stat --abbrev-commit";
