@@ -13,6 +13,7 @@
         kdePackages.kmailtransport
         kdePackages.kontact
         kdePackages.korganizer
+        kdePackages.pim-data-exporter
       ];
     };
 }
