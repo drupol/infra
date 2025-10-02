@@ -8,6 +8,10 @@
       };
       thermald.enable = true;
       avahi.enable = true;
+      fprintd = {
+        enable = true;
+      };
     };
+
   };
 }
