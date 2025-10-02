@@ -1,9 +1,20 @@
+{ inputs, ... }:
 {
   flake.modules.nixos."hosts/x1c" =
     { pkgs, lib, ... }:
     {
+      nixpkgs = {
+        overlays = [
+          (final: prev: {
+            master = import inputs.nixpkgs-master {
+              inherit (final) config system;
+            };
+          })
+        ];
+      };
+
       boot = {
-        kernelPackages = lib.mkForce pkgs.linuxPackages_6_12;
+        kernelPackages = lib.mkForce pkgs.master.linuxPackages_latest;
         plymouth.enable = true;
 
         loader = {

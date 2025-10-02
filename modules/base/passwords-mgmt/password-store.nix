@@ -13,18 +13,6 @@ topLevel: {
             };
           };
         };
-
-        services.git-sync = {
-          enable = true;
-
-          repositories = {
-            "pass" = {
-              uri = "git@github.com:drupol/pass.git";
-              path = "${config.xdg.configHome}/.password-store";
-              interval = 600;
-            };
-          };
-        };
       };
   };
 }

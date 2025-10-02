@@ -4,12 +4,20 @@
       { pkgs, lib, ... }:
       {
         home.packages = with pkgs; [
-          master.pkgsi686Linux.etlegacy
+          pkgsi686Linux.etlegacy
         ];
 
         xdg.desktopEntries.et-fr-beginner-xps = {
-          name = "Enemy territory @ France Beginner XPS";
-          exec = "${lib.getExe' pkgs.etlegacy "etl"} +connect 46.105.209.160:27960";
+          name = "Enemy Territory @ France Beginner XPS";
+          exec = "${lib.getExe pkgs.etlegacy} +connect 46.105.209.160:27960";
+          icon = "etl";
+          categories = [ "Game" ];
+          terminal = false;
+        };
+
+        xdg.desktopEntries.et-fr-jaymod-xps = {
+          name = "Enemy Territory @ Jaymod";
+          exec = "${lib.getExe pkgs.pkgsi686Linux.etlegacy} +connect 77.202.125.157:27962";
           icon = "etl";
           categories = [ "Game" ];
           terminal = false;
