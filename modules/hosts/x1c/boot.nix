@@ -12,6 +12,12 @@
         };
 
         kernelModules = [ "kvm-intel" ];
+
+        kernelParams = [
+          "nomodeset"
+          "quiet"
+          "splash"
+        ];
       };
     };
 }
