@@ -41,16 +41,13 @@
           keyboard = {
             layouts = [
               {
-                layout = "gb";
+                layout = "us";
               }
               {
                 layout = "fr";
               }
               {
                 layout = "be";
-              }
-              {
-                layout = "us";
               }
             ];
             repeatDelay = 600;
