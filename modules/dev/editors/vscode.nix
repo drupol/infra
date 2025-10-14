@@ -229,7 +229,7 @@
                 };
                 "githubPullRequests.pullBranch" = "always";
                 "markdown.preview.fontFamily" = "'Aporetic Sans Mono'";
-                "mdb.mcp.server" = "enabled";
+                "mdb.mcp.server" = "prompt";
                 "nix.formatterPath" = [ (lib.getExe pkgs.nixfmt-rfc-style) ];
                 "nix.serverPath" = lib.getExe pkgs.nixd;
                 "nix.enableLanguageServer" = true;
