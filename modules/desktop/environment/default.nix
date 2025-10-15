@@ -84,6 +84,7 @@
             vlc
             zotero
             pkgs.local.gh-flake-update
+            corkscrew
           ];
         };
       };
