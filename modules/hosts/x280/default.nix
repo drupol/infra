@@ -34,7 +34,7 @@
     };
 
   flake.modules.nixos."hosts/x280" =
-    { pkgs, ... }:
+    { pkgs, lib, ... }:
     {
       imports =
         with config.flake.modules.nixos;
@@ -108,12 +108,12 @@
         libreoffice
       ];
 
-      system.autoUpgrade = {
+      system.autoUpgrade = lib.mkForce {
         enable = true;
         flake = "github:drupol/infra";
         allowReboot = true;
       };
 
-      i18n.defaultLocale = "fr_BE.UTF-8";
+      i18n.defaultLocale = lib.mkForce "fr_BE.UTF-8";
     };
 }
