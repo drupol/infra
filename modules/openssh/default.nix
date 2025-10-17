@@ -7,6 +7,7 @@
         settings = {
           X11Forwarding = true;
           StreamLocalBindUnlink = "yes";
+          PasswordAuthentication = false;
         };
       };
     };
