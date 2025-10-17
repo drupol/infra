@@ -16,7 +16,7 @@
         ];
 
         configFile = {
-          plasma-localerc = {
+          plasma-localerc = lib.mkForce {
             Formats = {
               LANG = "fr_BE.UTF-8";
             };
