@@ -74,7 +74,6 @@
       programs.firefox.profiles.default.settings."font.name.serif.x-western" = lib.mkForce "";
 
       programs.thunderbird = {
-        languagePacks = lib.mkForce [ "fr" ];
         settings = {
           "intl.locale.requested" = lib.mkForce "fr,it";
           "intl.accept_languages" = lib.mkForce "fr,it";
@@ -93,6 +92,7 @@
           bluetooth
           desktop
           facter
+          fwupd
           sound
           vpn
 
