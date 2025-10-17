@@ -72,6 +72,14 @@
       programs.firefox.profiles.default.settings."font.name.monospace.x-western" = lib.mkForce "";
       programs.firefox.profiles.default.settings."font.name.sans-serif.x-western" = lib.mkForce "";
       programs.firefox.profiles.default.settings."font.name.serif.x-western" = lib.mkForce "";
+
+      programs.thunderbird = {
+        languagePacks = lib.mkForce [ "fr" ];
+        settings = {
+          "intl.locale.requested" = lib.mkForce "fr,it";
+          "intl.accept_languages" = lib.mkForce "fr,it";
+        };
+      };
     };
 
   flake.modules.nixos."hosts/x280" =
