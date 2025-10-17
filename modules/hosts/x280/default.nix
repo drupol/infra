@@ -23,7 +23,7 @@
           genericName = "Messenger";
           comment = "Whatsapp";
           exec = "firefox --new-window https://web.whatsapp.com";
-          icon = "whatsapp";
+          icon = ./WhatsApp.svg;
           terminal = false;
           categories = [
             "AudioVideo"
