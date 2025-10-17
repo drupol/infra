@@ -153,5 +153,13 @@
       };
 
       i18n.defaultLocale = lib.mkForce "fr_BE.UTF-8";
+
+      fonts.packages = lib.mkForce [ ];
+
+      fonts.fontconfig.defaultFonts = lib.mkForce {
+        monospace = [ ];
+        sansSerif = [ ];
+        serif = [ ];
+      };
     };
 }
