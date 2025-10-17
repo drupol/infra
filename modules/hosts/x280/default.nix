@@ -93,6 +93,7 @@
           desktop
           facter
           fwupd
+          openssh
           sound
           vpn
 
