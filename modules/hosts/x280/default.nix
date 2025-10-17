@@ -113,5 +113,7 @@
         flake = "github:drupol/infra";
         allowReboot = true;
       };
+
+      i18n.defaultLocale = "fr_BE.UTF-8";
     };
 }
