@@ -38,6 +38,32 @@
             "Network"
           ];
         };
+        messages = {
+          type = "Application";
+          name = "Messages";
+          genericName = "Messenger";
+          comment = "Google Messages Web";
+          exec = "firefox --new-window https://messages.google.com/web/conversations";
+          icon = ./Google_Messages.svg;
+          terminal = false;
+          categories = [
+            "AudioVideo"
+            "Network"
+          ];
+        };
+        crelan = {
+          type = "Application";
+          name = "Crelan";
+          genericName = "Banking";
+          comment = "Crelan Online Banking";
+          exec = "firefox --new-window https://mycrelan.crelan.be/";
+          icon = ./crelan.svg;
+          terminal = false;
+          categories = [
+            "Network"
+            "Office"
+          ];
+        };
       };
     };
 
