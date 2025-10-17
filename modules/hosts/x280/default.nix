@@ -66,7 +66,6 @@
         };
       };
 
-      programs.firefox.languagePacks = lib.mkForce [ "fr" ];
       programs.firefox.profiles.default.settings."font.name.monospace.x-western" = lib.mkForce "";
       programs.firefox.profiles.default.settings."font.name.sans-serif.x-western" = lib.mkForce "";
       programs.firefox.profiles.default.settings."font.name.serif.x-western" = lib.mkForce "";
@@ -162,5 +161,7 @@
         sansSerif = [ ];
         serif = [ ];
       };
+
+      programs.firefox.languagePacks = [ "fr" ];
     };
 }
