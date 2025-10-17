@@ -65,6 +65,10 @@
           ];
         };
       };
+
+      programs.firefox.profiles.default.settings."font.name.monospace.x-western" = lib.mkForce "";
+      programs.firefox.profiles.default.settings."font.name.sans-serif.x-western" = lib.mkForce "";
+      programs.firefox.profiles.default.settings."font.name.serif.x-western" = lib.mkForce "";
     };
 
   flake.modules.nixos."hosts/x280" =
