@@ -4,7 +4,7 @@
 }:
 {
   flake.modules.homeManager.user =
-    { pkgs, lib, ... }:
+    { lib, ... }:
     {
       programs.plasma = {
         fonts = lib.mkForce { };
@@ -14,6 +14,14 @@
             layout = "be";
           }
         ];
+
+        configFile = {
+          plasma-localerc = {
+            Formats = {
+              LANG = "fr_BE.UTF-8";
+            };
+          };
+        };
       };
 
       xdg.desktopEntries = {
