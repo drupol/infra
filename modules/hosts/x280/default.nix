@@ -67,6 +67,8 @@
       };
 
       programs.firefox.languagePacks = lib.mkForce [ "fr" ];
+      programs.firefox.profiles.default.settings."intl.locale.requested" = lib.mkForce "fr,it";
+      programs.firefox.profiles.default.settings."intl.accept_languages" = lib.mkForce "fr,it";
       programs.firefox.profiles.default.settings."font.name.monospace.x-western" = lib.mkForce "";
       programs.firefox.profiles.default.settings."font.name.sans-serif.x-western" = lib.mkForce "";
       programs.firefox.profiles.default.settings."font.name.serif.x-western" = lib.mkForce "";
