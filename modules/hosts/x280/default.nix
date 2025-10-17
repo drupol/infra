@@ -9,7 +9,7 @@
       programs.plasma = {
         fonts = lib.mkForce { };
 
-        input.keyboard.layouts = [
+        input.keyboard.layouts = lib.mkForce [
           {
             layout = "be";
           }
