@@ -18,8 +18,13 @@ topLevel@{
         ];
       };
     };
+  };
 
-    modules.nixos.pol = {
+  unify.modules.pol.nixos =
+    { pkgs, ... }:
+    {
+      programs.fish.enable = true;
+
       users.users.pol = {
         description = topLevel.config.flake.meta.users.pol.name;
         isNormalUser = true;
@@ -33,6 +38,7 @@ topLevel@{
           "tty"
           "wheel"
         ];
+        shell = pkgs.fish;
         openssh.authorizedKeys.keys = topLevel.config.flake.meta.users.pol.authorizedKeys;
         initialPassword = "id";
       };
@@ -40,26 +46,24 @@ topLevel@{
       nix.settings.trusted-users = [ topLevel.config.flake.meta.users.pol.username ];
     };
 
-    modules.homeManager.pol = {
-      # Remove this part if no access to the private repository.
-      imports = [
-        (if inputs ? infra-private then inputs.infra-private.homeModules.pol else { })
-      ];
-
-      home.file = {
-        ".face" = {
-          source = ../../../files/home/pol/.face;
-          recursive = true;
-        };
-        ".face.icon" = {
-          source = ../../../files/home/pol/.face;
-          recursive = true;
-        };
-        # Credits to https://store.kde.org/p/1272202
-        "Pictures/Backgrounds/" = {
-          source = ../../../files/home/pol/Pictures/Backgrounds;
-          recursive = true;
-        };
+  unify.modules.pol.home = {
+    # Remove this part if no access to the private repository.
+    imports = [
+      inputs.infra-private.homeModules.pol
+    ];
+    home.file = {
+      ".face" = {
+        source = ../../../files/home/pol/.face;
+        recursive = true;
+      };
+      ".face.icon" = {
+        source = ../../../files/home/pol/.face;
+        recursive = true;
+      };
+      # Credits to https://store.kde.org/p/1272202
+      "Pictures/Backgrounds/" = {
+        source = ../../../files/home/pol/Pictures/Backgrounds;
+        recursive = true;
       };
     };
   };

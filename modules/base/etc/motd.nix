@@ -1,6 +1,6 @@
 { inputs, ... }:
 {
-  flake.modules.nixos.base =
+  unify.modules.base.nixos =
     { config, ... }:
     {
       users.motdFile = "/etc/motd";

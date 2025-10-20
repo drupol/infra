@@ -3,15 +3,13 @@
   ...
 }:
 {
-  flake.modules = {
-    nixos.lora =
-      { pkgs, ... }:
-      {
-        nixpkgs.overlays = [
-          inputs.self.overlays.default
-        ];
+  unify.modules.lora.nixos =
+    { pkgs, ... }:
+    {
+      nixpkgs.overlays = [
+        inputs.self.overlays.default
+      ];
 
-        environment.systemPackages = [ pkgs.local.meshtastic-client ];
-      };
-  };
+      environment.systemPackages = [ pkgs.local.meshtastic-client ];
+    };
 }

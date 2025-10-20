@@ -1,12 +1,12 @@
 {
-  flake.modules = {
-    nixos.dev = {
+  unify.modules.dev = {
+    nixos = {
       services = {
         gnome.gnome-keyring.enable = true;
       };
     };
 
-    homeManager.dev =
+    home =
       { pkgs, ... }:
       {
         nixpkgs = {

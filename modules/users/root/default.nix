@@ -12,7 +12,7 @@
       };
     };
 
-    modules.nixos.root = {
+    unify.modules.base.nixos = {
       users.users.root = {
         openssh.authorizedKeys.keys = config.flake.meta.users.pol.authorizedKeys;
         initialPassword = "id";

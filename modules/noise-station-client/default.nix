@@ -4,7 +4,7 @@
   ...
 }:
 {
-  flake.modules.nixos.noise-station-client =
+  unify.modules.noise-station-client.nixos =
     { pkgs, ... }:
     {
       nixpkgs = {

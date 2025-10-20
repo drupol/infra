@@ -1,5 +1,5 @@
 {
-  flake.modules.nixos.noise-station-server =
+  unify.modules.noise-station-server.nixos =
     { pkgs, ... }:
     {
       networking.firewall = {

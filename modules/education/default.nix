@@ -1,5 +1,5 @@
 {
-  flake.modules.nixos.education =
+  unify.modules.education.nixos =
     {
       pkgs,
       ...

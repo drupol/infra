@@ -1,15 +1,10 @@
 {
-  flake.modules = {
-    homeManager.dev = {
-      programs = {
-        gh = {
-          enable = true;
-        };
-      };
-
-      nixpkgs = {
-        config.allowUnfree = true;
+  unify.modules.dev.home = {
+    programs = {
+      gh = {
+        enable = true;
       };
     };
+
   };
 }

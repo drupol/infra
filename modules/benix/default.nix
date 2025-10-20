@@ -1,23 +1,7 @@
 {
-  config,
-  ...
-}:
-{
-  flake = {
-    meta.users = {
-      benix = {
-        name = "Benix User Group";
-        email = "demo@example.com";
-        key = "";
-        username = "benix";
-        keygrip = [
-        ];
-        authorizedKeys = [
-        ];
-      };
-    };
+  unify.modules.benix = {
 
-    modules.nixos.benix = {
+    nixos = {
       users.users.benix = {
         description = "Benix User Group";
         isNormalUser = true;
@@ -32,10 +16,10 @@
         initialPassword = "benix";
       };
 
-      nix.settings.trusted-users = [ config.flake.meta.users.user.username ];
+      nix.settings.trusted-users = [ "benix" ];
     };
 
-    modules.homeManager.benix =
+    home =
       { pkgs, ... }:
       {
         home.packages = with pkgs; [

@@ -1,10 +1,10 @@
 {
-  flake.modules = {
-    nixos.base = {
+  unify.modules.base = {
+    nixos = {
       services.pcscd.enable = true;
     };
 
-    homeManager.base = {
+    home = {
       services.yubikey-agent = {
         enable = true;
       };

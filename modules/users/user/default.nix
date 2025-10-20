@@ -15,8 +15,13 @@
         ];
       };
     };
+  };
 
-    modules.nixos.user = {
+  unify.modules.user.nixos =
+    { pkgs, ... }:
+    {
+      programs.fish.enable = true;
+
       users.users.user = {
         description = config.flake.meta.users.user.name;
         isNormalUser = true;
@@ -28,10 +33,10 @@
           "sound"
           "tty"
         ];
+        shell = pkgs.fish;
         initialPassword = "id";
       };
 
       nix.settings.trusted-users = [ config.flake.meta.users.user.username ];
     };
-  };
 }

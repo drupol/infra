@@ -40,7 +40,7 @@
       enable = true;
       nix-direnv.enable = true;
     };
-    eza = {
+    lsd = {
       enable = true;
     };
     firefox = {
@@ -104,9 +104,9 @@
       shellAliases = {
         ".." = "cd ..";
         "..." = "cd ../..";
-        ll = "eza -lha";
+        ll = "lsd -lha";
         cat = "bat";
-        ls = "eza";
+        ls = "lsd";
         grep = "rg";
       };
     };
