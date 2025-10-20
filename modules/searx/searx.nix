@@ -1,5 +1,5 @@
 {
-  flake.modules.nixos.searx = {
+  unify.modules.searx.nixos = {
     services = {
       searx = {
         enable = true;
