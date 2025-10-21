@@ -104,12 +104,14 @@
         # Specific Home-Manager modules
         ++ [
           {
-            home-manager.users.user.imports = with config.flake.modules.homeManager; [
-              base
-              desktop
-              facter
-              user
-            ];
+            home-manager.users.user = {
+              imports = with config.flake.modules.homeManager; [
+                base
+                desktop
+                facter
+                user
+              ];
+            };
           }
         ];
 
