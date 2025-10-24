@@ -64,6 +64,19 @@
             "Office"
           ];
         };
+        bnpparibas = {
+          type = "Application";
+          name = "BNP Paribas Fortis";
+          genericName = "Banking";
+          comment = "BNP Paribas Fortis Online Banking";
+          exec = "firefox --new-window https://www.bnpparibasfortis.be/en/generic/logon";
+          icon = ./BNP_Paribas.svg;
+          terminal = false;
+          categories = [
+            "Network"
+            "Office"
+          ];
+        };
       };
 
       programs.firefox.languagePacks = lib.mkForce [ "fr" ];
