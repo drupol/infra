@@ -12,7 +12,7 @@
       };
     };
 
-    modules.nixos.root =
+    unify.modules.base.nixos =
       { pkgs, ... }:
       {
         programs.fish.enable = true;

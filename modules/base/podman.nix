@@ -1,6 +1,6 @@
 {
-  flake.modules = {
-    homeManager.base = {
+  unify.modules.base = {
+    home = {
       services.podman = {
         enable = true;
       };
