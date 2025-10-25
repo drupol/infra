@@ -80,11 +80,7 @@
             kdePackages.spectacle
             kdePackages.xdg-desktop-portal-kde
             kdePackages.yakuake
-            krita
             vlc
-            zotero
-            pkgs.local.gh-flake-update
-            corkscrew
           ];
         };
       };

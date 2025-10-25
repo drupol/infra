@@ -16,6 +16,7 @@
         desktop
         displaylink
         dev
+        education
         facter
         fwupd
         games
