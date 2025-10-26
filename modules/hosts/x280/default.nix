@@ -177,6 +177,8 @@
       environment.systemPackages = with pkgs; [
         thunderbird
         libreoffice
+        eid-mw
+        beidconnect
       ];
 
       system.autoUpgrade = lib.mkForce {
