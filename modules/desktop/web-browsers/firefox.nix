@@ -19,6 +19,7 @@
             enable = true;
             nativeMessagingHosts = [
               pkgs.browserpass
+              pkgs.web-eid-app
             ];
             profiles.default = {
               id = 0;

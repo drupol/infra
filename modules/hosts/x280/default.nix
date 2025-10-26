@@ -134,6 +134,8 @@
         efi.efiSysMountPoint = "/boot/efi";
       };
 
+      programs.firefox.policies.SecurityDevices.p11-kit-proxy = "${pkgs.p11-kit}/lib/p11-kit-proxy.so";
+
       services = {
         xserver = {
           xkb = {
@@ -142,6 +144,8 @@
         };
         thermald.enable = true;
         avahi.enable = true;
+        pcscd.enable = true;
+
       };
 
       facter.reportPath = ./facter.json;
