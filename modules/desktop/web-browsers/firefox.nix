@@ -26,6 +26,7 @@
               isDefault = true;
               name = "Default";
               extensions.packages = [
+                pkgs.nur.repos.rycee.firefox-addons.belgium-eid
                 pkgs.nur.repos.rycee.firefox-addons.browserpass
                 # pkgs.nur.repos.rycee.firefox-addons.bypass-paywalls-clean
                 # pkgs.nur.repos.rycee.firefox-addons.enhancer-for-youtube
@@ -42,6 +43,7 @@
                 pkgs.nur.repos.rycee.firefox-addons.tournesol
                 pkgs.nur.repos.rycee.firefox-addons.ublock-origin
                 pkgs.nur.repos.rycee.firefox-addons.violentmonkey
+                pkgs.nur.repos.rycee.firefox-addons.web-eid
               ];
               search = {
                 default = "google";
