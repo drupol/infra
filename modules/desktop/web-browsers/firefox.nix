@@ -17,6 +17,7 @@
           in
           {
             enable = true;
+            package = pkgs.firefox.override { pkcs11Modules = [ pkgs.eid-mw ]; };
             nativeMessagingHosts = [
               pkgs.browserpass
               pkgs.web-eid-app
