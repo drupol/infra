@@ -1,5 +1,11 @@
 {
-  flake.modules.nixos.base = {
-    console.useXkbConfig = true;
+  flake.modules = {
+    homeManager.base = {
+      programs.fish.enable = true;
+    };
+
+    nixos.base = {
+      console.useXkbConfig = true;
+    };
   };
 }

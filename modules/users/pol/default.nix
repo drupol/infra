@@ -22,9 +22,6 @@
     modules.nixos.pol =
       { pkgs, ... }:
       {
-
-        programs.fish.enable = true;
-
         users.users.pol = {
           description = config.flake.meta.users.pol.name;
           isNormalUser = true;
