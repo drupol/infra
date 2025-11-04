@@ -12,12 +12,7 @@
       in
       {
         nixos.base.nixpkgs.config.allowUnfreePredicate = predicate;
-
-        homeManager.base = _args: {
-          nixpkgs.config = {
-            allowUnfreePredicate = predicate;
-          };
-        };
+        homeManager.base.nixpkgs.config.allowedUnfreePackages = predicate;
       };
 
     meta.nixpkgs.allowedUnfreePackages = config.nixpkgs.allowedUnfreePackages;
