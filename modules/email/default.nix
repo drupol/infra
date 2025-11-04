@@ -9,13 +9,24 @@
         package = pkgs.thunderbird-bin;
         settings = {
           "app.update.auto" = false;
+
+          "intl.date_time.pattern_override.date_short" = "yyyy.MM.dd";
+          "intl.date_time.pattern_override.date_medium" = "yyyy.MM.dd";
+          "intl.date_time.pattern_override.date_long" = "yyyy.MM.dd";
+          "intl.date_time.pattern_override.date_full" = "yyyy.MM.dd";
+          "intl.date_time.pattern_override.time_short" = "HH:mm";
+          "intl.date_time.pattern_override.time_medium" = "HH:mm";
+          "intl.date_time.pattern_override.time_long" = "HH:mm";
+          "intl.date_time.pattern_override.time_full" = "HH:mm";
+          "intl.date_time.pattern_override.connector_short" = " ";
+
           "mail.biff.play_sound" = false;
           "mail.biff.show_alert" = false;
           "mail.default_send_format" = 1; # plain text
           "mail.identity.default.archive_enabled" = true;
           "mail.identity.default.archive_keep_folder_structure" = true;
           "mail.identity.default.compose_html" = false;
-          "mail.identity.default.doCc" = true;  # enable Cc field by default
+          "mail.identity.default.doCc" = true; # enable Cc field by default
           "mail.identity.default.protectSubject" = true;
           "mail.identity.default.reply_on_top" = 1;
           "mail.identity.default.sig_on_reply" = false;
@@ -28,6 +39,7 @@
           "mail.show_headers" = 1;
           "mail.threadpane.listview" = 1;
           "mail.uidensity" = 0;
+          "mail.collect_addressbook" = "jsaddrbook://history.sqlite";
 
           "privacy.donottrackheader.enabled" = true;
 
@@ -43,6 +55,8 @@
           "mailnews.headers.showOrganization" = true;
           "mailnews.headers.showReferences" = true;
           "mailnews.headers.showUserAgent" = true;
+
+          "msgcompose.font_face" = "monospace";
 
           "calendar.timezone.local" = "Europe/Brussels";
           "calendar.week.start" = 1;
