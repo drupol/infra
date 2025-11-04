@@ -43,6 +43,11 @@ topLevel@{
       };
 
     modules.homeManager.pol = {
+      # Remove this part if no access to the private repository.
+      imports = [
+        inputs.infra-private.homeModules.pol
+      ];
+
       home.file = {
         ".face" = {
           source = ../../../files/home/pol/.face;
