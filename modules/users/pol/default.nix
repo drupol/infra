@@ -1,5 +1,5 @@
-{
-  config,
+topLevel@{
+  inputs,
   ...
 }:
 {
@@ -23,7 +23,7 @@
       { pkgs, ... }:
       {
         users.users.pol = {
-          description = config.flake.meta.users.pol.name;
+          description = topLevel.config.flake.meta.users.pol.name;
           isNormalUser = true;
           createHome = true;
           extraGroups = [
@@ -35,29 +35,29 @@
             "wheel"
           ];
           shell = pkgs.fish;
-          openssh.authorizedKeys.keys = config.flake.meta.users.pol.authorizedKeys;
+          openssh.authorizedKeys.keys = topLevel.config.flake.meta.users.pol.authorizedKeys;
           initialPassword = "id";
         };
 
-        nix.settings.trusted-users = [ config.flake.meta.users.pol.username ];
+        nix.settings.trusted-users = [ topLevel.config.flake.meta.users.pol.username ];
+      };
 
-        home-manager.users.pol = {
-          home.file = {
-            ".face" = {
-              source = ../../../files/home/pol/.face;
-              recursive = true;
-            };
-            ".face.icon" = {
-              source = ../../../files/home/pol/.face;
-              recursive = true;
-            };
-            # Credits to https://store.kde.org/p/1272202
-            "Pictures/Backgrounds/" = {
-              source = ../../../files/home/pol/Pictures/Backgrounds;
-              recursive = true;
-            };
-          };
+    modules.homeManager.pol = {
+      home.file = {
+        ".face" = {
+          source = ../../../files/home/pol/.face;
+          recursive = true;
+        };
+        ".face.icon" = {
+          source = ../../../files/home/pol/.face;
+          recursive = true;
+        };
+        # Credits to https://store.kde.org/p/1272202
+        "Pictures/Backgrounds/" = {
+          source = ../../../files/home/pol/Pictures/Backgrounds;
+          recursive = true;
         };
       };
+    };
   };
 }

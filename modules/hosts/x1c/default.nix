@@ -39,6 +39,7 @@
               email
               facter
               messaging
+              pol
               games
               shell
               work
