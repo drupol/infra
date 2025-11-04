@@ -24,6 +24,9 @@
           "mail.server.default.check_all_folders_for_new" = true;
           "mail.shell.checkDefaultClient" = false;
           "mail.show_headers" = 1;
+          "mail.threadpane.listview" = 1;
+          "mail.uidensity" = 0;
+
           "privacy.donottrackheader.enabled" = true;
 
           "mailnews.start_page.enabled" = false;
