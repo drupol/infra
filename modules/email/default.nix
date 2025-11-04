@@ -2,18 +2,75 @@
   flake.modules.homeManager.email =
     { pkgs, ... }:
     {
-      home.packages = with pkgs; [
-        kdePackages.accounts-qt
-        kdePackages.kaccounts-integration
-        kdePackages.kaccounts-providers
-        kdePackages.kaddressbook
-        kdePackages.kauth
-        kdePackages.kmail
-        kdePackages.kmail-account-wizard
-        kdePackages.kmailtransport
-        kdePackages.kontact
-        kdePackages.korganizer
-        kdePackages.pim-data-exporter
-      ];
+      programs.thunderbird = {
+        enable = true;
+        # Importing ggp key with `pkgs.thunderbird` doesn't work.
+        # Works without any issues with `pkgs.thunderbird-bin`.
+        package = pkgs.thunderbird-bin;
+        settings = {
+          "app.update.auto" = false;
+          "mail.biff.play_sound" = false;
+          "mail.biff.show_alert" = false;
+          "mail.identity.default.archive_enabled" = true;
+          "mail.identity.default.archive_keep_folder_structure" = true;
+          "mail.identity.default.compose_html" = false;
+          "mail.identity.default.protectSubject" = true;
+          "mail.identity.default.reply_on_top" = 1;
+          "mail.identity.default.sig_on_reply" = false;
+          "mail.identity.default.sig_bottom" = false;
+          "mail.sanitize_date_header" = true;
+          "mail.server.default.allow_utf8_accept" = true;
+          "mail.server.default.max_articles" = 1000;
+          "mail.server.default.check_all_folders_for_new" = true;
+          "mail.shell.checkDefaultClient" = false;
+          "mail.show_headers" = 1;
+          "privacy.donottrackheader.enabled" = true;
+
+          "mailnews.start_page.enabled" = false;
+
+          # Sorting
+          # Sort them by the newest reply in thread.
+          "mailnews.sort_threads_by_root" = true;
+          "mailnews.default_sort_order" = 2; # descending
+          "mailnews.default_sort_type" = 18; # by date
+
+          "mailnews.headers.showMessageId" = true;
+          "mailnews.headers.showOrganization" = true;
+          "mailnews.headers.showReferences" = true;
+          "mailnews.headers.showUserAgent" = true;
+
+          "calendar.timezone.local" = "Europe/Brussels";
+          "calendar.week.start" = 1;
+          "calendar.view.visiblehours" = 16;
+          "calendar.dayendhour" = 24;
+          "calendar.alarms.eventalarmlen" = 0;
+          "calendar.alarms.onforevents" = 1;
+          "calendar.alarms.onfortodos" = 1;
+          "calendar.alarms.playsound" = false;
+          "calendar.alarms.todoalarmlen" = 0;
+          "calendar.event.defaultlength" = 30;
+          "calendar.events.defaultActionEdit" = true;
+          "calendar.item.editInTab" = true;
+          "calendar.task.defaultdueoffset" = 0;
+          "calendar.task.defaultdue" = "offsetcurrent";
+          "calendar.timezone.useSystemTimezone" = true;
+
+          # Disable telemetry
+          "toolkit.telemetry.enabled" = false;
+          "toolkit.telemetry.rejected" = true;
+          "toolkit.telemetry.prompted" = 2;
+        };
+        profiles.default = {
+          isDefault = true;
+          withExternalGnupg = true;
+        };
+      };
+
+      xdg.mimeApps.defaultApplications = {
+        "x-scheme-handler/mailto" = [ "thunderbird.desktop" ];
+        "message/rfc822" = "thunderbird.desktop";
+        "text/calendar" = "thunderbird.desktop";
+        "text/x-vcard" = "thunderbird.desktop";
+      };
     };
 }
