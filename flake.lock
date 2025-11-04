@@ -371,11 +371,11 @@
         "systems": "systems_2"
       },
       "locked": {
-        "lastModified": 1762287671,
-        "narHash": "sha256-c3bQdMNU1FHp35B0HxnJLqWTXtXTpct/ZjmTQGcBzTs=",
+        "lastModified": 1762287863,
+        "narHash": "sha256-bundkDU0PEsQTmjeYk5i6xScJQA2WevghmHd8gX/wdw=",
         "owner": "drupol",
         "repo": "infra-private",
-        "rev": "6d094b7b31b1f79964d5300b5db92d6058805590",
+        "rev": "a143eede09ffb89ceb24cb0e630634b49b62db83",
         "type": "github"
       },
       "original": {
