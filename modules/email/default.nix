@@ -31,6 +31,7 @@
           "mail.identity.default.reply_on_top" = 1;
           "mail.identity.default.sig_on_reply" = false;
           "mail.identity.default.sig_bottom" = false;
+          "mail.pane_config.dynamic" = 1; # Wide layout
           "mail.sanitize_date_header" = true;
           "mail.server.default.allow_utf8_accept" = true;
           "mail.server.default.max_articles" = 1000;
@@ -38,6 +39,7 @@
           "mail.shell.checkDefaultClient" = false;
           "mail.show_headers" = 1;
           "mail.threadpane.listview" = 1;
+          "mail.uifontsize" = 14;
           "mail.uidensity" = 0;
           "mail.collect_addressbook" = "jsaddrbook://history.sqlite";
 
@@ -84,7 +86,6 @@
           "font.name.sans-serif.x-western" = "Aporetic Sans Mono";
           "font.size.variable.x-western" = 14;
           "font.name.serif.x-western" = "Aporetic Sans Mono";
-          "mail.uifontsize" = 14;
         };
         profiles.default = {
           isDefault = true;
