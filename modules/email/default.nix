@@ -11,9 +11,11 @@
           "app.update.auto" = false;
           "mail.biff.play_sound" = false;
           "mail.biff.show_alert" = false;
+          "mail.default_send_format" = 1; # plain text
           "mail.identity.default.archive_enabled" = true;
           "mail.identity.default.archive_keep_folder_structure" = true;
           "mail.identity.default.compose_html" = false;
+          "mail.identity.default.doCc" = true;  # enable Cc field by default
           "mail.identity.default.protectSubject" = true;
           "mail.identity.default.reply_on_top" = 1;
           "mail.identity.default.sig_on_reply" = false;
