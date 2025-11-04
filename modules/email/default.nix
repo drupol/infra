@@ -78,6 +78,13 @@
           "toolkit.telemetry.enabled" = false;
           "toolkit.telemetry.rejected" = true;
           "toolkit.telemetry.prompted" = 2;
+
+          "font.name.monospace.x-western" = "Aporetic Sans Mono";
+          "font.size.monospace.x-western" = 12;
+          "font.name.sans-serif.x-western" = "Aporetic Sans Mono";
+          "font.size.variable.x-western" = 14;
+          "font.name.serif.x-western" = "Aporetic Sans Mono";
+          "mail.uifontsize" = 14;
         };
         profiles.default = {
           isDefault = true;
