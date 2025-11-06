@@ -21,6 +21,7 @@
         # Users
         root
         pol
+        demo
       ]
       # Specific Home-Manager modules
       ++ [
@@ -32,6 +33,8 @@
               dev
               facter
               shell
+              pol
+              demo
             ];
           };
         }
