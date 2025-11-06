@@ -5,7 +5,7 @@
 {
   flake = {
     meta.users = {
-      user = {
+      demo = {
         name = "Demo User";
         key = "";
         username = "demo";
