@@ -17,7 +17,7 @@
       {
         programs.fish.enable = true;
 
-        users.users.user = {
+        users.users.demo = {
           description = "Nix Demo User";
           isNormalUser = true;
           createHome = true;
