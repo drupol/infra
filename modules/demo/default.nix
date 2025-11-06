@@ -9,6 +9,10 @@
         name = "Demo User";
         key = "";
         username = "demo";
+        keygrip = [
+        ];
+        authorizedKeys = [
+        ];
       };
     };
 
