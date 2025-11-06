@@ -18,7 +18,7 @@
         programs.fish.enable = true;
 
         users.users.user = {
-          description = "Nix Demo User (pw: demo)";
+          description = "Nix Demo User";
           isNormalUser = true;
           createHome = true;
           extraGroups = [
@@ -38,7 +38,7 @@
     modules.homeManager.demo =
       { pkgs, ... }:
       {
-        packages = with pkgs; [
+        home.packages = with pkgs; [
           cowsay
         ];
       };
