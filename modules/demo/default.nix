@@ -7,6 +7,7 @@
     meta.users = {
       demo = {
         name = "Demo User";
+        email = "demo@example.com";
         key = "";
         username = "demo";
         keygrip = [

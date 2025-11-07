@@ -68,6 +68,8 @@
       kernelModules = [ "kvm-intel" ];
     };
 
+    facter.reportPath = ./facter.json;
+
     fileSystems."/" = {
       device = "/dev/disk/by-uuid/0831c17a-27d6-42b8-a61b-f52cfb02f051";
       fsType = "ext4";
@@ -79,7 +81,5 @@
     };
 
     swapDevices = [ { device = "/dev/disk/by-uuid/066ce479-3611-42e7-9117-f1ef77668010"; } ];
-
-    hardware.cpu.intel.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
   };
 }
