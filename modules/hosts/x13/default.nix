@@ -27,10 +27,25 @@
         # Users
         root
         pol
+        demo
       ]
       # Specific Home-Manager modules
       ++ [
         {
+          home-manager.users.demo = {
+            imports = with config.flake.modules.homeManager; [
+              base
+              desktop
+              dev
+              email
+              facter
+              messaging
+              games
+              shell
+              work
+              demo
+            ];
+          };
           home-manager.users.pol = {
             imports = with config.flake.modules.homeManager; [
               base
@@ -42,6 +57,7 @@
               games
               shell
               work
+              pol
             ];
           };
         }
