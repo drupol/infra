@@ -24,8 +24,11 @@ in
         name = lib.removePrefix prefix name;
         value = inputs.nixpkgs.lib.nixosSystem {
           inherit specialArgs;
-          modules = module.imports ++ [
+          modules = [
+            module
             inputs.home-manager.nixosModules.home-manager
+          ]
+          ++ [
             {
               home-manager.extraSpecialArgs = specialArgs;
             }
