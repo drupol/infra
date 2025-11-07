@@ -38,7 +38,6 @@
               desktop
               dev
               email
-              facter
               messaging
               games
               shell
@@ -51,7 +50,6 @@
               desktop
               dev
               email
-              facter
               messaging
               games
               shell

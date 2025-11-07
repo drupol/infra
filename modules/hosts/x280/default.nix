@@ -121,7 +121,6 @@
               imports = with config.flake.modules.homeManager; [
                 base
                 desktop
-                facter
                 user
               ];
             };

@@ -37,7 +37,6 @@
               desktop
               dev
               email
-              facter
               messaging
               pol
               games

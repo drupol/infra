@@ -34,7 +34,6 @@
                 base
                 desktop
                 dev
-                facter
                 shell
               ];
 

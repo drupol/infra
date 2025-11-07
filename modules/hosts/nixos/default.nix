@@ -28,7 +28,6 @@
             home-manager.users.pol = {
               imports = with config.flake.modules.homeManager; [
                 base
-                facter
                 shell
               ];
             };

@@ -31,7 +31,6 @@ toplevel: {
               base
               desktop
               dev
-              facter
               shell
             ];
           }

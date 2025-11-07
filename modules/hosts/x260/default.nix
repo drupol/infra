@@ -31,7 +31,6 @@
               base
               desktop
               dev
-              facter
               shell
               benix
             ];
@@ -42,7 +41,6 @@
               base
               desktop
               dev
-              facter
               shell
               pol
             ];
