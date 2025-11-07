@@ -5,11 +5,11 @@
 {
   flake = {
     meta.users = {
-      demo = {
-        name = "Demo User";
+      benix = {
+        name = "Benix User Group";
         email = "demo@example.com";
         key = "";
-        username = "demo";
+        username = "benix";
         keygrip = [
         ];
         authorizedKeys = [
@@ -17,13 +17,13 @@
       };
     };
 
-    modules.nixos.demo =
+    modules.nixos.benix =
       { pkgs, ... }:
       {
         programs.fish.enable = true;
 
-        users.users.demo = {
-          description = "Nix Demo User";
+        users.users.benix = {
+          description = "Benix User Group";
           isNormalUser = true;
           createHome = true;
           extraGroups = [
@@ -34,13 +34,13 @@
             "tty"
           ];
           shell = pkgs.fish;
-          initialPassword = "demo";
+          initialPassword = "benix";
         };
 
         nix.settings.trusted-users = [ config.flake.meta.users.user.username ];
       };
 
-    modules.homeManager.demo =
+    modules.homeManager.benix =
       { pkgs, ... }:
       {
         home.packages = with pkgs; [
