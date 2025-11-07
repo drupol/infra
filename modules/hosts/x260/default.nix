@@ -21,19 +21,19 @@
         # Users
         root
         pol
-        demo
+        benix
       ]
       # Specific Home-Manager modules
       ++ [
         {
-          home-manager.users.demo = {
+          home-manager.users.benix = {
             imports = with config.flake.modules.homeManager; [
               base
               desktop
               dev
               facter
               shell
-              demo
+              benix
             ];
           };
 

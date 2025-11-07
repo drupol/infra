@@ -27,12 +27,12 @@
         # Users
         root
         pol
-        demo
+        benix
       ]
       # Specific Home-Manager modules
       ++ [
         {
-          home-manager.users.demo = {
+          home-manager.users.benix = {
             imports = with config.flake.modules.homeManager; [
               base
               desktop
@@ -42,8 +42,7 @@
               messaging
               games
               shell
-              work
-              demo
+              benix
             ];
           };
           home-manager.users.pol = {
@@ -56,7 +55,6 @@
               messaging
               games
               shell
-              work
               pol
             ];
           };
