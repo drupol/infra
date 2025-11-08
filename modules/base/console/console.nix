@@ -7,6 +7,7 @@
     nixos.base =
       { pkgs, ... }:
       {
+        programs.fish.enable = true;
         console.useXkbConfig = true;
         users.defaultUserShell = pkgs.fish;
       };
