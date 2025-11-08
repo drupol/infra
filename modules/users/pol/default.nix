@@ -19,28 +19,25 @@ topLevel@{
       };
     };
 
-    modules.nixos.pol =
-      { pkgs, ... }:
-      {
-        users.users.pol = {
-          description = topLevel.config.flake.meta.users.pol.name;
-          isNormalUser = true;
-          createHome = true;
-          extraGroups = [
-            "audio"
-            "input"
-            "networkmanager"
-            "sound"
-            "tty"
-            "wheel"
-          ];
-          shell = pkgs.fish;
-          openssh.authorizedKeys.keys = topLevel.config.flake.meta.users.pol.authorizedKeys;
-          initialPassword = "id";
-        };
-
-        nix.settings.trusted-users = [ topLevel.config.flake.meta.users.pol.username ];
+    modules.nixos.pol = {
+      users.users.pol = {
+        description = topLevel.config.flake.meta.users.pol.name;
+        isNormalUser = true;
+        createHome = true;
+        extraGroups = [
+          "audio"
+          "input"
+          "networkmanager"
+          "sound"
+          "tty"
+          "wheel"
+        ];
+        openssh.authorizedKeys.keys = topLevel.config.flake.meta.users.pol.authorizedKeys;
+        initialPassword = "id";
       };
+
+      nix.settings.trusted-users = [ topLevel.config.flake.meta.users.pol.username ];
+    };
 
     modules.homeManager.pol = {
       # Remove this part if no access to the private repository.

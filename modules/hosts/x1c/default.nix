@@ -75,6 +75,15 @@
 
     facter.reportPath = ./facter.json;
 
+    programs = {
+      noisetorch = {
+        enable = true;
+      };
+      projecteur = {
+        enable = true;
+      };
+    };
+
     services = {
       xserver = {
         xkb = {

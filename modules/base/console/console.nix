@@ -4,8 +4,11 @@
       programs.fish.enable = true;
     };
 
-    nixos.base = {
-      console.useXkbConfig = true;
-    };
+    nixos.base =
+      { pkgs, ... }:
+      {
+        console.useXkbConfig = true;
+        users.defaultUserShell = pkgs.fish;
+      };
   };
 }
