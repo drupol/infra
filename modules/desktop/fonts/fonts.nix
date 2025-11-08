@@ -7,6 +7,7 @@
           dina-font
           aporetic
           monaspace
+          victor-mono
         ];
 
         fonts.fontconfig = {
