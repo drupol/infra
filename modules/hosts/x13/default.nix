@@ -27,23 +27,10 @@
         # Users
         root
         pol
-        benix
       ]
       # Specific Home-Manager modules
       ++ [
         {
-          home-manager.users.benix = {
-            imports = with config.flake.modules.homeManager; [
-              base
-              desktop
-              dev
-              email
-              messaging
-              games
-              shell
-              benix
-            ];
-          };
           home-manager.users.pol = {
             imports = with config.flake.modules.homeManager; [
               base
