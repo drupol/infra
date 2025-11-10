@@ -18,7 +18,6 @@
         dev
         education
         facter
-        fwupd
         games
         shell
         sound

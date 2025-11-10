@@ -14,7 +14,6 @@
         desktop
         dev
         facter
-        fwupd
         shell
         sound
         vpn

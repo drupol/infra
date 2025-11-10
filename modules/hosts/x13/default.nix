@@ -18,7 +18,6 @@
         displaylink
         dev
         facter
-        fwupd
         games
         shell
         sound

@@ -44,6 +44,9 @@
               enable = true;
             };
           };
+          fwupd = {
+            enable = true;
+          };
         };
       };
 
