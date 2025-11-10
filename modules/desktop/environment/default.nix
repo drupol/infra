@@ -7,12 +7,24 @@
     nixos.desktop =
       { pkgs, ... }:
       {
+        programs.kdeconnect.enable = true;
+
         xdg = {
           portal = {
             enable = true;
             config.common.default = "kde";
             extraPortals = with pkgs; [ kdePackages.xdg-desktop-portal-kde ];
           };
+        };
+
+        networking.firewall = rec {
+          allowedTCPPortRanges = [
+            {
+              from = 1714;
+              to = 1764;
+            }
+          ];
+          allowedUDPPortRanges = allowedTCPPortRanges;
         };
 
         services = {
