@@ -53,6 +53,7 @@
             "mail.default_send_format" = 1; # plain text
             "mail.identity.default.archive_enabled" = true;
             "mail.identity.default.archive_keep_folder_structure" = true;
+            "mail.identity.default.auto_quote" = true;
             "mail.identity.default.compose_html" = false;
             "mail.identity.default.doCc" = true; # enable Cc field by default
             "mail.identity.default.protectSubject" = true;
@@ -63,7 +64,7 @@
             "mail.pane_config.dynamic" = 1; # Wide layout
             "mail.sanitize_date_header" = true;
             "mail.server.default.allow_utf8_accept" = true;
-            "mail.server.default.max_articles" = 1000;
+            "mail.server.default.max_articles" = 1000000;
             "mail.server.default.check_all_folders_for_new" = true;
             "mail.shell.checkDefaultClient" = false;
             "mail.show_headers" = 1;
@@ -80,9 +81,10 @@
 
             # Sorting
             # Sort them by the newest reply in thread.
-            "mailnews.sort_threads_by_root" = true;
+            "mailnews.sort_threads_by_root" = false;
             "mailnews.default_sort_order" = 2; # descending
             "mailnews.default_sort_type" = 18; # by date
+            "mailnews.default_view_flags" = 1; # Threaded view
 
             "mailnews.headers.showMessageId" = true;
             "mailnews.headers.showOrganization" = true;
