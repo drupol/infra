@@ -22,7 +22,6 @@
               ".." = "cd ..";
               "..." = "cd ../..";
               cat = "bat";
-              ls = "eza";
               grep = "rg";
             };
             functions = {

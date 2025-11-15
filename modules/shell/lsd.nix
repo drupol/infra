@@ -2,7 +2,7 @@
   flake.modules = {
     homeManager.shell = {
       programs = {
-        eza = {
+        lsd = {
           enable = true;
         };
       };
