@@ -91,6 +91,47 @@
           };
         };
 
+        powerdevil = {
+          general.pausePlayersOnSuspend = true;
+
+          AC = {
+            dimKeyboard.enable = true;
+            displayBrightness = 50;
+            keyboardBrightness = 30;
+            inhibitLidActionWhenExternalMonitorConnected = true;
+            powerProfile = "performance";
+            autoSuspend = {
+              idleTimeout = 1800;
+            };
+            turnOffDisplay = {
+              idleTimeout = 600;
+            };
+          };
+
+          battery = {
+            dimKeyboard.enable = true;
+            displayBrightness = 10;
+            keyboardBrightness = 0;
+            powerProfile = "powerSaving";
+            dimDisplay = {
+              enable = true;
+              idleTimeout = 60;
+            };
+            turnOffDisplay = {
+              idleTimeout = 120;
+            };
+            autoSuspend = {
+              action = "sleep";
+              idleTimeout = 140;
+            };
+          };
+
+          batteryLevels = {
+            lowLevel = 20;
+            criticalLevel = 5;
+          };
+        };
+
         configFile = {
           kdeglobals = {
             "KFileDialog Settings" = {
