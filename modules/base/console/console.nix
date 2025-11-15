@@ -1,10 +1,10 @@
 {
-  flake.modules = {
-    homeManager.base = {
+  unify.modules.base = {
+    home = {
       programs.fish.enable = true;
     };
 
-    nixos.base =
+    nixos =
       { pkgs, ... }:
       {
         programs.fish.enable = true;

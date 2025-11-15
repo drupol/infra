@@ -1,5 +1,5 @@
 {
-  flake.modules.nixos.docling =
+  unify.modules.docling.nixos =
     { pkgs, ... }:
     {
       services = {
