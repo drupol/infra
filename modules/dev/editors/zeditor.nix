@@ -82,14 +82,13 @@
               inline_completion_provider = "copilot";
             };
             format_on_save = "on";
-            hour_format = "hour24";
             icon_theme = {
               mode = "system";
               light = "Material Icon Theme";
               dark = "Material Icon Theme";
             };
             inlay_hints = {
-              enable = true;
+              enabled = true;
             };
             languages = {
               Markdown = { };
@@ -142,9 +141,7 @@
                 binary.path = lib.getExe pkgs.nixd;
               };
               pyright = {
-                binary = {
-                  path_lookup = pkgs.pyright;
-                };
+                binary.path = pkgs.pyright;
               };
               pylsp = {
                 settings = {
