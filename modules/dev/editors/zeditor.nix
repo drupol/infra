@@ -37,12 +37,11 @@
             "typst"
           ];
           userSettings = {
-            assistant = {
+            agent = {
               default_model = {
                 provider = "copilot_chat";
                 model = "gpt-4o";
               };
-              version = "2";
             };
             file_types = {
               Dockerfile = [ "*Containerfile*" ];
@@ -79,7 +78,7 @@
               ];
             };
             features = {
-              inline_completion_provider = "copilot";
+              edit_prediction_provider = "copilot";
             };
             format_on_save = "on";
             icon_theme = {
@@ -104,6 +103,7 @@
                     "--"
                   ];
                 };
+                show_edit_predictions = true;
               };
               Typst = {
                 formatter = {
@@ -111,6 +111,7 @@
                     name = "tinymist";
                   };
                 };
+                show_edit_predictions = true;
               };
               Python = {
                 language_servers = [
@@ -121,10 +122,10 @@
                 format_on_save = "on";
                 formatter = [
                   {
-                    code_actions = {
-                      "source.organizeImports.ruff" = true;
-                      "source.fixAll.ruff" = true;
-                    };
+                    code_action = "source.fixAll.ruff";
+                  }
+                  {
+                    code_action = "source.organizeImports.ruff";
                   }
                   {
                     language_server = {
@@ -132,7 +133,7 @@
                     };
                   }
                 ];
-                show_inline_completions = true;
+                show_edit_predictions = true;
               };
             };
             load_direnv = "direct";
