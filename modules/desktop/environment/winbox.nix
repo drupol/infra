@@ -8,10 +8,10 @@
           package = pkgs.winbox4;
           openFirewall = true;
         };
-      };
 
-    nixpkgs = {
-      config.allowUnfree = true;
-    };
+        nixpkgs = {
+          config.allowUnfree = true;
+        };
+      };
   };
 }

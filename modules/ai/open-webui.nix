@@ -1,10 +1,10 @@
 {
   flake.modules = {
-    nixpkgs = {
-      config.allowUnfree = true;
-    };
-
     nixos.ai = {
+      nixpkgs = {
+        config.allowUnfree = true;
+      };
+
       services = {
         open-webui = {
           enable = true;

@@ -22,15 +22,15 @@
           categories = [ "Game" ];
           terminal = false;
         };
+
+        nixpkgs = {
+          config.allowUnfree = true;
+        };
       };
 
     nixos.games = {
       # Only to play enemy territory with Jaymod
       hardware.graphics.enable32Bit = true;
-    };
-
-    nixpkgs = {
-      config.allowUnfree = true;
     };
   };
 }

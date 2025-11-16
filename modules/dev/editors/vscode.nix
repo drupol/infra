@@ -15,13 +15,9 @@
       { pkgs, inputs, ... }:
       {
         nixpkgs = {
-          overlays = [
-            (final: _prev: {
-              master = import inputs.nixpkgs-master {
-                inherit (final) config system;
-              };
-            })
-          ];
+          config = {
+            allowUnfree = true;
+          };
         };
 
         home.packages = with pkgs; [
@@ -280,9 +276,5 @@
           };
         };
       };
-
-    nixpkgs = {
-      config.allowUnfree = true;
-    };
   };
 }
