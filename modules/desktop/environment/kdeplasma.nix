@@ -126,6 +126,7 @@
                     "org.kde.plasma.clipboard"
                     "Yakuake"
                     "KGpg"
+                    "Wallet Manager"
                   ];
                   shown = [
                     "org.kde.plasma.bluetooth"
