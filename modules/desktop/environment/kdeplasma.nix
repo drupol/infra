@@ -220,7 +220,6 @@
                 "applications:ec-teams.desktop"
                 "applications:firefox.desktop"
                 "applications:google-protonmail.desktop"
-                "applications:umons-webmail.desktop"
                 "applications:dev.zed.Zed.desktop"
                 "applications:code.desktop"
                 "applications:signal.desktop"

@@ -18,7 +18,6 @@
           pkgs.local.chromium-ec-teams
           pkgs.local.chromium-meet
           pkgs.local.chromium-protonmail
-          pkgs.local.chromium-umons-webmail
           pkgs.local.chromium-umons-teams
           pkgs.signal-desktop
         ];
