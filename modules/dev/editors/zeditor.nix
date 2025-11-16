@@ -92,18 +92,14 @@
               enable = true;
             };
             languages = {
-              Markdown = {
-                format_on_save = "on";
-                preferred_line_length = 120;
-                soft_wrap = "preferred_line_length";
-              };
+              Markdown = { };
               Nix = {
                 language_servers = [
                   "nixd"
                   "!nil"
                 ];
                 formatter.external = {
-                  command = "${lib.getExe pkgs.nixfmt-rfc-style}";
+                  command = "${lib.getExe pkgs.nixfmt}";
                   arguments = [
                     "--quiet"
                     "--"
