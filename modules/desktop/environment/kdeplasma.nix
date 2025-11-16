@@ -95,6 +95,7 @@
                   General = {
                     fill = false;
                     launchers = [
+                      "applications:org.kde.konsole.desktop"
                       "applications:org.kde.dolphin.desktop"
                       "applications:firefox.desktop"
                       "applications:thunderbird.desktop"
