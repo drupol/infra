@@ -164,7 +164,13 @@
           wallpaper = ../../../files/home/pol/Pictures/Backgrounds/Starry_Nebula_219.png;
         };
 
-        # kwin
+        desktop = {
+          icons = {
+            arrangement = "leftToRight";
+            alignment = "left";
+          };
+        };
+
         shortcuts = {
           yakuake = {
             toggle-window-state = "Meta+Space";
@@ -213,25 +219,27 @@
         };
 
         configFile = {
-          kactivitymanagerd-statsrc =
-            let
-              appList = [
-                "applications:element.desktop"
-                "applications:ec-teams.desktop"
-                "applications:firefox.desktop"
-                "applications:google-protonmail.desktop"
-                "applications:dev.zed.Zed.desktop"
-                "applications:code.desktop"
-                "applications:signal.desktop"
-                "applications:thunderbird.desktop"
-                "applications:et-fr-beginner-xps.desktop"
-              ];
-            in
-            {
-              "Favorites-org.kde.plasma.kickoff.favorites.instance-3-global" = {
-                ordering = lib.concatStringsSep "," appList;
-              };
-            };
+          # Not working yet
+          # See: https://github.com/nix-community/plasma-manager/issues/539
+          # kactivitymanagerd-statsrc =
+          #   let
+          #     appList = [
+          #       "applications:element.desktop"
+          #       "applications:ec-teams.desktop"
+          #       "applications:firefox.desktop"
+          #       "applications:google-protonmail.desktop"
+          #       "applications:dev.zed.Zed.desktop"
+          #       "applications:code.desktop"
+          #       "applications:signal.desktop"
+          #       "applications:thunderbird.desktop"
+          #       "applications:et-fr-beginner-xps.desktop"
+          #     ];
+          #   in
+          #   {
+          #     "Favorites-org.kde.plasma.kickoff.favorites.instance-3-global" = {
+          #       ordering = lib.concatStringsSep "," appList;
+          #     };
+          #   };
 
           kdeglobals = {
             "KFileDialog Settings" = {
