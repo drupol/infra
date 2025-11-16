@@ -12,9 +12,9 @@
           };
         };
       };
-  };
 
-  nixpkgs.allowedUnfreePackages = [
-    "gh-copilot"
-  ];
+    nixpkgs = {
+      config.allowUnfree = true;
+    };
+  };
 }

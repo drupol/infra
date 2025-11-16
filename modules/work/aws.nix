@@ -1,13 +1,16 @@
 {
-  flake.modules.homeManager.work =
-    { pkgs, ... }:
-    {
-      home.packages = with pkgs; [
-        aws-workspaces
-      ];
-    };
+  flake.modules = {
+    homeManager.work =
+      { pkgs, ... }:
+      {
+        nixpkgs = {
+          config.allowUnfree = true;
+        };
 
-  nixpkgs.allowedUnfreePackages = [
-    "aws-workspaces"
-  ];
+        home.packages = with pkgs; [
+          aws-workspaces
+        ];
+      };
+  };
+
 }

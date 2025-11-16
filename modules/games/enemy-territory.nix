@@ -28,9 +28,9 @@
       # Only to play enemy territory with Jaymod
       hardware.graphics.enable32Bit = true;
     };
-  };
 
-  nixpkgs.allowedUnfreePackages = [
-    "etlegacy"
-  ];
+    nixpkgs = {
+      config.allowUnfree = true;
+    };
+  };
 }

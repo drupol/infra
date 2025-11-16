@@ -1,4 +1,4 @@
-{ inputs, ... }:
+{ inputs, lib, ... }:
 {
   flake.modules.homeManager.desktop =
     { pkgs, ... }:
@@ -133,6 +133,27 @@
         };
 
         configFile = {
+          kactivitymanagerd-statsrc =
+            let
+              appList = [
+                "applications:element.desktop"
+                "applications:ec-teams.desktop"
+                "applications:firefox.desktop"
+                "applications:google-protonmail.desktop"
+                "applications:umons-webmail.desktop"
+                "applications:dev.zed.Zed.desktop"
+                "applications:code.desktop"
+                "applications:signal.desktop"
+                "applications:thunderbird.desktop"
+                "applications:et-fr-beginner-xps.desktop"
+              ];
+            in
+            {
+              "Favorites-org.kde.plasma.kickoff.favorites.instance-3-global" = {
+                ordering = lib.concatStringsSep "," appList;
+              };
+            };
+
           kdeglobals = {
             "KFileDialog Settings" = {
               "Sort directories first" = true;

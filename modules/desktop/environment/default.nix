@@ -45,33 +45,20 @@
             };
           };
         };
+
+        # See https://github.com/NixOS/nixpkgs/issues/414909#issuecomment-3216038215
+        system.userActivationScripts = {
+          "restart-plasma" = ''
+            ${pkgs.xdg-utils}/bin/xdg-desktop-menu forceupdate
+          '';
+        };
+
       };
 
     homeManager.desktop =
+      { pkgs, ... }:
       {
-        pkgs,
-        lib,
-        config,
-        ...
-      }:
-      {
-        nixpkgs = {
-          config.allowUnfree = true;
-          overlays = [
-            inputs.self.overlays.default
-          ];
-        };
-
-        home = {
-          activation = {
-            # Remove ksycoca cache on activation
-            # So that KDE applications can pick up new .desktop files
-            # And it doesn't break my favorite applications shortcuts
-            nuke-ksycoca = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
-              rm -fv ${config.xdg.cacheHome}/ksycoca*
-            '';
-          };
-
+         home = {
           packages = with pkgs; [
             kdePackages.akonadi-search
             kdePackages.akregator

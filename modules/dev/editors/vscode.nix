@@ -280,19 +280,9 @@
           };
         };
       };
-  };
 
-  nixpkgs = {
-    allowedUnfreePackages = [
-      "vscode"
-      "vscode-extension-bmewburn-vscode-intelephense-client"
-      "vscode-extension-github-copilot"
-      "vscode-extension-github-copilot-chat"
-      "vscode-extension-MS-python-vscode-pylance"
-      "vscode-extension-ms-vscode-remote-remote-containers"
-      "vscode-extension-ms-vscode-remote-remote-ssh"
-      "vscode-extension-ms-vsliveshare-vsliveshare"
-      "vscode-extension-visualjj-visualjj"
-    ];
+    nixpkgs = {
+      config.allowUnfree = true;
+    };
   };
 }

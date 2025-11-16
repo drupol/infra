@@ -9,11 +9,9 @@
           openFirewall = true;
         };
       };
-  };
 
-  nixpkgs = {
-    allowedUnfreePackages = [
-      "winbox"
-    ];
+    nixpkgs = {
+      config.allowUnfree = true;
+    };
   };
 }

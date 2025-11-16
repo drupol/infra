@@ -82,11 +82,7 @@ toplevel: {
       boot.kernelPackages = lib.mkForce pkgs.linuxPackages_6_12;
 
       nixpkgs.config.nvidia.acceptLicense = true;
+      nixpkgs.config.allowUnfree = true;
     };
 
-  nixpkgs.allowedUnfreePackages = [
-    "nvidia-x11-390"
-    "nvidia-x11"
-    "nvidia-settings"
-  ];
 }
