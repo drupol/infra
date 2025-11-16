@@ -1,6 +1,6 @@
 {
-  flake.modules = {
-    nixos.displaylink = {
+  unify.modules.work = {
+    nixos = {
       services = {
         xserver = {
           videoDrivers = [ "displaylink" ];

@@ -20,7 +20,6 @@
         vpn
 
         # Users
-        root
         pol
       ]
       # Specific Home-Manager modules

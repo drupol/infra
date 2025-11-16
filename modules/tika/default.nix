@@ -1,5 +1,5 @@
 {
-  flake.modules.nixos.tika = {
+  unify.modules.tika.nixos = {
     services = {
       tika = {
         enable = true;

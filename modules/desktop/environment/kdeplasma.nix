@@ -1,6 +1,6 @@
 { inputs, lib, ... }:
 {
-  flake.modules.homeManager.desktop =
+  unify.modules.desktop.home =
     { pkgs, ... }:
     {
       imports = [
