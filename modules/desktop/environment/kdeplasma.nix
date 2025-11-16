@@ -298,11 +298,15 @@
           };
 
           yakuakerc = {
+            Dialogs = {
+              FirstRun = false;
+            };
             Window = {
-              KeepAbove = "false";
-              KeepOpen = "true";
+              DynamicTabTitles = true;
+              KeepAbove = false;
+              KeepOpen = true;
 
-              ToggleToFocus = "false";
+              ToggleToFocus = false;
 
               Height = 90;
               Width = 100;
