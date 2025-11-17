@@ -23,6 +23,14 @@
           terminal = false;
         };
 
+        xdg.desktopEntries.et-fr-chti-clan = {
+          name = "Enemy Territory @ Chti Clan";
+          exec = "${lib.getExe pkgs.etlegacy} +connect 92.158.15.163:27960";
+          icon = "etl";
+          categories = [ "Game" ];
+          terminal = false;
+        };
+
         nixpkgs = {
           config.allowUnfree = true;
         };
