@@ -12,7 +12,7 @@
     };
 
     homeManager.dev =
-      { pkgs, inputs, ... }:
+      { pkgs, ... }:
       {
         nixpkgs = {
           config = {
@@ -48,19 +48,11 @@
 
                 pkgs.vscode-extensions.github.copilot
                 pkgs.vscode-extensions.github.copilot-chat
-
                 pkgs.vscode-extensions.github.github-vscode-theme
                 pkgs.vscode-extensions.github.vscode-pull-request-github
                 pkgs.vscode-extensions.golang.go
                 # Customized to minimize dependencies, avoiding downloading 605MB of rarely used resources.
-                (
-                  let
-                    plantuml = ((import inputs.lazy-apps).mkLazyApps { inherit pkgs; }).lazy-app.override {
-                      pkg = pkgs.plantuml;
-                    };
-                  in
-                  pkgs.vscode-extensions.jebbs.plantuml.override { inherit plantuml; }
-                )
+                pkgs.vscode-extensions.jebbs.plantuml
                 pkgs.vscode-extensions.jnoortheen.nix-ide
                 pkgs.vscode-extensions.mkhl.direnv
                 pkgs.vscode-extensions.mongodb.mongodb-vscode

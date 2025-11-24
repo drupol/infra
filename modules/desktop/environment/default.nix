@@ -1,8 +1,4 @@
 {
-  inputs,
-  ...
-}:
-{
   flake.modules = {
     nixos.desktop =
       { pkgs, ... }:
@@ -58,7 +54,7 @@
     homeManager.desktop =
       { pkgs, ... }:
       {
-         home = {
+        home = {
           packages = with pkgs; [
             kdePackages.akonadi-search
             kdePackages.akregator

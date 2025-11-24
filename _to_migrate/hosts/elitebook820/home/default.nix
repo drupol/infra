@@ -1,4 +1,3 @@
-
 {
   shell.enable = true;
   thunderbird.enable = true;

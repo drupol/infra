@@ -1,4 +1,3 @@
-
 {
   services.caddy.virtualHosts."pi-hole.router.lan".extraConfig = ''
     tls internal
