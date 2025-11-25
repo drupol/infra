@@ -7,9 +7,17 @@
     nixos.base =
       { pkgs, ... }:
       {
-        programs.fish.enable = true;
-        console.useXkbConfig = true;
         users.defaultUserShell = pkgs.fish;
+        programs.fish.enable = true;
+
+        console = {
+          earlySetup = true;
+          font = "ter-124b";
+          useXkbConfig = true;
+          packages = with pkgs; [
+            terminus_font
+          ];
+        };
       };
   };
 }
