@@ -9,7 +9,7 @@
     { self', ... }:
     {
       treefmt = {
-        projectRootFile = "flake.nix";
+        projectRootFile = "unflake.nix";
         programs = {
           deadnix.enable = true;
           jsonfmt.enable = true;
