@@ -1,3 +1,4 @@
 /.direnv/
 /private.pem
 .pre-commit-config.yaml
+result
