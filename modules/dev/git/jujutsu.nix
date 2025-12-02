@@ -15,7 +15,10 @@ topLevel: {
                 watchman.register-snapshot-trigger = true;
               };
 
-              snapshot.max-new-file-size = "15M";
+              snapshot = {
+                auto-update-stale = true;
+                max-new-file-size = "15M";
+              };
 
               user = {
                 inherit (topLevel.config.flake.meta.users.${config.home.username}) name;
@@ -29,6 +32,7 @@ topLevel: {
                 pager = ":builtin";
                 show-cryptographic-signatures = true;
               };
+
               git = {
                 private-commits = "description(glob:'wip:*') | description(glob:'private:*')";
                 auto-local-bookmark = true;
@@ -37,6 +41,7 @@ topLevel: {
                 ];
                 write-change-id-header = true;
               };
+
               revset-aliases = {
                 "immutable_heads()" = "trunk() | tags() | remote_bookmarks(remote=origin)";
                 "closest_bookmark(to)" = "heads(::to & bookmarks())";
@@ -56,6 +61,7 @@ topLevel: {
                 "open(n)" = "stack(trunk().. & mine(), n)";
                 "why_immutable(r)" = "(r & immutable()) | roots(r:: & immutable_heads())";
               };
+
               revsets = {
                 log = ''
                   none()
