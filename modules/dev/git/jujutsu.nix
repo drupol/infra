@@ -15,10 +15,7 @@ topLevel: {
                 watchman.register-snapshot-trigger = true;
               };
 
-              snapshot = {
-                auto-update-stale = true;
-                max-new-file-size = "15M";
-              };
+              snapshot.max-new-file-size = "15M";
 
               user = {
                 inherit (topLevel.config.flake.meta.users.${config.home.username}) name;
@@ -40,14 +37,12 @@ topLevel: {
                 ];
                 write-change-id-header = true;
               };
-              # Sources:
-              # https://github.com/bryceberger/config/blob/38c6caf0823517b5423b2ca2a25f7fd79d445e0e/home/jj/config.toml
-              # https://github.com/thoughtpolice/a/blob/canon/tilde/aseipp/dotfiles/jj/config.toml
               revset-aliases = {
-                "immutable_heads()" = "present(trunk()) | untracked_remote_bookmarks() | tags()";
+                "immutable_heads()" = "trunk() | tags() | remote_bookmarks(remote=origin)";
                 "closest_bookmark(to)" = "heads(::to & bookmarks())";
                 "closest_pushable(to)" =
                   "heads(::to & mutable() & ~description(exact:\"\") & (~empty() | merges()))";
+                # Source: https://github.com/bryceberger/config/blob/38c6caf0823517b5423b2ca2a25f7fd79d445e0e/home/jj/config.toml
                 "mine()" = "author(exact:'@name@') | author(exact:'@email@')";
                 "wip()" = "description(glob:'wip:*')";
                 "private()" = "description(glob:'private:*')";
@@ -60,28 +55,18 @@ topLevel: {
                 "open()" = "stack(trunk().. & mine(), 2)";
                 "open(n)" = "stack(trunk().. & mine(), n)";
                 "why_immutable(r)" = "(r & immutable()) | roots(r:: & immutable_heads())";
-                at = "@";
-                "user(x)" = "author(x) | committer(x)";
-                "megamerge()" = "coalesce(present(megamerge), reachable(stack(), merges()))";
               };
               revsets = {
-                # By default, show all my current stacks of work.
-                log = "stack(mine() | @) | trunk() | @";
-                log-graph-prioritize = "coalesce(megamerge(), trunk())";
-                fix = "stack(@, 1)";
-
-                # Keeping this here for reference in case of the new log revset
-                # is too slow.
-                # log = ''
-                #   none()
-                #     | base_point(@)
-                #     | ancestors(@, 10) & trunk()..@
-                #     | trunk()
-                #     | bookmarks()
-                #     | mutable() & visible_heads()
-                #     | fork_point(mutable() & visible_heads())
-                #     | (mutable() & merges())-
-                # '';
+                log = ''
+                  none()
+                    | base_point(@)
+                    | ancestors(@, 10) & trunk()..@
+                    | trunk()
+                    | bookmarks()
+                    | mutable() & visible_heads()
+                    | fork_point(mutable() & visible_heads())
+                    | (mutable() & merges())-
+                '';
                 short-prefixes = "stack(@)";
               };
 
@@ -211,7 +196,6 @@ topLevel: {
               };
 
               aliases = {
-                jj = [ ];
                 tug = [
                   "bookmark"
                   "move"
