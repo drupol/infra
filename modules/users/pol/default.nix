@@ -26,6 +26,7 @@ topLevel@{
         createHome = true;
         extraGroups = [
           "audio"
+          "dialout" # Or else: Permission denied: ‘/dev/ttyUSB0’
           "input"
           "networkmanager"
           "sound"
