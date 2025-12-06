@@ -31,6 +31,7 @@ topLevel: {
                 graph.style = "square";
                 pager = ":builtin";
                 show-cryptographic-signatures = true;
+                revsets-use-glob-by-default = true;
               };
 
               git = {
