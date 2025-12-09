@@ -95,7 +95,21 @@
       fprintd = {
         enable = true;
       };
+      logind = {
+        settings.Login = {
+          # Only suspend on lid closed when laptop is disconnected
+          HandleLidSwitch = "ignore";
+          HandleLidSwitchDocked = "ignore";
+          HandleLidSwitchExternalPower = "lock";
+        };
+      };
     };
+
+    # To share ethernet connection
+    networking.firewall.allowedUDPPorts = [
+      53
+      67
+    ];
 
     disko.devices = {
       disk.ssd = {
