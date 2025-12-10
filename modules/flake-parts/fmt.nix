@@ -1,4 +1,9 @@
-{ inputs, lib, ... }:
+{
+  inputs,
+  lib,
+  config,
+  ...
+}:
 {
   imports = [
     inputs.treefmt-nix.flakeModule
@@ -6,10 +11,11 @@
   ];
 
   perSystem =
-    { self', ... }:
+    { system, ... }:
     {
       treefmt = {
         projectRootFile = "unflake.nix";
+        projectRoot = ../..;
         programs = {
           deadnix.enable = true;
           jsonfmt.enable = true;
@@ -26,7 +32,7 @@
 
       pre-commit.settings.hooks.nix-fmt = {
         enable = true;
-        entry = lib.getExe self'.formatter;
+        entry = lib.getExe config.flake.formatter.${system};
       };
     };
 }

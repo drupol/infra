@@ -6,7 +6,7 @@
 
   deploy-rs.url = "github:serokell/deploy-rs";
   disko.url = "github:nix-community/disko";
-  flake-parts.url = "github:hercules-ci/flake-parts";
+  falake.url = "git+https://codeberg.org/FrdrCkII/falake.git";
   git-hooks.url = "github:cachix/git-hooks.nix";
   home-manager.url = "github:nix-community/home-manager";
   import-tree.url = "github:vic/import-tree";
