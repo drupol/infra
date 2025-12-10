@@ -43,7 +43,7 @@ topLevel@{
     modules.homeManager.pol = {
       # Remove this part if no access to the private repository.
       imports = [
-        inputs.infra-private.homeModules.pol
+        (if inputs ? infra-private then inputs.infra-private.homeModules.pol else { })
       ];
 
       home.file = {
