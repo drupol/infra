@@ -1,6 +1,7 @@
 {
   config,
   inputs,
+  lib,
   ...
 }:
 {
@@ -43,6 +44,15 @@
           };
         })
       ];
+    };
+
+    boot = {
+      loader = {
+        efi.canTouchEfiVariables = true;
+        systemd-boot.enable = true;
+        # systemd-boot and this tries to install bootloader, disable this
+        generic-extlinux-compatible.enable = lib.mkForce false;
+      };
     };
 
     facter.reportPath = ./facter.json;
