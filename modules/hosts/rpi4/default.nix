@@ -44,14 +44,8 @@
       ];
     };
 
-    boot = {
-      loader = {
-        efi.canTouchEfiVariables = true;
-        systemd-boot.enable = true;
-        # systemd-boot and this tries to install bootloader, disable this
-        generic-extlinux-compatible.enable = lib.mkForce false;
-      };
-    };
+    boot.loader.grub.enable = false;
+    boot.loader.generic-extlinux-compatible.enable = true;
 
     facter.reportPath = ./facter.json;
 
