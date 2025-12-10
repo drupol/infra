@@ -12,9 +12,7 @@
         # Modules
         base
         bluetooth
-        desktop
         facter
-        fwupd
         openssh
         shell
         vpn
