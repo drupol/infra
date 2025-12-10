@@ -27,8 +27,6 @@ in
           modules = [
             module
             inputs.home-manager.nixosModules.home-manager
-          ]
-          ++ [
             {
               home-manager.extraSpecialArgs = specialArgs;
             }

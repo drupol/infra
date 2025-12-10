@@ -7,18 +7,20 @@
     homeManager.messaging =
       { pkgs, ... }:
       {
+
         nixpkgs.overlays = [
-          inputs.self.overlays.default
+          inputs.nix-webapps.overlays.lib
         ];
 
         home.packages = [
-          pkgs.local.chromium-discord
-          pkgs.local.chromium-element
-          pkgs.local.chromium-ec-element
-          pkgs.local.chromium-ec-teams
-          pkgs.local.chromium-meet
-          pkgs.local.chromium-protonmail
-          pkgs.local.chromium-umons-teams
+          # TODO: restore pkgs-by-name-for-flake-parts module and use it here.
+          (pkgs.callPackage ./../../pkgs/by-name/chromium-discord/package.nix { })
+          (pkgs.callPackage ./../../pkgs/by-name/chromium-element/package.nix { })
+          (pkgs.callPackage ./../../pkgs/by-name/chromium-ec-element/package.nix { })
+          (pkgs.callPackage ./../../pkgs/by-name/chromium-ec-teams/package.nix { })
+          (pkgs.callPackage ./../../pkgs/by-name/chromium-meet/package.nix { })
+          (pkgs.callPackage ./../../pkgs/by-name/chromium-protonmail/package.nix { })
+          (pkgs.callPackage ./../../pkgs/by-name/chromium-umons-teams/package.nix { })
           pkgs.signal-desktop
         ];
       };

@@ -1,3 +1,6 @@
-(import ./unflake.nix) (
-  inputs: inputs.flake-parts.lib.mkFlake { inherit inputs; } (inputs.import-tree ./modules)
-)
+let
+  outputs =
+    inputs:
+    (import inputs.falake).mkFalake inputs.nixpkgs.lib { inherit inputs; } (inputs.import-tree ./modules);
+in
+(import ./unflake.nix) outputs
