@@ -4,38 +4,13 @@
   ...
 }:
 {
-  imports = [
-    inputs.pkgs-by-name-for-flake-parts.flakeModule
-  ];
+  # imports = [
+  #   inputs.pkgs-by-name-for-flake-parts.flakeModule
+  # ];
 
-  perSystem =
-    { system, ... }:
-    {
-      _module.args.pkgs = import inputs.nixpkgs {
-        inherit system;
-        config = {
-          allowUnfreePredicate = _pkg: true;
-        };
-        overlays = [
-          (final: _prev: {
-            master = import inputs.nixpkgs-master {
-              inherit (final) config;
-              inherit system;
-            };
-          })
-          (final: _prev: {
-            unstable = import inputs.nixpkgs-unstable {
-              inherit (final) config;
-              inherit system;
-            };
-          })
-          inputs.nix-webapps.overlays.lib
-          # inputs.deploy-rs.overlays.default
-          # (self: super: { deploy-rs = { inherit (pkgs) deploy-rs; lib = super.deploy-rs.lib; }; })
-        ];
-      };
-      pkgsDirectory = ../../pkgs/by-name;
-    };
+  # Fix `nix flake show`
+  # or else: error: cannot look up '<nixpkgs>' in pure evaluation mode (use '--impure' to override)
+  nixpkgs= inputs.nixpkgs.sourceInfo.outPath;
 
   flake = {
     overlays.default =
