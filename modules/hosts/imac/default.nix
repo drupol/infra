@@ -3,7 +3,7 @@
   ...
 }:
 {
-  flake.modules.nixosConfigurations.imac =
+  flake.modules.nixos."hosts/imac" =
     { pkgs, ... }:
     {
       imports =

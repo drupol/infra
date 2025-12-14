@@ -4,7 +4,7 @@
   ...
 }:
 {
-  flake.modules.nixosConfigurations.rpi4 = {
+  flake.modules.nixos."hosts/rpi4" = {
     imports =
       with config.flake.modules.nixos;
       [

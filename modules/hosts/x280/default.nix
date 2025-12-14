@@ -94,7 +94,7 @@
       };
     };
 
-  flake.modules.nixosConfigurations.x280 =
+  flake.modules.nixos."hosts/x280" =
     { pkgs, lib, ... }:
     {
       imports =

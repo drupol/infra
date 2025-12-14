@@ -3,7 +3,7 @@
   ...
 }:
 {
-  flake.modules.nixosConfigurations.x260 = {
+  flake.modules.nixos."hosts/x260" = {
     imports =
       with config.flake.modules.nixos;
       [

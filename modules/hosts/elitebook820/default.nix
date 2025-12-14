@@ -3,7 +3,7 @@
   ...
 }:
 {
-  flake.modules.nixosConfigurations.elitebook820 = {
+  flake.modules.nixos."hosts/elitebook820" = {
     imports =
       with config.flake.modules.nixos;
       [
