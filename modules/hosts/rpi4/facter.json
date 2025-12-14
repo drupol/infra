@@ -7,10 +7,7 @@
       {
         "index": 8,
         "attached_to": 0,
-        "class_list": [
-          "pci",
-          "bridge"
-        ],
+        "class_list": ["pci", "bridge"],
         "bus_type": {
           "hex": "0004",
           "name": "PCI",
@@ -60,12 +57,8 @@
         },
         "driver": "pcieport",
         "driver_module": "pcieportdrv",
-        "drivers": [
-          "pcieport"
-        ],
-        "driver_modules": [
-          "pcieportdrv"
-        ],
+        "drivers": ["pcieport"],
+        "driver_modules": ["pcieportdrv"],
         "module_alias": "pci:v000014E4d00002711sv00000000sd00000000bc06sc04i00"
       }
     ],
@@ -76,13 +69,7 @@
         "family": 0,
         "model": 3,
         "stepping": 0,
-        "features": [
-          "fp",
-          "asimd",
-          "evtstrm",
-          "crc32",
-          "cpuid"
-        ],
+        "features": ["fp", "asimd", "evtstrm", "crc32", "cpuid"],
         "bogo": 108,
         "page_size": 4096,
         "physical_id": 0,
@@ -99,10 +86,7 @@
       {
         "index": 16,
         "attached_to": 14,
-        "class_list": [
-          "disk",
-          "block_device"
-        ],
+        "class_list": ["disk", "block_device"],
         "base_class": {
           "hex": "0106",
           "name": "Mass Storage Device",
@@ -140,20 +124,14 @@
           }
         ],
         "driver": "sdhci-iproc",
-        "drivers": [
-          "mmcblk",
-          "sdhci-iproc"
-        ]
+        "drivers": ["mmcblk", "sdhci-iproc"]
       }
     ],
     "hub": [
       {
         "index": 18,
         "attached_to": 7,
-        "class_list": [
-          "usb",
-          "hub"
-        ],
+        "class_list": ["usb", "hub"],
         "bus_type": {
           "hex": "0086",
           "name": "USB",
@@ -226,21 +204,14 @@
         "hotplug": "usb",
         "driver": "hub",
         "driver_module": "usbcore",
-        "drivers": [
-          "hub"
-        ],
-        "driver_modules": [
-          "usbcore"
-        ],
+        "drivers": ["hub"],
+        "driver_modules": ["usbcore"],
         "module_alias": "usb:v1D6Bp0002d0612dc09dsc00dp01ic09isc00ip00in00"
       },
       {
         "index": 20,
         "attached_to": 18,
-        "class_list": [
-          "usb",
-          "hub"
-        ],
+        "class_list": ["usb", "hub"],
         "bus_type": {
           "hex": "0086",
           "name": "USB",
@@ -311,21 +282,14 @@
         "hotplug": "usb",
         "driver": "hub",
         "driver_module": "usbcore",
-        "drivers": [
-          "hub"
-        ],
-        "driver_modules": [
-          "usbcore"
-        ],
+        "drivers": ["hub"],
+        "driver_modules": ["usbcore"],
         "module_alias": "usb:v2109p3431d0421dc09dsc00dp01ic09isc00ip00in00"
       },
       {
         "index": 21,
         "attached_to": 7,
-        "class_list": [
-          "usb",
-          "hub"
-        ],
+        "class_list": ["usb", "hub"],
         "bus_type": {
           "hex": "0086",
           "name": "USB",
@@ -388,12 +352,8 @@
         "hotplug": "usb",
         "driver": "hub",
         "driver_module": "usbcore",
-        "drivers": [
-          "hub"
-        ],
-        "driver_modules": [
-          "usbcore"
-        ],
+        "drivers": ["hub"],
+        "driver_modules": ["usbcore"],
         "module_alias": "usb:v1D6Bp0003d0612dc09dsc00dp03ic09isc00ip00in00"
       }
     ],
@@ -401,10 +361,7 @@
       {
         "index": 17,
         "attached_to": 20,
-        "class_list": [
-          "keyboard",
-          "usb"
-        ],
+        "class_list": ["keyboard", "usb"],
         "bus_type": {
           "hex": "0086",
           "name": "USB",
@@ -487,12 +444,8 @@
         "hotplug": "usb",
         "driver": "usbhid",
         "driver_module": "usbhid",
-        "drivers": [
-          "usbhid"
-        ],
-        "driver_modules": [
-          "usbhid"
-        ],
+        "drivers": ["usbhid"],
+        "driver_modules": ["usbhid"],
         "driver_info": {
           "type": "keyboard",
           "xkb_rules": "xfree86"
@@ -504,9 +457,7 @@
       {
         "index": 6,
         "attached_to": 0,
-        "class_list": [
-          "memory"
-        ],
+        "class_list": ["memory"],
         "base_class": {
           "hex": "0101",
           "name": "Internally Used Class",
@@ -530,9 +481,7 @@
       {
         "index": 14,
         "attached_to": 0,
-        "class_list": [
-          "mmc_controller"
-        ],
+        "class_list": ["mmc_controller"],
         "bus_type": {
           "hex": "0093",
           "name": "MMC",
@@ -553,16 +502,12 @@
         "sysfs_id": "/devices/platform/emmc2bus/fe340000.mmc/mmc_host/mmc1/mmc1:aaaa",
         "sysfs_bus_id": "mmc1:aaaa",
         "driver": "mmcblk",
-        "drivers": [
-          "mmcblk"
-        ]
+        "drivers": ["mmcblk"]
       },
       {
         "index": 15,
         "attached_to": 0,
-        "class_list": [
-          "mmc_controller"
-        ],
+        "class_list": ["mmc_controller"],
         "bus_type": {
           "hex": "0093",
           "name": "MMC",
@@ -588,10 +533,7 @@
       {
         "index": 10,
         "attached_to": 0,
-        "class_list": [
-          "network_controller",
-          "wlan_card"
-        ],
+        "class_list": ["network_controller", "wlan_card"],
         "bus_type": {
           "hex": "0094",
           "name": "SDIO",
@@ -624,9 +566,7 @@
         "model": "Broadcom BCM43438 combo WLAN and Bluetooth Low Energy (BLE)",
         "sysfs_id": "/devices/platform/soc/fe300000.mmc/mmc_host/mmc0/mmc0:0001/mmc0:0001:1",
         "sysfs_bus_id": "mmc0:0001:1",
-        "unix_device_names": [
-          "wlan0"
-        ],
+        "unix_device_names": ["wlan0"],
         "resources": [
           {
             "type": "hwaddr",
@@ -706,38 +646,20 @@
               "5.72",
               "5.745"
             ],
-            "auth_modes": [
-              "open",
-              "sharedkey",
-              "wpa-psk",
-              "wpa-eap"
-            ],
-            "enc_modes": [
-              "WEP40",
-              "WEP104",
-              "TKIP",
-              "CCMP"
-            ]
+            "auth_modes": ["open", "sharedkey", "wpa-psk", "wpa-eap"],
+            "enc_modes": ["WEP40", "WEP104", "TKIP", "CCMP"]
           }
         ],
         "driver": "brcmfmac",
         "driver_module": "brcmfmac",
-        "drivers": [
-          "brcmfmac"
-        ],
-        "driver_modules": [
-          "brcmfmac",
-          "brcmfmac",
-          "brcmfmac"
-        ],
+        "drivers": ["brcmfmac"],
+        "driver_modules": ["brcmfmac", "brcmfmac", "brcmfmac"],
         "module_alias": "sdio:c00v02D0dA9A6"
       },
       {
         "index": 12,
         "attached_to": 0,
-        "class_list": [
-          "network_controller"
-        ],
+        "class_list": ["network_controller"],
         "base_class": {
           "hex": "0002",
           "name": "Network controller",
@@ -756,9 +678,7 @@
         "model": "ARM Ethernet controller",
         "sysfs_id": "/devices/platform/scb/fd580000.ethernet",
         "sysfs_bus_id": "fd580000.ethernet",
-        "unix_device_names": [
-          "end0"
-        ],
+        "unix_device_names": ["end0"],
         "resources": [
           {
             "type": "hwaddr",
@@ -771,12 +691,8 @@
         ],
         "driver": "bcmgenet",
         "driver_module": "genet",
-        "drivers": [
-          "bcmgenet"
-        ],
-        "driver_modules": [
-          "genet"
-        ],
+        "drivers": ["bcmgenet"],
+        "driver_modules": ["genet"],
         "module_alias": "of:NethernetT(null)Cbrcm,bcm2711-genet-v5"
       }
     ],
@@ -784,9 +700,7 @@
       {
         "index": 22,
         "attached_to": 12,
-        "class_list": [
-          "network_interface"
-        ],
+        "class_list": ["network_interface"],
         "base_class": {
           "hex": "0107",
           "name": "Network Interface",
@@ -800,9 +714,7 @@
         "model": "Ethernet network interface",
         "sysfs_id": "/class/net/end0",
         "sysfs_device_link": "/devices/platform/scb/fd580000.ethernet",
-        "unix_device_names": [
-          "end0"
-        ],
+        "unix_device_names": ["end0"],
         "resources": [
           {
             "type": "hwaddr",
@@ -815,19 +727,13 @@
         ],
         "driver": "bcmgenet",
         "driver_module": "genet",
-        "drivers": [
-          "bcmgenet"
-        ],
-        "driver_modules": [
-          "genet"
-        ]
+        "drivers": ["bcmgenet"],
+        "driver_modules": ["genet"]
       },
       {
         "index": 23,
         "attached_to": 0,
-        "class_list": [
-          "network_interface"
-        ],
+        "class_list": ["network_interface"],
         "base_class": {
           "hex": "0107",
           "name": "Network Interface",
@@ -840,16 +746,12 @@
         },
         "model": "Loopback network interface",
         "sysfs_id": "/class/net/lo",
-        "unix_device_names": [
-          "lo"
-        ]
+        "unix_device_names": ["lo"]
       },
       {
         "index": 24,
         "attached_to": 10,
-        "class_list": [
-          "network_interface"
-        ],
+        "class_list": ["network_interface"],
         "base_class": {
           "hex": "0107",
           "name": "Network Interface",
@@ -863,9 +765,7 @@
         "model": "WLAN network interface",
         "sysfs_id": "/class/net/wlan0",
         "sysfs_device_link": "/devices/platform/soc/fe300000.mmc/mmc_host/mmc0/mmc0:0001/mmc0:0001:1",
-        "unix_device_names": [
-          "wlan0"
-        ],
+        "unix_device_names": ["wlan0"],
         "resources": [
           {
             "type": "hwaddr",
@@ -878,14 +778,8 @@
         ],
         "driver": "brcmfmac",
         "driver_module": "brcmfmac",
-        "drivers": [
-          "brcmfmac"
-        ],
-        "driver_modules": [
-          "brcmfmac",
-          "brcmfmac",
-          "brcmfmac"
-        ]
+        "drivers": ["brcmfmac"],
+        "driver_modules": ["brcmfmac", "brcmfmac", "brcmfmac"]
       }
     ],
     "system": {},
@@ -893,9 +787,7 @@
       {
         "index": 9,
         "attached_to": 0,
-        "class_list": [
-          "unknown"
-        ],
+        "class_list": ["unknown"],
         "bus_type": {
           "hex": "0094",
           "name": "SDIO",
@@ -933,9 +825,7 @@
       {
         "index": 11,
         "attached_to": 0,
-        "class_list": [
-          "unknown"
-        ],
+        "class_list": ["unknown"],
         "bus_type": {
           "hex": "0094",
           "name": "SDIO",
@@ -970,14 +860,8 @@
         "sysfs_bus_id": "mmc0:0001:2",
         "driver": "brcmfmac",
         "driver_module": "brcmfmac",
-        "drivers": [
-          "brcmfmac"
-        ],
-        "driver_modules": [
-          "brcmfmac",
-          "brcmfmac",
-          "brcmfmac"
-        ],
+        "drivers": ["brcmfmac"],
+        "driver_modules": ["brcmfmac", "brcmfmac", "brcmfmac"],
         "module_alias": "sdio:c00v02D0dA9A6"
       }
     ],
@@ -985,10 +869,7 @@
       {
         "index": 19,
         "attached_to": 20,
-        "class_list": [
-          "usb",
-          "unknown"
-        ],
+        "class_list": ["usb", "unknown"],
         "bus_type": {
           "hex": "0086",
           "name": "USB",
@@ -1071,12 +952,8 @@
         "hotplug": "usb",
         "driver": "usbhid",
         "driver_module": "usbhid",
-        "drivers": [
-          "usbhid"
-        ],
-        "driver_modules": [
-          "usbhid"
-        ],
+        "drivers": ["usbhid"],
+        "driver_modules": ["usbhid"],
         "module_alias": "usb:v1A2Cp0E24d0110dc00dsc00dp00ic03isc00ip00in01"
       }
     ],
@@ -1084,10 +961,7 @@
       {
         "index": 7,
         "attached_to": 8,
-        "class_list": [
-          "usb_controller",
-          "pci"
-        ],
+        "class_list": ["usb_controller", "pci"],
         "bus_type": {
           "hex": "0004",
           "name": "PCI",
@@ -1143,20 +1017,14 @@
         },
         "driver": "xhci_hcd",
         "driver_module": "xhci_pci",
-        "drivers": [
-          "xhci_hcd"
-        ],
-        "driver_modules": [
-          "xhci_pci"
-        ],
+        "drivers": ["xhci_hcd"],
+        "driver_modules": ["xhci_pci"],
         "module_alias": "pci:v00001106d00003483sv00001106sd00003483bc0Csc03i30"
       },
       {
         "index": 13,
         "attached_to": 0,
-        "class_list": [
-          "usb_controller"
-        ],
+        "class_list": ["usb_controller"],
         "base_class": {
           "hex": "000c",
           "name": "Serial bus controller",
@@ -1181,22 +1049,14 @@
         "sysfs_id": "/devices/platform/soc/fe980000.usb",
         "sysfs_bus_id": "fe980000.usb",
         "driver": "dwc2",
-        "drivers": [
-          "dwc2"
-        ],
+        "drivers": ["dwc2"],
         "driver_info": {
           "type": "module",
-          "db_entry_0": [
-            "uhci-hcd"
-          ],
+          "db_entry_0": ["uhci-hcd"],
           "active": false,
           "modprobe": true,
-          "names": [
-            "uhci-hcd"
-          ],
-          "module_args": [
-            ""
-          ],
+          "names": ["uhci-hcd"],
+          "module_args": [""],
           "conf": ""
         },
         "module_alias": "of:NusbT(null)Cbrcm,bcm2835-usb"
