@@ -1,5 +1,5 @@
 toplevel: {
-  flake.modules.nixos."hosts/xeonixos" =
+  flake.modules.nixosConfigurations.xeonixos =
     {
       lib,
       pkgs,

@@ -4,7 +4,7 @@
   ...
 }:
 {
-  flake.modules.nixos."hosts/x1c" = {
+  flake.modules.nixosConfigurations.x1c = {
     imports =
       with config.flake.modules.nixos;
       [

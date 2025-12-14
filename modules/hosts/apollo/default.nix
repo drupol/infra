@@ -3,7 +3,7 @@
   ...
 }:
 {
-  flake.modules.nixos."hosts/apollo" =
+  flake.modules.nixosConfigurations.apollo =
     { lib, pkgs, ... }:
     {
       imports =
