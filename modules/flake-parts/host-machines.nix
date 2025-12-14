@@ -6,10 +6,10 @@
 }:
 let
   prefix = "hosts/";
-  collectHostsModules = modules: lib.filterAttrs (name: _: lib.hasPrefix prefix name) modules;
 in
 {
-  flake.nixosConfigurations = lib.pipe (collectHostsModules config.flake.modules.nixos) [
+  flake.nixosConfigurations = lib.pipe config.flake.modules.nixos [
+    (lib.filterAttrs (name: _: lib.hasPrefix prefix name))
     (lib.mapAttrs' (
       name: module:
       let
@@ -27,8 +27,6 @@ in
           modules = [
             module
             inputs.home-manager.nixosModules.home-manager
-          ]
-          ++ [
             {
               home-manager.extraSpecialArgs = specialArgs;
             }
