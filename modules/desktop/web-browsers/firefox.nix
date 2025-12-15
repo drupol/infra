@@ -36,7 +36,6 @@
                 pkgs.nur.repos.rycee.firefox-addons.french-dictionary
                 pkgs.nur.repos.rycee.firefox-addons.istilldontcareaboutcookies
                 pkgs.nur.repos.rycee.firefox-addons.kristofferhagen-nord-theme
-                pkgs.nur.repos.rycee.firefox-addons.languagetool
                 pkgs.nur.repos.rycee.firefox-addons.multi-account-containers
                 pkgs.nur.repos.rycee.firefox-addons.privacy-badger
                 pkgs.nur.repos.rycee.firefox-addons.refined-saved-replies
