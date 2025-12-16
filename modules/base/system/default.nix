@@ -1,7 +1,7 @@
 {
   flake.modules =
     let
-      stateVersion = "25.05";
+      stateVersion = "25.11";
     in
     {
       homeManager.base = {
@@ -19,9 +19,6 @@
           # Before changing this value read the documentation for this option
           # (e.g. man configuration.nix or on https://search.nixos.org/options?&show=system.stateVersion&from=0&size=50&sort=relevance&type=packages&query=stateVersion).
           inherit stateVersion;
-
-          # See https://github.com/NixOS/nixpkgs/pull/415640
-          rebuild.enableNg = true;
         };
       };
     };
