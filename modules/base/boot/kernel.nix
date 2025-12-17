@@ -1,7 +1,7 @@
 {
   flake.modules.nixos.base =
-    { pkgs, ... }:
+    { pkgs, lib, ... }:
     {
-      boot.kernelPackages = pkgs.linuxPackages_6_17;
+      boot.kernelPackages = lib.mkDefault pkgs.linuxPackages_latest;
     };
 }
