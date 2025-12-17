@@ -15,7 +15,7 @@ in
       let
         specialArgs = {
           inherit inputs;
-          hostConfig = module // {
+          hostConfig = {
             name = lib.removePrefix prefix name;
           };
         };
