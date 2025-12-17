@@ -13,6 +13,7 @@
         bluetooth
         facter
         openssh
+        rpi4-sdimage
         shell
         vpn
 
@@ -40,9 +41,20 @@
             inherit (final) config system;
           };
         })
+        # Disable U-Boot "Hit any key" prompt. Default bootdelay=2 waits for keypress.
+        # -2 skips autoboot delay entirely. Combined with boot.loader.timeout=0
+        # for extlinux menu, this gives instant boot on headless systems.
+        (final: prev: {
+          ubootRaspberryPi4_64bit = prev.ubootRaspberryPi4_64bit.override {
+            extraConfig = ''
+              CONFIG_BOOTDELAY=-2
+            '';
+          };
+        })
       ];
     };
 
+    boot.loader.timeout = 0;
     boot.loader.grub.enable = false;
     boot.loader.generic-extlinux-compatible.enable = true;
 
