@@ -63,6 +63,7 @@
             kdePackages.akregator
             kdePackages.ark
             kdePackages.filelight
+            kdePackages.isoimagewriter
             kdePackages.kate
             kdePackages.kcalc
             kdePackages.kdialog
