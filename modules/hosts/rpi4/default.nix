@@ -82,7 +82,7 @@
             name = "spi";
             dtboFile = pkgs.fetchurl {
               url = "https://github.com/raspberrypi/firmware/blob/master/boot/overlays/spi0-0cs.dtbo";
-              hash = "";
+              hash = "sha256-wAInYGtQUWuWEzrHlXKC7kyQpg3ZiZZg1edUaDYMh34=";
             };
           }
         ];
