@@ -73,21 +73,6 @@
         };
       };
 
-      hardware.raspberry-pi."4".apply-overlays-dtmerge.enable = true;
-      hardware.deviceTree = {
-        enable = true;
-        filter = "*-rpi-*.dtb";
-        overlays = [
-          {
-            name = "spi";
-            dtboFile = pkgs.fetchurl {
-              url = "https://github.com/raspberrypi/firmware/blob/master/boot/overlays/spi0-0cs.dtbo";
-              hash = "sha256-wAInYGtQUWuWEzrHlXKC7kyQpg3ZiZZg1edUaDYMh34=";
-            };
-          }
-        ];
-      };
-
       users.groups.spi = { };
 
       services.udev.extraRules = ''
