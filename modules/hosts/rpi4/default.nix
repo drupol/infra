@@ -44,7 +44,7 @@
         # Disable U-Boot "Hit any key" prompt. Default bootdelay=2 waits for keypress.
         # -2 skips autoboot delay entirely. Combined with boot.loader.timeout=0
         # for extlinux menu, this gives instant boot on headless systems.
-        (final: prev: {
+        (_final: prev: {
           ubootRaspberryPi4_64bit = prev.ubootRaspberryPi4_64bit.override {
             extraConfig = ''
               CONFIG_BOOTDELAY=-2
