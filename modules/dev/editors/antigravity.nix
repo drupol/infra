@@ -1,8 +1,4 @@
 {
-  lib,
-  ...
-}:
-{
   flake.modules = {
     nixos.dev = {
       services = {
