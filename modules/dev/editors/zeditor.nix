@@ -1,5 +1,4 @@
 {
-  inputs,
   lib,
   ...
 }:
@@ -8,14 +7,6 @@
     homeManager.dev =
       { pkgs, ... }:
       {
-        nixpkgs.overlays = [
-          (final: _prev: {
-            unstable = import inputs.nixpkgs-unstable {
-              inherit (final) config system;
-            };
-          })
-        ];
-
         programs.zed-editor = {
           enable = true;
           extensions = [
@@ -30,29 +21,13 @@
             "material-icon-theme"
             "nix"
             "plantuml"
-            "pylsp"
             "ruff"
             "toml"
+            "ty"
             "typos"
             "typst"
           ];
           userSettings = {
-            agent = {
-              default_model = {
-                provider = "copilot_chat";
-                model = "gpt-4o";
-              };
-            };
-            file_types = {
-              Dockerfile = [ "*Containerfile*" ];
-            };
-            # assistant = {
-            #   default_model = {
-            #     provider = "zed.dev";
-            #     model = "claude-3-5-sonnet-latest";
-            #   };
-            #   version = "2";
-            # };
             auto_update = false;
             autosave = {
               after_delay = {
@@ -79,6 +54,27 @@
             };
             features = {
               edit_prediction_provider = "copilot";
+            };
+            file_scan_exclusions = [
+              "_build"
+              ".vscode"
+              ".lexical"
+              ".elixir_ls"
+              ".coverage"
+              ".venv"
+              ".pytest_cache/"
+              ".mypy_cache/"
+              ".ruff_cache"
+              ".git/"
+              ".idea"
+              "**/__pycache__"
+              "node_modules"
+              "test_db.sql"
+              ".ropeproject"
+              ".expert"
+            ];
+            file_types = {
+              Dockerfile = [ "*Containerfile*" ];
             };
             format_on_save = "on";
             icon_theme = {
@@ -115,8 +111,7 @@
               };
               Python = {
                 language_servers = [
-                  "pylsp"
-                  "pyright"
+                  "ty"
                   "ruff"
                 ];
                 format_on_save = "on";
@@ -141,23 +136,20 @@
               nixd = {
                 binary.path = lib.getExe pkgs.nixd;
               };
-              pyright = {
-                binary.path = pkgs.pyright;
-              };
-              pylsp = {
-                settings = {
-                  plugins = {
-                    pycodestyle = {
-                      enabled = false;
-                    };
-                    mypy = {
-                      enabled = true;
-                    };
-                  };
+              ruff = {
+                binary = {
+                  path = lib.getExe pkgs.ruff;
+                  arguments = [ "server" ];
                 };
               };
               tinymist = {
                 binary.path = lib.getExe pkgs.tinymist;
+              };
+              ty = {
+                binary = {
+                  path = lib.getExe pkgs.ty;
+                  arguments = [ "server" ];
+                };
               };
               typos = {
                 binary.path = lib.getExe pkgs.typos-lsp;
