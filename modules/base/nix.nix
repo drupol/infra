@@ -3,11 +3,6 @@
     { pkgs, ... }:
     {
       nix = {
-        # See https://discourse.nixos.org/t/24-05-add-flake-to-nix-path/46310/9
-        # See https://hachyderm.io/@leftpaddotpy/112539055867932912
-        channel.enable = false;
-        nixPath = [ "nixpkgs=${pkgs.path}" ];
-
         # From https://jackson.dev/post/nix-reasonable-defaults/
         extraOptions = ''
           connect-timeout = 5
@@ -17,15 +12,14 @@
           fallback = true
         '';
         optimise.automatic = true;
+
+        nixPath = [ "nixpkgs=${pkgs.path}" ];
+
         settings = {
           trusted-users = [
             "root"
           ];
           auto-optimise-store = true;
-          experimental-features = [
-            "nix-command"
-            "flakes"
-          ];
           warn-dirty = false;
           tarball-ttl = 60 * 60 * 24;
         };
