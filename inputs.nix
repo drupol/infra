@@ -22,4 +22,5 @@
   pkgs-by-name-for-flake-parts.url = "github:drupol/pkgs-by-name-for-flake-parts";
   plasma-manager.url = "github:nix-community/plasma-manager";
   treefmt-nix.url = "github:numtide/treefmt-nix";
+  trix.url = "github:aanderse/trix";
 }

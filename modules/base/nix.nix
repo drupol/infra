@@ -1,7 +1,14 @@
+{ inputs, ... }:
 {
   flake.modules.nixos.base =
     { pkgs, ... }:
     {
+      nixpkgs.overlays = [
+        inputs.trix.overlays.default
+      ];
+
+      environment.systemPackages = [ pkgs.trix ];
+
       nix = {
         # From https://jackson.dev/post/nix-reasonable-defaults/
         extraOptions = ''
