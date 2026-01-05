@@ -66,6 +66,8 @@ topLevel: {
                 "open()" = "stack(trunk().. & mine(), 2)";
                 "open(n)" = "stack(trunk().. & mine(), n)";
                 "why_immutable(r)" = "(r & immutable()) | roots(r:: & immutable_heads())";
+                # To replace `jj next` multiple times.
+                "tip" = "exactly(heads(@-::~@), 1)";
               };
 
               revsets = {
