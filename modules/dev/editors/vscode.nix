@@ -218,10 +218,10 @@
                 "githubPullRequests.pullBranch" = "always";
                 "markdown.preview.fontFamily" = "'Aporetic Sans Mono'";
                 "mdb.mcp.server" = "prompt";
-                "nix.formatterPath" = [ (lib.getExe pkgs.nixfmt-rfc-style) ];
+                "nix.formatterPath" = [ (lib.getExe pkgs.nixfmt) ];
                 "nix.serverPath" = lib.getExe pkgs.nixd;
                 "nix.enableLanguageServer" = true;
-                "nix.serverSettings".nixd.formatting.command = [ (lib.getExe pkgs.nixfmt-rfc-style) ];
+                "nix.serverSettings".nixd.formatting.command = [ (lib.getExe pkgs.nixfmt) ];
                 "plantuml.previewSnapIndicators" = true;
                 "plantuml.render" = "Local";
                 "plantuml.server" = "https://www.plantuml.com/plantuml";
