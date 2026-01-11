@@ -1,0 +1,18 @@
+[project]
+name = "sl400-to-influxdb"
+version = "0.1.0"
+description = "A utility to read data from SL400 devices and write it to InfluxDB."
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "dt8852>=1.1.0",
+    "influxdb-client>=1.49.0",
+    "pyserial>=3.5",
+]
+
+[project.scripts]
+sl400-to-influxdb = "sl400_to_influxdb:main"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"

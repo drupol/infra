@@ -1,26 +1,22 @@
 {
-  fetchPypi,
-  python3Packages,
+  rustPlatform,
+  pkg-config,
+  udev,
 }:
 
-python3Packages.buildPythonPackage rec {
+rustPlatform.buildRustPackage (finalAttrs: {
   pname = "dt8852";
-  version = "1.1.0";
-  pyproject = true;
+  version = "0.1.0";
 
-  src = fetchPypi {
-    inherit pname version;
-    hash = "sha256-3WiHJQnlP39CGzxu/sZ1jWcP40tyr2G62H4yYuwS0wA=";
-  };
+  src = ./.;
 
-  build-system = with python3Packages; [ setuptools ];
+  cargoHash = "sha256-REcG6QtWmf3M3dkvUAC3lUl163P6zW9bHKi9yRH9s2w=";
 
-  dependencies = with python3Packages; [
-    pyserial
-  ];
+  nativeBuildInputs = [ pkg-config ];
 
-  pythonImportsCheck = [ "dt8852" ];
+  buildInputs = [ udev ];
 
   meta = {
+    mainProgram = "dt8852";
   };
-}
+})

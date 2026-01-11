@@ -12,6 +12,7 @@
         base
         bluetooth
         facter
+        noise-station-client
         openssh
         rpi4-sdimage
         shell

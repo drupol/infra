@@ -16,6 +16,7 @@
           docling
           facter
           guacamole
+          noise-station-server
           openssh
           searx
           shell
