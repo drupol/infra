@@ -13,7 +13,6 @@
           base
           desktop
           dev
-          docling
           facter
           guacamole
           noise-station-server
