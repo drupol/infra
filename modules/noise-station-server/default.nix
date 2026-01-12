@@ -13,6 +13,9 @@
         grafana = {
           enable = true;
           openFirewall = true;
+          settings = {
+            server.http_addr = "0.0.0.0";
+          };
         };
 
         influxdb2 = {
