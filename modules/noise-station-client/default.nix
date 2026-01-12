@@ -1,8 +1,14 @@
-{ lib, ... }:
+{ inputs, lib, ... }:
 {
   flake.modules.nixos.noise-station-client =
     { pkgs, ... }:
     {
+      nixpkgs = {
+        overlays = [
+          inputs.self.overlays.default
+        ];
+      };
+
       users.groups.dialout.members = [ "telegraf" ];
 
       services = {
