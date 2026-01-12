@@ -31,7 +31,7 @@
                 "slow"
                 "--format"
                 "telegraf"
-                "-vv"
+                "-v"
               ];
               signal = "none";
             };
