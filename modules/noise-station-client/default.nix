@@ -28,7 +28,7 @@
                 "--freqweighting"
                 "dbc"
                 "--timeweighting"
-                "fast"
+                "slow"
                 "--format"
                 "telegraf"
                 "-vv"
