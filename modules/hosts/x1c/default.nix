@@ -21,6 +21,7 @@
         fwupd
         games
         lora
+        noise-station-client
         shell
         sound
         vpn

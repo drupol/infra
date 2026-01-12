@@ -20,7 +20,7 @@
               signal = "none";
             };
             outputs.influxdb_v2 = {
-              urls = [ "http://localhost:8086" ];
+              urls = [ "http://192.168.2.116:8086" ];
               token = "Kms5hykJ0y1eaRQpEAWKJVwprgu4mhitElYiW49p2-ip1W9BQMHUelB9VQ8SfkSbQaoyTheADgOh906aH1oNdg==";
               organization = "default";
               bucket = "default";
