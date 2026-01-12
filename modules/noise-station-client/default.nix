@@ -1,4 +1,8 @@
-{ inputs, lib, ... }:
+{
+  inputs,
+  lib,
+  ...
+}:
 {
   flake.modules.nixos.noise-station-client =
     { pkgs, ... }:
@@ -19,6 +23,12 @@
               command = [
                 "${lib.getExe pkgs.local.dt8852}"
                 "live"
+                "--range"
+                "R_30_80"
+                "--freqweighting"
+                "dbc"
+                "--timeweighting"
+                "fast"
                 "--format"
                 "telegraf"
                 "-vv"
