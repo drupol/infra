@@ -1,0 +1,596 @@
+{
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": {
+          "type": "grafana",
+          "uid": "-- Grafana --"
+        },
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "type": "dashboard"
+      }
+    ]
+  },
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 0,
+  "id": 1,
+  "links": [],
+  "liveNow": true,
+  "panels": [
+    {
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 10,
+        "w": 12,
+        "x": 0,
+        "y": 0
+      },
+      "id": 6,
+      "options": {
+        "code": {
+          "language": "plaintext",
+          "showLineNumbers": false,
+          "showMiniMap": false
+        },
+        "content": "# Noise Station\n\n### Un système de monitoring acoustique intelligent\n\nLa **Noise Station** est une solution de surveillance environnementale de haute précision conçue pour capturer, analyser et visualiser les niveaux sonores d'un espace en temps réel. Elle transforme des données acoustiques brutes en indicateurs visuels pour suivre l'évolution du bruit, détecter les pics et comprendre le profil sonore d'un lieu sur 24 heures.\n\n# Comment ça fonctionne ?\n\n### 1. La Capture (Le Matériel)\n\nLe système s'appuie sur un microphone professionnel de type **Trotec SL400** (équivalent du **CEM DT-8852**). Ce sonomètre de Classe 2 offre des fonctionnalités indispensables :\n-   **Double Pondération:** Supporte les courbes **dB(A)** (perception humaine) et **dB(C)** (basses fréquences).\n-   **Plage Dynamique:** Mesure précise de 30 à 130 dB (precision: 1.4 dB, resolution: 0.1 dB)\n-   **Modes Temporels:** Analyse en mode \"Fast\" (réactivité immédiate) ou \"Slow\" (stabilité).\n-   **Signaux numériques:** Uniquement les données numériques (et pas analogique) sont transmises. \n-   **Certification:** Livré avec certificat de calibration, conforme à IEC61672-1 Class 2\n\n### 2. Le Cœur du Système (L'Intelligence)\n\nLes données sont traitées par une unité de calcul (**Raspberry Pi**) et stockées dans une base de données temporelle (**InfluxDB**):\n*   **Nettoyage :** Filtrage des métadonnées pour une lecture fluide.\n*   **Agrégation :** Calcul de moyennes glissantes et détection de crêtes en temps réel.\n\n### 3. La Visualisation (Le Dashboard)\n\nLe dashboard est structuré en quatre axes complémentaires pour une lecture immédiate :\n\n*   **Vue Temps Réel (Live View) :** Un graphique temporel combinant les mesures brutes et une courbe lissée (**moyenne mobile 1 min**). Cela permet de distinguer les bruits de fond des pics soudains.\n*   **Pic de Volume (Highest Recorded Sound) :** Une jauge dynamique qui surveille le volume maximal atteint durant les **5 dernières minutes**. Elle utilise des seuils colorés (du vert au rouge foncé dès 80 dB) pour alerter sur les événements sonores récents.\n*   **Profil Statistique (Average last 24h) :** Un histogramme qui regroupe les mesures des dernières 24 heures par paliers de décibels (arrondis à l'unité). Il permet de voir en un coup d'œil quel niveau de bruit est le plus fréquent dans l'environnement.\n*   **Distribution Horaire :** Un graphique en barres affichant la **moyenne sonore pour chaque heure** de la journée. Idéal pour identifier les cycles de pollution sonore (journée de travail vs nuit).\n*   **Géolocalisation :** Une carte intégrée affichant l'emplacement précis du capteur.\n\n# Pourquoi utiliser Noise Station ?\n\nPasser du ressenti subjectif (\"c'est bruyant\") à une mesure objective (\"la moyenne est de 65 dB avec des pics à 85 dB\"). Que ce soit pour le confort au travail, la surveillance de voisinage ou l'analyse environnementale, la **Noise Station** fournit une preuve scientifique et visuelle de la réalité acoustique de votre environnement.",
+        "mode": "markdown"
+      },
+      "pluginVersion": "12.3.1",
+      "title": "",
+      "type": "text"
+    },
+    {
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 10,
+        "w": 12,
+        "x": 12,
+        "y": 0
+      },
+      "id": 7,
+      "options": {
+        "code": {
+          "language": "plaintext",
+          "showLineNumbers": false,
+          "showMiniMap": false
+        },
+        "content": "# Reglementation en région wallone\n\nEn région wallone(https://www.ejustice.just.fgov.be/eli/arrete/2002/07/04/2002027815/justel), le cadre légal est clair et rigoureux. Depuis l’arrêté du Gouvernement wallon du 4 juillet 2022, des limites de bruit spécifiques s’appliquent aux PAC selon les différentes périodes de la journée :\n\n- La nuit : le niveau sonore doit impérativement rester sous 40 dB.\n- En journée : le bruit ne doit pas dépasser 50 dB.\n- Le soir : la limite est réduite à 45 dB.\n\nLe bruit se propage en cercle autour d'une unité extérieure (PAC). \nIl est donc crucial de faire attention aux surfaces environnantes, comme des murs ou d’autres bâtiments, qui peuvent réfléchir le son et provoquer un effet d’écho. Pour limiter cette résonance, maintenez au moins un mètre d’espace autour de la pompe, en particulier par rapport aux fenêtres, aux portes et aux chemins. Si l’unité est placée contre un mur, veillez à respecter une distance minimale de 30 centimètres — l’idéal étant de 50 centimètres — pour garantir une circulation sonore optimale. Il est également important de prendre en compte la distance entre la face avant de la pompe à chaleur et les trottoirs, qui doit être d’au moins 3 mètres et d’au moins 6 mètres pour les plantes.\n\nSource: https://www.bobex.be/fr-be/pompe-a-chaleur/installation/distance-voisin/\n",
+        "mode": "markdown"
+      },
+      "pluginVersion": "12.3.1",
+      "title": "",
+      "type": "text"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "ff9xpmhbcsb9ce"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "blue",
+            "mode": "palette-classic",
+            "seriesBy": "last"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 10,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "smooth",
+            "lineStyle": {
+              "fill": "solid"
+            },
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "showValues": false,
+            "spanNulls": true,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "dashed"
+            }
+          },
+          "fieldMinMax": true,
+          "mappings": [],
+          "noValue": "0",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "dark-green",
+                "value": 40
+              },
+              {
+                "color": "light-red",
+                "value": 50
+              },
+              {
+                "color": "red",
+                "value": 60
+              },
+              {
+                "color": "semi-dark-red",
+                "value": 70
+              }
+            ]
+          },
+          "unit": "dB"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byFrameRefID",
+              "options": "Average"
+            },
+            "properties": [
+              {
+                "id": "custom.lineStyle",
+                "value": {
+                  "fill": "solid"
+                }
+              },
+              {
+                "id": "custom.fillOpacity",
+                "value": 0
+              },
+              {
+                "id": "custom.lineInterpolation",
+                "value": "smooth"
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 15,
+        "w": 24,
+        "x": 0,
+        "y": 10
+      },
+      "id": 1,
+      "maxDataPoints": 200,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "multi",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "12.3.1",
+      "targets": [
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "ff9xpmhbcsb9ce"
+          },
+          "hide": false,
+          "query": "from(bucket: \"default\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"dt8852\")\n  |> filter(fn: (r) => r[\"_field\"] == \"spl\")\n  |> keep(columns: [\"_time\", \"_value\", \"_field\"])\n  |> aggregateWindow(every: v.windowPeriod, fn: mean, createEmpty: false)\n  |> set(key: \"_field\", value: \"Noise Level\") \n  |> yield(name: \"spl\")",
+          "refId": "Live"
+        },
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "ff9xpmhbcsb9ce"
+          },
+          "hide": false,
+          "query": "from(bucket: \"default\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"dt8852\")\n  |> filter(fn: (r) => r[\"_field\"] == \"spl\")  \n  |> aggregateWindow(every: v.windowPeriod, fn: median, createEmpty: false)\n  |> keep(columns: [\"_time\", \"_value\", \"_field\"])\n  |> timedMovingAverage(every: 30s, period: 60s)\n  |> set(key: \"_field\", value: \"Average Noise Level\") \n  |> yield(name: \"spl\")",
+          "refId": "Average"
+        }
+      ],
+      "title": "Live view",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "ff9xpmhbcsb9ce"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "fillOpacity": 80,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineWidth": 1,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            }
+          },
+          "mappings": [],
+          "max": 120,
+          "min": 30,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              }
+            ]
+          },
+          "unit": "dB"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 26,
+        "w": 12,
+        "x": 0,
+        "y": 25
+      },
+      "id": 3,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": false
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "none",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "12.3.1",
+      "targets": [
+        {
+          "hide": false,
+          "query": "import \"math\"\n\nfrom(bucket: \"default\")\n  |> range(start: -24h) \n  |> filter(fn: (r) => r[\"_measurement\"] == \"dt8852\")\n  |> filter(fn: (r) => r[\"_field\"] == \"spl\")\n  |> aggregateWindow(every: 1m, fn: mean, createEmpty: false)\n  |> map(fn: (r) => ({ r with _value: math.round(x: r._value) }))\n  |> keep(columns: [\"_time\", \"_value\"])",
+          "refId": "A"
+        }
+      ],
+      "title": "Average (last 24h)",
+      "type": "histogram"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "ff9xpmhbcsb9ce"
+      },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "fieldMinMax": false,
+          "mappings": [
+            {
+              "options": {
+                "50": {
+                  "color": "red",
+                  "index": 0,
+                  "text": "Noisy"
+                }
+              },
+              "type": "value"
+            }
+          ],
+          "max": 120,
+          "min": 30,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "dark-green",
+                "value": 30
+              },
+              {
+                "color": "dark-yellow",
+                "value": 45
+              },
+              {
+                "color": "red",
+                "value": 60
+              },
+              {
+                "color": "dark-red",
+                "value": 75
+              }
+            ]
+          },
+          "unit": "dB"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 10,
+        "w": 6,
+        "x": 12,
+        "y": 25
+      },
+      "id": 2,
+      "options": {
+        "minVizHeight": 75,
+        "minVizWidth": 75,
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showThresholdLabels": true,
+        "showThresholdMarkers": true,
+        "sizing": "auto"
+      },
+      "pluginVersion": "12.3.1",
+      "targets": [
+        {
+          "hide": false,
+          "query": "from(bucket: \"default\")\n  |> range(start: -5m) \n  |> filter(fn: (r) => r[\"_measurement\"] == \"dt8852\")\n  |> filter(fn: (r) => r[\"_field\"] == \"spl\")\n  |> keep(columns: [\"_time\", \"_value\", \"_field\"])\n  |> max()",
+          "refId": "A"
+        }
+      ],
+      "title": "Highest Recorded Sound (5m Window)",
+      "type": "gauge"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "ff9xpmhbcsb9ce"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 10,
+        "w": 6,
+        "x": 18,
+        "y": 25
+      },
+      "id": 5,
+      "options": {
+        "basemap": {
+          "config": {},
+          "name": "Layer 0",
+          "noRepeat": false,
+          "type": "default"
+        },
+        "controls": {
+          "mouseWheelZoom": true,
+          "showAttribution": true,
+          "showDebug": false,
+          "showMeasure": false,
+          "showScale": false,
+          "showZoom": true
+        },
+        "layers": [
+          {
+            "config": {
+              "blur": 50,
+              "radius": 50,
+              "weight": {
+                "fixed": 1,
+                "max": 1,
+                "min": 0
+              }
+            },
+            "filterData": {
+              "id": "byRefId",
+              "options": "A"
+            },
+            "layer-tooltip": true,
+            "location": {
+              "mode": "auto"
+            },
+            "name": "Layer 1",
+            "opacity": 0.5,
+            "tooltip": true,
+            "type": "heatmap"
+          }
+        ],
+        "tooltip": {
+          "mode": "details"
+        },
+        "view": {
+          "allLayers": true,
+          "id": "coords",
+          "lat": 50.599922,
+          "lon": 4.32828,
+          "noRepeat": false,
+          "zoom": 17.78
+        }
+      },
+      "pluginVersion": "12.3.1",
+      "targets": [
+        {
+          "hide": false,
+          "query": "import \"array\"\n\narray.from(rows: [{\n    lat: 50.599724, \n    lon: 4.328188, \n    location_name: \"Outdoor, garden\",\n    sensor_type: \"Trotec SL400\"\n}])",
+          "refId": "A"
+        }
+      ],
+      "title": "Sensor location",
+      "type": "geomap"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "ff9xpmhbcsb9ce"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisGridShow": true,
+            "axisLabel": "Noise Level",
+            "axisPlacement": "auto",
+            "fillOpacity": 80,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineWidth": 2,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "fieldMinMax": false,
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "dB"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 16,
+        "w": 12,
+        "x": 12,
+        "y": 35
+      },
+      "id": 4,
+      "options": {
+        "barRadius": 0,
+        "barWidth": 0.7,
+        "fullHighlight": false,
+        "groupWidth": 0.7,
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": false
+        },
+        "orientation": "auto",
+        "showValue": "always",
+        "stacking": "none",
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "none",
+          "sort": "none"
+        },
+        "xField": "Time",
+        "xTickLabelRotation": 0,
+        "xTickLabelSpacing": 0
+      },
+      "pluginVersion": "12.3.1",
+      "targets": [
+        {
+          "hide": false,
+          "query": "from(bucket: \"default\")\n  |> range(start: -24h)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"dt8852\")\n  |> filter(fn: (r) => r[\"_field\"] == \"spl\")\n  |> aggregateWindow(every: 1h, fn: mean, createEmpty: false)\n  |> set(key: \"_field\", value: \"Noise Level\")\n  |> yield(name: \"hourly_peaks\")",
+          "refId": "A"
+        }
+      ],
+      "title": "Hourly Noise Distribution (last 24h)",
+      "type": "barchart"
+    }
+  ],
+  "preload": false,
+  "refresh": "auto",
+  "schemaVersion": 42,
+  "tags": [],
+  "templating": {
+    "list": []
+  },
+  "time": {
+    "from": "now-5m",
+    "to": "now"
+  },
+  "timepicker": {},
+  "timezone": "browser",
+  "title": "Noise Station",
+  "uid": "adx4w44",
+  "version": 52
+}

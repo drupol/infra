@@ -16,6 +16,36 @@
           settings = {
             server.http_addr = "0.0.0.0";
           };
+          provision = {
+            enable = true;
+            dashboards.settings = {
+              apiVersion = 1;
+              providers = [
+                {
+                  name = "default";
+                  options.path = ./dashboards;
+                }
+              ];
+            };
+            datasources = [
+              {
+                name = "InfluxDB";
+                type = "influxdb";
+                database = "influxdb";
+                editable = false;
+                access = "proxy";
+                user = "admin";
+                password = "noisestation";
+                url = "http://127.0.0.1:8086";
+                jsonData = {
+                  version = "Flux";
+                  organization = "default";
+                  defaultBucket = "default";
+                  tlsSkipVerify = true;
+                };
+              }
+            ];
+          };
         };
 
         influxdb2 = {
