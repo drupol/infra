@@ -159,7 +159,7 @@ serialport = "4.0"
 
 # Troubleshooting
 
-##  The clock problem
+## The clock problem
 
 Besides the 9V battery, these devices contain a lithium cell to keep the clock
 running when powered off. When this cell runs out, the clock stops at `00:00:00`.

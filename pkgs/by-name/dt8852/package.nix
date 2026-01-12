@@ -4,7 +4,7 @@
   udev,
 }:
 
-rustPlatform.buildRustPackage (finalAttrs: {
+rustPlatform.buildRustPackage (_finalAttrs: {
   pname = "dt8852";
   version = "0.1.0";
 
