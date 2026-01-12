@@ -2,9 +2,17 @@
   flake.modules.nixos.noise-station-server =
     { pkgs, ... }:
     {
+      networking.firewall = {
+        allowedTCPPorts = [
+          # InfluxDB
+          8086
+        ];
+      };
+
       services = {
         grafana = {
           enable = true;
+          openFirewall = true;
         };
 
         influxdb2 = {
