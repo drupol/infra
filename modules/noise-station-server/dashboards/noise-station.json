@@ -18,7 +18,7 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 5,
+  "id": 6,
   "links": [],
   "liveNow": true,
   "panels": [
@@ -486,8 +486,7 @@
             "axisBorderShow": false,
             "axisCenteredZero": false,
             "axisColorMode": "text",
-            "axisGridShow": true,
-            "axisLabel": "Noise Level",
+            "axisLabel": "",
             "axisPlacement": "auto",
             "fillOpacity": 80,
             "gradientMode": "none",
@@ -504,8 +503,10 @@
               "mode": "off"
             }
           },
-          "fieldMinMax": false,
+          "fieldMinMax": true,
           "mappings": [],
+          "max": 80,
+          "min": 40,
           "thresholds": {
             "mode": "absolute",
             "steps": [
@@ -532,9 +533,10 @@
       "id": 4,
       "options": {
         "barRadius": 0,
-        "barWidth": 0.7,
+        "barWidth": 0.6,
+        "colorByField": "Time",
         "fullHighlight": false,
-        "groupWidth": 0.7,
+        "groupWidth": 1,
         "legend": {
           "calcs": [],
           "displayMode": "list",
@@ -542,11 +544,11 @@
           "showLegend": false
         },
         "orientation": "auto",
-        "showValue": "always",
+        "showValue": "auto",
         "stacking": "none",
         "tooltip": {
           "hideZeros": false,
-          "mode": "none",
+          "mode": "single",
           "sort": "none"
         },
         "xField": "Time",
@@ -557,11 +559,11 @@
       "targets": [
         {
           "hide": false,
-          "query": "from(bucket: \"default\")\n  |> range(start: -24h)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"dt8852\")\n  |> filter(fn: (r) => r[\"_field\"] == \"spl\")\n  |> aggregateWindow(every: 1h, fn: mean, createEmpty: false)\n  |> set(key: \"_field\", value: \"Noise Level\")\n  |> yield(name: \"hourly_peaks\")",
+          "query": "import \"math\"\nimport \"timezone\"\n\noption location = timezone.location(name: \"Europe/Brussels\")\n\nfrom(bucket: \"default\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"dt8852\")\n  |> filter(fn: (r) => r[\"_field\"] == \"spl\")\n  |> keep(columns: [\"_time\", \"_value\", \"_field\", \"frequency_weighting\"])\n  |> aggregateWindow(every: 30m, fn: median, createEmpty: false)\n  |> map(fn: (r) => ({ \n      r with \n      _value: math.round(x: r._value),\n      _field: \"Sound Pressure Level\" \n  }))  \n  |> yield(name: \"hourly_peaks\")",
           "refId": "A"
         }
       ],
-      "title": "Hourly Noise Distribution (last 24h)",
+      "title": "Noise Pressure Level Histogram",
       "type": "barchart"
     }
   ],
