@@ -81,7 +81,7 @@
         "defaults": {
           "color": {
             "fixedColor": "green",
-            "mode": "fixed",
+            "mode": "palette-classic",
             "seriesBy": "last"
           },
           "custom": {
@@ -118,7 +118,7 @@
               "mode": "none"
             },
             "thresholdsStyle": {
-              "mode": "dashed"
+              "mode": "off"
             }
           },
           "fieldMinMax": true,
@@ -151,26 +151,25 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "limit"
+              "options": "_limit"
             },
             "properties": [
               {
                 "id": "displayName",
                 "value": "Limite en Région Wallone"
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "limit"
-            },
-            "properties": [
+              },
               {
                 "id": "color",
                 "value": {
-                  "fixedColor": "dark-red",
+                  "fixedColor": "#ffffff",
                   "mode": "fixed"
+                }
+              },
+              {
+                "id": "custom.lineStyle",
+                "value": {
+                  "dash": [10, 10],
+                  "fill": "dash"
                 }
               }
             ]
@@ -206,7 +205,7 @@
             "uid": "ff9xpmhbcsb9ce"
           },
           "hide": false,
-          "query": "import \"math\"\nimport \"timezone\"\n\noption location = timezone.location(name: \"Europe/Brussels\")\n\nfrom(bucket: \"default\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"dt8852\")\n  |> filter(fn: (r) => r[\"_field\"] == \"spl\")\n  |> keep(columns: [\"_time\", \"_value\", \"_field\", \"frequency_weighting\"])\n  |> aggregateWindow(every: v.windowPeriod, fn: mean, createEmpty: false)\n  |> exponentialMovingAverage(n: int(v: ${exponential_n})) \n  |> map(fn: (r) => ({\n      r with\n      _value: math.round(x: r._value),\n      _field: \"Sound Pressure Level\"\n  }))\n  |> yield(name: \"spl\")",
+          "query": "import \"math\"\nimport \"timezone\"\n\noption location = timezone.location(name: \"Europe/Brussels\")\n\nfrom(bucket: \"default\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"dt8852\")\n  |> filter(fn: (r) => r[\"_field\"] == \"spl\")\n  // On garde la colonne frequency_weighting\n  |> keep(columns: [\"_time\", \"_value\", \"_field\", \"frequency_weighting\"])\n  \n  // Passage en échelle linéaire (énergie)\n  |> map(fn: (r) => ({\n      r with \n      _value: math.pow(x: 10.0, y: r._value / 10.0)\n  }))\n\n  // Calcul de la MOYENNE énergétique (Leq) par minute\n  // Note: mean est indispensable ici pour le calcul logarithmique\n  |> aggregateWindow(every: 1m, fn: median, createEmpty: false)\n\n  // Retour en décibels ET renommage du flux\n  |> map(fn: (r) => ({\n      r with \n      _value: 10.0 * math.log10(x: r._value),\n      _field: \"Sound Pressure Level\"\n  }))\n\n  // Lissage final (optionnel selon vos besoins visuels)\n  |> exponentialMovingAverage(n: int(v: ${exponential_n})) \n  |> yield(name: \"spl_result\")",
           "refId": "Live"
         },
         {
@@ -215,8 +214,8 @@
             "uid": "ff9xpmhbcsb9ce"
           },
           "hide": false,
-          "query": "import \"date\"\nimport \"math\"\nimport \"timezone\"\n\noption location = timezone.location(name: \"Europe/Brussels\")\n\nfrom(bucket: \"default\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"dt8852\")\n  |> filter(fn: (r) => r[\"_field\"] == \"spl\")\n  |> keep(columns: [\"_time\", \"_value\", \"_field\"])  \n  |> aggregateWindow(every: v.windowPeriod, fn: median, createEmpty: false)\n  |> map(fn: (r) => {\n      h = date.hour(t: r._time)\n      \n      limitValue = if h >= 7 and h < 19 then 50.0                 // Journée (07h00 - 19h00)\n                   else if (h >= 6 and h < 7) or (h >= 19 and h < 22) then 45.0 // Transition\n                   else 40.0                                     // Nuit (22h00 - 06h00)\n      \n      return {\n          _time: r._time,\n          limit: limitValue\n      }\n  })\n  |> yield(name: \"noise_data\")",
-          "refId": "Average"
+          "query": "import \"date\"\nimport \"timezone\"\n\noption location = timezone.location(name: \"Europe/Brussels\")\n\nfrom(bucket: \"default\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r._measurement == \"dt8852\" and r._field == \"spl\")\n  // On ne garde qu'un point par fenêtre de temps pour avoir l'axe X (très rapide)\n  |> aggregateWindow(every: v.windowPeriod, fn: first)\n  |> map(fn: (r) => {\n      h = date.hour(t: r._time)\n      return {\n          _time: r._time,\n          _limit: if h >= 7 and h < 19 then 50.0 \n                  else if h == 6 or (h >= 19 and h < 22) then 45.0 \n                  else 40.0\n      }\n  })",
+          "refId": "A"
         }
       ],
       "title": "Live view",
