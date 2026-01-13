@@ -187,6 +187,7 @@
         "y": 10
       },
       "id": 1,
+      "description": "Affiche le niveau sonore instantané (lissé) comparé à la limite légale dynamique (40/45/50 dB). Permet de surveiller le respect des normes en temps réel et d'identifier les pics acoustiques instantanés.",
       "maxDataPoints": 200,
       "options": {
         "legend": {
@@ -333,6 +334,7 @@
         "y": 25
       },
       "id": 3,
+      "description": "Montre la fréquence d'apparition des niveaux sonores par paliers de 3 dB. Idéal pour identifier le 'bruit de fond' dominant et caractériser la signature acoustique globale du lieu.",
       "options": {
         "combine": false,
         "legend": {
@@ -417,6 +419,7 @@
         "y": 25
       },
       "id": 4,
+      "description": "Présente la médiane du volume sonore par intervalle de temps. Utile pour visualiser les cycles d'activité (jour/nuit), les tendances horaires et les moments de calme relatif.",
       "options": {
         "barRadius": 0,
         "barWidth": 0.6,
@@ -457,7 +460,7 @@
         "type": "influxdb",
         "uid": "ff9xpmhbcsb9ce"
       },
-      "description": "",
+      "description": "Indique l'intensité maximale (crête) enregistrée sur la période sélectionnée. Les codes couleurs (Vert à Rouge foncé) signalent immédiatement les niveaux critiques (>60dB, >75dB) nécessitant une attention particulière.",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -568,6 +571,7 @@
         "y": 41
       },
       "id": 5,
+      "description": "Carte de positionnement du capteur Trotec SL400. Indispensable pour contextualiser les mesures par rapport à l'environnement urbain, aux obstacles et au voisinage.",
       "options": {
         "basemap": {
           "config": {},
@@ -689,6 +693,7 @@
         "y": 51
       },
       "id": 8,
+      "description": "Historique binaire du respect de la législation wallonne (Vert = Conforme, Rouge = Infraction). Permet de quantifier rapidement les périodes de dépassement des seuils autorisés sur la durée affichée.",
       "options": {
         "alignValue": "left",
         "legend": {
@@ -728,13 +733,19 @@
           "text": "1m",
           "value": "1m"
         },
-        "label": "Average Window",
+        "description": "Définit la période sur laquelle les données sont moyennées (lissage). Augmentez cette valeur pour voir les tendances générales, réduisez-la pour voir les pics instantanés.",
+        "label": "Fenêtre de Lissage",
         "name": "average_window",
         "options": [
           {
             "selected": false,
             "text": "1s",
             "value": "1s"
+          },
+          {
+            "selected": false,
+            "text": "10s",
+            "value": "10s"
           },
           {
             "selected": false,
@@ -753,8 +764,8 @@
           },
           {
             "selected": false,
-            "text": "10m",
-            "value": "10m"
+            "text": "15m",
+            "value": "15m"
           },
           {
             "selected": false,
@@ -770,9 +781,24 @@
             "selected": false,
             "text": "2h",
             "value": "2h"
+          },
+          {
+            "selected": false,
+            "text": "4h",
+            "value": "4h"
+          },
+          {
+            "selected": false,
+            "text": "12h",
+            "value": "12h"
+          },
+          {
+            "selected": false,
+            "text": "24h",
+            "value": "24h"
           }
         ],
-        "query": "1s,30s,1m,5m,10m,30m,1h,2h",
+        "query": "1s,10s,30s,1m,5m,15m,30m,1h,2h,4h,12h,24h",
         "type": "custom"
       }
     ]
