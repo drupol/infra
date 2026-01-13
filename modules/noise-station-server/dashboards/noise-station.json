@@ -18,7 +18,7 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 8,
+  "id": 10,
   "links": [],
   "liveNow": true,
   "panels": [
@@ -81,7 +81,7 @@
         "defaults": {
           "color": {
             "fixedColor": "green",
-            "mode": "palette-classic",
+            "mode": "thresholds",
             "seriesBy": "last"
           },
           "custom": {
@@ -93,8 +93,8 @@
             "barAlignment": 0,
             "barWidthFactor": 0.6,
             "drawStyle": "line",
-            "fillOpacity": 0,
-            "gradientMode": "none",
+            "fillOpacity": 25,
+            "gradientMode": "scheme",
             "hideFrom": {
               "legend": false,
               "tooltip": false,
@@ -171,6 +171,10 @@
                   "dash": [10, 10],
                   "fill": "dash"
                 }
+              },
+              {
+                "id": "custom.fillOpacity",
+                "value": 0
               }
             ]
           }
@@ -214,7 +218,7 @@
             "uid": "ff9xpmhbcsb9ce"
           },
           "hide": false,
-          "query": "import \"date\"\nimport \"timezone\"\n\noption location = timezone.location(name: \"Europe/Brussels\")\n\nfrom(bucket: \"default\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r._measurement == \"dt8852\" and r._field == \"spl\")\n  // On ne garde qu'un point par fenêtre de temps pour avoir l'axe X (très rapide)\n  |> aggregateWindow(every: v.windowPeriod, fn: first)\n  |> map(fn: (r) => {\n      h = date.hour(t: r._time)\n      return {\n          _time: r._time,\n          _limit: if h >= 7 and h < 19 then 50.0 \n                  else if h == 6 or (h >= 19 and h < 22) then 45.0 \n                  else 40.0\n      }\n  })",
+          "query": "import \"date\"\nimport \"timezone\"\n\noption location = timezone.location(name: \"Europe/Brussels\")\n\nfrom(bucket: \"default\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r._measurement == \"dt8852\" and r._field == \"spl\")\n  |> aggregateWindow(every: v.windowPeriod, fn: first)\n  |> map(fn: (r) => {\n      h = date.hour(t: r._time)\n      return {\n          _time: r._time,\n          _limit: if h >= 7 and h < 19 then 50.0 \n                  else if h == 6 or (h >= 19 and h < 22) then 45.0 \n                  else 40.0\n      }\n  })",
           "refId": "A"
         }
       ],
@@ -695,6 +699,59 @@
           }
         ],
         "query": "1,2,3,4,5,6,7,8,9,10",
+        "type": "custom"
+      },
+      {
+        "allowCustomValue": false,
+        "current": {
+          "text": "1s",
+          "value": "1s"
+        },
+        "label": "Average Window",
+        "name": "average_window",
+        "options": [
+          {
+            "selected": true,
+            "text": "1s",
+            "value": "1s"
+          },
+          {
+            "selected": false,
+            "text": "30s",
+            "value": "30s"
+          },
+          {
+            "selected": false,
+            "text": "1m",
+            "value": "1m"
+          },
+          {
+            "selected": false,
+            "text": "5m",
+            "value": "5m"
+          },
+          {
+            "selected": false,
+            "text": "10m",
+            "value": "10m"
+          },
+          {
+            "selected": false,
+            "text": "30m",
+            "value": "30m"
+          },
+          {
+            "selected": false,
+            "text": "1h",
+            "value": "1h"
+          },
+          {
+            "selected": false,
+            "text": "2h",
+            "value": "2h"
+          }
+        ],
+        "query": "1s,30s,1m,5m,10m,30m,1h,2h",
         "type": "custom"
       }
     ]
