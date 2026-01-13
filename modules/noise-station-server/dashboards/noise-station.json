@@ -18,7 +18,7 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 6,
+  "id": 7,
   "links": [],
   "liveNow": true,
   "panels": [
@@ -260,37 +260,100 @@
           },
           "unit": "dB"
         },
-        "overrides": []
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Day (Limit 50dB)"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "dark-blue",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Dusk / Evening (Limit 45dB)"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "dark-orange",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Dawn / Morning (Limit 45dB)"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "dark-yellow",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Night (Limit 40dB)"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "#000064",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          }
+        ]
       },
       "gridPos": {
         "h": 26,
-        "w": 12,
+        "w": 24,
         "x": 0,
         "y": 25
       },
       "id": 3,
       "options": {
+        "combine": false,
         "legend": {
           "calcs": [],
           "displayMode": "list",
           "placement": "bottom",
-          "showLegend": false
+          "showLegend": true
         },
         "tooltip": {
           "hideZeros": false,
-          "mode": "none",
+          "mode": "single",
           "sort": "none"
         }
       },
       "pluginVersion": "12.3.1",
+      "repeatDirection": "h",
       "targets": [
         {
           "hide": false,
-          "query": "import \"math\"\n\nfrom(bucket: \"default\")\n  |> range(start: -24h) \n  |> filter(fn: (r) => r[\"_measurement\"] == \"dt8852\")\n  |> filter(fn: (r) => r[\"_field\"] == \"spl\")\n  |> aggregateWindow(every: 1m, fn: mean, createEmpty: false)\n  |> map(fn: (r) => ({ r with _value: math.round(x: r._value) }))\n  |> keep(columns: [\"_time\", \"_value\"])",
+          "query": "import \"math\"\nimport \"timezone\"\nimport \"date\"\n\noption location = timezone.location(name: \"Europe/Brussels\")\n\nfrom(bucket: \"default\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"dt8852\" and r[\"_field\"] == \"spl\")\n  // 1. Keep data volume safe (10s resolution)\n  |> aggregateWindow(every: 10s, fn: last, createEmpty: false)\n  |> map(fn: (r) => {\n      h = date.hour(t: r._time)\n      \n      // 2. Define the four distinct periods\n      period = if h >= 7 and h < 19 then \"Day (Limit 50dB)\"\n               else if h >= 19 and h < 22 then \"Dusk / Evening (Limit 45dB)\"\n               else if h >= 6 and h < 7 then \"Dawn / Morning (Limit 45dB)\"\n               else \"Night (Limit 40dB)\"\n      \n      return { r with \n          // 3. Bucket by 3dB for acoustic significance\n          _value: math.floor(x: r._value / 3.0) * 3.0,\n          // 4. Use the period name as the field for the histogram series\n          _field: period\n      }\n  })\n  |> keep(columns: [\"_time\", \"_value\", \"_field\"])",
           "refId": "A"
         }
       ],
-      "title": "Average (last 24h)",
+      "title": "Frequency",
       "type": "histogram"
     },
     {
