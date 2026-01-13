@@ -28,7 +28,7 @@
                 }
               ];
             };
-            datasources = [
+            datasources.settings.datasources = [
               {
                 name = "InfluxDB";
                 type = "influxdb";
