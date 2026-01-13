@@ -18,7 +18,7 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 11,
+  "id": 12,
   "links": [],
   "liveNow": true,
   "panels": [
@@ -209,7 +209,7 @@
             "uid": "ff9xpmhbcsb9ce"
           },
           "hide": false,
-          "query": "import \"math\"\nimport \"timezone\"\n\noption location = timezone.location(name: \"Europe/Brussels\")\n\nfrom(bucket: \"default\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"dt8852\")\n  |> filter(fn: (r) => r[\"_field\"] == \"spl\")\n  // On garde la colonne frequency_weighting\n  |> keep(columns: [\"_time\", \"_value\", \"_field\", \"frequency_weighting\"])\n  \n  // Passage en échelle linéaire (énergie)\n  |> map(fn: (r) => ({\n      r with \n      _value: math.pow(x: 10.0, y: r._value / 10.0)\n  }))\n\n  // Calcul de la MOYENNE énergétique (Leq) par minute\n  // Note: mean est indispensable ici pour le calcul logarithmique\n  |> aggregateWindow(every: ${average_window}, fn: median, createEmpty: false)\n\n  // Retour en décibels ET renommage du flux\n  |> map(fn: (r) => ({\n      r with \n      _value: 10.0 * math.log10(x: r._value),\n      _field: \"Sound Pressure Level\"\n  }))\n\n  // Lissage final (optionnel selon vos besoins visuels)\n  |> exponentialMovingAverage(n: int(v: ${exponential_n})) \n  |> yield(name: \"spl_result\")",
+          "query": "import \"math\"\nimport \"timezone\"\n\noption location = timezone.location(name: \"Europe/Brussels\")\n\nfrom(bucket: \"default\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"dt8852\")\n  |> filter(fn: (r) => r[\"_field\"] == \"spl\")\n  // On garde la colonne frequency_weighting\n  |> keep(columns: [\"_time\", \"_value\", \"_field\", \"frequency_weighting\"])\n  \n  // Passage en échelle linéaire (énergie)\n  |> map(fn: (r) => ({\n      r with \n      _value: math.pow(x: 10.0, y: r._value / 10.0)\n  }))\n\n  // Calcul de la MOYENNE énergétique (Leq) par minute\n  // Note: mean est indispensable ici pour le calcul logarithmique\n  |> aggregateWindow(every: ${average_window}, fn: median, createEmpty: false)\n\n  // Retour en décibels ET renommage du flux\n  |> map(fn: (r) => ({\n      r with \n      _value: 10.0 * math.log10(x: r._value),\n      _field: \"Sound Pressure Level\"\n  }))\n\n  |> yield(name: \"spl_result\")",
           "refId": "Live"
         },
         {
@@ -351,7 +351,7 @@
       "targets": [
         {
           "hide": false,
-          "query": "import \"math\"\nimport \"timezone\"\nimport \"date\"\n\noption location = timezone.location(name: \"Europe/Brussels\")\n\nfrom(bucket: \"default\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"dt8852\" and r[\"_field\"] == \"spl\")\n  // 1. Keep data volume safe (10s resolution)\n  |> aggregateWindow(every: 10s, fn: last, createEmpty: false)\n  |> map(fn: (r) => {\n      h = date.hour(t: r._time)\n      \n      // 2. Define the four distinct periods\n      period = if h >= 7 and h < 19 then \"Day (Limit 50dB)\"\n               else if h >= 19 and h < 22 then \"Dusk / Evening (Limit 45dB)\"\n               else if h >= 6 and h < 7 then \"Dawn / Morning (Limit 45dB)\"\n               else \"Night (Limit 40dB)\"\n      \n      return { r with \n          // 3. Bucket by 3dB for acoustic significance\n          _value: math.floor(x: r._value / 3.0) * 3.0,\n          // 4. Use the period name as the field for the histogram series\n          _field: period\n      }\n  })\n  |> keep(columns: [\"_time\", \"_value\", \"_field\"])",
+          "query": "import \"math\"\nimport \"timezone\"\nimport \"date\"\n\noption location = timezone.location(name: \"Europe/Brussels\")\n\nfrom(bucket: \"default\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"dt8852\" and r[\"_field\"] == \"spl\")\n  // 1. Keep data volume safe (10s resolution)\n  |> aggregateWindow(every: ${average_window}, fn: last, createEmpty: false)\n  |> map(fn: (r) => {\n      h = date.hour(t: r._time)\n      \n      // 2. Define the four distinct periods\n      period = if h >= 7 and h < 19 then \"Day (Limit 50dB)\"\n               else if h >= 19 and h < 22 then \"Dusk / Evening (Limit 45dB)\"\n               else if h >= 6 and h < 7 then \"Dawn / Morning (Limit 45dB)\"\n               else \"Night (Limit 40dB)\"\n      \n      return { r with \n          // 3. Bucket by 3dB for acoustic significance\n          _value: math.floor(x: r._value / 3.0) * 3.0,\n          // 4. Use the period name as the field for the histogram series\n          _field: period\n      }\n  })\n  |> keep(columns: [\"_time\", \"_value\", \"_field\"])",
           "refId": "A"
         }
       ],
@@ -445,7 +445,7 @@
       "targets": [
         {
           "hide": false,
-          "query": "import \"math\"\nimport \"timezone\"\n\noption location = timezone.location(name: \"Europe/Brussels\")\n\nfrom(bucket: \"default\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"dt8852\")\n  |> filter(fn: (r) => r[\"_field\"] == \"spl\")\n  |> keep(columns: [\"_time\", \"_value\", \"_field\", \"frequency_weighting\"])\n  |> aggregateWindow(every: 30m, fn: median, createEmpty: false)\n  |> map(fn: (r) => ({ \n      r with \n      _value: math.round(x: r._value),\n      _field: \"Sound Pressure Level\" \n  }))  \n  |> yield(name: \"hourly_peaks\")",
+          "query": "import \"math\"\nimport \"timezone\"\n\noption location = timezone.location(name: \"Europe/Brussels\")\n\nfrom(bucket: \"default\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"dt8852\")\n  |> filter(fn: (r) => r[\"_field\"] == \"spl\")\n  |> keep(columns: [\"_time\", \"_value\", \"_field\", \"frequency_weighting\"])\n  |> aggregateWindow(every: ${average_window}, fn: median, createEmpty: false)\n  |> map(fn: (r) => ({ \n      r with \n      _value: math.round(x: r._value),\n      _field: \"Sound Pressure Level\" \n  }))  \n  |> yield(name: \"hourly_peaks\")",
           "refId": "A"
         }
       ],
@@ -520,11 +520,11 @@
       "targets": [
         {
           "hide": false,
-          "query": "import \"math\"\nimport \"timezone\"\n\noption location = timezone.location(name: \"Europe/Brussels\")\n\nfrom(bucket: \"default\")\n  |> range(start: -5m) \n  |> filter(fn: (r) => r[\"_measurement\"] == \"dt8852\")\n  |> filter(fn: (r) => r[\"_field\"] == \"spl\")\n  |> keep(columns: [\"_time\", \"_value\", \"_field\", \"frequency_weighting\"])\n  |> max()",
+          "query": "import \"math\"\nimport \"timezone\"\n\noption location = timezone.location(name: \"Europe/Brussels\")\n\nfrom(bucket: \"default\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"dt8852\")\n  |> filter(fn: (r) => r[\"_field\"] == \"spl\")\n  |> keep(columns: [\"_time\", \"_value\", \"_field\", \"frequency_weighting\"])\n  |> max()",
           "refId": "A"
         }
       ],
-      "title": "Highest Recorded Sound (5m Window)",
+      "title": "Highest Recorded Sound",
       "type": "gauge"
     },
     {
@@ -638,69 +638,6 @@
   "tags": [],
   "templating": {
     "list": [
-      {
-        "allowCustomValue": false,
-        "current": {
-          "text": "1",
-          "value": "1"
-        },
-        "label": "Smooth level",
-        "name": "exponential_n",
-        "options": [
-          {
-            "selected": true,
-            "text": "1",
-            "value": "1"
-          },
-          {
-            "selected": false,
-            "text": "2",
-            "value": "2"
-          },
-          {
-            "selected": false,
-            "text": "3",
-            "value": "3"
-          },
-          {
-            "selected": false,
-            "text": "4",
-            "value": "4"
-          },
-          {
-            "selected": false,
-            "text": "5",
-            "value": "5"
-          },
-          {
-            "selected": false,
-            "text": "6",
-            "value": "6"
-          },
-          {
-            "selected": false,
-            "text": "7",
-            "value": "7"
-          },
-          {
-            "selected": false,
-            "text": "8",
-            "value": "8"
-          },
-          {
-            "selected": false,
-            "text": "9",
-            "value": "9"
-          },
-          {
-            "selected": false,
-            "text": "10",
-            "value": "10"
-          }
-        ],
-        "query": "1,2,3,4,5,6,7,8,9,10",
-        "type": "custom"
-      },
       {
         "allowCustomValue": false,
         "current": {
