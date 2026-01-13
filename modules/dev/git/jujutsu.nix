@@ -177,6 +177,34 @@ topLevel: {
                     format_author(self),
                     format_commit_date(self),
                   )'';
+
+                "format_short_change_id_with_hidden_and_divergent_info(commit)" = ''
+                  if(commit.hidden(),
+                    label("hidden",
+                      format_short_change_id_with_gerrit_hyperlink(commit) ++
+                      " hidden"
+                    ),
+                    label(if(commit.divergent(), "divergent"),
+                      format_short_change_id_with_gerrit_hyperlink(commit) ++
+                      if(commit.divergent(), "?")
+                    )
+                  )
+                '';
+                "gerrit_change_id(change_id)" = "'\"Id0000000\" ++ change_id.normal_hex()'";
+                "format_short_change_id_with_gerrit_hyperlink(commit)" = ''
+                  		hyperlink(
+                  			"https://gerrit/q/" ++
+                  			coalesce(
+                  				commit.description().lines().map(|line|
+                  					if(line.starts_with("Change-Id: "),
+                  						line.remove_prefix("Change-Id: ")
+                  					)
+                  				).join(""),
+                  				gerrit_change_id(commit.change_id())
+                  			),
+                  			format_short_change_id(commit.change_id())
+                  		)
+                  	'';
               };
 
               templates = {
