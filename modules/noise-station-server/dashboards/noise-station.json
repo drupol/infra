@@ -18,7 +18,7 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 10,
+  "id": 11,
   "links": [],
   "liveNow": true,
   "panels": [
@@ -209,7 +209,7 @@
             "uid": "ff9xpmhbcsb9ce"
           },
           "hide": false,
-          "query": "import \"math\"\nimport \"timezone\"\n\noption location = timezone.location(name: \"Europe/Brussels\")\n\nfrom(bucket: \"default\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"dt8852\")\n  |> filter(fn: (r) => r[\"_field\"] == \"spl\")\n  // On garde la colonne frequency_weighting\n  |> keep(columns: [\"_time\", \"_value\", \"_field\", \"frequency_weighting\"])\n  \n  // Passage en échelle linéaire (énergie)\n  |> map(fn: (r) => ({\n      r with \n      _value: math.pow(x: 10.0, y: r._value / 10.0)\n  }))\n\n  // Calcul de la MOYENNE énergétique (Leq) par minute\n  // Note: mean est indispensable ici pour le calcul logarithmique\n  |> aggregateWindow(every: 1m, fn: median, createEmpty: false)\n\n  // Retour en décibels ET renommage du flux\n  |> map(fn: (r) => ({\n      r with \n      _value: 10.0 * math.log10(x: r._value),\n      _field: \"Sound Pressure Level\"\n  }))\n\n  // Lissage final (optionnel selon vos besoins visuels)\n  |> exponentialMovingAverage(n: int(v: ${exponential_n})) \n  |> yield(name: \"spl_result\")",
+          "query": "import \"math\"\nimport \"timezone\"\n\noption location = timezone.location(name: \"Europe/Brussels\")\n\nfrom(bucket: \"default\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"dt8852\")\n  |> filter(fn: (r) => r[\"_field\"] == \"spl\")\n  // On garde la colonne frequency_weighting\n  |> keep(columns: [\"_time\", \"_value\", \"_field\", \"frequency_weighting\"])\n  \n  // Passage en échelle linéaire (énergie)\n  |> map(fn: (r) => ({\n      r with \n      _value: math.pow(x: 10.0, y: r._value / 10.0)\n  }))\n\n  // Calcul de la MOYENNE énergétique (Leq) par minute\n  // Note: mean est indispensable ici pour le calcul logarithmique\n  |> aggregateWindow(every: ${average_window}, fn: median, createEmpty: false)\n\n  // Retour en décibels ET renommage du flux\n  |> map(fn: (r) => ({\n      r with \n      _value: 10.0 * math.log10(x: r._value),\n      _field: \"Sound Pressure Level\"\n  }))\n\n  // Lissage final (optionnel selon vos besoins visuels)\n  |> exponentialMovingAverage(n: int(v: ${exponential_n})) \n  |> yield(name: \"spl_result\")",
           "refId": "Live"
         },
         {
