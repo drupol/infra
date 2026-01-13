@@ -65,7 +65,7 @@
           "showLineNumbers": false,
           "showMiniMap": false
         },
-        "content": "# Reglementation en région wallone\n\nEn région wallone(https://www.ejustice.just.fgov.be/eli/arrete/2002/07/04/2002027815/justel), le cadre légal est clair et rigoureux. Depuis l’arrêté du Gouvernement wallon du 4 juillet 2022, des limites de bruit spécifiques s’appliquent aux PAC selon les différentes périodes de la journée :\n\n- La nuit : le niveau sonore doit impérativement rester sous 40 dB.\n- En journée : le bruit ne doit pas dépasser 50 dB.\n- Le soir : la limite est réduite à 45 dB.\n\nLe bruit se propage en cercle autour d'une unité extérieure (PAC). \nIl est donc crucial de faire attention aux surfaces environnantes, comme des murs ou d’autres bâtiments, qui peuvent réfléchir le son et provoquer un effet d’écho. Pour limiter cette résonance, maintenez au moins un mètre d’espace autour de la pompe, en particulier par rapport aux fenêtres, aux portes et aux chemins. Si l’unité est placée contre un mur, veillez à respecter une distance minimale de 30 centimètres — l’idéal étant de 50 centimètres — pour garantir une circulation sonore optimale. Il est également important de prendre en compte la distance entre la face avant de la pompe à chaleur et les trottoirs, qui doit être d’au moins 3 mètres et d’au moins 6 mètres pour les plantes.\n\nSource: https://www.bobex.be/fr-be/pompe-a-chaleur/installation/distance-voisin/\n",
+        "content": "# Réglementation en région wallone\n\nEn région wallone(https://www.ejustice.just.fgov.be/eli/arrete/2002/07/04/2002027815/justel), le cadre légal est clair et rigoureux. Depuis l’arrêté du Gouvernement wallon du 4 juillet 2022, des limites de bruit spécifiques s’appliquent aux PAC selon les différentes périodes de la journée :\n\n- En journée (7h-19h): le bruit ne doit pas dépasser 50 dB.\n- En transition (6h-7h, 19h-22h): la limite est réduite à 45 dB.\n- La nuit (22h-6h): le niveau sonore doit impérativement rester sous 40 dB.\n\nLe bruit se propage en cercle autour d'une unité extérieure (PAC). \nIl est donc crucial de faire attention aux surfaces environnantes, comme des murs ou d’autres bâtiments, qui peuvent réfléchir le son et provoquer un effet d’écho. Pour limiter cette résonance, maintenez au moins un mètre d’espace autour de la pompe, en particulier par rapport aux fenêtres, aux portes et aux chemins. Si l’unité est placée contre un mur, veillez à respecter une distance minimale de 30 centimètres — l’idéal étant de 50 centimètres — pour garantir une circulation sonore optimale. Il est également important de prendre en compte la distance entre la face avant de la pompe à chaleur et les trottoirs, qui doit être d’au moins 3 mètres et d’au moins 6 mètres pour les plantes.\n\nSource: https://www.bobex.be/fr-be/pompe-a-chaleur/installation/distance-voisin/\n",
         "mode": "markdown"
       },
       "pluginVersion": "12.3.1",
@@ -590,5 +590,5 @@
   "timezone": "browser",
   "title": "Noise Station",
   "uid": "adx4w44",
-  "version": 52
+  "version": 53
 }
