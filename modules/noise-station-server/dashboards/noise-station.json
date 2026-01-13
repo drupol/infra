@@ -18,7 +18,7 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 12,
+  "id": 13,
   "links": [],
   "liveNow": true,
   "panels": [
@@ -641,14 +641,14 @@
       {
         "allowCustomValue": false,
         "current": {
-          "text": "1s",
-          "value": "1s"
+          "text": "1m",
+          "value": "1m"
         },
         "label": "Average Window",
         "name": "average_window",
         "options": [
           {
-            "selected": true,
+            "selected": false,
             "text": "1s",
             "value": "1s"
           },
@@ -658,7 +658,7 @@
             "value": "30s"
           },
           {
-            "selected": false,
+            "selected": true,
             "text": "1m",
             "value": "1m"
           },
@@ -694,7 +694,7 @@
     ]
   },
   "time": {
-    "from": "now-5m",
+    "from": "now-15m",
     "to": "now"
   },
   "timepicker": {
