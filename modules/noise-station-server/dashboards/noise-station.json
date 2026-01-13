@@ -18,7 +18,7 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 1,
+  "id": 3,
   "links": [],
   "liveNow": true,
   "panels": [
@@ -80,8 +80,8 @@
       "fieldConfig": {
         "defaults": {
           "color": {
-            "fixedColor": "blue",
-            "mode": "palette-classic",
+            "fixedColor": "green",
+            "mode": "fixed",
             "seriesBy": "last"
           },
           "custom": {
@@ -93,7 +93,7 @@
             "barAlignment": 0,
             "barWidthFactor": 0.6,
             "drawStyle": "line",
-            "fillOpacity": 10,
+            "fillOpacity": 0,
             "gradientMode": "none",
             "hideFrom": {
               "legend": false,
@@ -159,6 +159,21 @@
                 "value": "Limite Region Wallone"
               }
             ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "limit"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "dark-red",
+                  "mode": "fixed"
+                }
+              }
+            ]
           }
         ]
       },
@@ -191,7 +206,7 @@
             "uid": "ff9xpmhbcsb9ce"
           },
           "hide": false,
-          "query": "import \"math\"\n\nfrom(bucket: \"default\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"dt8852\")\n  |> filter(fn: (r) => r[\"_field\"] == \"spl\")\n  |> keep(columns: [\"_time\", \"_value\", \"_field\"])\n  |> aggregateWindow(every: v.windowPeriod, fn: mean, createEmpty: false)\n  // Utilisation de map pour arrondir chaque valeur\n  |> map(fn: (r) => ({ r with _value: math.round(x: r._value) }))\n  |> set(key: \"_field\", value: \"Noise Level\") \n  |> yield(name: \"spl\")",
+          "query": "import \"math\"\nimport \"timezone\"\n\noption location = timezone.location(name: \"Europe/Brussels\")\n\nfrom(bucket: \"default\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"dt8852\")\n  |> filter(fn: (r) => r[\"_field\"] == \"spl\")\n  |> keep(columns: [\"_time\", \"_value\", \"_field\"])\n  |> aggregateWindow(every: v.windowPeriod, fn: mean, createEmpty: false)\n  // Utilisation de map pour arrondir chaque valeur\n  |> map(fn: (r) => ({ r with _value: math.round(x: r._value) }))\n  |> set(key: \"_field\", value: \"Noise Level\") \n  |> yield(name: \"spl\")",
           "refId": "Live"
         },
         {
@@ -200,7 +215,7 @@
             "uid": "ff9xpmhbcsb9ce"
           },
           "hide": false,
-          "query": "import \"date\"\nimport \"math\"\n\nfrom(bucket: \"default\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"dt8852\")\n  |> filter(fn: (r) => r[\"_field\"] == \"spl\")\n  |> keep(columns: [\"_time\", \"_value\", \"_field\"])  \n  |> aggregateWindow(every: v.windowPeriod, fn: median, createEmpty: false)\n  |> map(fn: (r) => {\n      h = date.hour(t: r._time)\n      \n      limitValue = if h >= 7 and h < 19 then 50.0                 // Journée (07h00 - 19h00)\n                   else if (h >= 6 and h < 7) or (h >= 19 and h < 22) then 45.0 // Transition\n                   else 40.0                                     // Nuit (22h00 - 06h00)\n      \n      return {\n          _time: r._time,\n          limit: limitValue\n      }\n  })\n  |> yield(name: \"noise_data\")",
+          "query": "import \"date\"\nimport \"math\"\nimport \"timezone\"\n\noption location = timezone.location(name: \"Europe/Brussels\")\n\nfrom(bucket: \"default\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"dt8852\")\n  |> filter(fn: (r) => r[\"_field\"] == \"spl\")\n  |> keep(columns: [\"_time\", \"_value\", \"_field\"])  \n  |> aggregateWindow(every: v.windowPeriod, fn: median, createEmpty: false)\n  |> map(fn: (r) => {\n      h = date.hour(t: r._time)\n      \n      limitValue = if h >= 7 and h < 19 then 50.0                 // Journée (07h00 - 19h00)\n                   else if (h >= 6 and h < 7) or (h >= 19 and h < 22) then 45.0 // Transition\n                   else 40.0                                     // Nuit (22h00 - 06h00)\n      \n      return {\n          _time: r._time,\n          limit: limitValue\n      }\n  })\n  |> yield(name: \"noise_data\")",
           "refId": "Average"
         }
       ],
@@ -578,5 +593,5 @@
   "timezone": "browser",
   "title": "Noise Station",
   "uid": "adx4w44",
-  "version": 53
+  "version": 1
 }
