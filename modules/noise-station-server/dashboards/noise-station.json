@@ -18,7 +18,7 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 14,
+  "id": 17,
   "links": [],
   "liveNow": true,
   "panels": [
@@ -77,6 +77,7 @@
         "type": "influxdb",
         "uid": "ff9xpmhbcsb9ce"
       },
+      "description": "Affiche le niveau sonore instantané (lissé) comparé à la limite légale dynamique (40/45/50 dB). Permet de surveiller le respect des normes en temps réel et d'identifier les pics acoustiques instantanés.",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -187,7 +188,6 @@
         "y": 10
       },
       "id": 1,
-      "description": "Affiche le niveau sonore instantané (lissé) comparé à la limite légale dynamique (40/45/50 dB). Permet de surveiller le respect des normes en temps réel et d'identifier les pics acoustiques instantanés.",
       "maxDataPoints": 200,
       "options": {
         "legend": {
@@ -210,7 +210,7 @@
             "uid": "ff9xpmhbcsb9ce"
           },
           "hide": false,
-          "query": "import \"math\"\nimport \"timezone\"\n\noption location = timezone.location(name: \"Europe/Brussels\")\n\nfrom(bucket: \"default\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"dt8852\")\n  |> filter(fn: (r) => r[\"_field\"] == \"spl\")\n  // On garde la colonne frequency_weighting\n  |> keep(columns: [\"_time\", \"_value\", \"_field\", \"frequency_weighting\"])\n  \n  // Passage en échelle linéaire (énergie)\n  |> map(fn: (r) => ({\n      r with \n      _value: math.pow(x: 10.0, y: r._value / 10.0)\n  }))\n\n  // Calcul de la MOYENNE énergétique (Leq) par minute\n  // Note: mean est indispensable ici pour le calcul logarithmique\n  |> aggregateWindow(every: ${average_window}, fn: median, createEmpty: false)\n\n  // Retour en décibels ET renommage du flux\n  |> map(fn: (r) => ({\n      r with \n      _value: 10.0 * math.log10(x: r._value),\n      _field: \"Sound Pressure Level\"\n  }))\n\n  |> yield(name: \"spl_result\")",
+          "query": "import \"math\"\nimport \"timezone\"\n\noption location = timezone.location(name: \"Europe/Brussels\")\n\nfrom(bucket: \"default\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"dt8852\")\n  |> filter(fn: (r) => r[\"_field\"] == \"spl\")\n  // On garde la colonne frequency_weighting\n  |> keep(columns: [\"_time\", \"_value\", \"_field\", \"frequency_weighting\"])\n  \n  // Passage en échelle linéaire (énergie)\n  |> map(fn: (r) => ({\n      r with \n      _value: math.pow(x: 10.0, y: r._value / 10.0)\n  }))\n\n  // Calcul de la MOYENNE énergétique (Leq) par minute\n  // Note: mean est indispensable ici pour le calcul logarithmique\n  |> aggregateWindow(every: 10s, fn: median, createEmpty: false)\n\n  // Retour en décibels ET renommage du flux\n  |> map(fn: (r) => ({\n      r with \n      _value: 10.0 * math.log10(x: r._value),\n      _field: \"Sound Pressure Level\"\n  }))\n\n  |> yield(name: \"spl_result\")",
           "refId": "Live"
         },
         {
@@ -231,6 +231,7 @@
         "type": "influxdb",
         "uid": "ff9xpmhbcsb9ce"
       },
+      "description": "Montre la fréquence d'apparition des niveaux sonores par paliers de 3 dB. Idéal pour identifier le 'bruit de fond' dominant et caractériser la signature acoustique globale du lieu.",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -334,7 +335,6 @@
         "y": 25
       },
       "id": 3,
-      "description": "Montre la fréquence d'apparition des niveaux sonores par paliers de 3 dB. Idéal pour identifier le 'bruit de fond' dominant et caractériser la signature acoustique globale du lieu.",
       "options": {
         "combine": false,
         "legend": {
@@ -353,7 +353,7 @@
       "targets": [
         {
           "hide": false,
-          "query": "import \"math\"\nimport \"timezone\"\nimport \"date\"\n\noption location = timezone.location(name: \"Europe/Brussels\")\n\nfrom(bucket: \"default\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"dt8852\" and r[\"_field\"] == \"spl\")\n  // 1. Keep data volume safe (10s resolution)\n  |> aggregateWindow(every: ${average_window}, fn: last, createEmpty: false)\n  |> map(fn: (r) => {\n      h = date.hour(t: r._time)\n      \n      // 2. Define the four distinct periods\n      period = if h >= 7 and h < 19 then \"Day (Limit 50dB)\"\n               else if h >= 19 and h < 22 then \"Dusk / Evening (Limit 45dB)\"\n               else if h >= 6 and h < 7 then \"Dawn / Morning (Limit 45dB)\"\n               else \"Night (Limit 40dB)\"\n      \n      return { r with \n          // 3. Bucket by 3dB for acoustic significance\n          _value: math.floor(x: r._value / 3.0) * 3.0,\n          // 4. Use the period name as the field for the histogram series\n          _field: period\n      }\n  })\n  |> keep(columns: [\"_time\", \"_value\", \"_field\"])",
+          "query": "import \"math\"\nimport \"timezone\"\nimport \"date\"\n\noption location = timezone.location(name: \"Europe/Brussels\")\n\nfrom(bucket: \"default\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"dt8852\" and r[\"_field\"] == \"spl\")\n  // 1. Keep data volume safe (10s resolution)\n  |> aggregateWindow(every: 10s, fn: last, createEmpty: false)\n  |> map(fn: (r) => {\n      h = date.hour(t: r._time)\n      \n      // 2. Define the four distinct periods\n      period = if h >= 7 and h < 19 then \"Day (Limit 50dB)\"\n               else if h >= 19 and h < 22 then \"Dusk / Evening (Limit 45dB)\"\n               else if h >= 6 and h < 7 then \"Dawn / Morning (Limit 45dB)\"\n               else \"Night (Limit 40dB)\"\n      \n      return { r with \n          // 3. Bucket by 3dB for acoustic significance\n          _value: math.floor(x: r._value / 3.0) * 3.0,\n          // 4. Use the period name as the field for the histogram series\n          _field: period\n      }\n  })\n  |> keep(columns: [\"_time\", \"_value\", \"_field\"])",
           "refId": "A"
         }
       ],
@@ -365,6 +365,7 @@
         "type": "influxdb",
         "uid": "ff9xpmhbcsb9ce"
       },
+      "description": "Présente la médiane du volume sonore par intervalle de temps. Utile pour visualiser les cycles d'activité (jour/nuit), les tendances horaires et les moments de calme relatif.",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -419,7 +420,6 @@
         "y": 25
       },
       "id": 4,
-      "description": "Présente la médiane du volume sonore par intervalle de temps. Utile pour visualiser les cycles d'activité (jour/nuit), les tendances horaires et les moments de calme relatif.",
       "options": {
         "barRadius": 0,
         "barWidth": 0.6,
@@ -448,7 +448,7 @@
       "targets": [
         {
           "hide": false,
-          "query": "import \"math\"\nimport \"timezone\"\n\noption location = timezone.location(name: \"Europe/Brussels\")\n\nfrom(bucket: \"default\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"dt8852\")\n  |> filter(fn: (r) => r[\"_field\"] == \"spl\")\n  |> keep(columns: [\"_time\", \"_value\", \"_field\", \"frequency_weighting\"])\n  |> aggregateWindow(every: ${average_window}, fn: median, createEmpty: false)\n  |> map(fn: (r) => ({ \n      r with \n      _value: math.round(x: r._value),\n      _field: \"Sound Pressure Level\" \n  }))  \n  |> yield(name: \"hourly_peaks\")",
+          "query": "import \"math\"\nimport \"timezone\"\n\noption location = timezone.location(name: \"Europe/Brussels\")\n\nfrom(bucket: \"default\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"dt8852\")\n  |> filter(fn: (r) => r[\"_field\"] == \"spl\")\n  |> keep(columns: [\"_time\", \"_value\", \"_field\", \"frequency_weighting\"])\n  |> aggregateWindow(every: 15m, fn: median, createEmpty: false)\n  |> map(fn: (r) => ({ \n      r with \n      _value: math.round(x: r._value),\n      _field: \"Sound Pressure Level\" \n  }))  \n  |> yield(name: \"hourly_peaks\")",
           "refId": "A"
         }
       ],
@@ -535,6 +535,7 @@
         "type": "influxdb",
         "uid": "ff9xpmhbcsb9ce"
       },
+      "description": "Carte de positionnement du capteur Trotec SL400. Indispensable pour contextualiser les mesures par rapport à l'environnement urbain, aux obstacles et au voisinage.",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -571,7 +572,6 @@
         "y": 41
       },
       "id": 5,
-      "description": "Carte de positionnement du capteur Trotec SL400. Indispensable pour contextualiser les mesures par rapport à l'environnement urbain, aux obstacles et au voisinage.",
       "options": {
         "basemap": {
           "config": {},
@@ -640,6 +640,7 @@
         "type": "influxdb",
         "uid": "ff9xpmhbcsb9ce"
       },
+      "description": "Historique binaire du respect de la législation wallonne (Vert = Conforme, Rouge = Infraction). Permet de quantifier rapidement les périodes de dépassement des seuils autorisés sur la durée affichée.",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -693,7 +694,6 @@
         "y": 51
       },
       "id": 8,
-      "description": "Historique binaire du respect de la législation wallonne (Vert = Conforme, Rouge = Infraction). Permet de quantifier rapidement les périodes de dépassement des seuils autorisés sur la durée affichée.",
       "options": {
         "alignValue": "left",
         "legend": {
@@ -719,6 +719,158 @@
       ],
       "title": "Timeline des Infractions",
       "type": "state-timeline"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "ff9xpmhbcsb9ce"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 6,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "showValues": true,
+            "spanNulls": true,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "dtdurations"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Durée de la nuisance (> 60dB)"
+            },
+            "properties": [
+              {
+                "id": "custom.axisPlacement",
+                "value": "right"
+              },
+              {
+                "id": "unit",
+                "value": "dtdurations"
+              },
+              {
+                "id": "custom.lineInterpolation",
+                "value": "stepBefore"
+              },
+              {
+                "id": "custom.fillOpacity",
+                "value": 50
+              },
+              {
+                "id": "custom.scaleDistribution",
+                "value": {
+                  "log": 2,
+                  "type": "log"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Intensité"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "dB"
+              },
+              {
+                "id": "custom.lineInterpolation",
+                "value": "smooth"
+              },
+              {
+                "id": "custom.fillOpacity",
+                "value": 0
+              },
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "#fffd0038",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "description": "Analyse approfondie des événements sonores significatifs. Ce panneau isole et visualise les périodes où le niveau sonore a dépassé 60 dB de manière continue pendant plus de 2 minutes (120s), permettant d'identifier les nuisances longues et persistantes par rapport aux bruits transitoires.",
+      "gridPos": {
+        "h": 11,
+        "w": 24,
+        "x": 0,
+        "y": 56
+      },
+      "id": 9,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "multi",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "12.3.1",
+      "targets": [
+        {
+          "query": "import \"math\"\nimport \"timezone\"\n\noption location = timezone.location(name: \"Europe/Brussels\")\n\nfrom(bucket: \"default\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"dt8852\" and r[\"_field\"] == \"spl\")\n  \n  // 1. Fenêtrage de base\n  |> aggregateWindow(every: 10s, fn: max, createEmpty: false)\n\n  // --- DÉBUT DU LISSAGE ÉNERGÉTIQUE ---\n  // 2. Conversion des dB en échelle linéaire (énergie)\n  |> map(fn: (r) => ({ r with _value: math.pow(x: 10.0, y: r._value / 10.0) }))\n  \n  // 3. Moyenne glissante sur 30 secondes (6 points de 5s)\n  |> exponentialMovingAverage(n: 12)\n  \n  // 4. Retour en décibels (échelle logarithmique)\n  |> map(fn: (r) => ({ r with _value: 10.0 * math.log10(x: r._value) }))\n  // --- FIN DU LISSAGE ÉNERGÉTIQUE ---\n\n  // 5. Calcul de la durée consécutive au dessus de 55.0 dB\n  // On le fait sur la valeur lissée pour éviter les micro-coupures du compteur\n  |> stateDuration(fn: (r) => r._value > 60.0, column: \"noisy_seconds\", unit: 1s)\n\n  // 6. Nettoyage : transformer les -1 (sous le seuil) en 0\n  |> map(fn: (r) => ({\n      r with \n      noisy_seconds: if r.noisy_seconds == -1 then 0 else r.noisy_seconds\n  }))\n\n  // 7. FILTRE : On ne garde que les séquences qui durent plus de 120s (2 minutes)\n  |> filter(fn: (r) => r.noisy_seconds >= 120)\n\n  // 8. Formatage final pour un affichage propre dans Grafana\n  |> map(fn: (r) => ({\n      _time: r._time,\n      \"Intensité\": math.round(x: r._value * 10.0) / 10.0, // Arrondi 1 décimale\n      \"Durée de la nuisance (> 60dB)\": float(v: r.noisy_seconds)\n  }))\n  |> yield(name: \"nuisances_analyse\")",
+          "refId": "A"
+        }
+      ],
+      "title": "New panel",
+      "type": "timeseries"
     }
   ],
   "preload": false,
@@ -726,82 +878,7 @@
   "schemaVersion": 42,
   "tags": [],
   "templating": {
-    "list": [
-      {
-        "allowCustomValue": false,
-        "current": {
-          "text": "1m",
-          "value": "1m"
-        },
-        "description": "Définit la période sur laquelle les données sont moyennées (lissage). Augmentez cette valeur pour voir les tendances générales, réduisez-la pour voir les pics instantanés.",
-        "label": "Fenêtre de Lissage",
-        "name": "average_window",
-        "options": [
-          {
-            "selected": false,
-            "text": "1s",
-            "value": "1s"
-          },
-          {
-            "selected": false,
-            "text": "10s",
-            "value": "10s"
-          },
-          {
-            "selected": false,
-            "text": "30s",
-            "value": "30s"
-          },
-          {
-            "selected": true,
-            "text": "1m",
-            "value": "1m"
-          },
-          {
-            "selected": false,
-            "text": "5m",
-            "value": "5m"
-          },
-          {
-            "selected": false,
-            "text": "15m",
-            "value": "15m"
-          },
-          {
-            "selected": false,
-            "text": "30m",
-            "value": "30m"
-          },
-          {
-            "selected": false,
-            "text": "1h",
-            "value": "1h"
-          },
-          {
-            "selected": false,
-            "text": "2h",
-            "value": "2h"
-          },
-          {
-            "selected": false,
-            "text": "4h",
-            "value": "4h"
-          },
-          {
-            "selected": false,
-            "text": "12h",
-            "value": "12h"
-          },
-          {
-            "selected": false,
-            "text": "24h",
-            "value": "24h"
-          }
-        ],
-        "query": "1s,10s,30s,1m,5m,15m,30m,1h,2h,4h,12h,24h",
-        "type": "custom"
-      }
-    ]
+    "list": []
   },
   "time": {
     "from": "now-15m",
