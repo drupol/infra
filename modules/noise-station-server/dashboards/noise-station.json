@@ -18,7 +18,7 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 36,
+  "id": 37,
   "links": [],
   "liveNow": true,
   "panels": [
@@ -1042,7 +1042,9 @@
       "fieldConfig": {
         "defaults": {
           "color": {
-            "mode": "palette-classic"
+            "fixedColor": "text",
+            "mode": "fixed",
+            "seriesBy": "last"
           },
           "custom": {
             "axisBorderShow": false,
@@ -1053,7 +1055,7 @@
             "barAlignment": 0,
             "barWidthFactor": 0.6,
             "drawStyle": "line",
-            "fillOpacity": 10,
+            "fillOpacity": 0,
             "gradientMode": "opacity",
             "hideFrom": {
               "legend": false,
@@ -1062,38 +1064,38 @@
             },
             "insertNulls": false,
             "lineInterpolation": "smooth",
-            "lineWidth": 2,
+            "lineWidth": 1,
             "pointSize": 5,
             "scaleDistribution": {
               "type": "linear"
             },
             "showPoints": "auto",
             "showValues": false,
-            "spanNulls": false,
+            "spanNulls": true,
             "stacking": {
               "group": "A",
               "mode": "none"
             },
             "thresholdsStyle": {
-              "mode": "area",
-              "palette": "classic"
+              "mode": "dashed+area"
             }
           },
-          "displayName": "Indice de Monotonie (L10 - L90)",
+          "displayName": "Indice de Monotonie",
+          "fieldMinMax": false,
           "mappings": [],
           "thresholds": {
             "mode": "absolute",
             "steps": [
               {
-                "color": "red",
+                "color": "dark-green",
                 "value": 0
               },
               {
-                "color": "#EAB839",
+                "color": "dark-orange",
                 "value": 5
               },
               {
-                "color": "green",
+                "color": "dark-red",
                 "value": 15
               }
             ]
@@ -1103,15 +1105,57 @@
         "overrides": [
           {
             "matcher": {
-              "id": "byName",
-              "options": "Indice de Monotonie (L10 - L90)"
+              "id": "byFrameRefID",
+              "options": "B"
             },
             "properties": [
               {
-                "id": "color",
+                "id": "mappings",
+                "value": [
+                  {
+                    "options": {
+                      "from": 0,
+                      "result": {
+                        "color": "dark-green",
+                        "index": 0,
+                        "text": "Stable"
+                      },
+                      "to": 5
+                    },
+                    "type": "range"
+                  },
+                  {
+                    "options": {
+                      "from": 5,
+                      "result": {
+                        "color": "dark-orange",
+                        "index": 1,
+                        "text": "Fluctuant"
+                      },
+                      "to": 15
+                    },
+                    "type": "range"
+                  },
+                  {
+                    "options": {
+                      "from": 15,
+                      "result": {
+                        "color": "dark-red",
+                        "index": 2,
+                        "text": "Hautement variable"
+                      },
+                      "to": 100
+                    },
+                    "type": "range"
+                  }
+                ]
+              },
+              {
+                "id": "custom.hideFrom",
                 "value": {
-                  "fixedColor": "purple",
-                  "mode": "fixed"
+                  "legend": true,
+                  "tooltip": false,
+                  "viz": true
                 }
               }
             ]
@@ -1134,15 +1178,25 @@
         },
         "tooltip": {
           "hideZeros": false,
-          "mode": "single",
+          "mode": "multi",
           "sort": "none"
         }
       },
       "pluginVersion": "12.3.1",
       "targets": [
         {
-          "query": "import \"math\"\nimport \"timezone\"\noption location = timezone.location(name: \"Europe/Brussels\")\n\ndata = from(bucket: \"default\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"dt8852\" and r[\"_field\"] == \"spl\")\n\nl10 = data |> aggregateWindow(every: 60m, fn: (column, tables=<-) => tables |> quantile(q: 0.90), createEmpty: false)\nl90 = data |> aggregateWindow(every: 60m, fn: (column, tables=<-) => tables |> quantile(q: 0.10), createEmpty: false)\n\njoin(tables: {l10: l10, l90: l90}, on: [\"_time\"])\n  |> map(fn: (r) => ({\n      _time: r._time,\n      _value: r._value_l10 - r._value_l90,\n      _field: \"Indice de Monotonie (L10 - L90)\"\n  }))",
+          "hide": false,
+          "query": "import \"math\"\nimport \"timezone\"\n\n// Configuration de la zone horaire\noption location = timezone.location(name: \"Europe/Brussels\")\n\n// 1. Récupération et nettoyage des données\ndata = from(bucket: \"default\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"dt8852\" and r[\"_field\"] == \"spl\")\n  |> filter(fn: (r) => exists r._value) // On ignore les points vides\n\n// 2. Calcul du L10 (Pics sonores)\nl10 = data \n  |> aggregateWindow(every: 30m, fn: (column, tables=<-) => tables |> quantile(q: 0.90), createEmpty: false)\n\n// 3. Calcul du L90 (Bruit de fond)\nl90 = data \n  |> aggregateWindow(every: 30m, fn: (column, tables=<-) => tables |> quantile(q: 0.10), createEmpty: false)\n\njoin(tables: {l10: l10, l90: l90}, on: [\"_time\"])\n  |> map(fn: (r) => {\n      // Calcul de la différence brute\n      raw_diff = r._value_l10 - r._value_l90\n      \n      // Correction : Si négatif (erreur de calcul), on ramène à 0\n      val = if raw_diff < 0.0 then 0.0 else raw_diff\n      \n      return {\n          _time: r._time,\n          _value: val,\n          _field: \"Climat Sonore (L10-L90)\"\n      }\n  })",
           "refId": "A"
+        },
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "ff9xpmhbcsb9ce"
+          },
+          "hide": false,
+          "query": "import \"math\"\nimport \"timezone\"\n\n// Configuration de la zone horaire\noption location = timezone.location(name: \"Europe/Brussels\")\n\n// 1. Récupération et nettoyage des données\ndata = from(bucket: \"default\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"dt8852\" and r[\"_field\"] == \"spl\")\n  |> filter(fn: (r) => exists r._value) // On ignore les points vides\n\n// 2. Calcul du L10 (Pics sonores)\nl10 = data \n  |> aggregateWindow(every: 30m, fn: (column, tables=<-) => tables |> quantile(q: 0.90), createEmpty: false)\n\n// 3. Calcul du L90 (Bruit de fond)\nl90 = data \n  |> aggregateWindow(every: 30m, fn: (column, tables=<-) => tables |> quantile(q: 0.10), createEmpty: false)\n\njoin(tables: {l10: l10, l90: l90}, on: [\"_time\"])\n  |> map(fn: (r) => {\n      // Calcul de la différence brute\n      raw_diff = math.round(x: r._value_l10 - r._value_l90)\n      \n      // Correction : Si négatif (erreur de calcul), on ramène à 0\n      val = if raw_diff < 0.0 then 0.0 else raw_diff\n      \n      return {\n          _time: r._time,\n          _value: val,\n          _field: \"Variability\"\n      }\n  })",
+          "refId": "B"
         }
       ],
       "title": "Signature du Bruit: Dynamique & Monotonie",
