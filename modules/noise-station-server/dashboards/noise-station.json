@@ -18,7 +18,7 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 32,
+  "id": 36,
   "links": [],
   "liveNow": true,
   "panels": [
@@ -1026,7 +1026,7 @@
       "pluginVersion": "12.3.1",
       "targets": [
         {
-          "query": "import \"math\"\nimport \"timezone\"\noption location = timezone.location(name: \"Europe/Brussels\")\ndata = from(bucket: \"default\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"dt8852\")\n  |> filter(fn: (r) => r[\"_field\"] == \"spl\")\n// On retire aggregateWindow pour avoir UN seul chiffre par série sur toute la période\nl10 = data\n  // Pas de window, on applique quantile directement à toute la table\n  |> quantile(q: 0.90)\n  |> map(fn: (r) => ({ r with _field: \"L10 (Pics)\", _value: math.round(x: r._value) }))\nl50 = data\n  |> quantile(q: 0.50)\n  |> map(fn: (r) => ({ r with _field: \"L50 (Médiane)\", _value: math.round(x: r._value) }))\nl90 = data\n  |> quantile(q: 0.10)\n  |> map(fn: (r) => ({ r with _field: \"L90 (Bruit de fond)\", _value: math.round(x: r._value) }))\nunion(tables: [l10, l50, l90])\n  |> yield(name: \"acoustic_stats\")",
+          "query": "import \"math\"\nimport \"timezone\"\noption location = timezone.location(name: \"Europe/Brussels\")\n\ndata = from(bucket: \"default\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"dt8852\")\n  |> filter(fn: (r) => r[\"_field\"] == \"spl\")\n  |> group() \n\nl10 = data\n  |> quantile(q: 0.90)\n  |> map(fn: (r) => ({ _field: \"L10 (Pics)\", _value: math.round(x: r._value) }))\n\nl50 = data\n  |> quantile(q: 0.50)\n  |> map(fn: (r) => ({ _field: \"L50 (Médiane)\", _value: math.round(x: r._value) }))\n\nl90 = data\n  |> quantile(q: 0.10)\n  |> map(fn: (r) => ({ _field: \"L90 (Bruit de fond)\", _value: math.round(x: r._value) }))\n\nunion(tables: [l10, l50, l90])\n  |> group(columns: [\"_field\"])\n  |> yield(name: \"acoustic_stats\")",
           "refId": "A"
         }
       ],
