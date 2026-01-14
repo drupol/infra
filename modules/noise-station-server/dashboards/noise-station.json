@@ -18,7 +18,7 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 22,
+  "id": 24,
   "links": [],
   "liveNow": true,
   "panels": [
@@ -116,7 +116,7 @@
           "showLineNumbers": false,
           "showMiniMap": false
         },
-        "content": "Cette section met en regard le **niveau sonore en temps réel** et les **seuils réglementaires applicables en Région wallonne**.\n\n### Live View — calcul énergétique sur 30 s\n\nLe panneau *Vue en Temps Réel* part des mesures **SPL** (dB) issues de la série `dt8852/spl`, puis applique le traitement suivant :\n\n1. **Conversion dB → énergie** : chaque valeur est convertie en échelle linéaire, afin de travailler sur une grandeur énergétique.\n2. **Fenêtrage 30 secondes** : les valeurs (en énergie) sont agrégées sur des fenêtres de **30 s**, ce qui produit un indicateur stable et robuste aux micro-pics.\n3. **Retour énergie → dB** : la valeur agrégée est reconvertie en décibels pour un affichage cohérent en dB.\n\n### Limite légale dynamique\n\nUne seconde série calcule une **limite horaire** en fonction de l’heure locale (Europe/Brussels) :\n- **50 dB** entre 07h–19h  \n- **45 dB** entre 06h–07h et 19h–22h  \n- **40 dB** entre 22h–06h  \n\nCette limite est affichée en **ligne blanche pointillée** afin de visualiser immédiatement la marge de conformité.\n\n### Lecture instantanée\nLes seuils de couleur sur la courbe (vert/jaune/orange/rouge) permettent d’identifier d’un coup d’œil si le niveau se situe sous 40/45/50 dB, ou s’il s’en approche / les dépasse.\n",
+        "content": "Cette section met en regard le **niveau sonore en temps réel** et les **seuils réglementaires applicables en Région wallonne**.\n\n### Vue en Temps Réel\n\nLe panneau *Vue en Temps Réel* part des mesures **SPL** (dB) issues de la série `dt8852/spl`, puis applique le traitement suivant :\n\n1. **Conversion dB → énergie** : chaque valeur est convertie en échelle linéaire, afin de travailler sur une grandeur énergétique.\n2. **Fenêtrage 30 secondes** : les valeurs (en énergie) sont agrégées sur des fenêtres de **30 s**, ce qui produit un indicateur stable et robuste aux micro-pics.\n3. **Retour énergie → dB** : la valeur agrégée est reconvertie en décibels pour un affichage cohérent en dB.\n\n### Historique des Infractions\n\nUne seconde série calcule une **limite horaire** en fonction de l’heure locale (Europe/Brussels) :\n- **50 dB** entre 07h–19h  \n- **45 dB** entre 06h–07h et 19h–22h  \n- **40 dB** entre 22h–06h  \n\nCette limite est affichée en **ligne blanche pointillée** afin de visualiser immédiatement la marge de conformité.\n\nLes seuils de couleur sur la courbe (vert/jaune/orange/rouge) permettent d’identifier d’un coup d’œil si le niveau se situe sous 40/45/50 dB, ou s’il s’en approche / les dépasse.\n",
         "mode": "markdown"
       },
       "pluginVersion": "12.3.1",
@@ -260,7 +260,7 @@
             "uid": "ff9xpmhbcsb9ce"
           },
           "hide": false,
-          "query": "import \"math\"\nimport \"timezone\"\n\noption location = timezone.location(name: \"Europe/Brussels\")\n\nfrom(bucket: \"default\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"dt8852\")\n  |> filter(fn: (r) => r[\"_field\"] == \"spl\")\n  // On garde la colonne frequency_weighting\n  |> keep(columns: [\"_time\", \"_value\", \"_field\", \"frequency_weighting\"])\n  \n  // Passage en échelle linéaire (énergie)\n  |> map(fn: (r) => ({\n      r with \n      _value: math.pow(x: 10.0, y: r._value / 10.0)\n  }))\n\n  // Calcul de la MOYENNE énergétique (Leq) par minute\n  // Note: mean est indispensable ici pour le calcul logarithmique\n  |> aggregateWindow(every: 30s, fn: median, createEmpty: false)\n\n  // Retour en décibels ET renommage du flux\n  |> map(fn: (r) => ({\n      r with \n      _value: 10.0 * math.log10(x: r._value),\n      _field: \"Niveau de Pression Sonore\"\n  }))\n\n  |> yield(name: \"spl_result\")",
+          "query": "import \"math\"\nimport \"timezone\"\n\noption location = timezone.location(name: \"Europe/Brussels\")\n\nfrom(bucket: \"default\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"dt8852\")\n  |> filter(fn: (r) => r[\"_field\"] == \"spl\")\n  // On garde la colonne frequency_weighting\n  |> keep(columns: [\"_time\", \"_value\", \"_field\", \"frequency_weighting\"])\n  \n  // Passage en échelle linéaire (énergie)\n  |> map(fn: (r) => ({\n      r with \n      _value: math.pow(x: 10.0, y: r._value / 10.0)\n  }))\n\n  // Calcul de la MOYENNE énergétique (Leq) par minute\n  // Note: mean est indispensable ici pour le calcul logarithmique\n  |> aggregateWindow(every: 30s, fn: mean, createEmpty: false)\n\n  // Retour en décibels ET renommage du flux\n  |> map(fn: (r) => ({\n      r with \n      _value: 10.0 * math.log10(x: r._value),\n      _field: \"Niveau de Pression Sonore\"\n  }))\n\n  |> yield(name: \"spl_result\")",
           "refId": "Live"
         },
         {
@@ -621,7 +621,7 @@
       "targets": [
         {
           "hide": false,
-          "query": "import \"math\"\nimport \"timezone\"\n\noption location = timezone.location(name: \"Europe/Brussels\")\n\nfrom(bucket: \"default\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"dt8852\")\n  |> filter(fn: (r) => r[\"_field\"] == \"spl\")\n  |> keep(columns: [\"_time\", \"_value\", \"_field\", \"frequency_weighting\"])\n  |> aggregateWindow(every: 15m, fn: median, createEmpty: false)\n  |> map(fn: (r) => ({ \n      r with \n      _value: math.round(x: r._value),\n      _field: \"Niveau de Pression Sonore\" \n  }))  \n  |> yield(name: \"hourly_peaks\")",
+          "query": "import \"math\"\nimport \"timezone\"\n\noption location = timezone.location(name: \"Europe/Brussels\")\n\nfrom(bucket: \"default\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"dt8852\")\n  |> filter(fn: (r) => r[\"_field\"] == \"spl\")\n  |> keep(columns: [\"_time\", \"_value\", \"_field\", \"frequency_weighting\"])\n  |> aggregateWindow(every: 15m, fn: mean, createEmpty: false)\n  |> map(fn: (r) => ({ \n      r with \n      _value: math.round(x: r._value),\n      _field: \"Niveau de Pression Sonore\" \n  }))  \n  |> yield(name: \"hourly_peaks\")",
           "refId": "A"
         }
       ],
