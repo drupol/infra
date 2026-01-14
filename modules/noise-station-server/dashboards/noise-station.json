@@ -18,7 +18,7 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 37,
+  "id": 38,
   "links": [],
   "liveNow": true,
   "panels": [
@@ -104,7 +104,7 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 13,
+        "h": 20,
         "w": 24,
         "x": 0,
         "y": 31
@@ -116,7 +116,7 @@
           "showLineNumbers": false,
           "showMiniMap": false
         },
-        "content": "Cette section met en regard le **niveau sonore en temps réel** et les **seuils réglementaires applicables en Région wallonne**.\n\n### Vue en Temps Réel\n\nLe panneau *Vue en Temps Réel* part des mesures **SPL** (dB) issues de la série `dt8852/spl`, puis applique le traitement suivant :\n\n1. **Conversion dB → énergie** : chaque valeur est convertie en échelle linéaire, afin de travailler sur une grandeur énergétique.\n2. **Fenêtrage 30 secondes** : les valeurs (en énergie) sont agrégées sur des fenêtres de **30 s**, ce qui produit un indicateur stable et robuste aux micro-pics.\n3. **Retour énergie → dB** : la valeur agrégée est reconvertie en décibels pour un affichage cohérent en dB.\n\n### Historique des Infractions\n\nUne seconde série calcule une **limite horaire** en fonction de l’heure locale (Europe/Brussels) :\n- **50 dB** entre 07h–19h  \n- **45 dB** entre 06h–07h et 19h–22h  \n- **40 dB** entre 22h–06h  \n\nCette limite est affichée en **ligne blanche pointillée** afin de visualiser immédiatement la marge de conformité.\n\nLes seuils de couleur sur la courbe (vert/jaune/orange/rouge) permettent d’identifier d’un coup d’œil si le niveau se situe sous 40/45/50 dB, ou s’il s’en approche / les dépasse.\n",
+        "content": "Cette section met en regard le **niveau sonore en temps réel** et les **seuils réglementaires applicables en Région wallonne**.\n\n### Vue en Temps Réel\n\nLe panneau *Vue en Temps Réel* part des mesures **SPL** (dB) issues de la série `dt8852/spl`, puis applique le traitement suivant :\n\n1. **Conversion dB → énergie** : chaque valeur est convertie en échelle linéaire, afin de travailler sur une grandeur énergétique.\n2. **Fenêtrage 30 secondes** : les valeurs (en énergie) sont agrégées sur des fenêtres de **30 s**, ce qui produit un indicateur stable et robuste aux micro-pics.\n3. **Retour énergie → dB** : la valeur agrégée est reconvertie en décibels pour un affichage cohérent en dB.\n\nLes seuils de couleur sur la courbe (vert/jaune/orange/rouge) permettent d’identifier d’un coup d’œil si le niveau se situe sous 40/45/50 dB, ou s’il s’en approche / les dépasse.\n\n### Historique des Infractions\n\nUne seconde série calcule une **limite horaire** en fonction de l’heure locale (Europe/Brussels) :\n- **50 dB** entre 07h–19h  \n- **45 dB** entre 06h–07h et 19h–22h  \n- **40 dB** entre 22h–06h  \n\n### Analyse des Émergences : Conformité aux Seuils Légaux\n\nCette visualisation est un outil de monitoring critique dédié à la **conformité environnementale**. Contrairement à un relevé de bruit classique qui affiche le niveau global, ce graphique isole uniquement la \"pollution sonore\", c'est-à-dire la part du bruit qui excède les limites autorisées. \n\nLe calcul repose sur un algorithme intelligent qui adapte dynamiquement le seuil de tolérance selon l'heure locale (Europe/Bruxelles) : \n*   **50 dB** durant la journée (07:00 - 19:00)\n*   **45 dB** durant les périodes de transition (06:00 - 07:00 et 19:00 - 22:00)\n*   **40 dB** durant la période nocturne (22:00 - 06:00)\n\nChaque pic affiché représente une **infraction directe** : sa hauteur indique l'intensité du dépassement en décibels (dB). \n\nL'infobulle (tooltip) fournit un diagnostic complet au survol de chaque point, précisant le statut de conformité, le niveau réel mesuré par le capteur et la limite légale en vigueur à cet instant précis. \n\nCette approche permet de transformer des données brutes en preuves exploitables pour la gestion des nuisances sonores et le respect du cadre législatif.\n\n",
         "mode": "markdown"
       },
       "pluginVersion": "12.3.1",
@@ -236,7 +236,7 @@
         "h": 15,
         "w": 24,
         "x": 0,
-        "y": 44
+        "y": 51
       },
       "id": 1,
       "options": {
@@ -332,7 +332,7 @@
         "h": 5,
         "w": 24,
         "x": 0,
-        "y": 59
+        "y": 66
       },
       "id": 8,
       "options": {
@@ -362,12 +362,207 @@
       "type": "state-timeline"
     },
     {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "ff9xpmhbcsb9ce"
+      },
+      "description": "Suivi en temps réel du dépassement des limites acoustiques réglementaires (50/45/40 dB) avec détection automatique des périodes Jour, Aube, Soir et Nuit.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineStyle": {
+              "fill": "solid"
+            },
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "showValues": false,
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "dB"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "seuil_legal"
+            },
+            "properties": [
+              {
+                "id": "custom.hideFrom",
+                "value": {
+                  "legend": true,
+                  "tooltip": false,
+                  "viz": false
+                }
+              },
+              {
+                "id": "custom.fillOpacity",
+                "value": 0
+              },
+              {
+                "id": "thresholds",
+                "value": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "green",
+                      "value": 0
+                    },
+                    {
+                      "color": "dark-orange",
+                      "value": 45
+                    },
+                    {
+                      "color": "dark-red",
+                      "value": 50
+                    }
+                  ]
+                }
+              },
+              {
+                "id": "color",
+                "value": {
+                  "mode": "thresholds",
+                  "seriesBy": "last"
+                }
+              },
+              {
+                "id": "custom.lineStyle",
+                "value": {
+                  "dash": [10, 10],
+                  "fill": "dash"
+                }
+              },
+              {
+                "id": "custom.hideFrom",
+                "value": {
+                  "legend": true,
+                  "tooltip": false,
+                  "viz": true
+                }
+              },
+              {
+                "id": "displayName",
+                "value": "Seuil Legal"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "niveau_reel"
+            },
+            "properties": [
+              {
+                "id": "custom.hideFrom",
+                "value": {
+                  "legend": true,
+                  "tooltip": false,
+                  "viz": true
+                }
+              },
+              {
+                "id": "displayName",
+                "value": "Niveau reel"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "_value"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Dépassement (dB)"
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 24,
+        "x": 0,
+        "y": 71
+      },
+      "id": 23,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "multi",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "12.3.1",
+      "targets": [
+        {
+          "query": "import \"math\"\nimport \"timezone\"\nimport \"date\"\n\n// 1. Configuration de l'environnement\noption location = timezone.location(name: \"Europe/Brussels\")\n\nfrom(bucket: \"default\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"dt8852\" and r[\"_field\"] == \"spl\")\n  |> filter(fn: (r) => exists r._value)\n  \n  // 2. Agrégation temporelle (évite l'erreur de trop grand nombre de points)\n  |> aggregateWindow(every: v.windowPeriod, fn: mean, createEmpty: false)\n\n  // 3. Calcul des limites horaires et du dépassement\n  |> map(fn: (r) => {\n      h = date.hour(t: r._time)\n      \n      // Seuils réglementaires (50 / 45 / 40 dB)\n      limite = if h >= 7 and h < 19 then 50.0 \n               else if h == 6 or (h >= 19 and h < 22) then 45.0 \n               else 40.0\n      \n      // Calcul du dépassement\n      diff = if r._value > limite then r._value - limite else 0.0\n      \n      return {\n          _time: r._time,\n          _value: diff,\n          _field: \"Dépassement (dB)\",\n          niveau_reel: r._value,\n          seuil_legal: limite,\n          statut: if diff > 0.0 then \"🔴 INFRACTION\" else \"🟢 CONFORME\"\n      }\n  })\n  \n  // 4. Envoi des données vers Grafana\n  |> yield(name: \"depassement_acoustique\")",
+          "refId": "A"
+        }
+      ],
+      "title": "Analyse des Émergences : Conformité aux Seuils Légaux",
+      "type": "timeseries"
+    },
+    {
       "collapsed": false,
       "gridPos": {
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 64
+        "y": 79
       },
       "id": 14,
       "panels": [],
@@ -383,7 +578,7 @@
         "h": 6,
         "w": 24,
         "x": 0,
-        "y": 65
+        "y": 80
       },
       "id": 15,
       "options": {
@@ -505,7 +700,7 @@
         "h": 15,
         "w": 24,
         "x": 0,
-        "y": 71
+        "y": 86
       },
       "id": 3,
       "options": {
@@ -590,7 +785,7 @@
         "h": 14,
         "w": 24,
         "x": 0,
-        "y": 86
+        "y": 101
       },
       "id": 4,
       "options": {
@@ -634,7 +829,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 100
+        "y": 115
       },
       "id": 12,
       "panels": [],
@@ -650,7 +845,7 @@
         "h": 10,
         "w": 24,
         "x": 0,
-        "y": 101
+        "y": 116
       },
       "id": 13,
       "options": {
@@ -792,7 +987,7 @@
         "h": 11,
         "w": 24,
         "x": 0,
-        "y": 111
+        "y": 126
       },
       "id": 9,
       "options": {
@@ -866,7 +1061,7 @@
         "h": 10,
         "w": 24,
         "x": 0,
-        "y": 122
+        "y": 137
       },
       "id": 2,
       "options": {
@@ -899,7 +1094,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 132
+        "y": 147
       },
       "id": 20,
       "panels": [],
@@ -915,7 +1110,7 @@
         "h": 9,
         "w": 24,
         "x": 0,
-        "y": 133
+        "y": 148
       },
       "id": 21,
       "options": {
@@ -998,7 +1193,7 @@
         "h": 11,
         "w": 24,
         "x": 0,
-        "y": 142
+        "y": 157
       },
       "id": 10,
       "options": {
@@ -1166,7 +1361,7 @@
         "h": 9,
         "w": 24,
         "x": 0,
-        "y": 153
+        "y": 168
       },
       "id": 22,
       "options": {
@@ -1241,7 +1436,7 @@
         "h": 11,
         "w": 24,
         "x": 0,
-        "y": 162
+        "y": 177
       },
       "id": 5,
       "options": {
