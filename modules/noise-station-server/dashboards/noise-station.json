@@ -18,7 +18,7 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 24,
+  "id": 26,
   "links": [],
   "liveNow": true,
   "panels": [
@@ -936,7 +936,7 @@
         "type": "influxdb",
         "uid": "ff9xpmhbcsb9ce"
       },
-      "description": "Calcule, sur des fenêtres de 60 minutes, trois indicateurs basés sur la distribution des niveaux sonores : L10 (événements dominants), L50 (niveau médian) et L90 (bruit de fond). Ces valeurs permettent de distinguer les pics du niveau ambiant résiduel.",
+      "description": "Répartition statistique du bruit sur l'ensemble de la période. Trois indicateurs basés sur la distribution des niveaux sonores: \n\n- L10 (Niveau de Pointe) : Niveau dépassé 10% du temps. Représente les événements bruyants (trafic, aboiements, travaux).\n- L50 (Niveau Médian): Le niveau sonore moyen ressenti la majorité du temps.\n- L90 (Bruit de Fond): Niveau dépassé 90% du temps. Représente le calme résiduel de l'environnement (ce qu'il reste quand tout s'arrête).\n\nCes valeurs permettent de distinguer les pics du niveau ambiant résiduel.",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -959,7 +959,7 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "L10 (Pics) {frequency_weighting=\"dB(C)\", hold_mode=\"Live\", host=\"rpi4\", range_mode=\"30dB - 80dB\", time_weighting=\"Slow\"}"
+              "options": "_value {_field=\"L10 (Pics)\", _start=\"2026-01-14 06:09:23.929 +0000 UTC\", _stop=\"2026-01-14 12:09:23.929 +0000 UTC\", frequency_weighting=\"dB(C)\", hold_mode=\"Live\", host=\"rpi4\", range_mode=\"30dB - 80dB\", time_weighting=\"Slow\"}"
             },
             "properties": [
               {
@@ -971,7 +971,7 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "L50 (Médiane) {frequency_weighting=\"dB(C)\", hold_mode=\"Live\", host=\"rpi4\", range_mode=\"30dB - 80dB\", time_weighting=\"Slow\"}"
+              "options": "_value {_field=\"L50 (Médiane)\", _start=\"2026-01-14 06:09:23.929 +0000 UTC\", _stop=\"2026-01-14 12:09:23.929 +0000 UTC\", frequency_weighting=\"dB(C)\", hold_mode=\"Live\", host=\"rpi4\", range_mode=\"30dB - 80dB\", time_weighting=\"Slow\"}"
             },
             "properties": [
               {
@@ -983,7 +983,7 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "L90 (Bruit de fond) {frequency_weighting=\"dB(C)\", hold_mode=\"Live\", host=\"rpi4\", range_mode=\"30dB - 80dB\", time_weighting=\"Slow\"}"
+              "options": "_value {_field=\"L90 (Bruit de fond)\", _start=\"2026-01-14 06:09:23.929 +0000 UTC\", _stop=\"2026-01-14 12:09:23.929 +0000 UTC\", frequency_weighting=\"dB(C)\", hold_mode=\"Live\", host=\"rpi4\", range_mode=\"30dB - 80dB\", time_weighting=\"Slow\"}"
             },
             "properties": [
               {
@@ -1026,12 +1026,127 @@
       "pluginVersion": "12.3.1",
       "targets": [
         {
-          "query": "import \"math\"\nimport \"timezone\"\n\n// Set the local timezone for window alignment\noption location = timezone.location(name: \"Europe/Brussels\")\n\n// 1. Fetch the raw Sound Pressure Level data\ndata = from(bucket: \"default\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"dt8852\")\n  |> filter(fn: (r) => r[\"_field\"] == \"spl\")\n\n// 2. Calculate L10 (Peak Noise - level exceeded 10% of the time)\nl10 = data\n  |> aggregateWindow(every: 60m, fn: (column, tables=<-) => tables |> quantile(q: 0.90), createEmpty: false)\n  |> map(fn: (r) => ({ r with _field: \"L10 (Pics)\", _value: math.round(x: r._value) }))\n\n// 3. Calculate L50 (Median Noise - level exceeded 50% of the time)\nl50 = data\n  |> aggregateWindow(every: 60m, fn: (column, tables=<-) => tables |> quantile(q: 0.50), createEmpty: false)\n  |> map(fn: (r) => ({ r with _field: \"L50 (Médiane)\", _value: math.round(x: r._value) }))\n\n// 4. Calculate L90 (Background Noise - level exceeded 90% of the time)\nl90 = data\n  |> aggregateWindow(every: 60m, fn: (column, tables=<-) => tables |> quantile(q: 0.10), createEmpty: false)\n  |> map(fn: (r) => ({ r with _field: \"L90 (Bruit de fond)\", _value: math.round(x: r._value) }))\n\n// 5. Join them together for the Bar Gauge\nunion(tables: [l10, l50, l90])\n  |> yield(name: \"acoustic_stats\")",
+          "query": "import \"math\"\nimport \"timezone\"\noption location = timezone.location(name: \"Europe/Brussels\")\ndata = from(bucket: \"default\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"dt8852\")\n  |> filter(fn: (r) => r[\"_field\"] == \"spl\")\n// On retire aggregateWindow pour avoir UN seul chiffre par série sur toute la période\nl10 = data\n  // Pas de window, on applique quantile directement à toute la table\n  |> quantile(q: 0.90)\n  |> map(fn: (r) => ({ r with _field: \"L10 (Pics)\", _value: math.round(x: r._value) }))\nl50 = data\n  |> quantile(q: 0.50)\n  |> map(fn: (r) => ({ r with _field: \"L50 (Médiane)\", _value: math.round(x: r._value) }))\nl90 = data\n  |> quantile(q: 0.10)\n  |> map(fn: (r) => ({ r with _field: \"L90 (Bruit de fond)\", _value: math.round(x: r._value) }))\nunion(tables: [l10, l50, l90])\n  |> yield(name: \"acoustic_stats\")",
           "refId": "A"
         }
       ],
-      "title": "Indicateurs L10 / L50 / L90 (sur 60 minutes)",
+      "title": "Signature Acoustique Globale (L10 / L50 / L90)",
       "type": "bargauge"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "ff9xpmhbcsb9ce"
+      },
+      "description": "Calcul de la dynamique du bruit: Différence entre le niveau de pointe (L10) et le niveau de fond (L90).\n\n- Valeur élevée (> 15 dB) : Bruit fluctuant, trafic, événements ponctuels.\n- Valeur faible (< 5 dB) : Bruit monotone et continu. C'est la signature typique d'une **Pompe à Chaleur** ou d'une VMC.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 10,
+            "gradientMode": "opacity",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "smooth",
+            "lineWidth": 2,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "showValues": false,
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "area",
+              "palette": "classic"
+            }
+          },
+          "displayName": "Indice de Monotonie (L10 - L90)",
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "red",
+                "value": 0
+              },
+              {
+                "color": "#EAB839",
+                "value": 5
+              },
+              {
+                "color": "green",
+                "value": 15
+              }
+            ]
+          },
+          "unit": "dB"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Indice de Monotonie (L10 - L90)"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "purple",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 24,
+        "x": 0,
+        "y": 153
+      },
+      "id": 22,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "12.3.1",
+      "targets": [
+        {
+          "query": "import \"math\"\nimport \"timezone\"\noption location = timezone.location(name: \"Europe/Brussels\")\n\ndata = from(bucket: \"default\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"dt8852\" and r[\"_field\"] == \"spl\")\n\nl10 = data |> aggregateWindow(every: 60m, fn: (column, tables=<-) => tables |> quantile(q: 0.90), createEmpty: false)\nl90 = data |> aggregateWindow(every: 60m, fn: (column, tables=<-) => tables |> quantile(q: 0.10), createEmpty: false)\n\njoin(tables: {l10: l10, l90: l90}, on: [\"_time\"])\n  |> map(fn: (r) => ({\n      _time: r._time,\n      _value: r._value_l10 - r._value_l90,\n      _field: \"Indice de Monotonie (L10 - L90)\"\n  }))",
+          "refId": "A"
+        }
+      ],
+      "title": "Signature du Bruit: Dynamique & Monotonie",
+      "type": "timeseries"
     },
     {
       "datasource": {
@@ -1072,7 +1187,7 @@
         "h": 11,
         "w": 24,
         "x": 0,
-        "y": 153
+        "y": 162
       },
       "id": 5,
       "options": {
