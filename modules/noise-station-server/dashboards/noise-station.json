@@ -18,7 +18,7 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 26,
+  "id": 32,
   "links": [],
   "liveNow": true,
   "panels": [
@@ -924,7 +924,7 @@
           "showLineNumbers": false,
           "showMiniMap": false
         },
-        "content": "Cette section applique des indicateurs courants de mesure acoustique pour caractériser l’ambiance sonore au-delà d’une moyenne simple.\n\n### Indicateurs L10 / L50 / L90 (sur 60 minutes)\n\nSur chaque fenêtre d’une heure, trois indicateurs sont calculés :\n- **L10** : Le niveau sonore dépassé pendant 10 % du temps. Il représente les événements sonores les plus forts (passages de voitures, cris, travaux).\n- **L50** : Le niveau dépassé pendant 50 % du temps. C'est l'indicateur de la \"tendance\" sonore globale.\n- **L90** : Le niveau dépassé pendant 90 % du temps. Il représente le niveau sonore calme, quand il n'y a pas d'événement particulier. C'est le \"bruit résiduel\" de la ville.\n\nCette lecture permet de séparer objectivement un bruit ambiant stable de pics plus rares mais plus forts.\n\n### Localisation du Capteur\n\nLa carte situe le capteur dans l’environnement. Ce repère est utile pour interpréter les variations (distance aux sources, obstacles, réflexions sur les façades).\n",
+        "content": "Cette section applique des indicateurs courants de mesure acoustique pour caractériser l’ambiance sonore au-delà d’une moyenne simple.\n\n### Signature Acoustique Globale (L10 / L50 / L90)\n\nSur l'ensemble de la periode, trois indicateurs sont calculés :\n\n- **L10** : Le niveau sonore dépassé pendant 10 % du temps. Il représente les événements sonores les plus forts (passages de voitures, cris, travaux).\n- **L50** : Le niveau dépassé pendant 50 % du temps. C'est l'indicateur de la \"tendance\" sonore globale.\n- **L90** : Le niveau dépassé pendant 90 % du temps. Il représente le niveau sonore calme, quand il n'y a pas d'événement particulier. C'est le \"bruit résiduel\" de la ville.\n\nCette lecture permet de séparer objectivement un bruit ambiant stable de pics plus rares mais plus forts.\n\n### Localisation du Capteur\n\nLa carte situe le capteur dans l’environnement. Ce repère est utile pour interpréter les variations (distance aux sources, obstacles, réflexions sur les façades).\n",
         "mode": "markdown"
       },
       "pluginVersion": "12.3.1",
