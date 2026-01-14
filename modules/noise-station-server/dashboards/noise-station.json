@@ -18,7 +18,7 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 33,
+  "id": 32,
   "links": [],
   "liveNow": true,
   "panels": [
@@ -104,7 +104,7 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 13,
+        "h": 12,
         "w": 24,
         "x": 0,
         "y": 31
@@ -236,7 +236,7 @@
         "h": 15,
         "w": 24,
         "x": 0,
-        "y": 44
+        "y": 43
       },
       "id": 1,
       "options": {
@@ -332,7 +332,7 @@
         "h": 5,
         "w": 24,
         "x": 0,
-        "y": 59
+        "y": 58
       },
       "id": 8,
       "options": {
@@ -367,7 +367,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 64
+        "y": 63
       },
       "id": 14,
       "panels": [],
@@ -383,7 +383,7 @@
         "h": 6,
         "w": 24,
         "x": 0,
-        "y": 65
+        "y": 64
       },
       "id": 15,
       "options": {
@@ -505,7 +505,7 @@
         "h": 15,
         "w": 24,
         "x": 0,
-        "y": 71
+        "y": 70
       },
       "id": 3,
       "options": {
@@ -590,7 +590,7 @@
         "h": 14,
         "w": 24,
         "x": 0,
-        "y": 86
+        "y": 85
       },
       "id": 4,
       "options": {
@@ -634,7 +634,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 100
+        "y": 99
       },
       "id": 12,
       "panels": [],
@@ -650,7 +650,7 @@
         "h": 10,
         "w": 24,
         "x": 0,
-        "y": 101
+        "y": 100
       },
       "id": 13,
       "options": {
@@ -792,7 +792,7 @@
         "h": 11,
         "w": 24,
         "x": 0,
-        "y": 111
+        "y": 110
       },
       "id": 9,
       "options": {
@@ -866,7 +866,7 @@
         "h": 10,
         "w": 24,
         "x": 0,
-        "y": 122
+        "y": 121
       },
       "id": 2,
       "options": {
@@ -899,7 +899,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 132
+        "y": 131
       },
       "id": 20,
       "panels": [],
@@ -912,10 +912,10 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 9,
+        "h": 12,
         "w": 24,
         "x": 0,
-        "y": 133
+        "y": 132
       },
       "id": 21,
       "options": {
@@ -924,7 +924,7 @@
           "showLineNumbers": false,
           "showMiniMap": false
         },
-        "content": "Cette section applique des indicateurs courants de mesure acoustique pour caractériser l’ambiance sonore au-delà d’une moyenne simple.\n\n### Signature Acoustique Globale (L10 / L50 / L90)\n\nSur l'ensemble de la periode, trois indicateurs sont calculés :\n\n- **L10** : Le niveau sonore dépassé pendant 10 % du temps. Il représente les événements sonores les plus forts (passages de voitures, cris, travaux).\n- **L50** : Le niveau dépassé pendant 50 % du temps. C'est l'indicateur de la \"tendance\" sonore globale.\n- **L90** : Le niveau dépassé pendant 90 % du temps. Il représente le niveau sonore calme, quand il n'y a pas d'événement particulier. C'est le \"bruit résiduel\" de la ville.\n\nCette lecture permet de séparer objectivement un bruit ambiant stable de pics plus rares mais plus forts.\n\n### Localisation du Capteur\n\nLa carte situe le capteur dans l’environnement. Ce repère est utile pour interpréter les variations (distance aux sources, obstacles, réflexions sur les façades).\n",
+        "content": "### Indicateurs L10 / L50 / L90 (sur 60 minutes)\n\nSur chaque fenêtre d’une heure, trois indicateurs sont calculés :\n- **L10** : Le niveau sonore dépassé pendant 10 % du temps. Il représente les événements sonores les plus forts (passages de voitures, cris, travaux).\n- **L50** : Le niveau dépassé pendant 50 % du temps. C'est l'indicateur de la \"tendance\" sonore globale.\n- **L90** : Le niveau dépassé pendant 90 % du temps. Il représente le niveau sonore calme, quand il n'y a pas d'événement particulier. C'est le \"bruit résiduel\" de la ville.\n\nCette lecture permet de séparer objectivement un bruit ambiant stable de pics plus rares mais plus forts.\n\n### Signature du Bruit : Dynamique & Monotonie\n\nCet indicateur mesure l'écart entre le bruit de fond et les pics sonores (calculé par la différence **L10 - L90**). Il permet de définir la \"texture\" de l'ambiance sonore :\n\n- **Un écart élevé (Dynamique)** : Indique un environnement sonore \"haché\" ou impulsif. C'est typique d'une rue où des véhicules passent de manière isolée ou d'une zone avec des événements sonores soudains émergeant d'un calme relatif.\n- **Un écart faible (Monotonie)** : Indique un bruit continu et stable. C'est le signe d'un \"ronronnement\" urbain constant (comme une autoroute au loin, une ventilation industrielle ou un flux de circulation ininterrompu) où il n'y a plus de véritables moments de calme.\n\n### Localisation du Capteur\n\nLa carte situe le capteur dans l’environnement. Ce repère est utile pour interpréter les variations (distance aux sources, obstacles, réflexions sur les façades).\n",
         "mode": "markdown"
       },
       "pluginVersion": "12.3.1",
@@ -959,36 +959,36 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "_value {_field=\"L10 (Pics)\", _start=\"2026-01-14 09:48:42.142 +0000 UTC\", _stop=\"2026-01-14 12:48:42.142 +0000 UTC\", frequency_weighting=\"dB(C)\", hold_mode=\"Live\", host=\"rpi4\", range_mode=\"30dB - 80dB\", time_weighting=\"Slow\"}"
+              "options": "_value L10 (Pics)"
             },
             "properties": [
               {
                 "id": "displayName",
-                "value": "L10 - Pics de bruit"
+                "value": "L10 (Pics)"
               }
             ]
           },
           {
             "matcher": {
               "id": "byName",
-              "options": "_value {_field=\"L50 (Médiane)\", _start=\"2026-01-14 09:48:42.142 +0000 UTC\", _stop=\"2026-01-14 12:48:42.142 +0000 UTC\", frequency_weighting=\"dB(C)\", hold_mode=\"Live\", host=\"rpi4\", range_mode=\"30dB - 80dB\", time_weighting=\"Slow\"}"
+              "options": "_value L50 (Médiane)"
             },
             "properties": [
               {
                 "id": "displayName",
-                "value": "L50 - Niveau Médian"
+                "value": "L50 (Médiane)"
               }
             ]
           },
           {
             "matcher": {
               "id": "byName",
-              "options": "_value {_field=\"L90 (Bruit de fond)\", _start=\"2026-01-14 09:48:42.142 +0000 UTC\", _stop=\"2026-01-14 12:48:42.142 +0000 UTC\", frequency_weighting=\"dB(C)\", hold_mode=\"Live\", host=\"rpi4\", range_mode=\"30dB - 80dB\", time_weighting=\"Slow\"}"
+              "options": "_value L90 (Bruit de fond)"
             },
             "properties": [
               {
                 "id": "displayName",
-                "value": "L90 - Bruit de fond"
+                "value": "L90 (Bruit de fond)"
               }
             ]
           }
@@ -998,7 +998,7 @@
         "h": 11,
         "w": 24,
         "x": 0,
-        "y": 142
+        "y": 144
       },
       "id": 10,
       "options": {
@@ -1026,7 +1026,7 @@
       "pluginVersion": "12.3.1",
       "targets": [
         {
-          "query": "import \"math\"\nimport \"timezone\"\noption location = timezone.location(name: \"Europe/Brussels\")\ndata = from(bucket: \"default\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"dt8852\")\n  |> filter(fn: (r) => r[\"_field\"] == \"spl\")\n// On retire aggregateWindow pour avoir UN seul chiffre par série sur toute la période\nl10 = data\n  // Pas de window, on applique quantile directement à toute la table\n  |> quantile(q: 0.90)\n  |> map(fn: (r) => ({ r with _field: \"L10 (Pics)\", _value: math.round(x: r._value) }))\nl50 = data\n  |> quantile(q: 0.50)\n  |> map(fn: (r) => ({ r with _field: \"L50 (Médiane)\", _value: math.round(x: r._value) }))\nl90 = data\n  |> quantile(q: 0.10)\n  |> map(fn: (r) => ({ r with _field: \"L90 (Bruit de fond)\", _value: math.round(x: r._value) }))\nunion(tables: [l10, l50, l90])\n  |> yield(name: \"acoustic_stats\")",
+          "query": "import \"math\"\nimport \"timezone\"\noption location = timezone.location(name: \"Europe/Brussels\")\n\ndata = from(bucket: \"default\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"dt8852\")\n  |> filter(fn: (r) => r[\"_field\"] == \"spl\")\n\nl10 = data \n  |> quantile(q: 0.90) \n  |> set(key: \"_field\", value: \"L10 (Pics)\")\n\nl50 = data \n  |> quantile(q: 0.50) \n  |> set(key: \"_field\", value: \"L50 (Médiane)\")\n\nl90 = data \n  |> quantile(q: 0.10) \n  |> set(key: \"_field\", value: \"L90 (Bruit de fond)\")\n\nunion(tables: [l10, l50, l90])\n  |> map(fn: (r) => ({ r with _value: math.round(x: r._value) }))\n  |> keep(columns: [\"_field\", \"_value\"])\n  |> yield(name: \"acoustic_stats\")",
           "refId": "A"
         }
       ],
@@ -1122,7 +1122,7 @@
         "h": 9,
         "w": 24,
         "x": 0,
-        "y": 153
+        "y": 155
       },
       "id": 22,
       "options": {
@@ -1187,7 +1187,7 @@
         "h": 11,
         "w": 24,
         "x": 0,
-        "y": 162
+        "y": 164
       },
       "id": 5,
       "options": {
