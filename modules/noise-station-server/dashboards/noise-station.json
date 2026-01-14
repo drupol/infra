@@ -18,7 +18,7 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 18,
+  "id": 19,
   "links": [],
   "liveNow": true,
   "panels": [
@@ -870,6 +870,108 @@
       ],
       "title": "Analyse des Nuisances Sonores Persistantes (> 60dB)",
       "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "ff9xpmhbcsb9ce"
+      },
+      "description": "Ce graphique présente les niveaux de pression acoustique (SPL ou Sound Pressure Level) calculés par périodes de 60 minutes.\n\nL'utilisation des percentiles permet de différencier les bruits de courte durée du bruit ambiant permanent, conformément aux normes de mesure environnementale :\n\n- L10 : Le niveau sonore dépassé pendant 10 % du temps. Il représente les événements sonores les plus forts (passages de voitures, cris, travaux).\n- L50 : Le niveau dépassé pendant 50 % du temps. C'est l'indicateur de la \"tendance\" sonore globale.\n- L90 : Le niveau dépassé pendant 90 % du temps. Il représente le niveau sonore calme, quand il n'y a pas d'événement particulier. C'est le \"bruit résiduel\" de la ville.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "dark-red",
+            "mode": "fixed"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              }
+            ]
+          },
+          "unit": "dB"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "L10 (Peaks) {frequency_weighting=\"dB(C)\", hold_mode=\"Live\", host=\"rpi4\", range_mode=\"30dB - 80dB\", time_weighting=\"Slow\"}"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "L10 - Pics de bruit"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "L50 (Median) {frequency_weighting=\"dB(C)\", hold_mode=\"Live\", host=\"rpi4\", range_mode=\"30dB - 80dB\", time_weighting=\"Slow\"}"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "L50 - Niveau Médian"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "L90 (Background) {frequency_weighting=\"dB(C)\", hold_mode=\"Live\", host=\"rpi4\", range_mode=\"30dB - 80dB\", time_weighting=\"Slow\"}"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "L90 - Bruit de fond"
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 11,
+        "w": 24,
+        "x": 0,
+        "y": 67
+      },
+      "id": 10,
+      "options": {
+        "displayMode": "lcd",
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": false
+        },
+        "maxVizHeight": 300,
+        "minVizHeight": 16,
+        "minVizWidth": 8,
+        "namePlacement": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [],
+          "fields": "",
+          "values": false
+        },
+        "showUnfilled": true,
+        "sizing": "auto",
+        "valueMode": "color"
+      },
+      "pluginVersion": "12.3.1",
+      "targets": [
+        {
+          "query": "import \"math\"\nimport \"timezone\"\n\n// Set the local timezone for window alignment\noption location = timezone.location(name: \"Europe/Brussels\")\n\n// 1. Fetch the raw Sound Pressure Level data\ndata = from(bucket: \"default\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"dt8852\")\n  |> filter(fn: (r) => r[\"_field\"] == \"spl\")\n\n// 2. Calculate L10 (Peak Noise - level exceeded 10% of the time)\nl10 = data\n  |> aggregateWindow(every: 60m, fn: (column, tables=<-) => tables |> quantile(q: 0.90), createEmpty: false)\n  |> map(fn: (r) => ({ r with _field: \"L10 (Peaks)\", _value: math.round(x: r._value) }))\n\n// 3. Calculate L50 (Median Noise - level exceeded 50% of the time)\nl50 = data\n  |> aggregateWindow(every: 60m, fn: (column, tables=<-) => tables |> quantile(q: 0.50), createEmpty: false)\n  |> map(fn: (r) => ({ r with _field: \"L50 (Median)\", _value: math.round(x: r._value) }))\n\n// 4. Calculate L90 (Background Noise - level exceeded 90% of the time)\nl90 = data\n  |> aggregateWindow(every: 60m, fn: (column, tables=<-) => tables |> quantile(q: 0.10), createEmpty: false)\n  |> map(fn: (r) => ({ r with _field: \"L90 (Background)\", _value: math.round(x: r._value) }))\n\n// 5. Join them together for the Bar Gauge\nunion(tables: [l10, l50, l90])\n  |> yield(name: \"acoustic_stats\")",
+          "refId": "A"
+        }
+      ],
+      "title": "Analyse des Indicateurs Acoustiques (15 min)",
+      "type": "bargauge"
     }
   ],
   "preload": false,
@@ -880,7 +982,7 @@
     "list": []
   },
   "time": {
-    "from": "now-15m",
+    "from": "now-1h",
     "to": "now"
   },
   "timepicker": {
