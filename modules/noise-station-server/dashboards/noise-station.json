@@ -18,7 +18,7 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 41,
+  "id": 44,
   "links": [],
   "liveNow": true,
   "panels": [
@@ -173,6 +173,7 @@
               "mode": "off"
             }
           },
+          "displayName": "Sound Pressure Level (dB)",
           "fieldMinMax": false,
           "mappings": [],
           "thresholds": {
@@ -247,6 +248,52 @@
                 "id": "color",
                 "value": {
                   "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Dépassement (dB)"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Dépassement (dB)"
+              },
+              {
+                "id": "color",
+                "value": {
+                  "mode": "thresholds"
+                }
+              },
+              {
+                "id": "thresholds",
+                "value": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "green",
+                      "value": 0
+                    },
+                    {
+                      "color": "#EAB839",
+                      "value": 5
+                    },
+                    {
+                      "color": "dark-orange",
+                      "value": 10
+                    },
+                    {
+                      "color": "dark-red",
+                      "value": 15
+                    },
+                    {
+                      "color": "dark-purple",
+                      "value": 20
+                    }
+                  ]
                 }
               }
             ]
