@@ -18,7 +18,7 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 39,
+  "id": 40,
   "links": [],
   "liveNow": true,
   "panels": [
@@ -104,7 +104,7 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 20,
+        "h": 28,
         "w": 24,
         "x": 0,
         "y": 31
@@ -116,7 +116,7 @@
           "showLineNumbers": false,
           "showMiniMap": false
         },
-        "content": "Cette section met en regard le **niveau sonore en temps réel** et les **seuils réglementaires applicables en Région wallonne**.\n\n### Vue en Temps Réel\n\nLe panneau *Vue en Temps Réel* part des mesures **SPL** (dB) issues de la série `dt8852/spl`, puis applique le traitement suivant :\n\n1. **Conversion dB → énergie** : chaque valeur est convertie en échelle linéaire, afin de travailler sur une grandeur énergétique.\n2. **Fenêtrage 30 secondes** : les valeurs (en énergie) sont agrégées sur des fenêtres de **30 s**, ce qui produit un indicateur stable et robuste aux micro-pics.\n3. **Retour énergie → dB** : la valeur agrégée est reconvertie en décibels pour un affichage cohérent en dB.\n\nLes seuils de couleur sur la courbe (vert/jaune/orange/rouge) permettent d’identifier d’un coup d’œil si le niveau se situe sous 40/45/50 dB, ou s’il s’en approche / les dépasse.\n\n### Historique des Infractions\n\nUne seconde série calcule une **limite horaire** en fonction de l’heure locale (Europe/Brussels) :\n- **50 dB** entre 07h–19h  \n- **45 dB** entre 06h–07h et 19h–22h  \n- **40 dB** entre 22h–06h  \n\n### Analyse des Émergences : Conformité aux Seuils Légaux\n\nCette visualisation est un outil de monitoring critique dédié à la **conformité environnementale**. Contrairement à un relevé de bruit classique qui affiche le niveau global, ce graphique isole uniquement la \"pollution sonore\", c'est-à-dire la part du bruit qui excède les limites autorisées. \n\nLe calcul repose sur un algorithme intelligent qui adapte dynamiquement le seuil de tolérance selon l'heure locale (Europe/Bruxelles) : \n*   **50 dB** durant la journée (07:00 - 19:00)\n*   **45 dB** durant les périodes de transition (06:00 - 07:00 et 19:00 - 22:00)\n*   **40 dB** durant la période nocturne (22:00 - 06:00)\n\nChaque pic affiché représente une **infraction directe** : sa hauteur indique l'intensité du dépassement en décibels (dB). \n\nL'infobulle (tooltip) fournit un diagnostic complet au survol de chaque point, précisant le statut de conformité, le niveau réel mesuré par le capteur et la limite légale en vigueur à cet instant précis. \n\nCette approche permet de transformer des données brutes en preuves exploitables pour la gestion des nuisances sonores et le respect du cadre législatif.\n\n",
+        "content": "Cette section met en regard le **niveau sonore en temps réel** et les **seuils réglementaires applicables en Région wallonne**.\n\n### Vue en Temps Réel\n\nLe panneau *Vue en Temps Réel* part des mesures **SPL** (dB) issues de la série `dt8852/spl`, puis applique le traitement suivant :\n\n1. **Conversion dB → énergie** : chaque valeur est convertie en échelle linéaire, afin de travailler sur une grandeur énergétique.\n2. **Fenêtrage 30 secondes** : les valeurs (en énergie) sont agrégées sur des fenêtres de **30 s**, ce qui produit un indicateur stable et robuste aux micro-pics.\n3. **Retour énergie → dB** : la valeur agrégée est reconvertie en décibels pour un affichage cohérent en dB.\n\nLes seuils de couleur sur la courbe (vert/jaune/orange/rouge) permettent d’identifier d’un coup d’œil si le niveau se situe sous 40/45/50 dB, ou s’il s’en approche / les dépasse.\n\n### Historique des Infractions\n\nUne seconde série calcule une **limite horaire** en fonction de l’heure locale (Europe/Brussels) :\n- **50 dB** entre 07h–19h  \n- **45 dB** entre 06h–07h et 19h–22h  \n- **40 dB** entre 22h–06h  \n\n### Analyse des Émergences : Conformité aux Seuils Légaux\n\nCette visualisation est un outil de monitoring critique dédié à la **conformité environnementale**. Contrairement à un relevé de bruit classique qui affiche le niveau global, ce graphique isole uniquement la \"pollution sonore\", c'est-à-dire la part du bruit qui excède les limites autorisées. \n\nLe calcul repose sur un algorithme intelligent qui adapte dynamiquement le seuil de tolérance selon l'heure locale (Europe/Bruxelles) : \n*   **50 dB** durant la journée (07:00 - 19:00)\n*   **45 dB** durant les périodes de transition (06:00 - 07:00 et 19:00 - 22:00)\n*   **40 dB** durant la période nocturne (22:00 - 06:00)\n\nChaque pic affiché représente une **infraction directe** : sa hauteur indique l'intensité du dépassement en décibels (dB). \n\nL'infobulle (tooltip) fournit un diagnostic complet au survol de chaque point, précisant le statut de conformité, le niveau réel mesuré par le capteur et la limite légale en vigueur à cet instant précis. \n\nCette approche permet de transformer des données brutes en preuves exploitables pour la gestion des nuisances sonores et le respect du cadre législatif.\n\n### Sévérité des Nuisances Acoustiques\n\nCette visualisation sous forme de frise temporelle offre une lecture immédiate et synthétique de la qualité de l'environnement sonore sur une période donnée. Contrairement à un graphique linéaire, elle segmente le temps en états colorés, permettant d'identifier d'un coup d'œil la fréquence, la durée et la gravité des incidents acoustiques.\n\nLe système analyse chaque mesure en fonction des seuils légaux variables (Jour, Aube, Soir, Nuit). Lorsqu'un bruit excède la limite autorisée, il est automatiquement classifié selon l'importance du dépassement (l'émergence) :\n\n- Jaune / Modéré : Nuisance perceptible (5 à 10 dB)\n- Orange / Fort : Pollution sonore marquée (10 à 15 dB)\n- Rouge / Critique : Nuisance majeure (15 à 20 dB)\n- Violet / Extrême : Événement sonore exceptionnel (> 20 dB au-dessus de la norme).\n\nCette approche permet de transformer des milliers de points de données en un calendrier visuel, idéal pour repérer des cycles de nuisances récurrents ou pour justifier des interventions ciblées lors de périodes critiques.",
         "mode": "markdown"
       },
       "pluginVersion": "12.3.1",
@@ -258,7 +258,7 @@
         "h": 15,
         "w": 24,
         "x": 0,
-        "y": 51
+        "y": 59
       },
       "id": 1,
       "options": {
@@ -363,7 +363,7 @@
         "h": 5,
         "w": 24,
         "x": 0,
-        "y": 66
+        "y": 74
       },
       "id": 8,
       "options": {
@@ -561,7 +561,7 @@
         "h": 8,
         "w": 24,
         "x": 0,
-        "y": 71
+        "y": 79
       },
       "id": 23,
       "options": {
@@ -588,12 +588,99 @@
       "type": "timeseries"
     },
     {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "ff9xpmhbcsb9ce"
+      },
+      "description": "Vue chronologique classifiant l'intensité des dépassements acoustiques par rapport aux limites réglementaires (50/45/40 dB) par paliers de sévérité.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "axisPlacement": "auto",
+            "fillOpacity": 80,
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineWidth": 0,
+            "spanNulls": false
+          },
+          "fieldMinMax": false,
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "dark-green",
+                "value": 0
+              },
+              {
+                "color": "dark-yellow",
+                "value": 5
+              },
+              {
+                "color": "dark-orange",
+                "value": 10
+              },
+              {
+                "color": "dark-red",
+                "value": 15
+              },
+              {
+                "color": "dark-purple",
+                "value": 20
+              }
+            ]
+          },
+          "unit": "dB"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 24,
+        "x": 0,
+        "y": 87
+      },
+      "id": 24,
+      "options": {
+        "alignValue": "left",
+        "legend": {
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "mergeValues": true,
+        "rowHeight": 1,
+        "showValue": "never",
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "12.3.1",
+      "targets": [
+        {
+          "query": "import \"math\"\nimport \"timezone\"\nimport \"date\"\n\noption location = timezone.location(name: \"Europe/Brussels\")\n\nfrom(bucket: \"default\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"dt8852\" and r[\"_field\"] == \"spl\")\n  |> aggregateWindow(every: v.windowPeriod, fn: mean, createEmpty: false)\n\n  |> map(fn: (r) => {\n      h = date.hour(t: r._time)\n      limite = if h >= 7 and h < 19 then 50.0 \n               else if h == 6 or (h >= 19 and h < 22) then 45.0 \n               else 40.0\n      \n      depassement = if r._value > limite then r._value - limite else 0.0\n      \n      return {\n          _time: r._time,\n          _value: depassement,\n          _field: \"Dépassement (dB)\",\n      }\n  })\n",
+          "refId": "A"
+        }
+      ],
+      "title": "Sévérité des Nuisances Acoustiques",
+      "type": "state-timeline"
+    },
+    {
       "collapsed": false,
       "gridPos": {
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 79
+        "y": 95
       },
       "id": 14,
       "panels": [],
@@ -609,7 +696,7 @@
         "h": 6,
         "w": 24,
         "x": 0,
-        "y": 80
+        "y": 96
       },
       "id": 15,
       "options": {
@@ -731,7 +818,7 @@
         "h": 15,
         "w": 24,
         "x": 0,
-        "y": 86
+        "y": 102
       },
       "id": 3,
       "options": {
@@ -816,7 +903,7 @@
         "h": 14,
         "w": 24,
         "x": 0,
-        "y": 101
+        "y": 117
       },
       "id": 4,
       "options": {
@@ -860,7 +947,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 115
+        "y": 131
       },
       "id": 12,
       "panels": [],
@@ -876,7 +963,7 @@
         "h": 10,
         "w": 24,
         "x": 0,
-        "y": 116
+        "y": 132
       },
       "id": 13,
       "options": {
@@ -1011,6 +1098,50 @@
                 }
               }
             ]
+          },
+          {
+            "matcher": {
+              "id": "byFrameRefID",
+              "options": "B"
+            },
+            "properties": [
+              {
+                "id": "custom.hideFrom",
+                "value": {
+                  "legend": true,
+                  "tooltip": false,
+                  "viz": true
+                }
+              },
+              {
+                "id": "unit",
+                "value": "dB"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "_value Dépassement (dB)"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Dépassement (dB)"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "seuil_legal"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Seuil Legal"
+              }
+            ]
           }
         ]
       },
@@ -1018,7 +1149,7 @@
         "h": 11,
         "w": 24,
         "x": 0,
-        "y": 126
+        "y": 142
       },
       "id": 9,
       "options": {
@@ -1039,6 +1170,15 @@
         {
           "query": "import \"math\"\nimport \"timezone\"\n\noption location = timezone.location(name: \"Europe/Brussels\")\n\nfrom(bucket: \"default\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"dt8852\" and r[\"_field\"] == \"spl\")\n  \n  // 1. Fenêtrage de base\n  |> aggregateWindow(every: 10s, fn: max, createEmpty: false)\n\n  // --- DÉBUT DU LISSAGE ÉNERGÉTIQUE ---\n  // 2. Conversion des dB en échelle linéaire (énergie)\n  |> map(fn: (r) => ({ r with _value: math.pow(x: 10.0, y: r._value / 10.0) }))\n  \n  // 3. Moyenne glissante sur 30 secondes (6 points de 5s)\n  |> exponentialMovingAverage(n: 12)\n  \n  // 4. Retour en décibels (échelle logarithmique)\n  |> map(fn: (r) => ({ r with _value: 10.0 * math.log10(x: r._value) }))\n  // --- FIN DU LISSAGE ÉNERGÉTIQUE ---\n\n  // 5. Calcul de la durée consécutive au dessus de 55.0 dB\n  // On le fait sur la valeur lissée pour éviter les micro-coupures du compteur\n  |> stateDuration(fn: (r) => r._value > 60.0, column: \"noisy_seconds\", unit: 1s)\n\n  // 6. Nettoyage : transformer les -1 (sous le seuil) en 0\n  |> map(fn: (r) => ({\n      r with \n      noisy_seconds: if r.noisy_seconds == -1 then 0 else r.noisy_seconds\n  }))\n\n  // 7. FILTRE : On ne garde que les séquences qui durent plus de 120s (2 minutes)\n  |> filter(fn: (r) => r.noisy_seconds >= 120)\n\n  // 8. Formatage final pour un affichage propre dans Grafana\n  |> map(fn: (r) => ({\n      _time: r._time,\n      \"Intensité\": math.round(x: r._value * 10.0) / 10.0, // Arrondi 1 décimale\n      \"Durée de la nuisance (> 60dB)\": float(v: r.noisy_seconds)\n  }))\n  |> yield(name: \"nuisances_analyse\")",
           "refId": "A"
+        },
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "ff9xpmhbcsb9ce"
+          },
+          "hide": false,
+          "query": "import \"math\"\nimport \"timezone\"\nimport \"date\"\n\noption location = timezone.location(name: \"Europe/Brussels\")\n\nfrom(bucket: \"default\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"dt8852\" and r[\"_field\"] == \"spl\")\n  |> filter(fn: (r) => exists r._value)\n  |> aggregateWindow(every: v.windowPeriod, fn: mean, createEmpty: false)\n  |> map(fn: (r) => {\n      h = date.hour(t: r._time)\n      \n      limite = if h >= 7 and h < 19 then 50.0 \n               else if h == 6 or (h >= 19 and h < 22) then 45.0 \n               else 40.0\n      \n      diff = if r._value > limite then r._value - limite else 0.0\n      \n      return {\n          _time: r._time,\n          _value: diff,\n          _field: \"Dépassement (dB)\",\n          seuil_legal: limite,\n      }\n  })\n  \n  |> yield(name: \"depassement_acoustique\")",
+          "refId": "B"
         }
       ],
       "title": "Nuisances persistantes (> 60 dB)",
@@ -1092,7 +1232,7 @@
         "h": 10,
         "w": 24,
         "x": 0,
-        "y": 137
+        "y": 153
       },
       "id": 2,
       "options": {
@@ -1125,7 +1265,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 147
+        "y": 163
       },
       "id": 20,
       "panels": [],
@@ -1141,7 +1281,7 @@
         "h": 9,
         "w": 24,
         "x": 0,
-        "y": 148
+        "y": 164
       },
       "id": 21,
       "options": {
@@ -1224,7 +1364,7 @@
         "h": 11,
         "w": 24,
         "x": 0,
-        "y": 157
+        "y": 173
       },
       "id": 10,
       "options": {
@@ -1392,7 +1532,7 @@
         "h": 9,
         "w": 24,
         "x": 0,
-        "y": 168
+        "y": 184
       },
       "id": 22,
       "options": {
@@ -1467,7 +1607,7 @@
         "h": 11,
         "w": 24,
         "x": 0,
-        "y": 177
+        "y": 193
       },
       "id": 5,
       "options": {
