@@ -18,960 +18,1130 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 19,
+  "id": 21,
   "links": [],
   "liveNow": true,
   "panels": [
     {
-      "fieldConfig": {
-        "defaults": {},
-        "overrides": []
-      },
+      "collapsed": true,
       "gridPos": {
-        "h": 10,
-        "w": 12,
-        "x": 0,
-        "y": 0
-      },
-      "id": 6,
-      "options": {
-        "code": {
-          "language": "plaintext",
-          "showLineNumbers": false,
-          "showMiniMap": false
-        },
-        "content": "# Noise Station\n\n### Un système de monitoring acoustique intelligent\n\nLa **Noise Station** est une solution de surveillance environnementale de haute précision conçue pour capturer, analyser et visualiser les niveaux sonores d'un espace en temps réel. Elle transforme des données acoustiques brutes en indicateurs visuels pour suivre l'évolution du bruit, détecter les pics et comprendre le profil sonore d'un lieu sur 24 heures.\n\n# Comment ça fonctionne ?\n\n### 1. La Capture (Le Matériel)\n\nLe système s'appuie sur un microphone professionnel de type **Trotec SL400** (équivalent du **CEM DT-8852**). Ce sonomètre de Classe 2 offre des fonctionnalités indispensables :\n-   **Double Pondération:** Supporte les courbes **dB(A)** (perception humaine) et **dB(C)** (basses fréquences).\n-   **Plage Dynamique:** Mesure précise de 30 à 130 dB (precision: 1.4 dB, resolution: 0.1 dB)\n-   **Modes Temporels:** Analyse en mode \"Fast\" (réactivité immédiate) ou \"Slow\" (stabilité).\n-   **Signaux numériques:** Uniquement les données numériques (et pas analogique) sont transmises. \n-   **Certification:** Livré avec certificat de calibration, conforme à IEC61672-1 Class 2\n\n### 2. Le Cœur du Système (L'Intelligence)\n\nLes données sont traitées par une unité de calcul (**Raspberry Pi**) et stockées dans une base de données temporelle (**InfluxDB**):\n*   **Nettoyage :** Filtrage des métadonnées pour une lecture fluide.\n*   **Agrégation :** Calcul de moyennes glissantes et détection de crêtes en temps réel.\n\n### 3. La Visualisation (Le Dashboard)\n\nLe dashboard est structuré en quatre axes complémentaires pour une lecture immédiate :\n\n*   **Vue Temps Réel (Live View) :** Un graphique temporel combinant les mesures brutes et une courbe lissée (**moyenne mobile 1 min**). Cela permet de distinguer les bruits de fond des pics soudains.\n*   **Pic de Volume (Highest Recorded Sound) :** Une jauge dynamique qui surveille le volume maximal atteint durant les **5 dernières minutes**. Elle utilise des seuils colorés (du vert au rouge foncé dès 80 dB) pour alerter sur les événements sonores récents.\n*   **Profil Statistique (Average last 24h) :** Un histogramme qui regroupe les mesures des dernières 24 heures par paliers de décibels (arrondis à l'unité). Il permet de voir en un coup d'œil quel niveau de bruit est le plus fréquent dans l'environnement.\n*   **Distribution Horaire :** Un graphique en barres affichant la **moyenne sonore pour chaque heure** de la journée. Idéal pour identifier les cycles de pollution sonore (journée de travail vs nuit).\n*   **Géolocalisation :** Une carte intégrée affichant l'emplacement précis du capteur.\n\n# Pourquoi utiliser Noise Station ?\n\nPasser du ressenti subjectif (\"c'est bruyant\") à une mesure objective (\"la moyenne est de 65 dB avec des pics à 85 dB\"). Que ce soit pour le confort au travail, la surveillance de voisinage ou l'analyse environnementale, la **Noise Station** fournit une preuve scientifique et visuelle de la réalité acoustique de votre environnement.",
-        "mode": "markdown"
-      },
-      "pluginVersion": "12.3.1",
-      "title": "",
-      "type": "text"
-    },
-    {
-      "fieldConfig": {
-        "defaults": {},
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 10,
-        "w": 12,
-        "x": 12,
-        "y": 0
-      },
-      "id": 7,
-      "options": {
-        "code": {
-          "language": "plaintext",
-          "showLineNumbers": false,
-          "showMiniMap": false
-        },
-        "content": "# Réglementation en région wallone\n\nEn région wallone(https://www.ejustice.just.fgov.be/eli/arrete/2002/07/04/2002027815/justel), le cadre légal est clair et rigoureux. Depuis l’arrêté du Gouvernement wallon du 4 juillet 2022, des limites de bruit spécifiques s’appliquent aux PAC selon les différentes périodes de la journée :\n\n- En journée (7h-19h): le bruit ne doit pas dépasser 50 dB.\n- En transition (6h-7h, 19h-22h): la limite est réduite à 45 dB.\n- La nuit (22h-6h): le niveau sonore doit impérativement rester sous 40 dB.\n\nLe bruit se propage en cercle autour d'une unité extérieure (PAC). \nIl est donc crucial de faire attention aux surfaces environnantes, comme des murs ou d’autres bâtiments, qui peuvent réfléchir le son et provoquer un effet d’écho. Pour limiter cette résonance, maintenez au moins un mètre d’espace autour de la pompe, en particulier par rapport aux fenêtres, aux portes et aux chemins. Si l’unité est placée contre un mur, veillez à respecter une distance minimale de 30 centimètres — l’idéal étant de 50 centimètres — pour garantir une circulation sonore optimale. Il est également important de prendre en compte la distance entre la face avant de la pompe à chaleur et les trottoirs, qui doit être d’au moins 3 mètres et d’au moins 6 mètres pour les plantes.\n\nSource: https://www.bobex.be/fr-be/pompe-a-chaleur/installation/distance-voisin/\n",
-        "mode": "markdown"
-      },
-      "pluginVersion": "12.3.1",
-      "title": "",
-      "type": "text"
-    },
-    {
-      "datasource": {
-        "type": "influxdb",
-        "uid": "ff9xpmhbcsb9ce"
-      },
-      "description": "Affiche le niveau sonore instantané (lissé) comparé à la limite légale dynamique (40/45/50 dB). Permet de surveiller le respect des normes en temps réel et d'identifier les pics acoustiques instantanés.",
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "fixedColor": "green",
-            "mode": "thresholds",
-            "seriesBy": "last"
-          },
-          "custom": {
-            "axisBorderShow": false,
-            "axisCenteredZero": false,
-            "axisColorMode": "text",
-            "axisLabel": "",
-            "axisPlacement": "auto",
-            "barAlignment": 0,
-            "barWidthFactor": 0.6,
-            "drawStyle": "line",
-            "fillOpacity": 25,
-            "gradientMode": "scheme",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            },
-            "insertNulls": false,
-            "lineInterpolation": "smooth",
-            "lineStyle": {
-              "fill": "solid"
-            },
-            "lineWidth": 1,
-            "pointSize": 5,
-            "scaleDistribution": {
-              "type": "linear"
-            },
-            "showPoints": "auto",
-            "showValues": false,
-            "spanNulls": true,
-            "stacking": {
-              "group": "A",
-              "mode": "none"
-            },
-            "thresholdsStyle": {
-              "mode": "off"
-            }
-          },
-          "fieldMinMax": true,
-          "mappings": [],
-          "noValue": "0",
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "dark-green",
-                "value": 0
-              },
-              {
-                "color": "dark-yellow",
-                "value": 40
-              },
-              {
-                "color": "dark-orange",
-                "value": 45
-              },
-              {
-                "color": "dark-red",
-                "value": 50
-              }
-            ]
-          },
-          "unit": "dB"
-        },
-        "overrides": [
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "_limit"
-            },
-            "properties": [
-              {
-                "id": "displayName",
-                "value": "Limite en Région Wallone"
-              },
-              {
-                "id": "color",
-                "value": {
-                  "fixedColor": "#ffffff",
-                  "mode": "fixed"
-                }
-              },
-              {
-                "id": "custom.lineStyle",
-                "value": {
-                  "dash": [10, 10],
-                  "fill": "dash"
-                }
-              },
-              {
-                "id": "custom.fillOpacity",
-                "value": 0
-              }
-            ]
-          }
-        ]
-      },
-      "gridPos": {
-        "h": 15,
+        "h": 1,
         "w": 24,
         "x": 0,
-        "y": 10
+        "y": 0
       },
-      "id": 1,
-      "options": {
-        "legend": {
-          "calcs": [],
-          "displayMode": "list",
-          "placement": "bottom",
-          "showLegend": true
+      "id": 16,
+      "panels": [
+        {
+          "fieldConfig": {
+            "defaults": {},
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 6,
+            "w": 24,
+            "x": 0,
+            "y": 1
+          },
+          "id": 17,
+          "options": {
+            "code": {
+              "language": "plaintext",
+              "showLineNumbers": false,
+              "showMiniMap": false
+            },
+            "content": "Cette section permet de confronter l’activité sonore immédiate aux exigences de la Région wallonne. Le graphique **Live View** calcule une moyenne énergétique (Leq) sur 30 secondes, offrant une vision fidèle de la pression acoustique comparée à une limite légale dynamique (40, 45 ou 50 dB selon l'heure). \nTechniquement, les données brutes subissent une conversion en échelle linéaire pour calculer une moyenne énergétique (Leq) sur des fenêtres de 30 secondes, avant d'être reconverties en décibels pour un affichage logarithmique fidèle à la perception humaine. Une ligne pointillée blanche représente la limite légale dynamique : elle s'adapte automatiquement selon l'heure de la journée, passant de 50 dB durant le jour (07h-19h) à 45 dB en période de transition (06h-07h et 19h-22h), pour descendre à 40 dB durant la nuit (22h-06h). Les seuils de couleur appliqués à la courbe permettent d'identifier instantanément si le niveau actuel est considéré comme calme (vert), modéré (jaune/orange) ou critique (rouge).\n\nEn complément, la **Timeline des Infractions** consigne chaque minute le statut réglementaire : les segments verts confirment la conformité, tandis que le rouge marque les périodes de dépassement.\n\nC'est l'outil principal pour valider le respect des seuils légaux au moment précis où ils se produisent.",
+            "mode": "markdown"
+          },
+          "pluginVersion": "12.3.1",
+          "title": "",
+          "type": "text"
         },
-        "tooltip": {
-          "hideZeros": false,
-          "mode": "multi",
-          "sort": "none"
-        }
-      },
-      "pluginVersion": "12.3.1",
-      "targets": [
         {
           "datasource": {
             "type": "influxdb",
             "uid": "ff9xpmhbcsb9ce"
           },
-          "hide": false,
-          "query": "import \"math\"\nimport \"timezone\"\n\noption location = timezone.location(name: \"Europe/Brussels\")\n\nfrom(bucket: \"default\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"dt8852\")\n  |> filter(fn: (r) => r[\"_field\"] == \"spl\")\n  // On garde la colonne frequency_weighting\n  |> keep(columns: [\"_time\", \"_value\", \"_field\", \"frequency_weighting\"])\n  \n  // Passage en échelle linéaire (énergie)\n  |> map(fn: (r) => ({\n      r with \n      _value: math.pow(x: 10.0, y: r._value / 10.0)\n  }))\n\n  // Calcul de la MOYENNE énergétique (Leq) par minute\n  // Note: mean est indispensable ici pour le calcul logarithmique\n  |> aggregateWindow(every: 30s, fn: median, createEmpty: false)\n\n  // Retour en décibels ET renommage du flux\n  |> map(fn: (r) => ({\n      r with \n      _value: 10.0 * math.log10(x: r._value),\n      _field: \"Sound Pressure Level\"\n  }))\n\n  |> yield(name: \"spl_result\")",
-          "refId": "Live"
-        },
-        {
-          "datasource": {
-            "type": "influxdb",
-            "uid": "ff9xpmhbcsb9ce"
-          },
-          "hide": false,
-          "query": "import \"date\"\nimport \"timezone\"\n\noption location = timezone.location(name: \"Europe/Brussels\")\n\nfrom(bucket: \"default\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r._measurement == \"dt8852\" and r._field == \"spl\")\n  |> aggregateWindow(every: v.windowPeriod, fn: first)\n  |> map(fn: (r) => {\n      h = date.hour(t: r._time)\n      return {\n          _time: r._time,\n          _limit: if h >= 7 and h < 19 then 50.0 \n                  else if h == 6 or (h >= 19 and h < 22) then 45.0 \n                  else 40.0\n      }\n  })",
-          "refId": "A"
-        }
-      ],
-      "title": "Live view",
-      "type": "timeseries"
-    },
-    {
-      "datasource": {
-        "type": "influxdb",
-        "uid": "ff9xpmhbcsb9ce"
-      },
-      "description": "Montre la fréquence d'apparition des niveaux sonores par paliers de 3 dB. Idéal pour identifier le 'bruit de fond' dominant et caractériser la signature acoustique globale du lieu.",
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "palette-classic"
-          },
-          "custom": {
-            "fillOpacity": 80,
-            "gradientMode": "none",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            },
-            "lineWidth": 1,
-            "stacking": {
-              "group": "A",
-              "mode": "none"
-            }
-          },
-          "mappings": [],
-          "max": 120,
-          "min": 30,
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": 0
-              }
-            ]
-          },
-          "unit": "dB"
-        },
-        "overrides": [
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Day (Limit 50dB)"
-            },
-            "properties": [
-              {
-                "id": "color",
-                "value": {
-                  "fixedColor": "dark-blue",
-                  "mode": "fixed"
-                }
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Dusk / Evening (Limit 45dB)"
-            },
-            "properties": [
-              {
-                "id": "color",
-                "value": {
-                  "fixedColor": "dark-orange",
-                  "mode": "fixed"
-                }
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Dawn / Morning (Limit 45dB)"
-            },
-            "properties": [
-              {
-                "id": "color",
-                "value": {
-                  "fixedColor": "dark-yellow",
-                  "mode": "fixed"
-                }
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Night (Limit 40dB)"
-            },
-            "properties": [
-              {
-                "id": "color",
-                "value": {
-                  "fixedColor": "#000064",
-                  "mode": "fixed"
-                }
-              }
-            ]
-          }
-        ]
-      },
-      "gridPos": {
-        "h": 16,
-        "w": 12,
-        "x": 0,
-        "y": 25
-      },
-      "id": 3,
-      "options": {
-        "combine": false,
-        "legend": {
-          "calcs": [],
-          "displayMode": "list",
-          "placement": "bottom",
-          "showLegend": true
-        },
-        "tooltip": {
-          "hideZeros": false,
-          "mode": "single",
-          "sort": "none"
-        }
-      },
-      "pluginVersion": "12.3.1",
-      "targets": [
-        {
-          "hide": false,
-          "query": "import \"math\"\nimport \"timezone\"\nimport \"date\"\n\noption location = timezone.location(name: \"Europe/Brussels\")\n\nfrom(bucket: \"default\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"dt8852\" and r[\"_field\"] == \"spl\")\n  // 1. Keep data volume safe (10s resolution)\n  |> aggregateWindow(every: 10s, fn: last, createEmpty: false)\n  |> map(fn: (r) => {\n      h = date.hour(t: r._time)\n      \n      // 2. Define the four distinct periods\n      period = if h >= 7 and h < 19 then \"Day (Limit 50dB)\"\n               else if h >= 19 and h < 22 then \"Dusk / Evening (Limit 45dB)\"\n               else if h >= 6 and h < 7 then \"Dawn / Morning (Limit 45dB)\"\n               else \"Night (Limit 40dB)\"\n      \n      return { r with \n          // 3. Bucket by 3dB for acoustic significance\n          _value: math.floor(x: r._value / 3.0) * 3.0,\n          // 4. Use the period name as the field for the histogram series\n          _field: period\n      }\n  })\n  |> keep(columns: [\"_time\", \"_value\", \"_field\"])",
-          "refId": "A"
-        }
-      ],
-      "title": "Frequency",
-      "type": "histogram"
-    },
-    {
-      "datasource": {
-        "type": "influxdb",
-        "uid": "ff9xpmhbcsb9ce"
-      },
-      "description": "Présente la médiane du volume sonore par intervalle de temps. Utile pour visualiser les cycles d'activité (jour/nuit), les tendances horaires et les moments de calme relatif.",
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "palette-classic"
-          },
-          "custom": {
-            "axisBorderShow": false,
-            "axisCenteredZero": false,
-            "axisColorMode": "text",
-            "axisLabel": "",
-            "axisPlacement": "auto",
-            "fillOpacity": 80,
-            "gradientMode": "none",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            },
-            "lineWidth": 2,
-            "scaleDistribution": {
-              "type": "linear"
-            },
-            "thresholdsStyle": {
-              "mode": "off"
-            }
-          },
-          "fieldMinMax": true,
-          "mappings": [],
-          "max": 80,
-          "min": 40,
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": 0
+          "description": "Affiche le niveau sonore instantané (lissé) comparé à la limite légale dynamique (40/45/50 dB). Permet de surveiller le respect des normes en temps réel et d'identifier les pics acoustiques instantanés.",
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "fixedColor": "green",
+                "mode": "thresholds",
+                "seriesBy": "last"
               },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          },
-          "unit": "dB"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 16,
-        "w": 12,
-        "x": 12,
-        "y": 25
-      },
-      "id": 4,
-      "options": {
-        "barRadius": 0,
-        "barWidth": 0.6,
-        "colorByField": "Time",
-        "fullHighlight": false,
-        "groupWidth": 1,
-        "legend": {
-          "calcs": [],
-          "displayMode": "list",
-          "placement": "bottom",
-          "showLegend": false
-        },
-        "orientation": "auto",
-        "showValue": "auto",
-        "stacking": "none",
-        "tooltip": {
-          "hideZeros": false,
-          "mode": "single",
-          "sort": "none"
-        },
-        "xField": "Time",
-        "xTickLabelRotation": 0,
-        "xTickLabelSpacing": 0
-      },
-      "pluginVersion": "12.3.1",
-      "targets": [
-        {
-          "hide": false,
-          "query": "import \"math\"\nimport \"timezone\"\n\noption location = timezone.location(name: \"Europe/Brussels\")\n\nfrom(bucket: \"default\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"dt8852\")\n  |> filter(fn: (r) => r[\"_field\"] == \"spl\")\n  |> keep(columns: [\"_time\", \"_value\", \"_field\", \"frequency_weighting\"])\n  |> aggregateWindow(every: 15m, fn: median, createEmpty: false)\n  |> map(fn: (r) => ({ \n      r with \n      _value: math.round(x: r._value),\n      _field: \"Sound Pressure Level\" \n  }))  \n  |> yield(name: \"hourly_peaks\")",
-          "refId": "A"
-        }
-      ],
-      "title": "Noise Pressure Level Histogram",
-      "type": "barchart"
-    },
-    {
-      "datasource": {
-        "type": "influxdb",
-        "uid": "ff9xpmhbcsb9ce"
-      },
-      "description": "Indique l'intensité maximale (crête) enregistrée sur la période sélectionnée. Les codes couleurs (Vert à Rouge foncé) signalent immédiatement les niveaux critiques (>60dB, >75dB) nécessitant une attention particulière.",
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "thresholds"
-          },
-          "fieldMinMax": false,
-          "mappings": [],
-          "max": 100,
-          "min": 30,
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": 0
-              },
-              {
-                "color": "dark-green",
-                "value": 30
-              },
-              {
-                "color": "dark-yellow",
-                "value": 45
-              },
-              {
-                "color": "red",
-                "value": 60
-              },
-              {
-                "color": "dark-red",
-                "value": 75
-              }
-            ]
-          },
-          "unit": "dB"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 10,
-        "w": 12,
-        "x": 0,
-        "y": 41
-      },
-      "id": 2,
-      "options": {
-        "minVizHeight": 75,
-        "minVizWidth": 75,
-        "orientation": "auto",
-        "reduceOptions": {
-          "calcs": [],
-          "fields": "",
-          "values": false
-        },
-        "showThresholdLabels": true,
-        "showThresholdMarkers": true,
-        "sizing": "auto"
-      },
-      "pluginVersion": "12.3.1",
-      "targets": [
-        {
-          "hide": false,
-          "query": "import \"math\"\nimport \"timezone\"\n\noption location = timezone.location(name: \"Europe/Brussels\")\n\nfrom(bucket: \"default\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"dt8852\")\n  |> filter(fn: (r) => r[\"_field\"] == \"spl\")\n  |> keep(columns: [\"_time\", \"_value\", \"_field\", \"frequency_weighting\"])\n  |> max()",
-          "refId": "A"
-        }
-      ],
-      "title": "Highest Recorded Sound",
-      "type": "gauge"
-    },
-    {
-      "datasource": {
-        "type": "influxdb",
-        "uid": "ff9xpmhbcsb9ce"
-      },
-      "description": "Carte de positionnement du capteur Trotec SL400. Indispensable pour contextualiser les mesures par rapport à l'environnement urbain, aux obstacles et au voisinage.",
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "thresholds"
-          },
-          "custom": {
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            }
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": 0
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          }
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 10,
-        "w": 12,
-        "x": 12,
-        "y": 41
-      },
-      "id": 5,
-      "options": {
-        "basemap": {
-          "config": {},
-          "name": "Layer 0",
-          "noRepeat": false,
-          "type": "default"
-        },
-        "controls": {
-          "mouseWheelZoom": true,
-          "showAttribution": true,
-          "showDebug": false,
-          "showMeasure": false,
-          "showScale": false,
-          "showZoom": true
-        },
-        "layers": [
-          {
-            "config": {
-              "blur": 50,
-              "radius": 50,
-              "weight": {
-                "fixed": 1,
-                "max": 1,
-                "min": 0
-              }
-            },
-            "filterData": {
-              "id": "byRefId",
-              "options": "A"
-            },
-            "layer-tooltip": true,
-            "location": {
-              "mode": "auto"
-            },
-            "name": "Layer 1",
-            "opacity": 0.5,
-            "tooltip": true,
-            "type": "heatmap"
-          }
-        ],
-        "tooltip": {
-          "mode": "details"
-        },
-        "view": {
-          "allLayers": true,
-          "id": "coords",
-          "lat": 50.599922,
-          "lon": 4.32828,
-          "noRepeat": false,
-          "zoom": 17.78
-        }
-      },
-      "pluginVersion": "12.3.1",
-      "targets": [
-        {
-          "hide": false,
-          "query": "import \"array\"\n\narray.from(rows: [{\n    lat: 50.599724, \n    lon: 4.328188, \n    location_name: \"Outdoor, garden\",\n    sensor_type: \"Trotec SL400\"\n}])",
-          "refId": "A"
-        }
-      ],
-      "title": "Sensor location",
-      "type": "geomap"
-    },
-    {
-      "datasource": {
-        "type": "influxdb",
-        "uid": "ff9xpmhbcsb9ce"
-      },
-      "description": "Historique binaire du respect de la législation wallonne (Vert = Conforme, Rouge = Infraction). Permet de quantifier rapidement les périodes de dépassement des seuils autorisés sur la durée affichée.",
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "thresholds"
-          },
-          "custom": {
-            "axisPlacement": "auto",
-            "fillOpacity": 70,
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            },
-            "insertNulls": false,
-            "lineWidth": 0,
-            "spanNulls": false
-          },
-          "mappings": [
-            {
-              "options": {
-                "0": {
-                  "color": "dark-red",
-                  "index": 0,
-                  "text": "Infraction"
+              "custom": {
+                "axisBorderShow": false,
+                "axisCenteredZero": false,
+                "axisColorMode": "text",
+                "axisLabel": "",
+                "axisPlacement": "auto",
+                "barAlignment": 0,
+                "barWidthFactor": 0.6,
+                "drawStyle": "line",
+                "fillOpacity": 25,
+                "gradientMode": "scheme",
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
                 },
-                "1": {
-                  "color": "dark-green",
-                  "index": 1,
-                  "text": "Conforme"
+                "insertNulls": false,
+                "lineInterpolation": "smooth",
+                "lineStyle": {
+                  "fill": "solid"
+                },
+                "lineWidth": 1,
+                "pointSize": 5,
+                "scaleDistribution": {
+                  "type": "linear"
+                },
+                "showPoints": "auto",
+                "showValues": false,
+                "spanNulls": true,
+                "stacking": {
+                  "group": "A",
+                  "mode": "none"
+                },
+                "thresholdsStyle": {
+                  "mode": "off"
                 }
               },
-              "type": "value"
+              "fieldMinMax": true,
+              "mappings": [],
+              "noValue": "0",
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "dark-green",
+                    "value": 0
+                  },
+                  {
+                    "color": "dark-yellow",
+                    "value": 40
+                  },
+                  {
+                    "color": "dark-orange",
+                    "value": 45
+                  },
+                  {
+                    "color": "dark-red",
+                    "value": 50
+                  }
+                ]
+              },
+              "unit": "dB"
+            },
+            "overrides": [
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "_limit"
+                },
+                "properties": [
+                  {
+                    "id": "displayName",
+                    "value": "Limite en Région Wallone"
+                  },
+                  {
+                    "id": "color",
+                    "value": {
+                      "fixedColor": "#ffffff",
+                      "mode": "fixed"
+                    }
+                  },
+                  {
+                    "id": "custom.lineStyle",
+                    "value": {
+                      "dash": [10, 10],
+                      "fill": "dash"
+                    }
+                  },
+                  {
+                    "id": "custom.fillOpacity",
+                    "value": 0
+                  }
+                ]
+              }
+            ]
+          },
+          "gridPos": {
+            "h": 15,
+            "w": 24,
+            "x": 0,
+            "y": 7
+          },
+          "id": 1,
+          "options": {
+            "legend": {
+              "calcs": [],
+              "displayMode": "list",
+              "placement": "bottom",
+              "showLegend": true
+            },
+            "tooltip": {
+              "hideZeros": false,
+              "mode": "multi",
+              "sort": "none"
+            }
+          },
+          "pluginVersion": "12.3.1",
+          "targets": [
+            {
+              "datasource": {
+                "type": "influxdb",
+                "uid": "ff9xpmhbcsb9ce"
+              },
+              "hide": false,
+              "query": "import \"math\"\nimport \"timezone\"\n\noption location = timezone.location(name: \"Europe/Brussels\")\n\nfrom(bucket: \"default\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"dt8852\")\n  |> filter(fn: (r) => r[\"_field\"] == \"spl\")\n  // On garde la colonne frequency_weighting\n  |> keep(columns: [\"_time\", \"_value\", \"_field\", \"frequency_weighting\"])\n  \n  // Passage en échelle linéaire (énergie)\n  |> map(fn: (r) => ({\n      r with \n      _value: math.pow(x: 10.0, y: r._value / 10.0)\n  }))\n\n  // Calcul de la MOYENNE énergétique (Leq) par minute\n  // Note: mean est indispensable ici pour le calcul logarithmique\n  |> aggregateWindow(every: 30s, fn: median, createEmpty: false)\n\n  // Retour en décibels ET renommage du flux\n  |> map(fn: (r) => ({\n      r with \n      _value: 10.0 * math.log10(x: r._value),\n      _field: \"Sound Pressure Level\"\n  }))\n\n  |> yield(name: \"spl_result\")",
+              "refId": "Live"
+            },
+            {
+              "datasource": {
+                "type": "influxdb",
+                "uid": "ff9xpmhbcsb9ce"
+              },
+              "hide": false,
+              "query": "import \"date\"\nimport \"timezone\"\n\noption location = timezone.location(name: \"Europe/Brussels\")\n\nfrom(bucket: \"default\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r._measurement == \"dt8852\" and r._field == \"spl\")\n  |> aggregateWindow(every: v.windowPeriod, fn: first)\n  |> map(fn: (r) => {\n      h = date.hour(t: r._time)\n      return {\n          _time: r._time,\n          _limit: if h >= 7 and h < 19 then 50.0 \n                  else if h == 6 or (h >= 19 and h < 22) then 45.0 \n                  else 40.0\n      }\n  })",
+              "refId": "A"
             }
           ],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": 0
-              }
-            ]
-          }
+          "title": "Live view",
+          "type": "timeseries"
         },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 5,
-        "w": 24,
-        "x": 0,
-        "y": 51
-      },
-      "id": 8,
-      "options": {
-        "alignValue": "left",
-        "legend": {
-          "displayMode": "list",
-          "placement": "bottom",
-          "showLegend": true
-        },
-        "mergeValues": true,
-        "rowHeight": 0.9,
-        "showValue": "auto",
-        "tooltip": {
-          "hideZeros": false,
-          "mode": "single",
-          "sort": "none"
-        }
-      },
-      "pluginVersion": "12.3.1",
-      "targets": [
         {
-          "query": "import \"timezone\"\nimport \"date\"\n\noption location = timezone.location(name: \"Europe/Brussels\")\n\nfrom(bucket: \"default\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"dt8852\" and r[\"_field\"] == \"spl\")\n  // Fenêtrage pour alléger le rendu (ex: toutes les 1m)\n  |> aggregateWindow(every: 1m, fn: max, createEmpty: false)\n  |> map(fn: (r) => {\n      h = date.hour(t: r._time)\n      limit = if h >= 7 and h < 19 then 50.0 \n              else if h == 6 or (h >= 19 and h < 22) then 45.0 \n              else 40.0\n      \n      return { _time: r._time, _field: \"Statut\", _value: if r._value > limit then \"0\" else \"1\" }\n  })",
-          "refId": "A"
-        }
-      ],
-      "title": "Timeline des Infractions",
-      "type": "state-timeline"
-    },
-    {
-      "datasource": {
-        "type": "influxdb",
-        "uid": "ff9xpmhbcsb9ce"
-      },
-      "description": "Analyse approfondie des événements sonores significatifs. Ce panneau isole et visualise les périodes où le niveau sonore a dépassé 60 dB de manière continue pendant plus de 2 minutes (120s), permettant d'identifier les nuisances longues et persistantes par rapport aux bruits transitoires.",
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "palette-classic"
+          "datasource": {
+            "type": "influxdb",
+            "uid": "ff9xpmhbcsb9ce"
           },
-          "custom": {
-            "axisBorderShow": false,
-            "axisCenteredZero": false,
-            "axisColorMode": "text",
-            "axisLabel": "",
-            "axisPlacement": "auto",
-            "barAlignment": 0,
-            "barWidthFactor": 0.6,
-            "drawStyle": "line",
-            "fillOpacity": 0,
-            "gradientMode": "none",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
+          "description": "Historique binaire du respect de la législation wallonne (Vert = Conforme, Rouge = Infraction). Permet de quantifier rapidement les périodes de dépassement des seuils autorisés sur la durée affichée.",
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "thresholds"
+              },
+              "custom": {
+                "axisPlacement": "auto",
+                "fillOpacity": 70,
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                },
+                "insertNulls": false,
+                "lineWidth": 0,
+                "spanNulls": false
+              },
+              "mappings": [
+                {
+                  "options": {
+                    "0": {
+                      "color": "dark-red",
+                      "index": 0,
+                      "text": "Infraction"
+                    },
+                    "1": {
+                      "color": "dark-green",
+                      "index": 1,
+                      "text": "Conforme"
+                    }
+                  },
+                  "type": "value"
+                }
+              ],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": 0
+                  }
+                ]
+              }
             },
-            "insertNulls": false,
-            "lineInterpolation": "linear",
-            "lineWidth": 1,
-            "pointSize": 6,
-            "scaleDistribution": {
-              "type": "linear"
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 5,
+            "w": 24,
+            "x": 0,
+            "y": 22
+          },
+          "id": 8,
+          "options": {
+            "alignValue": "left",
+            "legend": {
+              "displayMode": "list",
+              "placement": "bottom",
+              "showLegend": true
             },
-            "showPoints": "auto",
-            "showValues": true,
-            "spanNulls": true,
-            "stacking": {
-              "group": "A",
-              "mode": "none"
-            },
-            "thresholdsStyle": {
-              "mode": "off"
+            "mergeValues": true,
+            "rowHeight": 0.9,
+            "showValue": "auto",
+            "tooltip": {
+              "hideZeros": false,
+              "mode": "single",
+              "sort": "none"
             }
           },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": 0
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          },
-          "unit": "dtdurations"
-        },
-        "overrides": [
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Durée de la nuisance (> 60dB)"
-            },
-            "properties": [
-              {
-                "id": "custom.axisPlacement",
-                "value": "right"
-              },
-              {
-                "id": "unit",
-                "value": "dtdurations"
-              },
-              {
-                "id": "custom.lineInterpolation",
-                "value": "stepBefore"
-              },
-              {
-                "id": "custom.fillOpacity",
-                "value": 50
-              },
-              {
-                "id": "custom.scaleDistribution",
-                "value": {
-                  "log": 2,
-                  "type": "log"
-                }
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Intensité"
-            },
-            "properties": [
-              {
-                "id": "unit",
-                "value": "dB"
-              },
-              {
-                "id": "custom.lineInterpolation",
-                "value": "smooth"
-              },
-              {
-                "id": "custom.fillOpacity",
-                "value": 0
-              },
-              {
-                "id": "color",
-                "value": {
-                  "fixedColor": "#fffd0038",
-                  "mode": "fixed"
-                }
-              }
-            ]
-          }
-        ]
-      },
-      "gridPos": {
-        "h": 11,
-        "w": 24,
-        "x": 0,
-        "y": 56
-      },
-      "id": 9,
-      "options": {
-        "legend": {
-          "calcs": [],
-          "displayMode": "list",
-          "placement": "bottom",
-          "showLegend": true
-        },
-        "tooltip": {
-          "hideZeros": false,
-          "mode": "multi",
-          "sort": "none"
-        }
-      },
-      "pluginVersion": "12.3.1",
-      "targets": [
-        {
-          "query": "import \"math\"\nimport \"timezone\"\n\noption location = timezone.location(name: \"Europe/Brussels\")\n\nfrom(bucket: \"default\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"dt8852\" and r[\"_field\"] == \"spl\")\n  \n  // 1. Fenêtrage de base\n  |> aggregateWindow(every: 10s, fn: max, createEmpty: false)\n\n  // --- DÉBUT DU LISSAGE ÉNERGÉTIQUE ---\n  // 2. Conversion des dB en échelle linéaire (énergie)\n  |> map(fn: (r) => ({ r with _value: math.pow(x: 10.0, y: r._value / 10.0) }))\n  \n  // 3. Moyenne glissante sur 30 secondes (6 points de 5s)\n  |> exponentialMovingAverage(n: 12)\n  \n  // 4. Retour en décibels (échelle logarithmique)\n  |> map(fn: (r) => ({ r with _value: 10.0 * math.log10(x: r._value) }))\n  // --- FIN DU LISSAGE ÉNERGÉTIQUE ---\n\n  // 5. Calcul de la durée consécutive au dessus de 55.0 dB\n  // On le fait sur la valeur lissée pour éviter les micro-coupures du compteur\n  |> stateDuration(fn: (r) => r._value > 60.0, column: \"noisy_seconds\", unit: 1s)\n\n  // 6. Nettoyage : transformer les -1 (sous le seuil) en 0\n  |> map(fn: (r) => ({\n      r with \n      noisy_seconds: if r.noisy_seconds == -1 then 0 else r.noisy_seconds\n  }))\n\n  // 7. FILTRE : On ne garde que les séquences qui durent plus de 120s (2 minutes)\n  |> filter(fn: (r) => r.noisy_seconds >= 120)\n\n  // 8. Formatage final pour un affichage propre dans Grafana\n  |> map(fn: (r) => ({\n      _time: r._time,\n      \"Intensité\": math.round(x: r._value * 10.0) / 10.0, // Arrondi 1 décimale\n      \"Durée de la nuisance (> 60dB)\": float(v: r.noisy_seconds)\n  }))\n  |> yield(name: \"nuisances_analyse\")",
-          "refId": "A"
+          "pluginVersion": "12.3.1",
+          "targets": [
+            {
+              "query": "import \"timezone\"\nimport \"date\"\n\noption location = timezone.location(name: \"Europe/Brussels\")\n\nfrom(bucket: \"default\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"dt8852\" and r[\"_field\"] == \"spl\")\n  // Fenêtrage pour alléger le rendu (ex: toutes les 1m)\n  |> aggregateWindow(every: 1m, fn: max, createEmpty: false)\n  |> map(fn: (r) => {\n      h = date.hour(t: r._time)\n      limit = if h >= 7 and h < 19 then 50.0 \n              else if h == 6 or (h >= 19 and h < 22) then 45.0 \n              else 40.0\n      \n      return { _time: r._time, _field: \"Statut\", _value: if r._value > limit then \"0\" else \"1\" }\n  })",
+              "refId": "A"
+            }
+          ],
+          "title": "Timeline des Infractions",
+          "type": "state-timeline"
         }
       ],
-      "title": "Analyse des Nuisances Sonores Persistantes (> 60dB)",
-      "type": "timeseries"
+      "title": "Surveillance en Temps Réel et Conformité",
+      "type": "row"
     },
     {
-      "datasource": {
-        "type": "influxdb",
-        "uid": "ff9xpmhbcsb9ce"
-      },
-      "description": "Ce graphique présente les niveaux de pression acoustique (SPL ou Sound Pressure Level) calculés par périodes de 60 minutes.\n\nL'utilisation des percentiles permet de différencier les bruits de courte durée du bruit ambiant permanent, conformément aux normes de mesure environnementale :\n\n- L10 : Le niveau sonore dépassé pendant 10 % du temps. Il représente les événements sonores les plus forts (passages de voitures, cris, travaux).\n- L50 : Le niveau dépassé pendant 50 % du temps. C'est l'indicateur de la \"tendance\" sonore globale.\n- L90 : Le niveau dépassé pendant 90 % du temps. Il représente le niveau sonore calme, quand il n'y a pas d'événement particulier. C'est le \"bruit résiduel\" de la ville.",
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "fixedColor": "dark-red",
-            "mode": "fixed"
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": 0
-              }
-            ]
-          },
-          "unit": "dB"
-        },
-        "overrides": [
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "L10 (Peaks) {frequency_weighting=\"dB(C)\", hold_mode=\"Live\", host=\"rpi4\", range_mode=\"30dB - 80dB\", time_weighting=\"Slow\"}"
-            },
-            "properties": [
-              {
-                "id": "displayName",
-                "value": "L10 - Pics de bruit"
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "L50 (Median) {frequency_weighting=\"dB(C)\", hold_mode=\"Live\", host=\"rpi4\", range_mode=\"30dB - 80dB\", time_weighting=\"Slow\"}"
-            },
-            "properties": [
-              {
-                "id": "displayName",
-                "value": "L50 - Niveau Médian"
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "L90 (Background) {frequency_weighting=\"dB(C)\", hold_mode=\"Live\", host=\"rpi4\", range_mode=\"30dB - 80dB\", time_weighting=\"Slow\"}"
-            },
-            "properties": [
-              {
-                "id": "displayName",
-                "value": "L90 - Bruit de fond"
-              }
-            ]
-          }
-        ]
-      },
+      "collapsed": true,
       "gridPos": {
-        "h": 11,
+        "h": 1,
         "w": 24,
         "x": 0,
-        "y": 67
+        "y": 1
       },
-      "id": 10,
-      "options": {
-        "displayMode": "lcd",
-        "legend": {
-          "calcs": [],
-          "displayMode": "list",
-          "placement": "bottom",
-          "showLegend": false
-        },
-        "maxVizHeight": 300,
-        "minVizHeight": 16,
-        "minVizWidth": 8,
-        "namePlacement": "auto",
-        "orientation": "auto",
-        "reduceOptions": {
-          "calcs": [],
-          "fields": "",
-          "values": false
-        },
-        "showUnfilled": true,
-        "sizing": "auto",
-        "valueMode": "color"
-      },
-      "pluginVersion": "12.3.1",
-      "targets": [
+      "id": 14,
+      "panels": [
         {
-          "query": "import \"math\"\nimport \"timezone\"\n\n// Set the local timezone for window alignment\noption location = timezone.location(name: \"Europe/Brussels\")\n\n// 1. Fetch the raw Sound Pressure Level data\ndata = from(bucket: \"default\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"dt8852\")\n  |> filter(fn: (r) => r[\"_field\"] == \"spl\")\n\n// 2. Calculate L10 (Peak Noise - level exceeded 10% of the time)\nl10 = data\n  |> aggregateWindow(every: 60m, fn: (column, tables=<-) => tables |> quantile(q: 0.90), createEmpty: false)\n  |> map(fn: (r) => ({ r with _field: \"L10 (Peaks)\", _value: math.round(x: r._value) }))\n\n// 3. Calculate L50 (Median Noise - level exceeded 50% of the time)\nl50 = data\n  |> aggregateWindow(every: 60m, fn: (column, tables=<-) => tables |> quantile(q: 0.50), createEmpty: false)\n  |> map(fn: (r) => ({ r with _field: \"L50 (Median)\", _value: math.round(x: r._value) }))\n\n// 4. Calculate L90 (Background Noise - level exceeded 90% of the time)\nl90 = data\n  |> aggregateWindow(every: 60m, fn: (column, tables=<-) => tables |> quantile(q: 0.10), createEmpty: false)\n  |> map(fn: (r) => ({ r with _field: \"L90 (Background)\", _value: math.round(x: r._value) }))\n\n// 5. Join them together for the Bar Gauge\nunion(tables: [l10, l50, l90])\n  |> yield(name: \"acoustic_stats\")",
-          "refId": "A"
+          "fieldConfig": {
+            "defaults": {},
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 4,
+            "w": 24,
+            "x": 0,
+            "y": 28
+          },
+          "id": 15,
+          "options": {
+            "code": {
+              "language": "plaintext",
+              "showLineNumbers": false,
+              "showMiniMap": false
+            },
+            "content": "Cette section analyse la \"signature\" acoustique de l'environnement sur la durée. \n\nL'histogramme de **Fréquence** répartit les mesures par paliers de 3 dB (doublement de l'énergie) et par période (Jour, Nuit, etc.), permettant d'identifier si le bruit est constant ou sporadique. \n\nLe graphique **Noise Pressure Level** complète cette vue en affichant la valeur médiane par quart d'heure. Contrairement à une moyenne, la médiane exclut les bruits brefs et accidentels pour révéler l'ambiance sonore réelle et les cycles d'activité (pics de trafic ou périodes de calme).\n\n",
+            "mode": "markdown"
+          },
+          "pluginVersion": "12.3.1",
+          "title": "",
+          "type": "text"
+        },
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "ff9xpmhbcsb9ce"
+          },
+          "description": "Montre la fréquence d'apparition des niveaux sonores par paliers de 3 dB. Idéal pour identifier le 'bruit de fond' dominant et caractériser la signature acoustique globale du lieu.",
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "palette-classic"
+              },
+              "custom": {
+                "fillOpacity": 80,
+                "gradientMode": "none",
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                },
+                "lineWidth": 1,
+                "stacking": {
+                  "group": "A",
+                  "mode": "none"
+                }
+              },
+              "mappings": [],
+              "max": 120,
+              "min": 30,
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": 0
+                  }
+                ]
+              },
+              "unit": "dB"
+            },
+            "overrides": [
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Day (Limit 50dB)"
+                },
+                "properties": [
+                  {
+                    "id": "color",
+                    "value": {
+                      "fixedColor": "dark-blue",
+                      "mode": "fixed"
+                    }
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Dusk / Evening (Limit 45dB)"
+                },
+                "properties": [
+                  {
+                    "id": "color",
+                    "value": {
+                      "fixedColor": "dark-orange",
+                      "mode": "fixed"
+                    }
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Dawn / Morning (Limit 45dB)"
+                },
+                "properties": [
+                  {
+                    "id": "color",
+                    "value": {
+                      "fixedColor": "dark-yellow",
+                      "mode": "fixed"
+                    }
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Night (Limit 40dB)"
+                },
+                "properties": [
+                  {
+                    "id": "color",
+                    "value": {
+                      "fixedColor": "#000064",
+                      "mode": "fixed"
+                    }
+                  }
+                ]
+              }
+            ]
+          },
+          "gridPos": {
+            "h": 15,
+            "w": 24,
+            "x": 0,
+            "y": 32
+          },
+          "id": 3,
+          "options": {
+            "combine": false,
+            "legend": {
+              "calcs": [],
+              "displayMode": "list",
+              "placement": "bottom",
+              "showLegend": true
+            },
+            "tooltip": {
+              "hideZeros": false,
+              "mode": "single",
+              "sort": "none"
+            }
+          },
+          "pluginVersion": "12.3.1",
+          "targets": [
+            {
+              "hide": false,
+              "query": "import \"math\"\nimport \"timezone\"\nimport \"date\"\n\noption location = timezone.location(name: \"Europe/Brussels\")\n\nfrom(bucket: \"default\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"dt8852\" and r[\"_field\"] == \"spl\")\n  // 1. Keep data volume safe (10s resolution)\n  |> aggregateWindow(every: 10s, fn: last, createEmpty: false)\n  |> map(fn: (r) => {\n      h = date.hour(t: r._time)\n      \n      // 2. Define the four distinct periods\n      period = if h >= 7 and h < 19 then \"Day (Limit 50dB)\"\n               else if h >= 19 and h < 22 then \"Dusk / Evening (Limit 45dB)\"\n               else if h >= 6 and h < 7 then \"Dawn / Morning (Limit 45dB)\"\n               else \"Night (Limit 40dB)\"\n      \n      return { r with \n          // 3. Bucket by 3dB for acoustic significance\n          _value: math.floor(x: r._value / 3.0) * 3.0,\n          // 4. Use the period name as the field for the histogram series\n          _field: period\n      }\n  })\n  |> keep(columns: [\"_time\", \"_value\", \"_field\"])",
+              "refId": "A"
+            }
+          ],
+          "title": "Frequency",
+          "type": "histogram"
+        },
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "ff9xpmhbcsb9ce"
+          },
+          "description": "Présente la médiane du volume sonore par intervalle de temps. Utile pour visualiser les cycles d'activité (jour/nuit), les tendances horaires et les moments de calme relatif.",
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "palette-classic"
+              },
+              "custom": {
+                "axisBorderShow": false,
+                "axisCenteredZero": false,
+                "axisColorMode": "text",
+                "axisLabel": "",
+                "axisPlacement": "auto",
+                "fillOpacity": 80,
+                "gradientMode": "none",
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                },
+                "lineWidth": 2,
+                "scaleDistribution": {
+                  "type": "linear"
+                },
+                "thresholdsStyle": {
+                  "mode": "off"
+                }
+              },
+              "fieldMinMax": true,
+              "mappings": [],
+              "max": 80,
+              "min": 40,
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": 0
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              },
+              "unit": "dB"
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 14,
+            "w": 24,
+            "x": 0,
+            "y": 47
+          },
+          "id": 4,
+          "options": {
+            "barRadius": 0,
+            "barWidth": 0.6,
+            "colorByField": "Time",
+            "fullHighlight": false,
+            "groupWidth": 1,
+            "legend": {
+              "calcs": [],
+              "displayMode": "list",
+              "placement": "bottom",
+              "showLegend": false
+            },
+            "orientation": "auto",
+            "showValue": "auto",
+            "stacking": "none",
+            "tooltip": {
+              "hideZeros": false,
+              "mode": "single",
+              "sort": "none"
+            },
+            "xField": "Time",
+            "xTickLabelRotation": 0,
+            "xTickLabelSpacing": 0
+          },
+          "pluginVersion": "12.3.1",
+          "targets": [
+            {
+              "hide": false,
+              "query": "import \"math\"\nimport \"timezone\"\n\noption location = timezone.location(name: \"Europe/Brussels\")\n\nfrom(bucket: \"default\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"dt8852\")\n  |> filter(fn: (r) => r[\"_field\"] == \"spl\")\n  |> keep(columns: [\"_time\", \"_value\", \"_field\", \"frequency_weighting\"])\n  |> aggregateWindow(every: 15m, fn: median, createEmpty: false)\n  |> map(fn: (r) => ({ \n      r with \n      _value: math.round(x: r._value),\n      _field: \"Sound Pressure Level\" \n  }))  \n  |> yield(name: \"hourly_peaks\")",
+              "refId": "A"
+            }
+          ],
+          "title": "Noise Pressure Level Histogram",
+          "type": "barchart"
         }
       ],
-      "title": "Analyse des Indicateurs Acoustiques (sur 60 min)",
-      "type": "bargauge"
+      "title": "Profil Sonore et Rythmes Horaires",
+      "type": "row"
+    },
+    {
+      "collapsed": true,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 2
+      },
+      "id": 11,
+      "panels": [
+        {
+          "fieldConfig": {
+            "defaults": {},
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 29,
+            "w": 12,
+            "x": 0,
+            "y": 154
+          },
+          "id": 6,
+          "options": {
+            "code": {
+              "language": "plaintext",
+              "showLineNumbers": false,
+              "showMiniMap": false
+            },
+            "content": "# Noise Station\n\n### Un système de monitoring acoustique intelligent\n\nLa **Noise Station** est une solution de surveillance environnementale de haute précision conçue pour capturer, analyser et visualiser les niveaux sonores d'un espace en temps réel. Elle transforme des données acoustiques brutes en indicateurs visuels pour suivre l'évolution du bruit, détecter les pics et comprendre le profil sonore d'un lieu sur 24 heures.\n\n# Comment ça fonctionne ?\n\n### 1. La Capture (Le Matériel)\n\nLe système s'appuie sur un microphone professionnel de type **Trotec SL400** (équivalent du **CEM DT-8852**). Ce sonomètre de Classe 2 offre des fonctionnalités indispensables :\n-   **Double Pondération:** Supporte les courbes **dB(A)** (perception humaine) et **dB(C)** (basses fréquences).\n-   **Plage Dynamique:** Mesure précise de 30 à 130 dB (precision: 1.4 dB, resolution: 0.1 dB)\n-   **Modes Temporels:** Analyse en mode \"Fast\" (réactivité immédiate) ou \"Slow\" (stabilité).\n-   **Signaux numériques:** Uniquement les données numériques (et pas analogique) sont transmises. \n-   **Certification:** Livré avec certificat de calibration, conforme à IEC61672-1 Class 2\n\n### 2. Le Cœur du Système (L'Intelligence)\n\nLes données sont traitées par une unité de calcul (**Raspberry Pi**) et stockées dans une base de données temporelle (**InfluxDB**):\n*   **Nettoyage :** Filtrage des métadonnées pour une lecture fluide.\n*   **Agrégation :** Calcul de moyennes glissantes et détection de crêtes en temps réel.\n\n### 3. La Visualisation (Le Dashboard)\n\nLe dashboard est structuré en quatre axes complémentaires pour une lecture immédiate :\n\n*   **Vue Temps Réel (Live View) :** Un graphique temporel combinant les mesures brutes et une courbe lissée (**moyenne mobile 1 min**). Cela permet de distinguer les bruits de fond des pics soudains.\n*   **Pic de Volume (Highest Recorded Sound) :** Une jauge dynamique qui surveille le volume maximal atteint durant les **5 dernières minutes**. Elle utilise des seuils colorés (du vert au rouge foncé dès 80 dB) pour alerter sur les événements sonores récents.\n*   **Profil Statistique (Average last 24h) :** Un histogramme qui regroupe les mesures des dernières 24 heures par paliers de décibels (arrondis à l'unité). Il permet de voir en un coup d'œil quel niveau de bruit est le plus fréquent dans l'environnement.\n*   **Distribution Horaire :** Un graphique en barres affichant la **moyenne sonore pour chaque heure** de la journée. Idéal pour identifier les cycles de pollution sonore (journée de travail vs nuit).\n*   **Géolocalisation :** Une carte intégrée affichant l'emplacement précis du capteur.\n\n# Pourquoi utiliser Noise Station ?\n\nPasser du ressenti subjectif (\"c'est bruyant\") à une mesure objective (\"la moyenne est de 65 dB avec des pics à 85 dB\"). Que ce soit pour le confort au travail, la surveillance de voisinage ou l'analyse environnementale, la **Noise Station** fournit une preuve scientifique et visuelle de la réalité acoustique de votre environnement.",
+            "mode": "markdown"
+          },
+          "pluginVersion": "12.3.1",
+          "title": "",
+          "type": "text"
+        },
+        {
+          "fieldConfig": {
+            "defaults": {},
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 29,
+            "w": 12,
+            "x": 12,
+            "y": 154
+          },
+          "id": 7,
+          "options": {
+            "code": {
+              "language": "plaintext",
+              "showLineNumbers": false,
+              "showMiniMap": false
+            },
+            "content": "# Réglementation en région wallone\n\nEn région wallone(https://www.ejustice.just.fgov.be/eli/arrete/2002/07/04/2002027815/justel), le cadre légal est clair et rigoureux. Depuis l’arrêté du Gouvernement wallon du 4 juillet 2022, des limites de bruit spécifiques s’appliquent aux PAC selon les différentes périodes de la journée :\n\n- En journée (7h-19h): le bruit ne doit pas dépasser 50 dB.\n- En transition (6h-7h, 19h-22h): la limite est réduite à 45 dB.\n- La nuit (22h-6h): le niveau sonore doit impérativement rester sous 40 dB.\n\nLe bruit se propage en cercle autour d'une unité extérieure (PAC). \nIl est donc crucial de faire attention aux surfaces environnantes, comme des murs ou d’autres bâtiments, qui peuvent réfléchir le son et provoquer un effet d’écho. Pour limiter cette résonance, maintenez au moins un mètre d’espace autour de la pompe, en particulier par rapport aux fenêtres, aux portes et aux chemins. Si l’unité est placée contre un mur, veillez à respecter une distance minimale de 30 centimètres — l’idéal étant de 50 centimètres — pour garantir une circulation sonore optimale. Il est également important de prendre en compte la distance entre la face avant de la pompe à chaleur et les trottoirs, qui doit être d’au moins 3 mètres et d’au moins 6 mètres pour les plantes.\n\nSource: https://www.bobex.be/fr-be/pompe-a-chaleur/installation/distance-voisin/\n",
+            "mode": "markdown"
+          },
+          "pluginVersion": "12.3.1",
+          "title": "",
+          "type": "text"
+        }
+      ],
+      "title": "A propos de Noise Station et réglementation en région wallone",
+      "type": "row"
+    },
+    {
+      "collapsed": true,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 3
+      },
+      "id": 12,
+      "panels": [
+        {
+          "fieldConfig": {
+            "defaults": {},
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 6,
+            "w": 24,
+            "x": 0,
+            "y": 184
+          },
+          "id": 13,
+          "options": {
+            "code": {
+              "language": "plaintext",
+              "showLineNumbers": false,
+              "showMiniMap": false
+            },
+            "content": "Ce module met en évidence les événements sonores les plus significatifs.\n\nLa jauge **Highest Recorded Sound** enregistre le niveau sonore maximal absolu (crête) afin d’identifier et de signaler d’éventuels chocs acoustiques.\n\nLe panneau **Analyse des nuisances persistantes** adopte une approche complémentaire : il écarte les bruits ponctuels pour se concentrer uniquement sur les séquences dont le niveau sonore dépasse 60 dB pendant plus de 2 minutes consécutives. Pour cela, les données sont lissées à l’aide d’une moyenne mobile exponentielle (EMA), permettant de filtrer les variations parasites.\n\nLe graphique repose sur un double axe : la courbe jaune représente l’intensité sonore en décibels, tandis que la zone remplie indique la durée cumulée de la nuisance en secondes. Cette corrélation entre intensité et durée permet de caractériser objectivement des nuisances sonores réelles, durables et répétitives, et de les distinguer clairement d’un simple bruit transitoire.\n",
+            "mode": "markdown"
+          },
+          "pluginVersion": "12.3.1",
+          "title": "",
+          "type": "text"
+        },
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "ff9xpmhbcsb9ce"
+          },
+          "description": "Analyse approfondie des événements sonores significatifs. Ce panneau isole et visualise les périodes où le niveau sonore a dépassé 60 dB de manière continue pendant plus de 2 minutes (120s), permettant d'identifier les nuisances longues et persistantes par rapport aux bruits transitoires.",
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "palette-classic"
+              },
+              "custom": {
+                "axisBorderShow": false,
+                "axisCenteredZero": false,
+                "axisColorMode": "text",
+                "axisLabel": "",
+                "axisPlacement": "auto",
+                "barAlignment": 0,
+                "barWidthFactor": 0.6,
+                "drawStyle": "line",
+                "fillOpacity": 0,
+                "gradientMode": "none",
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                },
+                "insertNulls": false,
+                "lineInterpolation": "linear",
+                "lineWidth": 1,
+                "pointSize": 6,
+                "scaleDistribution": {
+                  "type": "linear"
+                },
+                "showPoints": "auto",
+                "showValues": true,
+                "spanNulls": true,
+                "stacking": {
+                  "group": "A",
+                  "mode": "none"
+                },
+                "thresholdsStyle": {
+                  "mode": "off"
+                }
+              },
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": 0
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              },
+              "unit": "dtdurations"
+            },
+            "overrides": [
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Durée de la nuisance (> 60dB)"
+                },
+                "properties": [
+                  {
+                    "id": "custom.axisPlacement",
+                    "value": "right"
+                  },
+                  {
+                    "id": "unit",
+                    "value": "dtdurations"
+                  },
+                  {
+                    "id": "custom.lineInterpolation",
+                    "value": "stepBefore"
+                  },
+                  {
+                    "id": "custom.fillOpacity",
+                    "value": 50
+                  },
+                  {
+                    "id": "custom.scaleDistribution",
+                    "value": {
+                      "log": 2,
+                      "type": "log"
+                    }
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Intensité"
+                },
+                "properties": [
+                  {
+                    "id": "unit",
+                    "value": "dB"
+                  },
+                  {
+                    "id": "custom.lineInterpolation",
+                    "value": "smooth"
+                  },
+                  {
+                    "id": "custom.fillOpacity",
+                    "value": 0
+                  },
+                  {
+                    "id": "color",
+                    "value": {
+                      "fixedColor": "#fffd0038",
+                      "mode": "fixed"
+                    }
+                  }
+                ]
+              }
+            ]
+          },
+          "gridPos": {
+            "h": 11,
+            "w": 24,
+            "x": 0,
+            "y": 190
+          },
+          "id": 9,
+          "options": {
+            "legend": {
+              "calcs": [],
+              "displayMode": "list",
+              "placement": "bottom",
+              "showLegend": true
+            },
+            "tooltip": {
+              "hideZeros": false,
+              "mode": "multi",
+              "sort": "none"
+            }
+          },
+          "pluginVersion": "12.3.1",
+          "targets": [
+            {
+              "query": "import \"math\"\nimport \"timezone\"\n\noption location = timezone.location(name: \"Europe/Brussels\")\n\nfrom(bucket: \"default\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"dt8852\" and r[\"_field\"] == \"spl\")\n  \n  // 1. Fenêtrage de base\n  |> aggregateWindow(every: 10s, fn: max, createEmpty: false)\n\n  // --- DÉBUT DU LISSAGE ÉNERGÉTIQUE ---\n  // 2. Conversion des dB en échelle linéaire (énergie)\n  |> map(fn: (r) => ({ r with _value: math.pow(x: 10.0, y: r._value / 10.0) }))\n  \n  // 3. Moyenne glissante sur 30 secondes (6 points de 5s)\n  |> exponentialMovingAverage(n: 12)\n  \n  // 4. Retour en décibels (échelle logarithmique)\n  |> map(fn: (r) => ({ r with _value: 10.0 * math.log10(x: r._value) }))\n  // --- FIN DU LISSAGE ÉNERGÉTIQUE ---\n\n  // 5. Calcul de la durée consécutive au dessus de 55.0 dB\n  // On le fait sur la valeur lissée pour éviter les micro-coupures du compteur\n  |> stateDuration(fn: (r) => r._value > 60.0, column: \"noisy_seconds\", unit: 1s)\n\n  // 6. Nettoyage : transformer les -1 (sous le seuil) en 0\n  |> map(fn: (r) => ({\n      r with \n      noisy_seconds: if r.noisy_seconds == -1 then 0 else r.noisy_seconds\n  }))\n\n  // 7. FILTRE : On ne garde que les séquences qui durent plus de 120s (2 minutes)\n  |> filter(fn: (r) => r.noisy_seconds >= 120)\n\n  // 8. Formatage final pour un affichage propre dans Grafana\n  |> map(fn: (r) => ({\n      _time: r._time,\n      \"Intensité\": math.round(x: r._value * 10.0) / 10.0, // Arrondi 1 décimale\n      \"Durée de la nuisance (> 60dB)\": float(v: r.noisy_seconds)\n  }))\n  |> yield(name: \"nuisances_analyse\")",
+              "refId": "A"
+            }
+          ],
+          "title": "Analyse des Nuisances Sonores Persistantes (> 60dB)",
+          "type": "timeseries"
+        },
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "ff9xpmhbcsb9ce"
+          },
+          "description": "Indique l'intensité maximale (crête) enregistrée sur la période sélectionnée. Les codes couleurs (Vert à Rouge foncé) signalent immédiatement les niveaux critiques (>60dB, >75dB) nécessitant une attention particulière.",
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "thresholds"
+              },
+              "fieldMinMax": false,
+              "mappings": [],
+              "max": 100,
+              "min": 30,
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": 0
+                  },
+                  {
+                    "color": "dark-green",
+                    "value": 30
+                  },
+                  {
+                    "color": "dark-yellow",
+                    "value": 45
+                  },
+                  {
+                    "color": "red",
+                    "value": 60
+                  },
+                  {
+                    "color": "dark-red",
+                    "value": 75
+                  }
+                ]
+              },
+              "unit": "dB"
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 10,
+            "w": 24,
+            "x": 0,
+            "y": 201
+          },
+          "id": 2,
+          "options": {
+            "minVizHeight": 75,
+            "minVizWidth": 75,
+            "orientation": "auto",
+            "reduceOptions": {
+              "calcs": [],
+              "fields": "",
+              "values": false
+            },
+            "showThresholdLabels": true,
+            "showThresholdMarkers": true,
+            "sizing": "auto"
+          },
+          "pluginVersion": "12.3.1",
+          "targets": [
+            {
+              "hide": false,
+              "query": "import \"math\"\nimport \"timezone\"\n\noption location = timezone.location(name: \"Europe/Brussels\")\n\nfrom(bucket: \"default\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"dt8852\")\n  |> filter(fn: (r) => r[\"_field\"] == \"spl\")\n  |> keep(columns: [\"_time\", \"_value\", \"_field\", \"frequency_weighting\"])\n  |> max()",
+              "refId": "A"
+            }
+          ],
+          "title": "Highest Recorded Sound",
+          "type": "gauge"
+        }
+      ],
+      "title": "Analyse des Événements et Nuisances",
+      "type": "row"
+    },
+    {
+      "collapsed": true,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 4
+      },
+      "id": 20,
+      "panels": [
+        {
+          "fieldConfig": {
+            "defaults": {},
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 5,
+            "w": 24,
+            "x": 0,
+            "y": 212
+          },
+          "id": 21,
+          "options": {
+            "code": {
+              "language": "plaintext",
+              "showLineNumbers": false,
+              "showMiniMap": false
+            },
+            "content": "Cette section utilise les standards de la métrologie environnementale pour caractériser l'ambiance sonore résiduelle. \n\nLes indicateurs **L10, L50 et L90** permettent de différencier les bruits émergents (L10 - pics de trafic) du bruit de fond constant (L90 - niveau en l'absence de bruit distinct). \n\nCes données sont spatialisées grâce à la carte **Sensor Location**, qui situe le capteur Trotec SL400 dans son environnement extérieur. \n\nCette mise en contexte est indispensable pour interpréter les variations sonores en fonction de la distance des obstacles ou du voisinage.\n",
+            "mode": "markdown"
+          },
+          "pluginVersion": "12.3.1",
+          "title": "",
+          "type": "text"
+        },
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "ff9xpmhbcsb9ce"
+          },
+          "description": "Ce graphique présente les niveaux de pression acoustique (SPL ou Sound Pressure Level) calculés par périodes de 60 minutes.\n\nL'utilisation des percentiles permet de différencier les bruits de courte durée du bruit ambiant permanent, conformément aux normes de mesure environnementale :\n\n- L10 : Le niveau sonore dépassé pendant 10 % du temps. Il représente les événements sonores les plus forts (passages de voitures, cris, travaux).\n- L50 : Le niveau dépassé pendant 50 % du temps. C'est l'indicateur de la \"tendance\" sonore globale.\n- L90 : Le niveau dépassé pendant 90 % du temps. Il représente le niveau sonore calme, quand il n'y a pas d'événement particulier. C'est le \"bruit résiduel\" de la ville.",
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "fixedColor": "dark-red",
+                "mode": "fixed"
+              },
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": 0
+                  }
+                ]
+              },
+              "unit": "dB"
+            },
+            "overrides": [
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "L10 (Peaks) {frequency_weighting=\"dB(C)\", hold_mode=\"Live\", host=\"rpi4\", range_mode=\"30dB - 80dB\", time_weighting=\"Slow\"}"
+                },
+                "properties": [
+                  {
+                    "id": "displayName",
+                    "value": "L10 - Pics de bruit"
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "L50 (Median) {frequency_weighting=\"dB(C)\", hold_mode=\"Live\", host=\"rpi4\", range_mode=\"30dB - 80dB\", time_weighting=\"Slow\"}"
+                },
+                "properties": [
+                  {
+                    "id": "displayName",
+                    "value": "L50 - Niveau Médian"
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "L90 (Background) {frequency_weighting=\"dB(C)\", hold_mode=\"Live\", host=\"rpi4\", range_mode=\"30dB - 80dB\", time_weighting=\"Slow\"}"
+                },
+                "properties": [
+                  {
+                    "id": "displayName",
+                    "value": "L90 - Bruit de fond"
+                  }
+                ]
+              }
+            ]
+          },
+          "gridPos": {
+            "h": 11,
+            "w": 24,
+            "x": 0,
+            "y": 217
+          },
+          "id": 10,
+          "options": {
+            "displayMode": "lcd",
+            "legend": {
+              "calcs": [],
+              "displayMode": "list",
+              "placement": "bottom",
+              "showLegend": false
+            },
+            "maxVizHeight": 300,
+            "minVizHeight": 16,
+            "minVizWidth": 8,
+            "namePlacement": "auto",
+            "orientation": "auto",
+            "reduceOptions": {
+              "calcs": [],
+              "fields": "",
+              "values": false
+            },
+            "showUnfilled": true,
+            "sizing": "auto",
+            "valueMode": "color"
+          },
+          "pluginVersion": "12.3.1",
+          "targets": [
+            {
+              "query": "import \"math\"\nimport \"timezone\"\n\n// Set the local timezone for window alignment\noption location = timezone.location(name: \"Europe/Brussels\")\n\n// 1. Fetch the raw Sound Pressure Level data\ndata = from(bucket: \"default\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"dt8852\")\n  |> filter(fn: (r) => r[\"_field\"] == \"spl\")\n\n// 2. Calculate L10 (Peak Noise - level exceeded 10% of the time)\nl10 = data\n  |> aggregateWindow(every: 60m, fn: (column, tables=<-) => tables |> quantile(q: 0.90), createEmpty: false)\n  |> map(fn: (r) => ({ r with _field: \"L10 (Peaks)\", _value: math.round(x: r._value) }))\n\n// 3. Calculate L50 (Median Noise - level exceeded 50% of the time)\nl50 = data\n  |> aggregateWindow(every: 60m, fn: (column, tables=<-) => tables |> quantile(q: 0.50), createEmpty: false)\n  |> map(fn: (r) => ({ r with _field: \"L50 (Median)\", _value: math.round(x: r._value) }))\n\n// 4. Calculate L90 (Background Noise - level exceeded 90% of the time)\nl90 = data\n  |> aggregateWindow(every: 60m, fn: (column, tables=<-) => tables |> quantile(q: 0.10), createEmpty: false)\n  |> map(fn: (r) => ({ r with _field: \"L90 (Background)\", _value: math.round(x: r._value) }))\n\n// 5. Join them together for the Bar Gauge\nunion(tables: [l10, l50, l90])\n  |> yield(name: \"acoustic_stats\")",
+              "refId": "A"
+            }
+          ],
+          "title": "Analyse des Indicateurs Acoustiques (sur 60 min)",
+          "type": "bargauge"
+        },
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "ff9xpmhbcsb9ce"
+          },
+          "description": "Carte de positionnement du capteur Trotec SL400. Indispensable pour contextualiser les mesures par rapport à l'environnement urbain, aux obstacles et au voisinage.",
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "thresholds"
+              },
+              "custom": {
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                }
+              },
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": 0
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              }
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 11,
+            "w": 24,
+            "x": 0,
+            "y": 228
+          },
+          "id": 5,
+          "options": {
+            "basemap": {
+              "config": {},
+              "name": "Layer 0",
+              "noRepeat": false,
+              "type": "default"
+            },
+            "controls": {
+              "mouseWheelZoom": true,
+              "showAttribution": true,
+              "showDebug": false,
+              "showMeasure": false,
+              "showScale": false,
+              "showZoom": true
+            },
+            "layers": [
+              {
+                "config": {
+                  "blur": 50,
+                  "radius": 50,
+                  "weight": {
+                    "fixed": 1,
+                    "max": 1,
+                    "min": 0
+                  }
+                },
+                "filterData": {
+                  "id": "byRefId",
+                  "options": "A"
+                },
+                "layer-tooltip": true,
+                "location": {
+                  "mode": "auto"
+                },
+                "name": "Layer 1",
+                "opacity": 0.5,
+                "tooltip": true,
+                "type": "heatmap"
+              }
+            ],
+            "tooltip": {
+              "mode": "details"
+            },
+            "view": {
+              "allLayers": true,
+              "id": "coords",
+              "lat": 50.599922,
+              "lon": 4.32828,
+              "noRepeat": false,
+              "zoom": 17.78
+            }
+          },
+          "pluginVersion": "12.3.1",
+          "targets": [
+            {
+              "hide": false,
+              "query": "import \"array\"\n\narray.from(rows: [{\n    lat: 50.599724, \n    lon: 4.328188, \n    location_name: \"Outdoor, garden\",\n    sensor_type: \"Trotec SL400\"\n}])",
+              "refId": "A"
+            }
+          ],
+          "title": "Sensor location",
+          "type": "geomap"
+        }
+      ],
+      "title": "Indicateurs Experts et Contexte",
+      "type": "row"
     }
   ],
   "preload": false,
