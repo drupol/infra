@@ -18,7 +18,7 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 32,
+  "id": 33,
   "links": [],
   "liveNow": true,
   "panels": [
@@ -959,7 +959,7 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "_value {_field=\"L10 (Pics)\", _start=\"2026-01-14 06:09:23.929 +0000 UTC\", _stop=\"2026-01-14 12:09:23.929 +0000 UTC\", frequency_weighting=\"dB(C)\", hold_mode=\"Live\", host=\"rpi4\", range_mode=\"30dB - 80dB\", time_weighting=\"Slow\"}"
+              "options": "_value {_field=\"L10 (Pics)\", _start=\"2026-01-14 09:48:42.142 +0000 UTC\", _stop=\"2026-01-14 12:48:42.142 +0000 UTC\", frequency_weighting=\"dB(C)\", hold_mode=\"Live\", host=\"rpi4\", range_mode=\"30dB - 80dB\", time_weighting=\"Slow\"}"
             },
             "properties": [
               {
@@ -971,7 +971,7 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "_value {_field=\"L50 (Médiane)\", _start=\"2026-01-14 06:09:23.929 +0000 UTC\", _stop=\"2026-01-14 12:09:23.929 +0000 UTC\", frequency_weighting=\"dB(C)\", hold_mode=\"Live\", host=\"rpi4\", range_mode=\"30dB - 80dB\", time_weighting=\"Slow\"}"
+              "options": "_value {_field=\"L50 (Médiane)\", _start=\"2026-01-14 09:48:42.142 +0000 UTC\", _stop=\"2026-01-14 12:48:42.142 +0000 UTC\", frequency_weighting=\"dB(C)\", hold_mode=\"Live\", host=\"rpi4\", range_mode=\"30dB - 80dB\", time_weighting=\"Slow\"}"
             },
             "properties": [
               {
@@ -983,7 +983,7 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "_value {_field=\"L90 (Bruit de fond)\", _start=\"2026-01-14 06:09:23.929 +0000 UTC\", _stop=\"2026-01-14 12:09:23.929 +0000 UTC\", frequency_weighting=\"dB(C)\", hold_mode=\"Live\", host=\"rpi4\", range_mode=\"30dB - 80dB\", time_weighting=\"Slow\"}"
+              "options": "_value {_field=\"L90 (Bruit de fond)\", _start=\"2026-01-14 09:48:42.142 +0000 UTC\", _stop=\"2026-01-14 12:48:42.142 +0000 UTC\", frequency_weighting=\"dB(C)\", hold_mode=\"Live\", host=\"rpi4\", range_mode=\"30dB - 80dB\", time_weighting=\"Slow\"}"
             },
             "properties": [
               {
