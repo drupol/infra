@@ -194,7 +194,7 @@
                 "uid": "ff9xpmhbcsb9ce"
               },
               "hide": false,
-              "query": "import \"math\"\nimport \"timezone\"\n\noption location = timezone.location(name: \"Europe/Brussels\")\n\nfrom(bucket: \"default\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"dt8852\")\n  |> filter(fn: (r) => r[\"_field\"] == \"spl\")\n  // On garde la colonne frequency_weighting\n  |> keep(columns: [\"_time\", \"_value\", \"_field\", \"frequency_weighting\"])\n  \n  // Passage en échelle linéaire (énergie)\n  |> map(fn: (r) => ({\n      r with \n      _value: math.pow(x: 10.0, y: r._value / 10.0)\n  }))\n\n  // Calcul de la MOYENNE énergétique (Leq) par minute\n  // Note: mean est indispensable ici pour le calcul logarithmique\n  |> aggregateWindow(every: 30s, fn: median, createEmpty: false)\n\n  // Retour en décibels ET renommage du flux\n  |> map(fn: (r) => ({\n      r with \n      _value: 10.0 * math.log10(x: r._value),\n      _field: \"Sound Pressure Level\"\n  }))\n\n  |> yield(name: \"spl_result\")",
+              "query": "import \"math\"\nimport \"timezone\"\n\noption location = timezone.location(name: \"Europe/Brussels\")\n\nfrom(bucket: \"default\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"dt8852\")\n  |> filter(fn: (r) => r[\"_field\"] == \"spl\")\n  // On garde la colonne frequency_weighting\n  |> keep(columns: [\"_time\", \"_value\", \"_field\", \"frequency_weighting\"])\n  \n  // Passage en échelle linéaire (énergie)\n  |> map(fn: (r) => ({\n      r with \n      _value: math.pow(x: 10.0, y: r._value / 10.0)\n  }))\n\n  // Calcul de la MOYENNE énergétique (Leq) par minute\n  // Note: mean est indispensable ici pour le calcul logarithmique\n  |> aggregateWindow(every: 30s, fn: median, createEmpty: false)\n\n  // Retour en décibels ET renommage du flux\n  |> map(fn: (r) => ({\n      r with \n      _value: 10.0 * math.log10(x: r._value),\n      _field: \"Niveau de Pression Sonore\"\n  }))\n\n  |> yield(name: \"spl_result\")",
               "refId": "Live"
             },
             {
@@ -207,7 +207,7 @@
               "refId": "A"
             }
           ],
-          "title": "Live view",
+          "title": "Vue en Temps Réel",
           "type": "timeseries"
         },
         {
@@ -292,7 +292,7 @@
               "refId": "A"
             }
           ],
-          "title": "Timeline des Infractions",
+          "title": "Historique des Infractions",
           "type": "state-timeline"
         }
       ],
@@ -377,7 +377,7 @@
               {
                 "matcher": {
                   "id": "byName",
-                  "options": "Day (Limit 50dB)"
+                  "options": "Jour (Limite 50dB)"
                 },
                 "properties": [
                   {
@@ -392,7 +392,7 @@
               {
                 "matcher": {
                   "id": "byName",
-                  "options": "Dusk / Evening (Limit 45dB)"
+                  "options": "Soirée (Limite 45dB)"
                 },
                 "properties": [
                   {
@@ -407,7 +407,7 @@
               {
                 "matcher": {
                   "id": "byName",
-                  "options": "Dawn / Morning (Limit 45dB)"
+                  "options": "Aube / Matinée (Limite 45dB)"
                 },
                 "properties": [
                   {
@@ -422,7 +422,7 @@
               {
                 "matcher": {
                   "id": "byName",
-                  "options": "Night (Limit 40dB)"
+                  "options": "Nuit (Limite 40dB)"
                 },
                 "properties": [
                   {
@@ -461,11 +461,11 @@
           "targets": [
             {
               "hide": false,
-              "query": "import \"math\"\nimport \"timezone\"\nimport \"date\"\n\noption location = timezone.location(name: \"Europe/Brussels\")\n\nfrom(bucket: \"default\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"dt8852\" and r[\"_field\"] == \"spl\")\n  // 1. Keep data volume safe (10s resolution)\n  |> aggregateWindow(every: 10s, fn: last, createEmpty: false)\n  |> map(fn: (r) => {\n      h = date.hour(t: r._time)\n      \n      // 2. Define the four distinct periods\n      period = if h >= 7 and h < 19 then \"Day (Limit 50dB)\"\n               else if h >= 19 and h < 22 then \"Dusk / Evening (Limit 45dB)\"\n               else if h >= 6 and h < 7 then \"Dawn / Morning (Limit 45dB)\"\n               else \"Night (Limit 40dB)\"\n      \n      return { r with \n          // 3. Bucket by 3dB for acoustic significance\n          _value: math.floor(x: r._value / 3.0) * 3.0,\n          // 4. Use the period name as the field for the histogram series\n          _field: period\n      }\n  })\n  |> keep(columns: [\"_time\", \"_value\", \"_field\"])",
+              "query": "import \"math\"\nimport \"timezone\"\nimport \"date\"\n\noption location = timezone.location(name: \"Europe/Brussels\")\n\nfrom(bucket: \"default\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"dt8852\" and r[\"_field\"] == \"spl\")\n  // 1. Keep data volume safe (10s resolution)\n  |> aggregateWindow(every: 10s, fn: last, createEmpty: false)\n  |> map(fn: (r) => {\n      h = date.hour(t: r._time)\n      \n      // 2. Define the four distinct periods\n      period = if h >= 7 and h < 19 then \"Jour (Limite 50dB)\"\n               else if h >= 19 and h < 22 then \"Soirée (Limite 45dB)\"\n               else if h >= 6 and h < 7 then \"Aube / Matinée (Limite 45dB)\"\n               else \"Nuit (Limite 40dB)\"\n      \n      return { r with \n          // 3. Bucket by 3dB for acoustic significance\n          _value: math.floor(x: r._value / 3.0) * 3.0,\n          // 4. Use the period name as the field for the histogram series\n          _field: period\n      }\n  })\n  |> keep(columns: [\"_time\", \"_value\", \"_field\"])",
               "refId": "A"
             }
           ],
-          "title": "Frequency",
+          "title": "Fréquence Sonore",
           "type": "histogram"
         },
         {
@@ -556,11 +556,11 @@
           "targets": [
             {
               "hide": false,
-              "query": "import \"math\"\nimport \"timezone\"\n\noption location = timezone.location(name: \"Europe/Brussels\")\n\nfrom(bucket: \"default\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"dt8852\")\n  |> filter(fn: (r) => r[\"_field\"] == \"spl\")\n  |> keep(columns: [\"_time\", \"_value\", \"_field\", \"frequency_weighting\"])\n  |> aggregateWindow(every: 15m, fn: median, createEmpty: false)\n  |> map(fn: (r) => ({ \n      r with \n      _value: math.round(x: r._value),\n      _field: \"Sound Pressure Level\" \n  }))  \n  |> yield(name: \"hourly_peaks\")",
+              "query": "import \"math\"\nimport \"timezone\"\n\noption location = timezone.location(name: \"Europe/Brussels\")\n\nfrom(bucket: \"default\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"dt8852\")\n  |> filter(fn: (r) => r[\"_field\"] == \"spl\")\n  |> keep(columns: [\"_time\", \"_value\", \"_field\", \"frequency_weighting\"])\n  |> aggregateWindow(every: 15m, fn: median, createEmpty: false)\n  |> map(fn: (r) => ({ \n      r with \n      _value: math.round(x: r._value),\n      _field: \"Niveau de Pression Sonore\" \n  }))  \n  |> yield(name: \"hourly_peaks\")",
               "refId": "A"
             }
           ],
-          "title": "Noise Pressure Level Histogram",
+          "title": "Histogramme de Pression Sonore",
           "type": "barchart"
         }
       ],
@@ -890,7 +890,7 @@
               "refId": "A"
             }
           ],
-          "title": "Highest Recorded Sound",
+          "title": "Volume Maximum Enregistré",
           "type": "gauge"
         }
       ],
@@ -960,7 +960,7 @@
               {
                 "matcher": {
                   "id": "byName",
-                  "options": "L10 (Peaks) {frequency_weighting=\"dB(C)\", hold_mode=\"Live\", host=\"rpi4\", range_mode=\"30dB - 80dB\", time_weighting=\"Slow\"}"
+                  "options": "L10 (Pics) {frequency_weighting=\"dB(C)\", hold_mode=\"Live\", host=\"rpi4\", range_mode=\"30dB - 80dB\", time_weighting=\"Slow\"}"
                 },
                 "properties": [
                   {
@@ -972,7 +972,7 @@
               {
                 "matcher": {
                   "id": "byName",
-                  "options": "L50 (Median) {frequency_weighting=\"dB(C)\", hold_mode=\"Live\", host=\"rpi4\", range_mode=\"30dB - 80dB\", time_weighting=\"Slow\"}"
+                  "options": "L50 (Médiane) {frequency_weighting=\"dB(C)\", hold_mode=\"Live\", host=\"rpi4\", range_mode=\"30dB - 80dB\", time_weighting=\"Slow\"}"
                 },
                 "properties": [
                   {
@@ -984,7 +984,7 @@
               {
                 "matcher": {
                   "id": "byName",
-                  "options": "L90 (Background) {frequency_weighting=\"dB(C)\", hold_mode=\"Live\", host=\"rpi4\", range_mode=\"30dB - 80dB\", time_weighting=\"Slow\"}"
+                  "options": "L90 (Bruit de fond) {frequency_weighting=\"dB(C)\", hold_mode=\"Live\", host=\"rpi4\", range_mode=\"30dB - 80dB\", time_weighting=\"Slow\"}"
                 },
                 "properties": [
                   {
@@ -1027,7 +1027,7 @@
           "pluginVersion": "12.3.1",
           "targets": [
             {
-              "query": "import \"math\"\nimport \"timezone\"\n\n// Set the local timezone for window alignment\noption location = timezone.location(name: \"Europe/Brussels\")\n\n// 1. Fetch the raw Sound Pressure Level data\ndata = from(bucket: \"default\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"dt8852\")\n  |> filter(fn: (r) => r[\"_field\"] == \"spl\")\n\n// 2. Calculate L10 (Peak Noise - level exceeded 10% of the time)\nl10 = data\n  |> aggregateWindow(every: 60m, fn: (column, tables=<-) => tables |> quantile(q: 0.90), createEmpty: false)\n  |> map(fn: (r) => ({ r with _field: \"L10 (Peaks)\", _value: math.round(x: r._value) }))\n\n// 3. Calculate L50 (Median Noise - level exceeded 50% of the time)\nl50 = data\n  |> aggregateWindow(every: 60m, fn: (column, tables=<-) => tables |> quantile(q: 0.50), createEmpty: false)\n  |> map(fn: (r) => ({ r with _field: \"L50 (Median)\", _value: math.round(x: r._value) }))\n\n// 4. Calculate L90 (Background Noise - level exceeded 90% of the time)\nl90 = data\n  |> aggregateWindow(every: 60m, fn: (column, tables=<-) => tables |> quantile(q: 0.10), createEmpty: false)\n  |> map(fn: (r) => ({ r with _field: \"L90 (Background)\", _value: math.round(x: r._value) }))\n\n// 5. Join them together for the Bar Gauge\nunion(tables: [l10, l50, l90])\n  |> yield(name: \"acoustic_stats\")",
+              "query": "import \"math\"\nimport \"timezone\"\n\n// Set the local timezone for window alignment\noption location = timezone.location(name: \"Europe/Brussels\")\n\n// 1. Fetch the raw Sound Pressure Level data\ndata = from(bucket: \"default\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"dt8852\")\n  |> filter(fn: (r) => r[\"_field\"] == \"spl\")\n\n// 2. Calculate L10 (Peak Noise - level exceeded 10% of the time)\nl10 = data\n  |> aggregateWindow(every: 60m, fn: (column, tables=<-) => tables |> quantile(q: 0.90), createEmpty: false)\n  |> map(fn: (r) => ({ r with _field: \"L10 (Pics)\", _value: math.round(x: r._value) }))\n\n// 3. Calculate L50 (Median Noise - level exceeded 50% of the time)\nl50 = data\n  |> aggregateWindow(every: 60m, fn: (column, tables=<-) => tables |> quantile(q: 0.50), createEmpty: false)\n  |> map(fn: (r) => ({ r with _field: \"L50 (Médiane)\", _value: math.round(x: r._value) }))\n\n// 4. Calculate L90 (Background Noise - level exceeded 90% of the time)\nl90 = data\n  |> aggregateWindow(every: 60m, fn: (column, tables=<-) => tables |> quantile(q: 0.10), createEmpty: false)\n  |> map(fn: (r) => ({ r with _field: \"L90 (Bruit de fond)\", _value: math.round(x: r._value) }))\n\n// 5. Join them together for the Bar Gauge\nunion(tables: [l10, l50, l90])\n  |> yield(name: \"acoustic_stats\")",
               "refId": "A"
             }
           ],
@@ -1132,11 +1132,11 @@
           "targets": [
             {
               "hide": false,
-              "query": "import \"array\"\n\narray.from(rows: [{\n    lat: 50.599724, \n    lon: 4.328188, \n    location_name: \"Outdoor, garden\",\n    sensor_type: \"Trotec SL400\"\n}])",
+              "query": "import \"array\"\n\narray.from(rows: [{\n    lat: 50.599724, \n    lon: 4.328188, \n    location_name: \"Extérieur, Jardin\",\n    sensor_type: \"Trotec SL400\"\n}])",
               "refId": "A"
             }
           ],
-          "title": "Sensor location",
+          "title": "Localisation du Capteur",
           "type": "geomap"
         }
       ],
