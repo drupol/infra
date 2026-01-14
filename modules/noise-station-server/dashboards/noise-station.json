@@ -725,6 +725,7 @@
         "type": "influxdb",
         "uid": "ff9xpmhbcsb9ce"
       },
+      "description": "Analyse approfondie des événements sonores significatifs. Ce panneau isole et visualise les périodes où le niveau sonore a dépassé 60 dB de manière continue pendant plus de 2 minutes (120s), permettant d'identifier les nuisances longues et persistantes par rapport aux bruits transitoires.",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -841,7 +842,6 @@
           }
         ]
       },
-      "description": "Analyse approfondie des événements sonores significatifs. Ce panneau isole et visualise les périodes où le niveau sonore a dépassé 60 dB de manière continue pendant plus de 2 minutes (120s), permettant d'identifier les nuisances longues et persistantes par rapport aux bruits transitoires.",
       "gridPos": {
         "h": 11,
         "w": 24,
