@@ -18,7 +18,7 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 57,
+  "id": 58,
   "links": [],
   "liveNow": true,
   "panels": [
@@ -486,7 +486,7 @@
       "pluginVersion": "12.3.1",
       "targets": [
         {
-          "query": "import \"timezone\"\nimport \"date\"\n\noption location = timezone.location(name: \"Europe/Brussels\")\n\nfrom(bucket: \"default\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r._measurement == \"dt8852\" and r._field == \"spl\")\n |> aggregateWindow(\n      every: 1m,\n      fn: (column, tables=<-) => tables |> quantile(q: 0.10, column: column),\n      createEmpty: false\n  )\n  |> map(fn: (r) => {\n      h = date.hour(t: r._time)\n\n      limit =\n        if h >= 7 and h < 19 then 50.0\n        else if (h >= 6 and h < 7) or (h >= 19 and h < 22) then 45.0\n        else 40.0\n\n      return {\n        _time: r._time,\n        _value: if r._value > limit then 1.0 else 0.0\n      }\n  })",
+          "query": "import \"timezone\"\nimport \"date\"\n\noption location = timezone.location(name: \"Europe/Brussels\")\n\nfrom(bucket: \"default\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r._measurement == \"dt8852\" and r._field == \"spl\")\n |> aggregateWindow(\n      every: 1m,\n      fn: (column, tables=<-) => tables |> quantile(q: 0.50, column: column),\n      createEmpty: false\n  )\n  |> map(fn: (r) => {\n      h = date.hour(t: r._time)\n\n      limit =\n        if h >= 7 and h < 19 then 50.0\n        else if (h >= 6 and h < 7) or (h >= 19 and h < 22) then 45.0\n        else 40.0\n\n      return {\n        _time: r._time,\n        _value: if r._value > limit then 1.0 else 0.0\n      }\n  })",
           "refId": "A"
         }
       ],
@@ -682,7 +682,7 @@
       "pluginVersion": "12.3.1",
       "targets": [
         {
-          "query": "import \"math\"\nimport \"timezone\"\nimport \"date\"\n\noption location = timezone.location(name: \"Europe/Brussels\")\n\nfrom(bucket: \"default\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"dt8852\" and r[\"_field\"] == \"spl\")\n  |> filter(fn: (r) => exists r._value)\n  \n  //|> aggregateWindow(every: v.windowPeriod, fn: mean, createEmpty: false)\n  |> aggregateWindow(every: v.windowPeriod, fn: (column, tables=<-) => tables |> quantile(q: 0.10), createEmpty: false)\n  // 3. Calcul des limites horaires et du dépassement\n  |> map(fn: (r) => {\n      h = date.hour(t: r._time)\n      \n      // Seuils réglementaires (50 / 45 / 40 dB)\n      limite = if h >= 7 and h < 19 then 50.0 \n               else if (h >= 6 and h < 7) or (h >= 19 and h < 22) then 45.0 \n               else 40.0\n      \n      // Calcul du dépassement\n      diff = if r._value > limite then r._value - limite else 0.0\n      \n      return {\n          _time: r._time,\n          _value: diff,\n          _field: \"Dépassement (dB)\",\n          niveau_reel: r._value,\n          seuil_legal: limite\n      }\n  })\n  \n  // 4. Envoi des données vers Grafana\n  |> yield(name: \"depassement_acoustique\")",
+          "query": "import \"math\"\nimport \"timezone\"\nimport \"date\"\n\noption location = timezone.location(name: \"Europe/Brussels\")\n\nfrom(bucket: \"default\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"dt8852\" and r[\"_field\"] == \"spl\")\n  |> filter(fn: (r) => exists r._value)\n  \n  //|> aggregateWindow(every: v.windowPeriod, fn: mean, createEmpty: false)\n  |> aggregateWindow(every: v.windowPeriod, fn: (column, tables=<-) => tables |> quantile(q: 0.50), createEmpty: false)\n  // 3. Calcul des limites horaires et du dépassement\n  |> map(fn: (r) => {\n      h = date.hour(t: r._time)\n      \n      // Seuils réglementaires (50 / 45 / 40 dB)\n      limite = if h >= 7 and h < 19 then 50.0 \n               else if (h >= 6 and h < 7) or (h >= 19 and h < 22) then 45.0 \n               else 40.0\n      \n      // Calcul du dépassement\n      diff = if r._value > limite then r._value - limite else 0.0\n      \n      return {\n          _time: r._time,\n          _value: diff,\n          _field: \"Dépassement (dB)\",\n          niveau_reel: r._value,\n          seuil_legal: limite\n      }\n  })\n  \n  // 4. Envoi des données vers Grafana\n  |> yield(name: \"depassement_acoustique\")",
           "refId": "A"
         }
       ],
@@ -895,7 +895,6 @@
           },
           "fieldMinMax": true,
           "mappings": [],
-          "max": 80,
           "min": 40,
           "thresholds": {
             "mode": "absolute",
@@ -949,11 +948,11 @@
       "targets": [
         {
           "hide": false,
-          "query": "import \"math\"\nimport \"timezone\"\n\noption location = timezone.location(name: \"Europe/Brussels\")\n\nfrom(bucket: \"default\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"dt8852\")\n  |> filter(fn: (r) => r[\"_field\"] == \"spl\")\n  |> keep(columns: [\"_time\", \"_value\", \"_field\", \"frequency_weighting\"])\n  //|> aggregateWindow(every: 15m, fn: (column, tables=<-) => tables |> quantile(q: 0.10), createEmpty: false)\n  |> map(fn: (r) => ({ r with _value: math.pow(x: 10.0, y: r._value / 10.0) })) // passage en linéaire\n  |> aggregateWindow(every: 15m, fn: mean, createEmpty: false)\n  |> map(fn: (r) => ({ r with _value: 10.0 * math.log10(x: r._value) })) // retour en dB\n  |> map(fn: (r) => ({ \n      r with \n      _value: math.round(x: r._value),\n      _field: \"Niveau de Pression Sonore\" \n  }))  \n  |> yield(name: \"hourly_peaks\")",
+          "query": "import \"math\"\nimport \"timezone\"\n\noption location = timezone.location(name: \"Europe/Brussels\")\n\nfrom(bucket: \"default\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"dt8852\")\n  |> filter(fn: (r) => r[\"_field\"] == \"spl\")\n  |> keep(columns: [\"_time\", \"_value\", \"_field\", \"frequency_weighting\"])\n  // |> aggregateWindow(every: 15m, fn: (column, tables=<-) => tables |> quantile(q: 0.50), createEmpty: false)\n  |> map(fn: (r) => ({ r with _value: math.pow(x: 10.0, y: r._value / 10.0) })) // passage en linéaire\n  |> aggregateWindow(every: 15m, fn: mean, createEmpty: false)\n  |> map(fn: (r) => ({ r with _value: 10.0 * math.log10(x: r._value) })) // retour en dB\n  |> map(fn: (r) => ({ \n      r with \n      _value: math.round(x: r._value),\n      _field: \"Niveau de Pression Sonore\" \n  }))  \n  |> yield(name: \"hourly_peaks\")",
           "refId": "A"
         }
       ],
-      "title": "Évolution du Niveau Moyen (Leq 15m)",
+      "title": "Évolution du Niveau Moyen",
       "type": "barchart"
     },
     {
