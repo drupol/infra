@@ -18,7 +18,7 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 45,
+  "id": 46,
   "links": [],
   "liveNow": true,
   "panels": [
@@ -173,7 +173,7 @@
               "mode": "off"
             }
           },
-          "displayName": "Sound Pressure Level (${__field.labels.frequency_weighting})",
+          "displayName": "Sound Pressure Level L90 (${__field.labels.frequency_weighting})",
           "fieldMinMax": false,
           "mappings": [],
           "thresholds": {
@@ -297,6 +297,67 @@
                 }
               }
             ]
+          },
+          {
+            "matcher": {
+              "id": "byFrameRefID",
+              "options": "Live Raw"
+            },
+            "properties": [
+              {
+                "id": "custom.drawStyle",
+                "value": "line"
+              },
+              {
+                "id": "custom.fillOpacity",
+                "value": 0
+              },
+              {
+                "id": "custom.showPoints",
+                "value": "always"
+              },
+              {
+                "id": "custom.pointSize",
+                "value": 2
+              },
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "#ccccdb0f",
+                  "mode": "fixed"
+                }
+              },
+              {
+                "id": "displayName",
+                "value": "Sound Pressure Level Raw (${__field.labels.frequency_weighting})"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byFrameRefID",
+              "options": "A"
+            },
+            "properties": [
+              {
+                "id": "custom.lineStyle",
+                "value": {
+                  "dash": [10, 10],
+                  "fill": "dash"
+                }
+              },
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "text",
+                  "mode": "fixed"
+                }
+              },
+              {
+                "id": "custom.lineWidth",
+                "value": 1
+              }
+            ]
           }
         ]
       },
@@ -328,8 +389,17 @@
             "uid": "ff9xpmhbcsb9ce"
           },
           "hide": false,
-          "query": "import \"math\"\nimport \"timezone\"\n\noption location = timezone.location(name: \"Europe/Brussels\")\n\nfrom(bucket: \"default\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"dt8852\")\n  |> filter(fn: (r) => r[\"_field\"] == \"spl\")\n\n  // 🔑 On conserve le pondérateur fréquentiel\n  |> group(columns: [\"frequency_weighting\"])\n\n  // 1. Bruit de fond (quantile 10%)\n  |> aggregateWindow(\n      every: v.windowPeriod,\n      fn: (column, tables=<-) => tables |> quantile(q: 0.10),\n      createEmpty: false\n  )\n\n  // 2. Énergie linéaire\n  |> map(fn: (r) => ({ r with _value: math.pow(x: 10.0, y: r._value / 10.0) }))\n\n  // 3. Moyenne 1 minute\n  |> aggregateWindow(every: 1m, fn: mean, createEmpty: false)\n\n  // 4. Retour en dB + renommage\n  |> map(fn: (r) => ({\n      r with\n      _value: 10.0 * math.log10(x: r._value),\n      _field: \"Niveau de Pression Sonore (\" + r.frequency_weighting + \")\"\n  }))\n  |> drop(columns: [\"_start\", \"_stop\", \"_measurement\"])\n  |> yield(name: \"spl_result\")\n",
-          "refId": "Live"
+          "query": "import \"timezone\"\n\noption location = timezone.location(name: \"Europe/Brussels\")\n\nfrom(bucket: \"default\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"dt8852\")\n  |> filter(fn: (r) => r[\"_field\"] == \"spl\")\n  |> group(columns: [\"frequency_weighting\"])\n  |> aggregateWindow(every: v.windowPeriod, fn: mean, createEmpty: false)\n  |> drop(columns: [\"_start\", \"_stop\", \"_measurement\"])\n  |> yield(name: \"spl_result\")\n",
+          "refId": "Live Raw"
+        },
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "ff9xpmhbcsb9ce"
+          },
+          "hide": false,
+          "query": "import \"math\"\nimport \"timezone\"\n\noption location = timezone.location(name: \"Europe/Brussels\")\n\nfrom(bucket: \"default\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"dt8852\")\n  |> filter(fn: (r) => r[\"_field\"] == \"spl\")\n\n  // 🔑 On conserve le pondérateur fréquentiel\n  |> group(columns: [\"frequency_weighting\"])\n\n  // 1. Bruit de fond (quantile 10%)\n  |> aggregateWindow(\n      every: v.windowPeriod,\n      fn: (column, tables=<-) => tables |> quantile(q: 0.10),\n      createEmpty: false\n  )\n\n  // 2. Énergie linéaire\n  |> map(fn: (r) => ({ r with _value: math.pow(x: 10.0, y: r._value / 10.0) }))\n\n  // 3. Moyenne 1 minute\n  |> aggregateWindow(every: v.windowPeriod, fn: mean, createEmpty: false)\n\n  // 4. Retour en dB + renommage\n  |> map(fn: (r) => ({\n      r with\n      _value: 10.0 * math.log10(x: r._value),\n      _field: \"Niveau de Pression Sonore L90 (\" + r.frequency_weighting + \")\"\n  }))\n  |> drop(columns: [\"_start\", \"_stop\", \"_measurement\"])\n  |> yield(name: \"spl_result\")\n",
+          "refId": "Live L90"
         },
         {
           "datasource": {
