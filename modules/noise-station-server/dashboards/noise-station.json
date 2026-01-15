@@ -18,7 +18,7 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 46,
+  "id": 47,
   "links": [],
   "liveNow": true,
   "panels": [
@@ -66,7 +66,7 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 29,
+        "h": 11,
         "w": 12,
         "x": 12,
         "y": 1
@@ -78,11 +78,36 @@
           "showLineNumbers": false,
           "showMiniMap": false
         },
-        "content": "# Réglementation en Région wallonne\n\nEn Région wallonne (https://www.ejustice.just.fgov.be/eli/arrete/2002/07/04/2002027815/justel), le cadre légal est clair et rigoureux. Depuis l’arrêté du Gouvernement wallon du 4 juillet 2022, des limites de bruit spécifiques s’appliquent aux PAC selon les différentes périodes de la journée :\n\n- En journée (7h-19h): le bruit ne doit pas dépasser 50 dB.\n- En transition (6h-7h, 19h-22h): la limite est réduite à 45 dB.\n- La nuit (22h-6h): le niveau sonore doit impérativement rester sous 40 dB.\n\nLe bruit se propage en cercle autour d'une unité extérieure (PAC). \nIl est donc crucial de faire attention aux surfaces environnantes, comme des murs ou d’autres bâtiments, qui peuvent réfléchir le son et provoquer un effet d’écho. Pour limiter cette résonance, maintenez au moins un mètre d’espace autour de la pompe, en particulier par rapport aux fenêtres, aux portes et aux chemins. Si l’unité est placée contre un mur, veillez à respecter une distance minimale de 30 centimètres — l’idéal étant de 50 centimètres — pour garantir une circulation sonore optimale. Il est également important de prendre en compte la distance entre la face avant de la pompe à chaleur et les trottoirs, qui doit être d’au moins 3 mètres et d’au moins 6 mètres pour les plantes.\n\nSource: https://www.bobex.be/fr-be/pompe-a-chaleur/installation/distance-voisin/\n",
+        "content": "En Région Wallonne (https://www.ejustice.just.fgov.be/eli/arrete/2002/07/04/2002027815/justel), le cadre légal est clair et rigoureux. Depuis l’arrêté du Gouvernement wallon du 4 juillet 2022, des limites de bruit spécifiques s’appliquent aux PAC selon les différentes périodes de la journée :\n\n- En journée (7h-19h): le bruit ne doit pas dépasser 50 dB.\n- En transition (6h-7h, 19h-22h): la limite est réduite à 45 dB.\n- La nuit (22h-6h): le niveau sonore doit impérativement rester sous 40 dB.\n\nLe bruit se propage en cercle autour d'une unité extérieure (PAC). \nIl est donc crucial de faire attention aux surfaces environnantes, comme des murs ou d’autres bâtiments, qui peuvent réfléchir le son et provoquer un effet d’écho. Pour limiter cette résonance, maintenez au moins un mètre d’espace autour de la pompe, en particulier par rapport aux fenêtres, aux portes et aux chemins. Si l’unité est placée contre un mur, veillez à respecter une distance minimale de 30 centimètres — l’idéal étant de 50 centimètres — pour garantir une circulation sonore optimale. Il est également important de prendre en compte la distance entre la face avant de la pompe à chaleur et les trottoirs, qui doit être d’au moins 3 mètres et d’au moins 6 mètres pour les plantes.\n\nSource: https://www.bobex.be/fr-be/pompe-a-chaleur/installation/distance-voisin/\n",
         "mode": "markdown"
       },
       "pluginVersion": "12.3.1",
-      "title": "",
+      "title": "Réglementation en Région Wallonne",
+      "type": "text"
+    },
+    {
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 18,
+        "w": 12,
+        "x": 12,
+        "y": 12
+      },
+      "id": 25,
+      "options": {
+        "code": {
+          "language": "plaintext",
+          "showLineNumbers": false,
+          "showMiniMap": false
+        },
+        "content": "Les niveaux sonores présentés sont exprimés en décibels selon des pondérations fréquentielles normalisées.\n\nLa pondération dB(A) est définie afin de reproduire la sensibilité moyenne de l’oreille humaine et constitue la référence réglementaire utilisée par les autorités compétentes pour l’évaluation du respect des seuils légaux de bruit. Elle atténue significativement les basses fréquences, ce qui peut conduire à une sous-évaluation de certaines nuisances d’origine mécanique.\n\nLa pondération dB(C), plus linéaire sur l’ensemble du spectre audible, permet de mesurer l’énergie acoustique globale, y compris les basses fréquences. Elle est particulièrement pertinente pour l’analyse de nuisances sonores persistantes à dominante grave, telles que celles générées par des équipements techniques fixes, notamment les pompes à chaleur.\n\nL’utilisation conjointe et complémentaire de ces deux pondérations permet ainsi de distinguer la conformité réglementaire d’une part, et la réalité de la gêne acoustique subie d’autre part.\n\n---\n\nLa pondération dB(A) permet d’apprécier le respect des seuils réglementaires applicables, tandis que la pondération dB(C) constitue un indicateur pertinent de la nuisance acoustique réelle lorsqu’elle est dominée par des basses fréquences, notamment dans le cas d’équipements techniques tels qu’une pompe à chaleur.\n",
+        "mode": "markdown"
+      },
+      "pluginVersion": "12.3.1",
+      "title": "Pondérations acoustiques dB(A) et dB(C)",
       "type": "text"
     },
     {
