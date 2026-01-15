@@ -18,7 +18,7 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 48,
+  "id": 50,
   "links": [],
   "liveNow": true,
   "panels": [
@@ -53,7 +53,7 @@
           "showLineNumbers": false,
           "showMiniMap": false
         },
-        "content": "# Noise Station\n\n### Un système de monitoring acoustique intelligent\n\nLa **Noise Station** est une solution de surveillance environnementale de haute précision conçue pour capturer, analyser et visualiser les niveaux sonores d'un espace en temps réel. Elle transforme des données acoustiques brutes en indicateurs visuels pour suivre l'évolution du bruit, détecter les pics et comprendre le profil sonore d'un lieu sur 24 heures.\n\n# Comment ça fonctionne ?\n\n### 1. La Capture (Le Matériel)\n\nLe système s'appuie sur un microphone professionnel de type **Trotec SL400** (équivalent du **CEM DT-8852**). Ce sonomètre de Classe 2 offre des fonctionnalités indispensables :\n-   **Double Pondération:** Supporte les courbes **dB(A)** (perception humaine) et **dB(C)** (basses fréquences).\n-   **Plage Dynamique:** Mesure précise de 30 à 130 dB (précision : 1,4 dB, résolution : 0,1 dB)\n-   **Modes Temporels:** Analyse en mode \"Fast\" (réactivité immédiate) ou \"Slow\" (stabilité).\n-   **Signaux numériques:** Uniquement les données numériques (et pas analogique) sont transmises. \n-   **Certification:** Livré avec certificat de calibration, conforme à IEC61672-1 Class 2\n\n### 2. Le Cœur du Système (L'Intelligence)\n\nLes données sont traitées par une unité de calcul (**Raspberry Pi**) et stockées dans une base de données temporelle (**InfluxDB**):\n*   **Nettoyage :** Filtrage des métadonnées pour une lecture fluide.\n*   **Agrégation :** Calcul de statistiques avancées (L10, L50, L90) en temps réel.\n\n### 3. La Visualisation (Le Dashboard)\n\nLe dashboard est structuré en quatre axes complémentaires pour une lecture immédiate :\n\n*   **Vue Temps Réel (Live View) :** Un graphique temporel affichant le **Bruit de Fond (L90)**. Cet indicateur filtre les pics passagers (voitures, voix) pour révéler le niveau sonore constant et permanent (la signature d'une installation technique comme une pompe à chaleur).\n*   **Pic de Volume (Volume Maximum Enregistré) :** Une jauge dynamique qui surveille le volume maximal atteint durant la **période affichée**. Elle utilise des seuils colorés (du vert au rouge foncé dès 80 dB) pour alerter sur les événements sonores récents.\n*   **Profil Statistique (Fréquence Sonore) :** Un histogramme qui regroupe les mesures des dernières 24 heures par paliers de décibels (arrondis à l'unité). Il permet de voir en un coup d'œil quel niveau de bruit est le plus fréquent dans l'environnement.\n*   **Distribution Horaire :** Un graphique en barres affichant la **moyenne sonore pour chaque heure** de la journée. Idéal pour identifier les cycles de pollution sonore (journée de travail vs nuit).\n*   **Géolocalisation :** Une carte intégrée affichant l'emplacement précis du capteur.\n\n# Pourquoi utiliser Noise Station ?\n\nPasser du ressenti subjectif (\"c'est bruyant\") à une mesure objective (\"la moyenne est de 65 dB avec des pics à 85 dB\"). Que ce soit pour le confort au travail, la surveillance de voisinage ou l'analyse environnementale, la **Noise Station** fournit une preuve scientifique et visuelle de la réalité acoustique de votre environnement.",
+        "content": "# Noise Station\n\n### Un système de monitoring acoustique intelligent\n\nLa **Noise Station** est une solution de surveillance environnementale de haute précision conçue pour capturer, analyser et visualiser les niveaux sonores d'un espace en temps réel. Elle transforme des données acoustiques brutes en indicateurs visuels pour suivre l'évolution du bruit, détecter les pics et comprendre le profil sonore d'un lieu sur 24 heures.\n\n# Comment ça fonctionne ?\n\n### 1. La Capture (Le Matériel)\n\nLe système s'appuie sur un microphone professionnel de type **Trotec SL400** (équivalent du **CEM DT-8852**). Ce sonomètre de Classe 2 offre des fonctionnalités indispensables :\n-   **Double Pondération:** Supporte les courbes **dB(A)** (perception humaine) et **dB(C)** (basses fréquences).\n-   **Plage Dynamique:** Mesure précise de 30 à 130 dB (précision : 1,4 dB, résolution : 0,1 dB)\n-   **Modes Temporels:** Analyse en mode \"Fast\" (réactivité immédiate) ou \"Slow\" (stabilité).\n-   **Signaux numériques:** Uniquement les données numériques (et pas analogique) sont transmises. \n-   **Certification:** Livré avec certificat de calibration, conforme à IEC61672-1 Class 2\n\n### 2. Le Cœur du Système (L'Intelligence)\n\nLes données sont traitées par une unité de calcul (**Raspberry Pi**) et stockées dans une base de données temporelle (**InfluxDB**):\n*   **Nettoyage :** Filtrage des métadonnées pour une lecture fluide.\n*   **Agrégation :** Calcul de statistiques avancées (L10, L50, L90) en temps réel.\n\n### 3. La Visualisation (Le Dashboard)\n\nLe dashboard utilise plusieurs méthodes d'analyse pour une vue complète :\n\n*   **Vue Temps Réel (Conformité) :** Vérifie si le **niveau moyen** respecte les seuils légaux (40/45/50 dB). Il colore le graphe en rouge si un dépassement persiste plus de **2 minutes**, ce qui permet de distinguer une nuisance réelle (ex: pompe à chaleur) d'un bruit passager (ex: avion).\n*   **Analyse des Émergences (Bruit de Fond) :** Un graphique spécifique qui utilise le **L90** pour isoler le bruit de fond constant et prouver qu'il dépasse à lui seul les normes, même sans pic sonore.\n*   **Pic de Volume (Volume Maximum Enregistré) :** Une jauge dynamique qui surveille le volume maximal atteint durant la **période affichée**. Elle utilise des seuils colorés (du vert au rouge foncé dès 80 dB) pour alerter sur les événements sonores récents.\n*   **Profil Statistique (Fréquence Sonore) :** Un histogramme qui regroupe les mesures des dernières 24 heures par paliers de décibels (arrondis à l'unité). Il permet de voir en un coup d'œil quel niveau de bruit est le plus fréquent dans l'environnement.\n*   **Distribution Horaire :** Un graphique en barres affichant la **moyenne sonore pour chaque heure** de la journée. Idéal pour identifier les cycles de pollution sonore (journée de travail vs nuit).\n*   **Géolocalisation :** Une carte intégrée affichant l'emplacement précis du capteur.\n\n# Pourquoi utiliser Noise Station ?\n\nPasser du ressenti subjectif (\"c'est bruyant\") à une mesure objective (\"la moyenne est de 65 dB avec des pics à 85 dB\"). Que ce soit pour le confort au travail, la surveillance de voisinage ou l'analyse environnementale, la **Noise Station** fournit une preuve scientifique et visuelle de la réalité acoustique de votre environnement.",
         "mode": "markdown"
       },
       "pluginVersion": "12.3.1",
@@ -141,7 +141,7 @@
           "showLineNumbers": false,
           "showMiniMap": false
         },
-        "content": "Cette section met en regard le **niveau sonore en temps réel** et les **seuils réglementaires applicables en Région Wallonne**.\n\n### Vue en Temps Réel\n\nLe panneau *Vue en Temps Réel* part des mesures **SPL** (dB) issues de la série `dt8852/spl`, puis applique le traitement suivant :\n\n1. **Extraction du Bruit de Fond (L90)** : Pour chaque fenêtre de temps, l'algorithme retient la valeur **statistique L90** (le niveau dépassé 90% du temps). Cela élimine mathématiquement les événements sonores brefs (pics, voix, passage de voiture) pour ne garder que l'ambiance sonore de fond (machinerie, vent lointain).\n2. **Conversion & Lissage** : Les valeurs L90 sont converties en énergie, lissées sur **1 minute**, puis reconverties en dB.\n\nCette méthode permet d'isoler la **signature sonore des équipements fixes** (ex: Pompes à chaleur) en ignorant les bruits parasites.\n\nLes seuils de couleur sur la courbe (vert/jaune/orange/rouge) permettent d’identifier d’un coup d’œil si le niveau de fond se situe sous 40/45/50 dB, ou s’il s’en approche / les dépasse.\n\n### Historique des Infractions\n\nUne seconde série calcule une **limite horaire** en fonction de l’heure locale (Europe/Brussels) :\n- **50 dB** entre 07h–19h  \n- **45 dB** entre 06h–07h et 19h–22h  \n- **40 dB** entre 22h–06h  \n\n### Analyse des Émergences : Conformité aux Seuils Légaux\n\nCette visualisation est un outil de monitoring critique dédié à la **conformité environnementale**. Ce graphique compare directement le **Bruit de Fond (L90)** aux limites autorisées. \n\nL'algorithme adapte dynamiquement le seuil de tolérance selon l'heure locale (Europe/Bruxelles) : \n*   **50 dB** durant la journée (07:00 - 19:00)\n*   **45 dB** durant les périodes de transition (06:00 - 07:00 et 19:00 - 22:00)\n*   **40 dB** durant la période nocturne (22:00 - 06:00)\n\nChaque pic affiché représente une **infraction potentielle du bruit de fond** : sa hauteur indique l'intensité du dépassement en décibels (dB). Un dépassement ici signifie que le bruit est CONSTANT et supérieur à la loi.\n\n### Sévérité des Nuisances Acoustiques\n\nCette visualisation sous forme de frise temporelle offre une lecture immédiate et synthétique de la qualité de l'environnement sonore sur une période donnée.\n\nLe système analyse chaque mesure en fonction des seuils légaux variables. Lorsqu'un bruit excède la limite autorisée, il est automatiquement classifié selon l'importance du dépassement (l'émergence) :\n\n- Jaune / Modéré : Nuisance perceptible (5 à 10 dB)\n- Orange / Fort : Pollution sonore marquée (10 à 15 dB)\n- Rouge / Critique : Nuisance majeure (15 à 20 dB)\n\nCette approche permet de transformer des milliers de points de données en un calendrier visuel, idéal pour repérer des cycles de nuisances récurrents.",
+        "content": "Cette section met en regard le **niveau sonore moyen** et les **seuils réglementaires applicables en Région Wallonne**.\n\n### Vue en Temps Réel\n\nLe panneau *Vue en Temps Réel* est un outil de **contrôle de conformité** direct. Il part des mesures SPL brutes et applique la logique suivante :\n\n1. **Calcul de la Moyenne (Leq)** : Le niveau sonore moyen est calculé. C'est l'indicateur standard pour évaluer l'énergie sonore reçue.\n2. **Comparaison Légale** : Chaque point est comparé à la limite autorisée selon l'heure (50dB jour / 45dB transition / 40dB nuit).\n3. **Détection d'Infraction** : Si le niveau dépasse la limite, le système vérifie la **durée** du dépassement.\n    *   **OK (Vert)** : Le niveau est conforme.\n    *   **En attente (Rouge)** : Le niveau dépasse le seuil, mais depuis moins de 2 minutes (tolérance technique).\n    *   **NOK (Rouge)** : Le dépassement est confirmé car il dure depuis plus de **2 minutes**. C'est une infraction potentielle.\n\nCette méthode permet de filtrer les pics brefs pour ne signaler que les dépassements significatifs.\n\n### Historique des Infractions\n\nCe panneau binaire enregistre les moments où le bruit a été jugé comme une nuisance (Infraction confirmée > 2 min). C'est l'historique officiel des non-conformités.\n\n### Analyse des Émergences (Bruit de Fond)\n\nA l'inverse, le graphique *Analyse des Émergences* (plus bas) utilise le **L90 (Bruit de Fond)**. Il sert à prouver la présence d'une machine (ex: Pompe à chaleur) en ignorant les bruits de passage. Si ce graphe montre un dépassement, cela prouve que le \"calme\" du quartier est lui-même pollué.",
         "mode": "markdown"
       },
       "pluginVersion": "12.3.1",
@@ -158,7 +158,7 @@
         "defaults": {
           "color": {
             "fixedColor": "green",
-            "mode": "thresholds",
+            "mode": "fixed",
             "seriesBy": "last"
           },
           "custom": {
@@ -170,8 +170,8 @@
             "barAlignment": 0,
             "barWidthFactor": 0.6,
             "drawStyle": "line",
-            "fillOpacity": 25,
-            "gradientMode": "scheme",
+            "fillOpacity": 0,
+            "gradientMode": "none",
             "hideFrom": {
               "legend": false,
               "tooltip": false,
@@ -189,7 +189,7 @@
             },
             "showPoints": "auto",
             "showValues": false,
-            "spanNulls": true,
+            "spanNulls": false,
             "stacking": {
               "group": "A",
               "mode": "none"
@@ -198,7 +198,7 @@
               "mode": "off"
             }
           },
-          "displayName": "Sound Pressure Level L90 (${__field.labels.frequency_weighting})",
+          "displayName": "Sound Pressure Level (${__field.labels.frequency_weighting})",
           "fieldMinMax": false,
           "mappings": [],
           "thresholds": {
@@ -207,18 +207,6 @@
               {
                 "color": "dark-green",
                 "value": 0
-              },
-              {
-                "color": "dark-yellow",
-                "value": 40
-              },
-              {
-                "color": "dark-orange",
-                "value": 45
-              },
-              {
-                "color": "dark-red",
-                "value": 50
               }
             ]
           },
@@ -228,155 +216,28 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "_limit"
+              "options": "nok"
             },
             "properties": [
               {
-                "id": "displayName",
-                "value": "Limite en Région Wallonne"
-              },
-              {
                 "id": "color",
                 "value": {
-                  "fixedColor": "#ffffff",
+                  "fixedColor": "dark-red",
                   "mode": "fixed"
-                }
-              },
-              {
-                "id": "custom.lineStyle",
-                "value": {
-                  "dash": [
-                    10,
-                    10
-                  ],
-                  "fill": "dash"
                 }
               },
               {
                 "id": "custom.fillOpacity",
-                "value": 0
+                "value": 20
               }
             ]
           },
           {
             "matcher": {
               "id": "byFrameRefID",
-              "options": "B"
+              "options": "Seuil Legal"
             },
             "properties": [
-              {
-                "id": "custom.hideFrom",
-                "value": {
-                  "legend": true,
-                  "tooltip": false,
-                  "viz": true
-                }
-              },
-              {
-                "id": "color",
-                "value": {
-                  "mode": "fixed"
-                }
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Dépassement (dB)"
-            },
-            "properties": [
-              {
-                "id": "displayName",
-                "value": "Dépassement (dB)"
-              },
-              {
-                "id": "color",
-                "value": {
-                  "mode": "thresholds"
-                }
-              },
-              {
-                "id": "thresholds",
-                "value": {
-                  "mode": "absolute",
-                  "steps": [
-                    {
-                      "color": "green",
-                      "value": 0
-                    },
-                    {
-                      "color": "#EAB839",
-                      "value": 5
-                    },
-                    {
-                      "color": "dark-orange",
-                      "value": 10
-                    },
-                    {
-                      "color": "dark-red",
-                      "value": 15
-                    },
-                    {
-                      "color": "dark-purple",
-                      "value": 20
-                    }
-                  ]
-                }
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byFrameRefID",
-              "options": "Live Raw"
-            },
-            "properties": [
-              {
-                "id": "custom.drawStyle",
-                "value": "line"
-              },
-              {
-                "id": "custom.fillOpacity",
-                "value": 0
-              },
-              {
-                "id": "custom.showPoints",
-                "value": "always"
-              },
-              {
-                "id": "custom.pointSize",
-                "value": 2
-              },
-              {
-                "id": "color",
-                "value": {
-                  "fixedColor": "#ccccdb0f",
-                  "mode": "fixed"
-                }
-              },
-              {
-                "id": "displayName",
-                "value": "Sound Pressure Level Raw (${__field.labels.frequency_weighting})"
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byFrameRefID",
-              "options": "A"
-            },
-            "properties": [
-              {
-                "id": "custom.lineStyle",
-                "value": {
-                  "dash": [
-                    10,
-                    10
-                  ],
-                  "fill": "dash"
-                }
-              },
               {
                 "id": "color",
                 "value": {
@@ -385,8 +246,50 @@
                 }
               },
               {
-                "id": "custom.lineWidth",
-                "value": 1
+                "id": "custom.lineStyle",
+                "value": {
+                  "dash": [10, 10],
+                  "fill": "dash"
+                }
+              },
+              {
+                "id": "displayName",
+                "value": "Seuil Legal"
+              },
+              {
+                "id": "custom.fillOpacity",
+                "value": 0
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "pending"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "dark-red",
+                  "mode": "fixed"
+                }
+              },
+              {
+                "id": "custom.fillOpacity",
+                "value": 20
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "ok"
+            },
+            "properties": [
+              {
+                "id": "custom.fillOpacity",
+                "value": 20
               }
             ]
           }
@@ -408,7 +311,7 @@
         },
         "tooltip": {
           "hideZeros": false,
-          "mode": "multi",
+          "mode": "single",
           "sort": "none"
         }
       },
@@ -420,26 +323,8 @@
             "uid": "ff9xpmhbcsb9ce"
           },
           "hide": false,
-          "query": "import \"timezone\"\n\noption location = timezone.location(name: \"Europe/Brussels\")\n\nfrom(bucket: \"default\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"dt8852\")\n  |> filter(fn: (r) => r[\"_field\"] == \"spl\")\n  |> group(columns: [\"frequency_weighting\"])\n  |> aggregateWindow(every: v.windowPeriod, fn: mean, createEmpty: false)\n  |> drop(columns: [\"_start\", \"_stop\", \"_measurement\"])\n  |> yield(name: \"spl_result\")\n",
-          "refId": "Live Raw"
-        },
-        {
-          "datasource": {
-            "type": "influxdb",
-            "uid": "ff9xpmhbcsb9ce"
-          },
-          "hide": false,
-          "query": "import \"math\"\nimport \"timezone\"\n\noption location = timezone.location(name: \"Europe/Brussels\")\n\nfrom(bucket: \"default\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"dt8852\")\n  |> filter(fn: (r) => r[\"_field\"] == \"spl\")\n\n  // 🔑 On conserve le pondérateur fréquentiel\n  |> group(columns: [\"frequency_weighting\"])\n\n  // 1. Bruit de fond (quantile 10%)\n  |> aggregateWindow(\n      every: v.windowPeriod,\n      fn: (column, tables=<-) => tables |> quantile(q: 0.10),\n      createEmpty: false\n  )\n\n  // 2. Énergie linéaire\n  |> map(fn: (r) => ({ r with _value: math.pow(x: 10.0, y: r._value / 10.0) }))\n\n  // 3. Moyenne 1 minute\n  |> aggregateWindow(every: v.windowPeriod, fn: mean, createEmpty: false)\n\n  // 4. Retour en dB + renommage\n  |> map(fn: (r) => ({\n      r with\n      _value: 10.0 * math.log10(x: r._value),\n      _field: \"Niveau de Pression Sonore L90 (\" + r.frequency_weighting + \")\"\n  }))\n  |> drop(columns: [\"_start\", \"_stop\", \"_measurement\"])\n  |> yield(name: \"spl_result\")\n",
-          "refId": "Live L90"
-        },
-        {
-          "datasource": {
-            "type": "influxdb",
-            "uid": "ff9xpmhbcsb9ce"
-          },
-          "hide": false,
-          "query": "import \"math\"\nimport \"timezone\"\nimport \"date\"\n\noption location = timezone.location(name: \"Europe/Brussels\")\n\nfrom(bucket: \"default\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"dt8852\" and r[\"_field\"] == \"spl\")\n  |> filter(fn: (r) => exists r._value)\n  |> aggregateWindow(every: v.windowPeriod, fn: mean, createEmpty: false)\n\n  // 3. Calcul des limites horaires et du dépassement\n  |> map(fn: (r) => {\n      h = date.hour(t: r._time)\n      \n      // Seuils réglementaires (50 / 45 / 40 dB)\n      limite = if h >= 7 and h < 19 then 50.0 \n               else if h == 6 or (h >= 19 and h < 22) then 45.0 \n               else 40.0\n      \n      // Calcul du dépassement\n      diff = if r._value > limite then r._value - limite else 0.0\n      \n      return {\n          _time: r._time,\n          _value: diff,\n          _field: \"Dépassement (dB)\",\n      }\n  })\n  \n  // 4. Envoi des données vers Grafana\n  |> yield(name: \"depassement_acoustique\")",
-          "refId": "B"
+          "query": "import \"date\"\nimport \"timezone\"\n\noption location = timezone.location(name: \"Europe/Brussels\")\n\nminSeconds = 120\n\nfrom(bucket: \"default\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r._measurement == \"dt8852\" and r._field == \"spl\")\n  |> keep(columns: [\"_time\", \"_value\", \"frequency_weighting\"])\n  |> aggregateWindow(every: v.windowPeriod, fn: mean, createEmpty: false)\n  |> map(fn: (r) => {\n      h = date.hour(t: r._time)\n\n      limit =\n        if h >= 7 and h < 19 then 50.0\n        else if (h >= 6 and h < 7) or (h >= 19 and h < 22) then 45.0\n        else 40.0\n\n      exceed = r._value > limit\n      return { r with exceed: exceed }\n  })\n  |> group(columns: [\"frequency_weighting\"])\n  |> stateDuration(fn: (r) => r.exceed, column: \"exceed_seconds\", unit: 1s)\n  |> map(fn: (r) => ({\n      r with\n      _field:\n        if not r.exceed then \"ok\"\n        else if r.exceed_seconds >= minSeconds then \"nok\"\n        else \"pending\"\n  }))\n  |> group(columns: [\"frequency_weighting\", \"_field\"])\n  |> pivot(rowKey: [\"_time\", \"frequency_weighting\"], columnKey: [\"_field\"], valueColumn: \"_value\")\n",
+          "refId": "A"
         },
         {
           "datasource": {
@@ -448,7 +333,7 @@
           },
           "hide": false,
           "query": "import \"date\"\nimport \"timezone\"\n\noption location = timezone.location(name: \"Europe/Brussels\")\n\nfrom(bucket: \"default\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r._measurement == \"dt8852\" and r._field == \"spl\")\n  |> aggregateWindow(every: v.windowPeriod, fn: first)\n  |> map(fn: (r) => {\n      h = date.hour(t: r._time)\n      return {\n          _time: r._time,\n          _limit: if h >= 7 and h < 19 then 50.0 \n                  else if h == 6 or (h >= 19 and h < 22) then 45.0 \n                  else 40.0\n      }\n  })",
-          "refId": "A"
+          "refId": "Seuil Legal"
         }
       ],
       "title": "Vue en Temps Réel",
@@ -652,10 +537,7 @@
               {
                 "id": "custom.lineStyle",
                 "value": {
-                  "dash": [
-                    10,
-                    10
-                  ],
+                  "dash": [10, 10],
                   "fill": "dash"
                 }
               },
@@ -1837,21 +1719,7 @@
     "to": "now"
   },
   "timepicker": {
-    "refresh_intervals": [
-      "5s",
-      "10s",
-      "30s",
-      "1m",
-      "5m",
-      "15m",
-      "30m",
-      "1h",
-      "2h",
-      "4h",
-      "1d",
-      "2d",
-      "7d"
-    ]
+    "refresh_intervals": ["5s", "10s", "30s", "1m", "5m", "15m", "30m", "1h", "2h", "4h", "1d", "2d", "7d"]
   },
   "timezone": "browser",
   "title": "Noise Station",
