@@ -18,7 +18,7 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 47,
+  "id": 48,
   "links": [],
   "liveNow": true,
   "panels": [
@@ -457,7 +457,7 @@
       "fieldConfig": {
         "defaults": {
           "color": {
-            "mode": "thresholds"
+            "mode": "palette-classic"
           },
           "custom": {
             "axisPlacement": "auto",
@@ -475,14 +475,14 @@
             {
               "options": {
                 "0": {
-                  "color": "dark-red",
+                  "color": "dark-green",
                   "index": 0,
-                  "text": "Infraction"
+                  "text": "Conforme"
                 },
                 "1": {
-                  "color": "dark-green",
+                  "color": "dark-red",
                   "index": 1,
-                  "text": "Conforme"
+                  "text": "Infraction"
                 }
               },
               "type": "value"
@@ -516,7 +516,7 @@
         },
         "mergeValues": true,
         "rowHeight": 0.9,
-        "showValue": "auto",
+        "showValue": "never",
         "tooltip": {
           "hideZeros": false,
           "mode": "single",
@@ -526,7 +526,7 @@
       "pluginVersion": "12.3.1",
       "targets": [
         {
-          "query": "import \"timezone\"\nimport \"date\"\n\noption location = timezone.location(name: \"Europe/Brussels\")\n\nfrom(bucket: \"default\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"dt8852\" and r[\"_field\"] == \"spl\")\n  // Fenêtrage pour alléger le rendu (ex: toutes les 1m)\n  |> aggregateWindow(every: 1m, fn: max, createEmpty: false)\n  |> map(fn: (r) => {\n      h = date.hour(t: r._time)\n      limit = if h >= 7 and h < 19 then 50.0 \n              else if h == 6 or (h >= 19 and h < 22) then 45.0 \n              else 40.0\n      \n      return { _time: r._time, _field: \"Statut\", _value: if r._value > limit then \"0\" else \"1\" }\n  })",
+          "query": "import \"timezone\"\nimport \"date\"\n\noption location = timezone.location(name: \"Europe/Brussels\")\n\nfrom(bucket: \"default\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r._measurement == \"dt8852\" and r._field == \"spl\")\n |> aggregateWindow(\n      every: 1m,\n      fn: (column, tables=<-) => tables |> quantile(q: 0.10, column: column),\n      createEmpty: false\n  )\n  |> map(fn: (r) => {\n      h = date.hour(t: r._time)\n\n      limit =\n        if h >= 7 and h < 19 then 50.0\n        else if (h >= 6 and h < 7) or (h >= 19 and h < 22) then 45.0\n        else 40.0\n\n      return {\n        _time: r._time,\n        _value: if r._value > limit then 1.0 else 0.0\n      }\n  })",
           "refId": "A"
         }
       ],
