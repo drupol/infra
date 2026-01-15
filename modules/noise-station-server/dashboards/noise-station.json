@@ -18,7 +18,7 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 50,
+  "id": 52,
   "links": [],
   "liveNow": true,
   "panels": [
@@ -41,7 +41,7 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 29,
+        "h": 30,
         "w": 12,
         "x": 0,
         "y": 1
@@ -91,7 +91,7 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 18,
+        "h": 19,
         "w": 12,
         "x": 12,
         "y": 12
@@ -116,7 +116,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 30
+        "y": 31
       },
       "id": 16,
       "panels": [],
@@ -129,10 +129,10 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 28,
+        "h": 13,
         "w": 24,
         "x": 0,
-        "y": 31
+        "y": 32
       },
       "id": 17,
       "options": {
@@ -292,6 +292,33 @@
                 "value": 20
               }
             ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "excess"
+            },
+            "properties": [
+              {
+                "id": "custom.hideFrom",
+                "value": {
+                  "legend": true,
+                  "tooltip": false,
+                  "viz": true
+                }
+              },
+              {
+                "id": "displayName",
+                "value": "Depassement"
+              },
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "text",
+                  "mode": "fixed"
+                }
+              }
+            ]
           }
         ]
       },
@@ -299,7 +326,7 @@
         "h": 15,
         "w": 24,
         "x": 0,
-        "y": 59
+        "y": 45
       },
       "id": 1,
       "options": {
@@ -311,7 +338,7 @@
         },
         "tooltip": {
           "hideZeros": false,
-          "mode": "single",
+          "mode": "multi",
           "sort": "none"
         }
       },
@@ -323,7 +350,7 @@
             "uid": "ff9xpmhbcsb9ce"
           },
           "hide": false,
-          "query": "import \"date\"\nimport \"timezone\"\n\noption location = timezone.location(name: \"Europe/Brussels\")\n\nminSeconds = 120\n\nfrom(bucket: \"default\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r._measurement == \"dt8852\" and r._field == \"spl\")\n  |> keep(columns: [\"_time\", \"_value\", \"frequency_weighting\"])\n  |> aggregateWindow(every: v.windowPeriod, fn: mean, createEmpty: false)\n  |> map(fn: (r) => {\n      h = date.hour(t: r._time)\n\n      limit =\n        if h >= 7 and h < 19 then 50.0\n        else if (h >= 6 and h < 7) or (h >= 19 and h < 22) then 45.0\n        else 40.0\n\n      exceed = r._value > limit\n      return { r with exceed: exceed }\n  })\n  |> group(columns: [\"frequency_weighting\"])\n  |> stateDuration(fn: (r) => r.exceed, column: \"exceed_seconds\", unit: 1s)\n  |> map(fn: (r) => ({\n      r with\n      _field:\n        if not r.exceed then \"ok\"\n        else if r.exceed_seconds >= minSeconds then \"nok\"\n        else \"pending\"\n  }))\n  |> group(columns: [\"frequency_weighting\", \"_field\"])\n  |> pivot(rowKey: [\"_time\", \"frequency_weighting\"], columnKey: [\"_field\"], valueColumn: \"_value\")\n",
+          "query": "import \"date\"\nimport \"timezone\"\n\noption location = timezone.location(name: \"Europe/Brussels\")\n\nminSeconds = 120\n\nbase =\n  from(bucket: \"default\")\n    |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n    |> filter(fn: (r) => r._measurement == \"dt8852\" and r._field == \"spl\")\n    |> keep(columns: [\"_time\", \"_value\", \"frequency_weighting\"])\n    |> aggregateWindow(\n        every: v.windowPeriod,\n        fn: (column, tables=<-) => tables |> quantile(q: 0.10),\n        createEmpty: false\n      )\n    |> map(fn: (r) => {\n        h = date.hour(t: r._time)\n\n        limit =\n          if h >= 7 and h < 19 then 50.0\n          else if (h >= 6 and h < 7) or (h >= 19 and h < 22) then 45.0\n          else 40.0\n\n        exceed = r._value > limit\n        excess = if exceed then (r._value - limit) else 0.0\n\n        return { r with exceed: exceed, excess: excess }\n    })\n    |> group(columns: [\"frequency_weighting\"])\n\nclassified =\n  base\n    |> stateDuration(fn: (r) => r.exceed, column: \"exceed_seconds\", unit: 1s)\n    |> map(fn: (r) => ({\n        r with\n        status:\n          if not r.exceed then \"ok\"\n          else if r.exceed_seconds >= minSeconds then \"nok\"\n          else \"pending\"\n    }))\n\n// 1) Série statut (ok/pending/nok) sur _value (SPL)\nstatusSeries =\n  classified\n    |> map(fn: (r) => ({ r with _field: r.status }))\n    |> keep(columns: [\"_time\", \"frequency_weighting\", \"_field\", \"_value\"])\n\n// 2) Série limite\nlimitSeries =\n  classified\n    |> map(fn: (r) => ({ _time: r._time, frequency_weighting: r.frequency_weighting, _field: \"limit\", _value: r.limit }))\n\n// 3) Série dépassement (différence). On peut choisir : seulement quand NOK, ou dès exceed.\n// Ici: seulement quand NOK (dépassement \"confirmé\")\nexcessSeries =\n  classified\n    |> map(fn: (r) => ({\n        _time: r._time,\n        frequency_weighting: r.frequency_weighting,\n        _field: \"excess\",\n        _value: if r.status == \"nok\" then r.excess else 0.0\n    }))\n\nunion(tables: [statusSeries, limitSeries, excessSeries])\n  |> group(columns: [\"frequency_weighting\", \"_field\"])\n  |> pivot(rowKey: [\"_time\", \"frequency_weighting\"], columnKey: [\"_field\"], valueColumn: \"_value\")\n",
           "refId": "A"
         },
         {
@@ -395,7 +422,7 @@
         "h": 5,
         "w": 24,
         "x": 0,
-        "y": 74
+        "y": 60
       },
       "id": 8,
       "options": {
@@ -433,7 +460,8 @@
       "fieldConfig": {
         "defaults": {
           "color": {
-            "mode": "palette-classic"
+            "fixedColor": "dark-red",
+            "mode": "fixed"
           },
           "custom": {
             "axisBorderShow": false,
@@ -444,7 +472,7 @@
             "barAlignment": 0,
             "barWidthFactor": 0.6,
             "drawStyle": "line",
-            "fillOpacity": 0,
+            "fillOpacity": 50,
             "gradientMode": "none",
             "hideFrom": {
               "legend": false,
@@ -452,7 +480,7 @@
               "viz": false
             },
             "insertNulls": false,
-            "lineInterpolation": "linear",
+            "lineInterpolation": "smooth",
             "lineStyle": {
               "fill": "solid"
             },
@@ -593,7 +621,7 @@
         "h": 8,
         "w": 24,
         "x": 0,
-        "y": 79
+        "y": 65
       },
       "id": 23,
       "options": {
@@ -612,7 +640,7 @@
       "pluginVersion": "12.3.1",
       "targets": [
         {
-          "query": "import \"math\"\nimport \"timezone\"\nimport \"date\"\n\n// 1. Configuration de l'environnement\noption location = timezone.location(name: \"Europe/Brussels\")\n\nfrom(bucket: \"default\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"dt8852\" and r[\"_field\"] == \"spl\")\n  |> filter(fn: (r) => exists r._value)\n  \n  // 2. Agrégation temporelle (évite l'erreur de trop grand nombre de points)\n  //|> aggregateWindow(every: v.windowPeriod, fn: mean, createEmpty: false)\n  |> aggregateWindow(every: v.windowPeriod, fn: (column, tables=<-) => tables |> quantile(q: 0.10), createEmpty: false)\n  // 3. Calcul des limites horaires et du dépassement\n  |> map(fn: (r) => {\n      h = date.hour(t: r._time)\n      \n      // Seuils réglementaires (50 / 45 / 40 dB)\n      limite = if h >= 7 and h < 19 then 50.0 \n               else if h == 6 or (h >= 19 and h < 22) then 45.0 \n               else 40.0\n      \n      // Calcul du dépassement\n      diff = if r._value > limite then r._value - limite else 0.0\n      \n      return {\n          _time: r._time,\n          _value: diff,\n          _field: \"Dépassement (dB)\",\n          niveau_reel: r._value,\n          seuil_legal: limite,\n          statut: if diff > 0.0 then \"🔴 INFRACTION\" else \"🟢 CONFORME\"\n      }\n  })\n  \n  // 4. Envoi des données vers Grafana\n  |> yield(name: \"depassement_acoustique\")",
+          "query": "import \"math\"\nimport \"timezone\"\nimport \"date\"\n\noption location = timezone.location(name: \"Europe/Brussels\")\n\nfrom(bucket: \"default\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"dt8852\" and r[\"_field\"] == \"spl\")\n  |> filter(fn: (r) => exists r._value)\n  \n  //|> aggregateWindow(every: v.windowPeriod, fn: mean, createEmpty: false)\n  |> aggregateWindow(every: v.windowPeriod, fn: (column, tables=<-) => tables |> quantile(q: 0.10), createEmpty: false)\n  // 3. Calcul des limites horaires et du dépassement\n  |> map(fn: (r) => {\n      h = date.hour(t: r._time)\n      \n      // Seuils réglementaires (50 / 45 / 40 dB)\n      limite = if h >= 7 and h < 19 then 50.0 \n               else if (h >= 6 and h < 7) or (h >= 19 and h < 22) then 45.0 \n               else 40.0\n      \n      // Calcul du dépassement\n      diff = if r._value > limite then r._value - limite else 0.0\n      \n      return {\n          _time: r._time,\n          _value: diff,\n          _field: \"Dépassement (dB)\",\n          niveau_reel: r._value,\n          seuil_legal: limite\n      }\n  })\n  \n  // 4. Envoi des données vers Grafana\n  |> yield(name: \"depassement_acoustique\")",
           "refId": "A"
         }
       ],
@@ -620,99 +648,12 @@
       "type": "timeseries"
     },
     {
-      "datasource": {
-        "type": "influxdb",
-        "uid": "ff9xpmhbcsb9ce"
-      },
-      "description": "Vue chronologique classifiant l'intensité des dépassements acoustiques par rapport aux limites réglementaires (50/45/40 dB) par paliers de sévérité.",
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "thresholds"
-          },
-          "custom": {
-            "axisPlacement": "auto",
-            "fillOpacity": 80,
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            },
-            "insertNulls": false,
-            "lineWidth": 0,
-            "spanNulls": false
-          },
-          "fieldMinMax": false,
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "dark-green",
-                "value": 0
-              },
-              {
-                "color": "dark-yellow",
-                "value": 5
-              },
-              {
-                "color": "dark-orange",
-                "value": 10
-              },
-              {
-                "color": "dark-red",
-                "value": 15
-              },
-              {
-                "color": "dark-purple",
-                "value": 20
-              }
-            ]
-          },
-          "unit": "dB"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 8,
-        "w": 24,
-        "x": 0,
-        "y": 87
-      },
-      "id": 24,
-      "options": {
-        "alignValue": "left",
-        "legend": {
-          "displayMode": "list",
-          "placement": "bottom",
-          "showLegend": true
-        },
-        "mergeValues": true,
-        "rowHeight": 1,
-        "showValue": "never",
-        "tooltip": {
-          "hideZeros": false,
-          "mode": "single",
-          "sort": "none"
-        }
-      },
-      "pluginVersion": "12.3.1",
-      "targets": [
-        {
-          "query": "import \"math\"\nimport \"timezone\"\nimport \"date\"\n\noption location = timezone.location(name: \"Europe/Brussels\")\n\nfrom(bucket: \"default\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"dt8852\" and r[\"_field\"] == \"spl\")\n  |> aggregateWindow(every: v.windowPeriod, fn: (column, tables=<-) => tables |> quantile(q: 0.10), createEmpty: false)\n\n  |> map(fn: (r) => {\n      h = date.hour(t: r._time)\n      limite = if h >= 7 and h < 19 then 50.0 \n               else if h == 6 or (h >= 19 and h < 22) then 45.0 \n               else 40.0\n      \n      depassement = if r._value > limite then r._value - limite else 0.0\n      \n      return {\n          _time: r._time,\n          _value: depassement,\n          _field: \"Dépassement (dB)\",\n      }\n  })\n",
-          "refId": "A"
-        }
-      ],
-      "title": "Sévérité des Nuisances Acoustiques",
-      "type": "state-timeline"
-    },
-    {
       "collapsed": false,
       "gridPos": {
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 95
+        "y": 73
       },
       "id": 14,
       "panels": [],
@@ -728,7 +669,7 @@
         "h": 6,
         "w": 24,
         "x": 0,
-        "y": 96
+        "y": 74
       },
       "id": 15,
       "options": {
@@ -850,7 +791,7 @@
         "h": 15,
         "w": 24,
         "x": 0,
-        "y": 102
+        "y": 80
       },
       "id": 3,
       "options": {
@@ -935,7 +876,7 @@
         "h": 14,
         "w": 24,
         "x": 0,
-        "y": 117
+        "y": 95
       },
       "id": 4,
       "options": {
@@ -979,7 +920,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 131
+        "y": 109
       },
       "id": 12,
       "panels": [],
@@ -992,10 +933,10 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 10,
+        "h": 4,
         "w": 24,
         "x": 0,
-        "y": 132
+        "y": 110
       },
       "id": 13,
       "options": {
@@ -1004,217 +945,12 @@
           "showLineNumbers": false,
           "showMiniMap": false
         },
-        "content": "Ce module met en évidence les événements les plus significatifs, en distinguant les **pics** et les **nuisances durables**.\n\n### Volume maximum enregistré\n\nLa jauge indique le **niveau sonore le plus élevé** observé sur la période affichée. Elle sert à repérer un choc acoustique potentiel, sans tenir compte de sa durée.\n\n### Nuisances persistantes (> 60 dB)\n\nCe panneau recherche des séquences où le niveau reste **au-dessus de 60 dB** de manière continue pendant suffisamment longtemps pour être qualifié de nuisance.\n\nTraitement appliqué :\n1. Regroupement des mesures sur des tranches courtes pour stabiliser l’analyse.\n2. Lissage réalisé sur une grandeur énergétique (et non directement en dB) afin d’éviter que de petites oscillations autour du seuil ne fragmentent artificiellement une séquence.\n3. Calcul de la durée pendant laquelle le niveau reste au-dessus du seuil, puis filtrage pour ne conserver que les épisodes d’au moins **2 minutes**.\n\nLe graphique affiche simultanément l’intensité (en dB) et la durée de l’épisode (en secondes), afin de relier niveau et persistance.\n",
+        "content": "Ce module met en évidence les événements les plus significatifs, en distinguant les **pics** et les **nuisances durables**.\n\n### Volume maximum enregistré\n\nLa jauge indique le **niveau sonore le plus élevé** observé sur la période affichée. Elle sert à repérer un choc acoustique potentiel, sans tenir compte de sa durée.\n",
         "mode": "markdown"
       },
       "pluginVersion": "12.3.1",
       "title": "",
       "type": "text"
-    },
-    {
-      "datasource": {
-        "type": "influxdb",
-        "uid": "ff9xpmhbcsb9ce"
-      },
-      "description": "Analyse approfondie des événements sonores significatifs. Ce panneau isole et visualise les périodes où le niveau sonore a dépassé 60 dB de manière continue pendant plus de 2 minutes (120s), permettant d'identifier les nuisances longues et persistantes par rapport aux bruits transitoires.",
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "palette-classic"
-          },
-          "custom": {
-            "axisBorderShow": false,
-            "axisCenteredZero": false,
-            "axisColorMode": "text",
-            "axisLabel": "",
-            "axisPlacement": "auto",
-            "barAlignment": 0,
-            "barWidthFactor": 0.6,
-            "drawStyle": "line",
-            "fillOpacity": 0,
-            "gradientMode": "none",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            },
-            "insertNulls": false,
-            "lineInterpolation": "linear",
-            "lineWidth": 1,
-            "pointSize": 6,
-            "scaleDistribution": {
-              "type": "linear"
-            },
-            "showPoints": "auto",
-            "showValues": true,
-            "spanNulls": true,
-            "stacking": {
-              "group": "A",
-              "mode": "none"
-            },
-            "thresholdsStyle": {
-              "mode": "off"
-            }
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": 0
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          },
-          "unit": "dtdurations"
-        },
-        "overrides": [
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Durée de la nuisance (> 60dB)"
-            },
-            "properties": [
-              {
-                "id": "custom.axisPlacement",
-                "value": "right"
-              },
-              {
-                "id": "unit",
-                "value": "dtdurations"
-              },
-              {
-                "id": "custom.lineInterpolation",
-                "value": "stepBefore"
-              },
-              {
-                "id": "custom.fillOpacity",
-                "value": 50
-              },
-              {
-                "id": "custom.scaleDistribution",
-                "value": {
-                  "log": 2,
-                  "type": "log"
-                }
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Intensité"
-            },
-            "properties": [
-              {
-                "id": "unit",
-                "value": "dB"
-              },
-              {
-                "id": "custom.lineInterpolation",
-                "value": "smooth"
-              },
-              {
-                "id": "custom.fillOpacity",
-                "value": 0
-              },
-              {
-                "id": "color",
-                "value": {
-                  "fixedColor": "#fffd0038",
-                  "mode": "fixed"
-                }
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byFrameRefID",
-              "options": "B"
-            },
-            "properties": [
-              {
-                "id": "custom.hideFrom",
-                "value": {
-                  "legend": true,
-                  "tooltip": false,
-                  "viz": true
-                }
-              },
-              {
-                "id": "unit",
-                "value": "dB"
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "_value Dépassement (dB)"
-            },
-            "properties": [
-              {
-                "id": "displayName",
-                "value": "Dépassement (dB)"
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "seuil_legal"
-            },
-            "properties": [
-              {
-                "id": "displayName",
-                "value": "Seuil Legal"
-              }
-            ]
-          }
-        ]
-      },
-      "gridPos": {
-        "h": 11,
-        "w": 24,
-        "x": 0,
-        "y": 142
-      },
-      "id": 9,
-      "options": {
-        "legend": {
-          "calcs": [],
-          "displayMode": "list",
-          "placement": "bottom",
-          "showLegend": true
-        },
-        "tooltip": {
-          "hideZeros": false,
-          "mode": "multi",
-          "sort": "none"
-        }
-      },
-      "pluginVersion": "12.3.1",
-      "targets": [
-        {
-          "query": "import \"math\"\nimport \"timezone\"\n\noption location = timezone.location(name: \"Europe/Brussels\")\n\nfrom(bucket: \"default\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"dt8852\" and r[\"_field\"] == \"spl\")\n  \n  // 1. Fenêtrage de base\n  |> aggregateWindow(every: 10s, fn: max, createEmpty: false)\n\n  // --- DÉBUT DU LISSAGE ÉNERGÉTIQUE ---\n  // 2. Conversion des dB en échelle linéaire (énergie)\n  |> map(fn: (r) => ({ r with _value: math.pow(x: 10.0, y: r._value / 10.0) }))\n  \n  // 3. Moyenne glissante sur 30 secondes (6 points de 5s)\n  |> exponentialMovingAverage(n: 12)\n  \n  // 4. Retour en décibels (échelle logarithmique)\n  |> map(fn: (r) => ({ r with _value: 10.0 * math.log10(x: r._value) }))\n  // --- FIN DU LISSAGE ÉNERGÉTIQUE ---\n\n  // 5. Calcul de la durée consécutive au dessus de 55.0 dB\n  // On le fait sur la valeur lissée pour éviter les micro-coupures du compteur\n  |> stateDuration(fn: (r) => r._value > 60.0, column: \"noisy_seconds\", unit: 1s)\n\n  // 6. Nettoyage : transformer les -1 (sous le seuil) en 0\n  |> map(fn: (r) => ({\n      r with \n      noisy_seconds: if r.noisy_seconds == -1 then 0 else r.noisy_seconds\n  }))\n\n  // 7. FILTRE : On ne garde que les séquences qui durent plus de 120s (2 minutes)\n  |> filter(fn: (r) => r.noisy_seconds >= 120)\n\n  // 8. Formatage final pour un affichage propre dans Grafana\n  |> map(fn: (r) => ({\n      _time: r._time,\n      \"Intensité\": math.round(x: r._value * 10.0) / 10.0, // Arrondi 1 décimale\n      \"Durée de la nuisance (> 60dB)\": float(v: r.noisy_seconds)\n  }))\n  |> yield(name: \"nuisances_analyse\")",
-          "refId": "A"
-        },
-        {
-          "datasource": {
-            "type": "influxdb",
-            "uid": "ff9xpmhbcsb9ce"
-          },
-          "hide": false,
-          "query": "import \"math\"\nimport \"timezone\"\nimport \"date\"\n\noption location = timezone.location(name: \"Europe/Brussels\")\n\nfrom(bucket: \"default\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"dt8852\" and r[\"_field\"] == \"spl\")\n  |> filter(fn: (r) => exists r._value)\n  |> aggregateWindow(every: v.windowPeriod, fn: mean, createEmpty: false)\n  |> map(fn: (r) => {\n      h = date.hour(t: r._time)\n      \n      limite = if h >= 7 and h < 19 then 50.0 \n               else if h == 6 or (h >= 19 and h < 22) then 45.0 \n               else 40.0\n      \n      diff = if r._value > limite then r._value - limite else 0.0\n      \n      return {\n          _time: r._time,\n          _value: diff,\n          _field: \"Dépassement (dB)\",\n          seuil_legal: limite,\n      }\n  })\n  \n  |> yield(name: \"depassement_acoustique\")",
-          "refId": "B"
-        }
-      ],
-      "title": "Nuisances persistantes (> 60 dB)",
-      "type": "timeseries"
     },
     {
       "datasource": {
@@ -1265,7 +1001,7 @@
         "h": 10,
         "w": 24,
         "x": 0,
-        "y": 153
+        "y": 114
       },
       "id": 2,
       "options": {
@@ -1298,7 +1034,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 163
+        "y": 124
       },
       "id": 20,
       "panels": [],
@@ -1314,7 +1050,7 @@
         "h": 9,
         "w": 24,
         "x": 0,
-        "y": 164
+        "y": 125
       },
       "id": 21,
       "options": {
@@ -1397,7 +1133,7 @@
         "h": 11,
         "w": 24,
         "x": 0,
-        "y": 173
+        "y": 134
       },
       "id": 10,
       "options": {
@@ -1565,7 +1301,7 @@
         "h": 9,
         "w": 24,
         "x": 0,
-        "y": 184
+        "y": 145
       },
       "id": 22,
       "options": {
@@ -1640,7 +1376,7 @@
         "h": 11,
         "w": 24,
         "x": 0,
-        "y": 193
+        "y": 154
       },
       "id": 5,
       "options": {
