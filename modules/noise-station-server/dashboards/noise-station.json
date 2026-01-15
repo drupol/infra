@@ -32,7 +32,7 @@
       },
       "id": 11,
       "panels": [],
-      "title": "A propos de Noise Station et réglementation en Région wallonne",
+      "title": "A propos de Noise Station et réglementation en Région Wallonne",
       "type": "row"
     },
     {
@@ -53,7 +53,7 @@
           "showLineNumbers": false,
           "showMiniMap": false
         },
-        "content": "# Noise Station\n\n### Un système de monitoring acoustique intelligent\n\nLa **Noise Station** est une solution de surveillance environnementale de haute précision conçue pour capturer, analyser et visualiser les niveaux sonores d'un espace en temps réel. Elle transforme des données acoustiques brutes en indicateurs visuels pour suivre l'évolution du bruit, détecter les pics et comprendre le profil sonore d'un lieu sur 24 heures.\n\n# Comment ça fonctionne ?\n\n### 1. La Capture (Le Matériel)\n\nLe système s'appuie sur un microphone professionnel de type **Trotec SL400** (équivalent du **CEM DT-8852**). Ce sonomètre de Classe 2 offre des fonctionnalités indispensables :\n-   **Double Pondération:** Supporte les courbes **dB(A)** (perception humaine) et **dB(C)** (basses fréquences).\n-   **Plage Dynamique:** Mesure précise de 30 à 130 dB (précision : 1,4 dB, résolution : 0,1 dB)\n-   **Modes Temporels:** Analyse en mode \"Fast\" (réactivité immédiate) ou \"Slow\" (stabilité).\n-   **Signaux numériques:** Uniquement les données numériques (et pas analogique) sont transmises. \n-   **Certification:** Livré avec certificat de calibration, conforme à IEC61672-1 Class 2\n\n### 2. Le Cœur du Système (L'Intelligence)\n\nLes données sont traitées par une unité de calcul (**Raspberry Pi**) et stockées dans une base de données temporelle (**InfluxDB**):\n*   **Nettoyage :** Filtrage des métadonnées pour une lecture fluide.\n*   **Agrégation :** Calcul de statistiques avancées (L10, L50, L90) en temps réel.\n\n### 3. La Visualisation (Le Dashboard)\n\nLe dashboard est structuré en quatre axes complémentaires pour une lecture immédiate :\n\n*   **Vue Temps Réel (Live View) :** Un graphique temporel affichant le **Bruit de Fond (L90)**. Cet indicateur filtre les pics passagers (voitures, voix) pour révéler le niveau sonore constant et permanent (la signature d'une installation technique comme une pompe à chaleur).\n*   **Pic de Volume (Volume Maximum Enregistré) :** Une jauge dynamique qui surveille le volume maximal atteint durant les **5 dernières minutes**. Elle utilise des seuils colorés (du vert au rouge foncé dès 80 dB) pour alerter sur les événements sonores récents.\n*   **Profil Statistique (Fréquence Sonore) :** Un histogramme qui regroupe les mesures des dernières 24 heures par paliers de décibels (arrondis à l'unité). Il permet de voir en un coup d'œil quel niveau de bruit est le plus fréquent dans l'environnement.\n*   **Distribution Horaire :** Un graphique en barres affichant la **moyenne sonore pour chaque heure** de la journée. Idéal pour identifier les cycles de pollution sonore (journée de travail vs nuit).\n*   **Géolocalisation :** Une carte intégrée affichant l'emplacement précis du capteur.\n\n# Pourquoi utiliser Noise Station ?\n\nPasser du ressenti subjectif (\"c'est bruyant\") à une mesure objective (\"la moyenne est de 65 dB avec des pics à 85 dB\"). Que ce soit pour le confort au travail, la surveillance de voisinage ou l'analyse environnementale, la **Noise Station** fournit une preuve scientifique et visuelle de la réalité acoustique de votre environnement.",
+        "content": "# Noise Station\n\n### Un système de monitoring acoustique intelligent\n\nLa **Noise Station** est une solution de surveillance environnementale de haute précision conçue pour capturer, analyser et visualiser les niveaux sonores d'un espace en temps réel. Elle transforme des données acoustiques brutes en indicateurs visuels pour suivre l'évolution du bruit, détecter les pics et comprendre le profil sonore d'un lieu sur 24 heures.\n\n# Comment ça fonctionne ?\n\n### 1. La Capture (Le Matériel)\n\nLe système s'appuie sur un microphone professionnel de type **Trotec SL400** (équivalent du **CEM DT-8852**). Ce sonomètre de Classe 2 offre des fonctionnalités indispensables :\n-   **Double Pondération:** Supporte les courbes **dB(A)** (perception humaine) et **dB(C)** (basses fréquences).\n-   **Plage Dynamique:** Mesure précise de 30 à 130 dB (précision : 1,4 dB, résolution : 0,1 dB)\n-   **Modes Temporels:** Analyse en mode \"Fast\" (réactivité immédiate) ou \"Slow\" (stabilité).\n-   **Signaux numériques:** Uniquement les données numériques (et pas analogique) sont transmises. \n-   **Certification:** Livré avec certificat de calibration, conforme à IEC61672-1 Class 2\n\n### 2. Le Cœur du Système (L'Intelligence)\n\nLes données sont traitées par une unité de calcul (**Raspberry Pi**) et stockées dans une base de données temporelle (**InfluxDB**):\n*   **Nettoyage :** Filtrage des métadonnées pour une lecture fluide.\n*   **Agrégation :** Calcul de statistiques avancées (L10, L50, L90) en temps réel.\n\n### 3. La Visualisation (Le Dashboard)\n\nLe dashboard est structuré en quatre axes complémentaires pour une lecture immédiate :\n\n*   **Vue Temps Réel (Live View) :** Un graphique temporel affichant le **Bruit de Fond (L90)**. Cet indicateur filtre les pics passagers (voitures, voix) pour révéler le niveau sonore constant et permanent (la signature d'une installation technique comme une pompe à chaleur).\n*   **Pic de Volume (Volume Maximum Enregistré) :** Une jauge dynamique qui surveille le volume maximal atteint durant la **période affichée**. Elle utilise des seuils colorés (du vert au rouge foncé dès 80 dB) pour alerter sur les événements sonores récents.\n*   **Profil Statistique (Fréquence Sonore) :** Un histogramme qui regroupe les mesures des dernières 24 heures par paliers de décibels (arrondis à l'unité). Il permet de voir en un coup d'œil quel niveau de bruit est le plus fréquent dans l'environnement.\n*   **Distribution Horaire :** Un graphique en barres affichant la **moyenne sonore pour chaque heure** de la journée. Idéal pour identifier les cycles de pollution sonore (journée de travail vs nuit).\n*   **Géolocalisation :** Une carte intégrée affichant l'emplacement précis du capteur.\n\n# Pourquoi utiliser Noise Station ?\n\nPasser du ressenti subjectif (\"c'est bruyant\") à une mesure objective (\"la moyenne est de 65 dB avec des pics à 85 dB\"). Que ce soit pour le confort au travail, la surveillance de voisinage ou l'analyse environnementale, la **Noise Station** fournit une preuve scientifique et visuelle de la réalité acoustique de votre environnement.",
         "mode": "markdown"
       },
       "pluginVersion": "12.3.1",
@@ -141,7 +141,7 @@
           "showLineNumbers": false,
           "showMiniMap": false
         },
-        "content": "Cette section met en regard le **niveau sonore en temps réel** et les **seuils réglementaires applicables en Région wallonne**.\n\n### Vue en Temps Réel\n\nLe panneau *Vue en Temps Réel* part des mesures **SPL** (dB) issues de la série `dt8852/spl`, puis applique le traitement suivant :\n\n1. **Extraction du Bruit de Fond (L90)** : Pour chaque fenêtre de temps, l'algorithme retient la valeur **statistique L90** (le niveau dépassé 90% du temps). Cela élimine mathématiquement les événements sonores brefs (pics, voix, passage de voiture) pour ne garder que l'ambiance sonore de fond (machinerie, vent lointain).\n2. **Conversion & Lissage** : Les valeurs L90 sont converties en énergie, lissées sur 1 minute, puis reconverties en dB.\n\nCette méthode permet d'isoler la **signature sonore des équipements fixes** (ex: Pompes à chaleur) en ignorant les bruits parasites.\n\nLes seuils de couleur sur la courbe (vert/jaune/orange/rouge) permettent d’identifier d’un coup d’œil si le niveau de fond se situe sous 40/45/50 dB, ou s’il s’en approche / les dépasse.\n\n### Historique des Infractions\n\nUne seconde série calcule une **limite horaire** en fonction de l’heure locale (Europe/Brussels) :\n- **50 dB** entre 07h–19h  \n- **45 dB** entre 06h–07h et 19h–22h  \n- **40 dB** entre 22h–06h  \n\n### Analyse des Émergences : Conformité aux Seuils Légaux\n\nCette visualisation est un outil de monitoring critique dédié à la **conformité environnementale**. Ce graphique compare directement le **Bruit de Fond (L90)** aux limites autorisées. \n\nL'algorithme adapte dynamiquement le seuil de tolérance selon l'heure locale (Europe/Bruxelles) : \n*   **50 dB** durant la journée (07:00 - 19:00)\n*   **45 dB** durant les périodes de transition (06:00 - 07:00 et 19:00 - 22:00)\n*   **40 dB** durant la période nocturne (22:00 - 06:00)\n\nChaque pic affiché représente une **infraction potentielle du bruit de fond** : sa hauteur indique l'intensité du dépassement en décibels (dB). Un dépassement ici signifie que le bruit est CONSTANT et supérieur à la loi.\n\n### Sévérité des Nuisances Acoustiques\n\nCette visualisation sous forme de frise temporelle offre une lecture immédiate et synthétique de la qualité de l'environnement sonore sur une période donnée.\n\nLe système analyse chaque mesure en fonction des seuils légaux variables. Lorsqu'un bruit excède la limite autorisée, il est automatiquement classifié selon l'importance du dépassement (l'émergence) :\n\n- Jaune / Modéré : Nuisance perceptible (5 à 10 dB)\n- Orange / Fort : Pollution sonore marquée (10 à 15 dB)\n- Rouge / Critique : Nuisance majeure (15 à 20 dB)\n\nCette approche permet de transformer des milliers de points de données en un calendrier visuel, idéal pour repérer des cycles de nuisances récurrents.",
+        "content": "Cette section met en regard le **niveau sonore en temps réel** et les **seuils réglementaires applicables en Région Wallonne**.\n\n### Vue en Temps Réel\n\nLe panneau *Vue en Temps Réel* part des mesures **SPL** (dB) issues de la série `dt8852/spl`, puis applique le traitement suivant :\n\n1. **Extraction du Bruit de Fond (L90)** : Pour chaque fenêtre de temps, l'algorithme retient la valeur **statistique L90** (le niveau dépassé 90% du temps). Cela élimine mathématiquement les événements sonores brefs (pics, voix, passage de voiture) pour ne garder que l'ambiance sonore de fond (machinerie, vent lointain).\n2. **Conversion & Lissage** : Les valeurs L90 sont converties en énergie, lissées sur **1 minute**, puis reconverties en dB.\n\nCette méthode permet d'isoler la **signature sonore des équipements fixes** (ex: Pompes à chaleur) en ignorant les bruits parasites.\n\nLes seuils de couleur sur la courbe (vert/jaune/orange/rouge) permettent d’identifier d’un coup d’œil si le niveau de fond se situe sous 40/45/50 dB, ou s’il s’en approche / les dépasse.\n\n### Historique des Infractions\n\nUne seconde série calcule une **limite horaire** en fonction de l’heure locale (Europe/Brussels) :\n- **50 dB** entre 07h–19h  \n- **45 dB** entre 06h–07h et 19h–22h  \n- **40 dB** entre 22h–06h  \n\n### Analyse des Émergences : Conformité aux Seuils Légaux\n\nCette visualisation est un outil de monitoring critique dédié à la **conformité environnementale**. Ce graphique compare directement le **Bruit de Fond (L90)** aux limites autorisées. \n\nL'algorithme adapte dynamiquement le seuil de tolérance selon l'heure locale (Europe/Bruxelles) : \n*   **50 dB** durant la journée (07:00 - 19:00)\n*   **45 dB** durant les périodes de transition (06:00 - 07:00 et 19:00 - 22:00)\n*   **40 dB** durant la période nocturne (22:00 - 06:00)\n\nChaque pic affiché représente une **infraction potentielle du bruit de fond** : sa hauteur indique l'intensité du dépassement en décibels (dB). Un dépassement ici signifie que le bruit est CONSTANT et supérieur à la loi.\n\n### Sévérité des Nuisances Acoustiques\n\nCette visualisation sous forme de frise temporelle offre une lecture immédiate et synthétique de la qualité de l'environnement sonore sur une période donnée.\n\nLe système analyse chaque mesure en fonction des seuils légaux variables. Lorsqu'un bruit excède la limite autorisée, il est automatiquement classifié selon l'importance du dépassement (l'émergence) :\n\n- Jaune / Modéré : Nuisance perceptible (5 à 10 dB)\n- Orange / Fort : Pollution sonore marquée (10 à 15 dB)\n- Rouge / Critique : Nuisance majeure (15 à 20 dB)\n\nCette approche permet de transformer des milliers de points de données en un calendrier visuel, idéal pour repérer des cycles de nuisances récurrents.",
         "mode": "markdown"
       },
       "pluginVersion": "12.3.1",
@@ -245,7 +245,10 @@
               {
                 "id": "custom.lineStyle",
                 "value": {
-                  "dash": [10, 10],
+                  "dash": [
+                    10,
+                    10
+                  ],
                   "fill": "dash"
                 }
               },
@@ -367,7 +370,10 @@
               {
                 "id": "custom.lineStyle",
                 "value": {
-                  "dash": [10, 10],
+                  "dash": [
+                    10,
+                    10
+                  ],
                   "fill": "dash"
                 }
               },
@@ -646,7 +652,10 @@
               {
                 "id": "custom.lineStyle",
                 "value": {
-                  "dash": [10, 10],
+                  "dash": [
+                    10,
+                    10
+                  ],
                   "fill": "dash"
                 }
               },
@@ -846,7 +855,7 @@
           "showLineNumbers": false,
           "showMiniMap": false
         },
-        "content": "Cette section décrit la **signature acoustique** du lieu sur la durée, en distinguant le **bruit de fond** des épisodes plus marqués.\n\n### Fréquence sonore\n\nLes mesures sont d’abord regroupées pour réduire le volume de données, puis classées par **paliers de 3 dB**. Ce choix facilite l’interprétation, car un pas de 3 dB correspond à une variation énergétique significative.  \nLes séries sont ensuite séparées par périodes (jour, soirée, aube, nuit) afin de comparer les distributions selon l’heure.\n\n### Histogramme de Pression Sonore\n\nLe second graphique calcule la **médiane** du niveau sonore sur des fenêtres de **15 minutes**. La médiane réduit l’influence des bruits brefs et met en évidence l’ambiance sonore typique et les rythmes réguliers (jour/nuit, pics d’activité).\n",
+        "content": "Cette section décrit la **signature acoustique** du lieu sur la durée, en distinguant le **bruit de fond** des épisodes plus marqués.\n\n### Fréquence sonore\n\nLes mesures sont d’abord regroupées pour réduire le volume de données, puis classées par **paliers de 3 dB**. Ce choix facilite l’interprétation, car un pas de 3 dB correspond à une variation énergétique significative.  \nLes séries sont ensuite séparées par périodes (jour, soirée, aube, nuit) afin de comparer les distributions selon l’heure.\n\n### Évolution du Niveau Sonore Moyen\n\nLe second graphique calcule la **moyenne** du niveau sonore sur des fenêtres de **15 minutes**. La moyenne met en évidence l’énergie sonore cumulée et les rythmes réguliers (jour/nuit, pics d’activité).\n",
         "mode": "markdown"
       },
       "pluginVersion": "12.3.1",
@@ -984,7 +993,7 @@
           "refId": "A"
         }
       ],
-      "title": "Fréquence Sonore",
+      "title": "Distribution Statistique des Niveaux",
       "type": "histogram"
     },
     {
@@ -1079,7 +1088,7 @@
           "refId": "A"
         }
       ],
-      "title": "Histogramme de Pression Sonore",
+      "title": "Évolution du Niveau Moyen (Leq 15m)",
       "type": "barchart"
     },
     {
@@ -1828,7 +1837,21 @@
     "to": "now"
   },
   "timepicker": {
-    "refresh_intervals": ["5s", "10s", "30s", "1m", "5m", "15m", "30m", "1h", "2h", "4h", "1d", "2d", "7d"]
+    "refresh_intervals": [
+      "5s",
+      "10s",
+      "30s",
+      "1m",
+      "5m",
+      "15m",
+      "30m",
+      "1h",
+      "2h",
+      "4h",
+      "1d",
+      "2d",
+      "7d"
+    ]
   },
   "timezone": "browser",
   "title": "Noise Station",
