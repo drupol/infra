@@ -18,7 +18,7 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 54,
+  "id": 55,
   "links": [],
   "liveNow": true,
   "panels": [
@@ -153,7 +153,7 @@
         "type": "influxdb",
         "uid": "ff9xpmhbcsb9ce"
       },
-      "description": "Affiche le SPL reconstruit sur des fenêtres de 30s à partir des mesures: conversion dB→énergie, agrégation en énergie, puis reconversion en dB. La courbe est comparée à une limite réglementaire dynamique (40/45/50 dB) calculée à partir de l’heure locale.",
+      "description": "Affiche le SPL reconstruit sur des fenêtres de 30s à partir des mesures: conversion dB→énergie, agrégation en énergie, puis reconversion en dB. La courbe est comparée à une limite réglementaire dynamique (40/45/50 dB) calculée à partir de l’heure locale. NOTE: Cette visualisation applique une moyenne mobile exponentielle (n=30) pour lisser les courbes et faciliter la lecture. Pour une expertise acoustique stricte, il est recommandé d'analyser les valeurs brutes.",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -319,6 +319,31 @@
                 }
               }
             ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "real_value"
+            },
+            "properties": [
+              {
+                "id": "custom.lineStyle",
+                "value": {
+                  "fill": "solid"
+                }
+              },
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "#ccccdb1a",
+                  "mode": "fixed"
+                }
+              },
+              {
+                "id": "displayName",
+                "value": "Valeur Brute"
+              }
+            ]
           }
         ]
       },
@@ -350,7 +375,7 @@
             "uid": "ff9xpmhbcsb9ce"
           },
           "hide": false,
-          "query": "import \"date\"\nimport \"timezone\"\n\noption location = timezone.location(name: \"Europe/Brussels\")\n\nminSeconds = 120\n\nbase =\n  from(bucket: \"default\")\n    |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n    |> filter(fn: (r) => r._measurement == \"dt8852\" and r._field == \"spl\")\n    |> keep(columns: [\"_time\", \"_value\", \"frequency_weighting\"])\n    |> aggregateWindow(\n        every: v.windowPeriod,\n        fn: (column, tables=<-) => tables |> quantile(q: 0.50),\n        createEmpty: false\n      )\n  |> exponentialMovingAverage(n: 30)\n  |> map(fn: (r) => {\n        h = date.hour(t: r._time)\n\n        limit =\n          if h >= 7 and h < 19 then 50.0\n          else if (h >= 6 and h < 7) or (h >= 19 and h < 22) then 45.0\n          else 40.0\n\n        exceed = r._value > limit\n        excess = if exceed then (r._value - limit) else 0.0\n\n        return { r with exceed: exceed, excess: excess }\n    })\n    |> group(columns: [\"frequency_weighting\"])\n\nclassified =\n  base\n    |> stateDuration(fn: (r) => r.exceed, column: \"exceed_seconds\", unit: 1s)\n    |> map(fn: (r) => ({\n        r with\n        status:\n          if not r.exceed then \"ok\"\n          else if r.exceed_seconds >= minSeconds then \"nok\"\n          else \"pending\"\n    }))\n\n// 1) Série statut (ok/pending/nok) sur _value (SPL)\nstatusSeries =\n  classified\n    |> map(fn: (r) => ({ r with _field: r.status }))\n    |> keep(columns: [\"_time\", \"frequency_weighting\", \"_field\", \"_value\"])\n\n// 2) Série limite\nlimitSeries =\n  classified\n    |> map(fn: (r) => ({ _time: r._time, frequency_weighting: r.frequency_weighting, _field: \"limit\", _value: r.limit }))\n\n// 3) Série dépassement (différence). On peut choisir : seulement quand NOK, ou dès exceed.\n// Ici: seulement quand NOK (dépassement \"confirmé\")\nexcessSeries =\n  classified\n    |> map(fn: (r) => ({\n        _time: r._time,\n        frequency_weighting: r.frequency_weighting,\n        _field: \"excess\",\n        _value: if r.status == \"nok\" then r.excess else 0.0\n    }))\n\nunion(tables: [statusSeries, limitSeries, excessSeries])\n  |> group(columns: [\"frequency_weighting\", \"_field\"])\n  |> pivot(rowKey: [\"_time\", \"frequency_weighting\"], columnKey: [\"_field\"], valueColumn: \"_value\")\n",
+          "query": "import \"date\"\nimport \"timezone\"\n\noption location = timezone.location(name: \"Europe/Brussels\")\n\nminSeconds = 120\n\n// 1. On récupère les données et on calcule le niveau médian par fenêtre (v.windowPeriod)\n// C est notre \"vérité terrain\" avant lissage\nsourceData =\n  from(bucket: \"default\")\n    |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n    |> filter(fn: (r) => r._measurement == \"dt8852\" and r._field == \"spl\")\n    |> keep(columns: [\"_time\", \"_value\", \"frequency_weighting\"])\n    |> aggregateWindow(\n        every: v.windowPeriod,\n        fn: (column, tables=<-) => tables |> quantile(q: 0.50),\n        createEmpty: false\n      )\n\n// 2. On crée la branche \"Lissée\" pour le calcul de conformité\nclassified =\n  sourceData\n    |> exponentialMovingAverage(n: 30)\n    |> map(fn: (r) => {\n        h = date.hour(t: r._time)\n        limit =\n          if h >= 7 and h < 19 then 50.0\n          else if (h >= 6 and h < 7) or (h >= 19 and h < 22) then 45.0\n          else 40.0\n        return { r with exceed: r._value > limit }\n    })\n    |> stateDuration(fn: (r) => r.exceed, column: \"exceed_seconds\", unit: 1s)\n    |> map(fn: (r) => ({\n        r with\n        status:\n          if not r.exceed then \"ok\"\n          else if r.exceed_seconds >= minSeconds then \"nok\"\n          else \"pending\",\n        excess: if r._value > r.limit then (r._value - r.limit) else 0.0\n    }))\n\n// 3. Préparation des séries pour l affichage\n\n// Série Statut (la ligne qui change de couleur)\nstatusSeries = classified |> map(fn: (r) => ({ r with _field: r.status })) |> keep(columns: [\"_time\", \"frequency_weighting\", \"_field\", \"_value\"])\n\n// Série Limite (la ligne pointillée)\nlimitSeries = classified |> map(fn: (r) => ({ _time: r._time, frequency_weighting: r.frequency_weighting, _field: \"limit\", _value: r.limit }))\n\n// Série \"Vraie Valeur\" (les points bruts non lissés)\nrealSeries = sourceData |> map(fn: (r) => ({ _time: r._time, frequency_weighting: r.frequency_weighting, _field: \"real_value\", _value: r._value }))\n\n// Série Excès (pour l ombrage si besoin)\nexcessSeries = classified |> map(fn: (r) => ({ _time: r._time, frequency_weighting: r.frequency_weighting, _field: \"excess\", _value: if r.status == \"nok\" then r.excess else 0.0 }))\n\nunion(tables: [statusSeries, limitSeries, realSeries, excessSeries])\n  |> group(columns: [\"frequency_weighting\", \"_field\"])\n  |> pivot(rowKey: [\"_time\", \"frequency_weighting\"], columnKey: [\"_field\"], valueColumn: \"_value\")",
           "refId": "A"
         },
         {
@@ -924,7 +949,7 @@
       "targets": [
         {
           "hide": false,
-          "query": "import \"math\"\nimport \"timezone\"\n\noption location = timezone.location(name: \"Europe/Brussels\")\n\nfrom(bucket: \"default\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"dt8852\")\n  |> filter(fn: (r) => r[\"_field\"] == \"spl\")\n  |> keep(columns: [\"_time\", \"_value\", \"_field\", \"frequency_weighting\"])\n  //|> aggregateWindow(every: 15m, fn: (column, tables=<-) => tables |> quantile(q: 0.10), createEmpty: false)\n  |> aggregateWindow(every: 15m, fn: mean, createEmpty: false)\n  |> map(fn: (r) => ({ \n      r with \n      _value: math.round(x: r._value),\n      _field: \"Niveau de Pression Sonore\" \n  }))  \n  |> yield(name: \"hourly_peaks\")",
+          "query": "import \"math\"\nimport \"timezone\"\n\noption location = timezone.location(name: \"Europe/Brussels\")\n\nfrom(bucket: \"default\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"dt8852\")\n  |> filter(fn: (r) => r[\"_field\"] == \"spl\")\n  |> keep(columns: [\"_time\", \"_value\", \"_field\", \"frequency_weighting\"])\n  //|> aggregateWindow(every: 15m, fn: (column, tables=<-) => tables |> quantile(q: 0.10), createEmpty: false)\n  |> map(fn: (r) => ({ r with _value: math.pow(x: 10.0, y: r._value / 10.0) })) // passage en linéaire\n  |> aggregateWindow(every: 15m, fn: mean, createEmpty: false)\n  |> map(fn: (r) => ({ r with _value: 10.0 * math.log10(x: r._value) })) // retour en dB\n  |> map(fn: (r) => ({ \n      r with \n      _value: math.round(x: r._value),\n      _field: \"Niveau de Pression Sonore\" \n  }))  \n  |> yield(name: \"hourly_peaks\")",
           "refId": "A"
         }
       ],
@@ -1338,17 +1363,8 @@
       "targets": [
         {
           "hide": false,
-          "query": "import \"math\"\nimport \"timezone\"\n\n// Configuration de la zone horaire\noption location = timezone.location(name: \"Europe/Brussels\")\n\n// 1. Récupération et nettoyage des données\ndata = from(bucket: \"default\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"dt8852\" and r[\"_field\"] == \"spl\")\n  |> filter(fn: (r) => exists r._value) // On ignore les points vides\n\n// 2. Calcul du L10 (Pics sonores)\nl10 = data \n  |> aggregateWindow(every: 30m, fn: (column, tables=<-) => tables |> quantile(q: 0.90), createEmpty: false)\n\n// 3. Calcul du L90 (Bruit de fond)\nl90 = data \n  |> aggregateWindow(every: 30m, fn: (column, tables=<-) => tables |> quantile(q: 0.10), createEmpty: false)\n\njoin(tables: {l10: l10, l90: l90}, on: [\"_time\"])\n  |> map(fn: (r) => {\n      // Calcul de la différence brute\n      raw_diff = r._value_l10 - r._value_l90\n      \n      // Correction : Si négatif (erreur de calcul), on ramène à 0\n      val = if raw_diff < 0.0 then 0.0 else raw_diff\n      \n      return {\n          _time: r._time,\n          _value: val,\n          _field: \"Climat Sonore (L10-L90)\"\n      }\n  })",
+          "query": "import \"math\"\nimport \"timezone\"\n\n// Configuration de la zone horaire\noption location = timezone.location(name: \"Europe/Brussels\")\n\n// 1. Récupération des données de base\nbase = from(bucket: \"default\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"dt8852\" and r[\"_field\"] == \"spl\")\n  |> filter(fn: (r) => exists r._value)\n\n// 2. Calcul du L10 (Pics sonores) avec renommage du champ\nl10 = base\n  |> aggregateWindow(every: 30m, fn: (column, tables=<-) => tables |> quantile(q: 0.90), createEmpty: false)\n  |> map(fn: (r) => ({ r with _field: \"l10\" }))\n\n// 3. Calcul du L90 (Bruit de fond) avec renommage du champ\nl90 = base\n  |> aggregateWindow(every: 30m, fn: (column, tables=<-) => tables |> quantile(q: 0.10), createEmpty: false)\n  |> map(fn: (r) => ({ r with _field: \"l90\" }))\n\n// 4. Fusion des tables et Pivotage pour mettre L10 et L90 sur la même ligne\nunion(tables: [l10, l90])\n  |> pivot(rowKey:[\"_time\", \"frequency_weighting\"], columnKey: [\"_field\"], valueColumn: \"_value\")\n  |> map(fn: (r) => {\n      // Calcul de la différence entre pics et bruit de fond\n      raw_diff = r.l10 - r.l90\n      \n      return {\n          _time: r._time,\n          frequency_weighting: r.frequency_weighting,\n          _field: \"Climat Sonore (L10-L90)\",\n          _value: if raw_diff < 0.0 then 0.0 else raw_diff\n      }\n  })",
           "refId": "A"
-        },
-        {
-          "datasource": {
-            "type": "influxdb",
-            "uid": "ff9xpmhbcsb9ce"
-          },
-          "hide": false,
-          "query": "import \"math\"\nimport \"timezone\"\n\n// Configuration de la zone horaire\noption location = timezone.location(name: \"Europe/Brussels\")\n\n// 1. Récupération et nettoyage des données\ndata = from(bucket: \"default\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"dt8852\" and r[\"_field\"] == \"spl\")\n  |> filter(fn: (r) => exists r._value) // On ignore les points vides\n\n// 2. Calcul du L10 (Pics sonores)\nl10 = data \n  |> aggregateWindow(every: 30m, fn: (column, tables=<-) => tables |> quantile(q: 0.90), createEmpty: false)\n\n// 3. Calcul du L90 (Bruit de fond)\nl90 = data \n  |> aggregateWindow(every: 30m, fn: (column, tables=<-) => tables |> quantile(q: 0.10), createEmpty: false)\n\njoin(tables: {l10: l10, l90: l90}, on: [\"_time\"])\n  |> map(fn: (r) => {\n      // Calcul de la différence brute\n      raw_diff = math.round(x: r._value_l10 - r._value_l90)\n      \n      // Correction : Si négatif (erreur de calcul), on ramène à 0\n      val = if raw_diff < 0.0 then 0.0 else raw_diff\n      \n      return {\n          _time: r._time,\n          _value: val,\n          _field: \"Variability\"\n      }\n  })",
-          "refId": "B"
         }
       ],
       "title": "Signature du Bruit: Dynamique & Monotonie",
