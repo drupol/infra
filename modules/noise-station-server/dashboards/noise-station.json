@@ -328,7 +328,7 @@
               },
               {
                 "id": "displayName",
-                "value": "Dépassement (dB)"
+                "value": "Dépassement"
               },
               {
                 "id": "color",
@@ -675,7 +675,7 @@
             "properties": [
               {
                 "id": "displayName",
-                "value": "Dépassement (dB)"
+                "value": "Dépassement"
               }
             ]
           }
@@ -704,7 +704,7 @@
       "pluginVersion": "12.3.1",
       "targets": [
         {
-          "query": "import \"math\"\nimport \"timezone\"\nimport \"date\"\n\noption location = timezone.location(name: \"Europe/Brussels\")\n\nfrom(bucket: \"default\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"dt8852\" and r[\"_field\"] == \"spl\")\n  |> filter(fn: (r) => exists r._value)\n  \n  //|> aggregateWindow(every: v.windowPeriod, fn: mean, createEmpty: false)\n  |> aggregateWindow(every: v.windowPeriod, fn: (column, tables=<-) => tables |> quantile(q: 0.50), createEmpty: false)\n  // 3. Calcul des limites horaires et du dépassement\n  |> map(fn: (r) => {\n      h = date.hour(t: r._time)\n      \n      // Seuils réglementaires (50 / 45 / 40 dB)\n      limite = if h >= 7 and h < 19 then 50.0 \n               else if (h >= 6 and h < 7) or (h >= 19 and h < 22) then 45.0 \n               else 40.0\n      \n      // Calcul du dépassement\n      diff = if r._value > limite then r._value - limite else 0.0\n      \n      return {\n          _time: r._time,\n          _value: diff,\n          _field: \"Dépassement (dB)\",\n          niveau_reel: r._value,\n          seuil_legal: limite\n      }\n  })\n  \n  // 4. Envoi des données vers Grafana\n  |> yield(name: \"depassement_acoustique\")",
+          "query": "import \"math\"\nimport \"timezone\"\nimport \"date\"\n\noption location = timezone.location(name: \"Europe/Brussels\")\n\nfrom(bucket: \"default\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"dt8852\" and r[\"_field\"] == \"spl\")\n  |> filter(fn: (r) => exists r._value)\n  \n  //|> aggregateWindow(every: v.windowPeriod, fn: mean, createEmpty: false)\n  |> aggregateWindow(every: v.windowPeriod, fn: (column, tables=<-) => tables |> quantile(q: 0.50), createEmpty: false)\n  // 3. Calcul des limites horaires et du dépassement\n  |> map(fn: (r) => {\n      h = date.hour(t: r._time)\n      \n      // Seuils réglementaires (50 / 45 / 40 dB)\n      limite = if h >= 7 and h < 19 then 50.0 \n               else if (h >= 6 and h < 7) or (h >= 19 and h < 22) then 45.0 \n               else 40.0\n      \n      // Calcul du dépassement\n      diff = if r._value > limite then r._value - limite else 0.0\n      \n      return {\n          _time: r._time,\n          _value: diff,\n          _field: \"Dépassement\",\n          niveau_reel: r._value,\n          seuil_legal: limite\n      }\n  })\n  \n  // 4. Envoi des données vers Grafana\n  |> yield(name: \"depassement_acoustique\")",
           "refId": "A"
         }
       ],
@@ -1205,7 +1205,7 @@
               },
               {
                 "id": "displayName",
-                "value": "Dépassement (dB)"
+                "value": "Dépassement"
               }
             ]
           },
@@ -1552,7 +1552,7 @@
           "refId": "A"
         }
       ],
-      "title": "Profil acoustique temporel",
+      "title": "Profil acoustique temporel global",
       "type": "timeseries"
     },
     {
