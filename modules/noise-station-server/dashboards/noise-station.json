@@ -18,7 +18,7 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 66,
+  "id": 68,
   "links": [],
   "liveNow": true,
   "panels": [
@@ -502,7 +502,7 @@
       "pluginVersion": "12.3.1",
       "targets": [
         {
-          "query": "import \"timezone\"\nimport \"date\"\n\noption location = timezone.location(name: \"Europe/Brussels\")\n\nfrom(bucket: \"default\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r._measurement == \"dt8852\" and r._field == \"spl\")\n |> aggregateWindow(\n      every: 120s,\n      fn: (column, tables=<-) => tables |> quantile(q: 0.50, column: column),\n      createEmpty: false\n  )\n  |> map(fn: (r) => {\n      h = date.hour(t: r._time)\n\n      limit =\n        if h >= 7 and h < 19 then 50.0\n        else if (h >= 6 and h < 7) or (h >= 19 and h < 22) then 45.0\n        else 40.0\n\n      return {\n        _time: r._time,\n        _value: if r._value > limit then 1.0 else 0.0\n      }\n  })",
+          "query": "import \"timezone\"\nimport \"date\"\n\noption location = timezone.location(name: \"Europe/Brussels\")\n\nfrom(bucket: \"default\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r._measurement == \"dt8852\" and r._field == \"spl\")\n  |> aggregateWindow(\n      every: 60s,\n      fn: (column, tables=<-) => tables |> quantile(q: 0.90, column: column),\n      createEmpty: false\n  )\n  |> map(fn: (r) => {\n      h = date.hour(t: r._time)\n\n      limit =\n        if h >= 7 and h < 19 then 50.0\n        else if (h >= 6 and h < 7) or (h >= 19 and h < 22) then 45.0\n        else 40.0\n\n      return {\n        _time: r._time,\n        _value: if r._value > limit then 1.0 else 0.0,\n        is_violation: if r._value > limit then 1 else 0\n      }\n  })\n  |> stateDuration(fn: (r) => r.is_violation == 1, column: \"duration\", unit: 1s)\n  |> map(fn: (r) => ({\n      _time: r._time,\n      _value: if r.is_violation == 1 and r.duration >= 120 then 1.0 else 0.0\n  }))",
           "refId": "A"
         }
       ],
