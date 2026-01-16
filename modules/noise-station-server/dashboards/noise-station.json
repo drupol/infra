@@ -198,7 +198,7 @@
               "mode": "off"
             }
           },
-          "displayName": "Sound Pressure Level - L50 (${__field.labels.frequency_weighting})",
+          "displayName": "Niveau Sonore - L50 (${__field.labels.frequency_weighting})",
           "fieldMinMax": false,
           "mappings": [],
           "thresholds": {
@@ -243,7 +243,7 @@
           {
             "matcher": {
               "id": "byFrameRefID",
-              "options": "Seuil Legal"
+              "options": "Seuil Légal"
             },
             "properties": [
               {
@@ -256,13 +256,16 @@
               {
                 "id": "custom.lineStyle",
                 "value": {
-                  "dash": [10, 10],
+                  "dash": [
+                    10,
+                    10
+                  ],
                   "fill": "dash"
                 }
               },
               {
                 "id": "displayName",
-                "value": "Seuil Legal"
+                "value": "Seuil Légal"
               },
               {
                 "id": "custom.fillOpacity",
@@ -325,7 +328,7 @@
               },
               {
                 "id": "displayName",
-                "value": "Depassement"
+                "value": "Dépassement (dB)"
               },
               {
                 "id": "color",
@@ -357,7 +360,7 @@
               },
               {
                 "id": "displayName",
-                "value": "Sound Pressure Level Raw (${__field.labels.frequency_weighting})"
+                "value": "Niveau Sonore Brut (${__field.labels.frequency_weighting})"
               }
             ]
           }
@@ -401,7 +404,7 @@
           },
           "hide": false,
           "query": "import \"date\"\nimport \"timezone\"\n\noption location = timezone.location(name: \"Europe/Brussels\")\n\nfrom(bucket: \"default\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r._measurement == \"dt8852\" and r._field == \"spl\")\n  |> aggregateWindow(every: v.windowPeriod, fn: first)\n  |> map(fn: (r) => {\n      h = date.hour(t: r._time)\n      return {\n          _time: r._time,\n          _limit: if h >= 7 and h < 19 then 50.0 \n                  else if h == 6 or (h >= 19 and h < 22) then 45.0 \n                  else 40.0\n      }\n  })",
-          "refId": "Seuil Legal"
+          "refId": "Seuil Légal"
         }
       ],
       "title": "Vue en Temps Réel",
@@ -470,7 +473,7 @@
               },
               {
                 "id": "displayName",
-                "value": "Conformite"
+                "value": "Conformité"
               }
             ]
           }
@@ -623,7 +626,10 @@
               {
                 "id": "custom.lineStyle",
                 "value": {
-                  "dash": [10, 10],
+                  "dash": [
+                    10,
+                    10
+                  ],
                   "fill": "dash"
                 }
               },
@@ -637,7 +643,7 @@
               },
               {
                 "id": "displayName",
-                "value": "Seuil Legal"
+                "value": "Seuil Légal"
               }
             ]
           },
@@ -657,7 +663,7 @@
               },
               {
                 "id": "displayName",
-                "value": "Niveau reel"
+                "value": "Niveau Sonore Brut"
               }
             ]
           },
@@ -1020,7 +1026,7 @@
           "color": {
             "mode": "thresholds"
           },
-          "displayName": "Sound Pressure Level (${__field.labels.frequency_weighting})",
+          "displayName": "Niveau Sonore Brut (${__field.labels.frequency_weighting})",
           "fieldMinMax": false,
           "mappings": [],
           "max": 100,
@@ -1199,7 +1205,7 @@
               },
               {
                 "id": "displayName",
-                "value": "Depassement"
+                "value": "Dépassement (dB)"
               }
             ]
           },
@@ -1218,7 +1224,7 @@
               },
               {
                 "id": "displayName",
-                "value": "Sound Pressure Level - L50 (${__field.labels.frequency_weighting}, ${__field.labels.time_weighting})"
+                "value": "Niveau Sonore - L50 (${__field.labels.frequency_weighting}, ${__field.labels.time_weighting})"
               }
             ]
           },
@@ -1237,7 +1243,7 @@
               },
               {
                 "id": "displayName",
-                "value": "Sound Pressure Level - L50 (${__field.labels.frequency_weighting}, ${__field.labels.time_weighting})"
+                "value": "Niveau Sonore - L50 (${__field.labels.frequency_weighting}, ${__field.labels.time_weighting})"
               }
             ]
           },
@@ -1264,7 +1270,7 @@
               },
               {
                 "id": "displayName",
-                "value": "Sound Pressure Level - L50 (${__field.labels.frequency_weighting}, ${__field.labels.time_weighting})"
+                "value": "Niveau Sonore - L50 (${__field.labels.frequency_weighting}, ${__field.labels.time_weighting})"
               }
             ]
           },
@@ -1295,7 +1301,7 @@
               },
               {
                 "id": "displayName",
-                "value": "Sound Pressure Level Raw (${__field.labels.frequency_weighting}, ${__field.labels.time_weighting})"
+                "value": "Niveau Sonore Brut (${__field.labels.frequency_weighting}, ${__field.labels.time_weighting})"
               }
             ]
           },
@@ -1317,12 +1323,15 @@
               },
               {
                 "id": "displayName",
-                "value": "Seuil Legal"
+                "value": "Seuil Légal"
               },
               {
                 "id": "custom.lineStyle",
                 "value": {
-                  "dash": [10, 10],
+                  "dash": [
+                    10,
+                    10
+                  ],
                   "fill": "dash"
                 }
               }
@@ -1824,7 +1833,21 @@
     "to": "now"
   },
   "timepicker": {
-    "refresh_intervals": ["5s", "10s", "30s", "1m", "5m", "15m", "30m", "1h", "2h", "4h", "1d", "2d", "7d"]
+    "refresh_intervals": [
+      "5s",
+      "10s",
+      "30s",
+      "1m",
+      "5m",
+      "15m",
+      "30m",
+      "1h",
+      "2h",
+      "4h",
+      "1d",
+      "2d",
+      "7d"
+    ]
   },
   "timezone": "browser",
   "title": "Noise Station",
