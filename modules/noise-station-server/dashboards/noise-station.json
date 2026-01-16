@@ -18,7 +18,7 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 68,
+  "id": 70,
   "links": [],
   "liveNow": true,
   "panels": [
@@ -710,7 +710,7 @@
         "type": "influxdb",
         "uid": "ff9xpmhbcsb9ce"
       },
-      "description": "Ce panneau affiche une synthèse en temps réel et statistique des niveaux sonores capturés. Il inclut le Leq (moyenne énergétique), le Lden (moyenne pondérée jour/soir/nuit) et le SEL (exposition sonore). Les indicateurs statistiques L10, L50 et L90 permettent d'analyser la distribution du bruit (pics vs bruit de fond).",
+      "description": "Synthèse avancée de l'environnement sonore et analyse statistique des indicateurs acoustiques. Ce panneau présente une vue exhaustive de la pollution sonore sur la période sélectionnée en combinant mesures énergétiques et distribution centile. Il calcule le niveau moyen Leq ainsi que l'indice de gêne global Lden, lequel intègre les pénalités réglementaires pour le soir (+5 dB) et la nuit (+10 dB) conformément aux normes d'évaluation de l'exposition au bruit. L'analyse statistique par centiles permet de caractériser précisément la nature du signal : le  L10 (niveau dépassé pendant 10 % de la période) met en évidence les événements sonores ponctuels et les pics de pollution, le L50 (niveau médian dépassé 50 % du temps) définit la tendance centrale du climat sonore, tandis que le L90 (niveau dépassé 90 % du temps) permet d'isoler le bruit de fond permanent en l'absence de sources intermittentes. Enfin, le panneau affiche le niveau d'exposition unique (SEL) et les extrema (Lmax/Lmin) pour offrir une lecture complète de la dynamique acoustique du site.",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -858,7 +858,7 @@
           "refId": "A"
         }
       ],
-      "title": "Indicateurs de pression acoustique",
+      "title": "Synthèse avancée de l'environnement sonore et analyse statistique des indicateurs acoustiques.",
       "type": "stat"
     },
     {
