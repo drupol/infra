@@ -18,7 +18,7 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 74,
+  "id": 76,
   "links": [],
   "liveNow": true,
   "panels": [
@@ -129,7 +129,7 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 13,
+        "h": 20,
         "w": 24,
         "x": 0,
         "y": 33
@@ -141,7 +141,7 @@
           "showLineNumbers": false,
           "showMiniMap": false
         },
-        "content": "Cette section met en regard le **niveau sonore médian (L50)** et les **seuils réglementaires applicables en Région Wallonne**.\n\n### Vue en Temps Réel\n\nLe panneau *Vue en Temps Réel* est un outil de **contrôle de conformité** direct. Il part des mesures SPL brutes et applique la logique suivante :\n\n1. **Calcul de la Médiane Lissée (L50)** : Bien que la réglementation se base sur le **Leq** (Moyenne Énergétique), nous utilisons ici le **L50** (Médiane Statistiques) pour l'affichage temps réel. Cela permet de filtrer naturellement les pics d'énergie brefs (voitures, avions) pour se concentrer sur le niveau sonore *typique* et constant (la nuisance de la PAC).\n2. **Comparaison Légale** : Chaque point est comparé à la limite autorisée selon l'heure (50dB jour / 45dB transition / 40dB nuit).\n3. **Détection d'Infraction** : Si le niveau dépasse la limite, le système vérifie la **durée** du dépassement.\n    *   **OK (Vert)** : Le niveau est conforme.\n    *   **En attente (Rouge)** : Le niveau dépasse le seuil, mais depuis moins de 2 minutes (tolérance technique).\n    *   **NOK (Rouge)** : Le dépassement est confirmé car il dure depuis plus de **2 minutes**. C'est une infraction potentielle.\n\nCette méthode permet de filtrer les pics brefs pour ne signaler que les dépassements significatifs.\n\n### Historique des Infractions\n\nCe panneau binaire enregistre les moments où le bruit a été jugé comme une nuisance (Infraction confirmée > 2 min). C'est l'historique officiel des non-conformités.\n\n### Analyse des Émergences\n\nLe graphique *Analyse des Émergences : Conformité aux Seuils Légaux* (plus bas) compare le niveau médian (**L50**) aux seuils réglementaires. Il met en évidence les périodes et l'intensité des dépassements par rapport à la limite autorisée (40/45/50 dB).\n",
+        "content": "Cette section met en regard le **niveau sonore médian (L50)** et les **seuils réglementaires applicables en Région Wallonne**.\n\n### Vue en Temps Réel\n\nLe panneau *Vue en Temps Réel* est un outil de **contrôle de conformité** direct. Il part des mesures SPL brutes et applique la logique suivante :\n\n1. **Calcul de la Médiane Lissée (L50)** : Bien que la réglementation se base sur le **Leq** (Moyenne Énergétique), nous utilisons ici le **L50** (Médiane Statistiques) pour l'affichage temps réel. Cela permet de filtrer naturellement les pics d'énergie brefs (voitures, avions) pour se concentrer sur le niveau sonore *typique* et constant (la nuisance de la PAC).\n2. **Comparaison Légale** : Chaque point est comparé à la limite autorisée selon l'heure (50dB jour / 45dB transition / 40dB nuit).\n3. **Détection d'Infraction** : Si le niveau dépasse la limite, le système vérifie la **durée** du dépassement.\n    *   **OK (Vert)** : Le niveau est conforme.\n    *   **En attente (Rouge)** : Le niveau dépasse le seuil, mais depuis moins de 2 minutes (tolérance technique).\n    *   **NOK (Rouge)** : Le dépassement est confirmé car il dure depuis plus de **2 minutes**. C'est une infraction potentielle.\n\nCette méthode permet de filtrer les pics brefs pour ne signaler que les dépassements significatifs.\n\n### Historique des Infractions\n\nCe panneau binaire enregistre les moments où le bruit a été jugé comme une nuisance (Infraction confirmée > 2 min). C'est l'historique officiel des non-conformités.\n\n### Analyse des Émergences\n\nLe graphique *Analyse des Émergences : Conformité aux Seuils Légaux* (plus bas) compare le niveau médian (**L50**) aux seuils réglementaires. Il met en évidence les périodes et l'intensité des dépassements par rapport à la limite autorisée (40/45/50 dB).\n\n### Taux de Dépassement des Seuils Légaux\n\nCet indicateur mesure la fréquence de l'exposition aux nuisances sonores plutôt que leur intensité brute. Une valeur de 0 % indique une conformité parfaite sur la période sélectionnée, tandis qu'une valeur élevée signale des dépassements fréquents ou continus.\n\nLe calcul est basé sur une pondération dynamique des seuils de tolérance :\n\n- Période de Jour (07:00 - 19:00) : Seuil de 50 dB.\n- Période de Transition (06:00 - 07:00 & 19:00 - 22:00) : Seuil de 45 dB.\n- Période de Nuit (22:00 - 06:00) : Seuil de 40 dB.\n\nLe pourcentage obtenu représente le ratio entre le nombre de relevés en infraction et le nombre total de mesures effectuées.\n\nCet indicateur est essentiel pour évaluer l'impact sonore global sur le voisinage et la récurrence des épisodes de bruit excessif.",
         "mode": "markdown"
       },
       "pluginVersion": "12.3.1",
@@ -367,7 +367,7 @@
         "h": 15,
         "w": 24,
         "x": 0,
-        "y": 46
+        "y": 53
       },
       "id": 1,
       "options": {
@@ -477,10 +477,10 @@
         ]
       },
       "gridPos": {
-        "h": 5,
+        "h": 4,
         "w": 24,
         "x": 0,
-        "y": 61
+        "y": 68
       },
       "id": 8,
       "options": {
@@ -677,9 +677,9 @@
       },
       "gridPos": {
         "h": 8,
-        "w": 24,
+        "w": 18,
         "x": 0,
-        "y": 66
+        "y": 72
       },
       "id": 23,
       "options": {
@@ -706,12 +706,107 @@
       "type": "timeseries"
     },
     {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "ff9xpmhbcsb9ce"
+      },
+      "description": "Ce panel affiche la proportion de temps (en %) durant laquelle le niveau de pression acoustique (SPL) a excédé les limites réglementaires définies pour la zone (Europe/Brussels). Le calcul tient compte de la variation des seuils selon l'heure : 50 dB (Jour), 45 dB (Aube/Soir/Transition) et 40 dB (Nuit).",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "dark-orange",
+                "value": 0
+              },
+              {
+                "color": "#EAB839",
+                "value": 5
+              },
+              {
+                "color": "dark-red",
+                "value": 10
+              },
+              {
+                "color": "dark-red",
+                "value": 20
+              },
+              {
+                "color": "dark-red",
+                "value": 30
+              },
+              {
+                "color": "dark-red",
+                "value": 40
+              },
+              {
+                "color": "dark-red",
+                "value": 50
+              },
+              {
+                "color": "dark-red",
+                "value": 60
+              },
+              {
+                "color": "dark-red",
+                "value": 70
+              },
+              {
+                "color": "dark-red",
+                "value": 80
+              },
+              {
+                "color": "dark-red",
+                "value": 90
+              }
+            ]
+          },
+          "unit": "percent"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 6,
+        "x": 18,
+        "y": 72
+      },
+      "id": 29,
+      "options": {
+        "minVizHeight": 75,
+        "minVizWidth": 75,
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": ["lastNotNull"],
+          "fields": "",
+          "values": false
+        },
+        "showThresholdLabels": true,
+        "showThresholdMarkers": true,
+        "sizing": "auto"
+      },
+      "pluginVersion": "12.3.1",
+      "targets": [
+        {
+          "query": "import \"timezone\"\nimport \"date\"\n\noption location = timezone.location(name: \"Europe/Brussels\")\n\ndata = from(bucket: \"default\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"dt8852\" and r[\"_field\"] == \"spl\")\n  |> filter(fn: (r) => exists r._value)\n  |> map(fn: (r) => {\n      h = date.hour(t: r._time)\n      limite = if h >= 7 and h < 19 then 50.0 \n               else if (h >= 6 and h < 7) or (h >= 19 and h < 22) then 45.0 \n               else 40.0\n      \n      // On marque 1 si on dépasse, 0 sinon\n      return { _value: if r._value > limite then 1.0 else 0.0 }\n  })\n  |> mean()\n  |> map(fn: (r) => ({ r with _value: r._value * 100.0 }))\n  |> yield(name: \"pourcentage_depassement\")",
+          "refId": "A"
+        }
+      ],
+      "title": "Taux de Dépassement des Seuils Légaux",
+      "type": "gauge"
+    },
+    {
       "collapsed": false,
       "gridPos": {
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 74
+        "y": 80
       },
       "id": 20,
       "panels": [],
@@ -724,10 +819,10 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 17,
+        "h": 18,
         "w": 24,
         "x": 0,
-        "y": 75
+        "y": 81
       },
       "id": 21,
       "options": {
@@ -870,7 +965,7 @@
         "h": 5,
         "w": 24,
         "x": 0,
-        "y": 92
+        "y": 99
       },
       "id": 27,
       "options": {
@@ -1160,7 +1255,7 @@
         "h": 11,
         "w": 24,
         "x": 0,
-        "y": 97
+        "y": 104
       },
       "id": 28,
       "options": {
@@ -1311,7 +1406,7 @@
         "h": 9,
         "w": 24,
         "x": 0,
-        "y": 108
+        "y": 115
       },
       "id": 22,
       "options": {
@@ -1377,7 +1472,7 @@
         "h": 11,
         "w": 24,
         "x": 0,
-        "y": 117
+        "y": 124
       },
       "id": 5,
       "options": {
