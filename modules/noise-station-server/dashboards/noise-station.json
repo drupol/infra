@@ -18,7 +18,7 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 76,
+  "id": 77,
   "links": [],
   "liveNow": true,
   "panels": [
@@ -710,7 +710,7 @@
         "type": "influxdb",
         "uid": "ff9xpmhbcsb9ce"
       },
-      "description": "Ce panel affiche la proportion de temps (en %) durant laquelle le niveau de pression acoustique (SPL) a excédé les limites réglementaires définies pour la zone (Europe/Brussels). Le calcul tient compte de la variation des seuils selon l'heure : 50 dB (Jour), 45 dB (Aube/Soir/Transition) et 40 dB (Nuit).",
+      "description": "Ce panel affiche la proportion de temps (en %) durant laquelle le niveau de pression acoustique (SPL) a excédé les limites réglementaires définies pour la zone. Le calcul tient compte de la variation des seuils selon l'heure : 50 dB (Jour), 45 dB (Aube/Soir/Transition) et 40 dB (Nuit).",
       "fieldConfig": {
         "defaults": {
           "color": {
