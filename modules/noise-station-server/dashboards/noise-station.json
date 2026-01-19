@@ -18,7 +18,7 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 78,
+  "id": 79,
   "links": [],
   "liveNow": true,
   "panels": [
@@ -831,7 +831,7 @@
           "showLineNumbers": false,
           "showMiniMap": false
         },
-        "content": "Cette section complète la surveillance temps réel par une analyse approfondie de l'environnement sonore. Elle permet de qualifier le type de bruit et d'évaluer la gêne globale.\n\n### 1. Synthèse Avancée (Tableau Statistique)\n\nCe panneau offre une vue exhaustive des indicateurs acoustiques sur la période sélectionnée :\n\n*   **Lden (Day-Evening-Night)** : Moyenne pondérée qui pénalise le bruit en **soirée (+5 dB)** et la **nuit (+10 dB)**. C'est l'indicateur de référence pour évaluer la gêne à long terme.\n*   **SEL (Sound Exposure Level)** : La \"dose\" totale de bruit accumulée. Utile pour comparer des événements de durées différentes.\n*   **Leq (Niveau Continu Équivalent)** : La moyenne énergétique classique (référence légale).\n*   **Percentiles (L10 / L50 / L90)** :\n    *   **L10 (Les Pics)** : Niveau dépassé 10% du temps. Représente les bruits forts intermittents.\n    *   **L50 (La Médiane)** : Niveau dépassé 50% du temps. Représente le bruit \"typique\".\n    *   **L90 (Le Fond)** : Niveau dépassé 90% du temps. Représente le calme résiduel.\n\n### 2. Indicateurs de Pression Acoustique (Graphique Temporel)\n\nCe graphique montre **l'évolution temporelle** des indicateurs (L10, L50, L90) par rapport au niveau brut (SPL) et aux seuils. Il permet de visualiser la dynamique instantanée du bruit :\n*   **Lignes pointillées (L10/L90)** : Délimitent l'enveloppe du bruit (Max / Min).\n*   **Ligne continue (L50)** : Montre la tendance centrale.\n*   **Zones colorées** : Indiquent les périodes de conformité (Vert) ou de dépassement (Rouge) par rapport aux seuils horaires.\n\n### 3. Signature du Bruit (Graphique Dynamique & Monotonie)\n\nCe graphique suit l'évolution de **l'Indice de Monotonie** (différence L10 - L90), une clé essentielle pour identifier la source du bruit :\n\n*   **< 5 dB (Stable / Monotone)** : L'écart entre le fond et les pics est faible. C'est la signature typique d'une **machine tournant en continu** (Pompe à Chaleur, VMC).\n*   **5 à 15 dB (Fluctuant)** : Bruit \"vivant\" standard.\n*   **> 15 dB (Impulsif / Variable)** : L'écart est grand. Signe d'un environnement marqué par des passages de véhicules, d'avions ou des événements ponctuels.\n\n### 4. Localisation du Capteur\n\nCarte de situation du point de mesure. Ce contexte est important pour comprendre la propagation du son (distance aux sources, présence d'obstacles, réflexion sur les façades).\n\n",
+        "content": "Cette section complète la surveillance temps réel par une analyse approfondie de l'environnement sonore. Elle permet de qualifier le type de bruit et d'évaluer la gêne globale.\n\n### 1. Synthèse Avancée (Tableau Statistique)\n\nCe panneau offre une vue exhaustive des indicateurs acoustiques sur la période sélectionnée :\n\n*   **Lden (Day-Evening-Night)** : Moyenne pondérée qui pénalise le bruit en **soirée (+5 dB)** et la **nuit (+10 dB)**. C'est l'indicateur de référence pour évaluer la gêne à long terme.\n*   **SEL (Sound Exposure Level)** : La \"dose\" totale de bruit accumulée. Utile pour comparer des événements de durées différentes.\n*   **Leq (Niveau Continu Équivalent)** : La moyenne énergétique classique (référence légale).\n*   **Percentiles (L10 / L50 / L90)** :\n    *   **L10 (Les Pics)** : Niveau dépassé 10% du temps. Représente les bruits forts intermittents.\n    *   **L50 (La Médiane)** : Niveau dépassé 50% du temps. Représente le bruit \"typique\".\n    *   **L90 (Le Fond)** : Niveau dépassé 90% du temps. Représente le calme résiduel.\n\n### 2. Indicateurs de Pression Acoustique (Graphique Temporel)\n\nCe graphique montre **l'évolution temporelle** des indicateurs (L10, L50, L90) par rapport au niveau brut (SPL) et aux seuils. Il permet de visualiser la dynamique instantanée du bruit :\n*   **Lignes pointillées (L10/L90)** : Délimitent l'enveloppe du bruit (Max / Min).\n*   **Ligne continue (L50)** : Montre la tendance centrale.\n*   **Zones colorées** : Indiquent les périodes de conformité (Vert) ou de dépassement (Rouge) par rapport aux seuils horaires.\n\n### 3. Synthèse Acoustique Quotidienne: Indicateurs d'Impact et de Nuisance\n\nCette visualisation offre une analyse complète de l'environnement sonore sur une base de 24 heures. L'indicateur Lden (Level Day-Evening-Night) évalue la nuisance globale en appliquant des pénalités de +5 dB le soir et +10 dB la nuit, reflétant la sensibilité accrue des riverains. La structure du bruit est détaillée par les percentiles : le L10 capture les événements sonores émergents (pics), le L50 représente le niveau médian, et le L90 définit le bruit de fond résiduel. Pour une fiabilité maximale, les valeurs Lmin et Lmax sont extraites des données brutes à la seconde pour identifier les événements extrêmes, tandis que les moyennes énergétiques et statistiques sont calculées par échantillonnage haute fréquence afin d'assurer une robustesse métrologique optimale.\n\n### 4. Signature du Bruit (Graphique Dynamique & Monotonie)\n\nCe graphique suit l'évolution de **l'Indice de Monotonie** (différence L10 - L90), une clé essentielle pour identifier la source du bruit :\n\n*   **< 5 dB (Stable / Monotone)** : L'écart entre le fond et les pics est faible. C'est la signature typique d'une **machine tournant en continu** (Pompe à Chaleur, VMC).\n*   **5 à 15 dB (Fluctuant)** : Bruit \"vivant\" standard.\n*   **> 15 dB (Impulsif / Variable)** : L'écart est grand. Signe d'un environnement marqué par des passages de véhicules, d'avions ou des événements ponctuels.\n\n### 5. Localisation du Capteur\n\nCarte de situation du point de mesure. Ce contexte est important pour comprendre la propagation du son (distance aux sources, présence d'obstacles, réflexion sur les façades).\n\n",
         "mode": "markdown"
       },
       "pluginVersion": "12.3.1",
@@ -1286,6 +1286,191 @@
         "type": "influxdb",
         "uid": "ff9xpmhbcsb9ce"
       },
+      "description": "Tableau de bord consolidé des niveaux de pression acoustique pondérés A, agrégés de minuit à minuit (24h). Ce rapport regroupe les indicateurs réglementaires d'exposition (Lden), la distribution statistique du bruit (L10, L50, L90) ainsi que les extrêmes de la journée (Lmin, Lmax).",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "smooth",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "showValues": false,
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "fieldMinMax": false,
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              }
+            ]
+          },
+          "unit": "dB"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Lden"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Lden (${__field.labels.frequency_weighting}, ${__field.labels.time_weighting})"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "L10"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "L10 (${__field.labels.frequency_weighting}, ${__field.labels.time_weighting})"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "L50"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "L50 (${__field.labels.frequency_weighting}, ${__field.labels.time_weighting})"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "L90"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "L90 (${__field.labels.frequency_weighting}, ${__field.labels.time_weighting})"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Lmax"
+            },
+            "properties": [
+              {
+                "id": "custom.lineStyle",
+                "value": {
+                  "dash": [0, 40],
+                  "fill": "dot"
+                }
+              },
+              {
+                "id": "custom.pointSize",
+                "value": 10
+              },
+              {
+                "id": "displayName",
+                "value": "Lmax (${__field.labels.frequency_weighting}, ${__field.labels.time_weighting})"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Lmin"
+            },
+            "properties": [
+              {
+                "id": "custom.lineStyle",
+                "value": {
+                  "dash": [0, 40],
+                  "fill": "dot"
+                }
+              },
+              {
+                "id": "custom.pointSize",
+                "value": 10
+              },
+              {
+                "id": "displayName",
+                "value": "Lmin (${__field.labels.frequency_weighting}, ${__field.labels.time_weighting})"
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 10,
+        "w": 24,
+        "x": 0,
+        "y": 115
+      },
+      "id": 30,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "multi",
+          "sort": "desc"
+        }
+      },
+      "pluginVersion": "12.3.1",
+      "targets": [
+        {
+          "query": "import \"date\"\nimport \"math\"\nimport \"timezone\"\n\noption location = timezone.location(name: \"Europe/Brussels\")\n\n// 1. CHARGEMENT ET PRÉ-RÉDUCTION (La clé de la performance)\n// On crée des \"mini-résumés\" par minute pour soulager le serveur\nsource = from(bucket: \"default\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r._measurement == \"dt8852\" and r._field == \"spl\")\n  |> filter(fn: (r) => r.frequency_weighting == \"dB(A)\")\n  |> filter(fn: (r) => exists r._value)\n  |> keep(columns: [\"_time\", \"_value\", \"frequency_weighting\", \"time_weighting\"])\n\n// 2. CALCULS DES EXTRÊMES (Lmin / Lmax)\n// On fait une première passe à 1m puis à 1d : c'est ultra rapide\nlmax = source \n  |> aggregateWindow(every: 1m, fn: max) \n  |> aggregateWindow(every: 1d, fn: max)\n  |> map(fn: (r) => ({ r with _field: \"Lmax\" }))\n\nlmin = source \n  |> aggregateWindow(every: 1m, fn: min) \n  |> aggregateWindow(every: 1d, fn: min)\n  |> map(fn: (r) => ({ r with _field: \"Lmin\" }))\n\n// 3. PRÉPARATION POUR LE RESTE (Moyenne par minute)\n// Travailler sur des moyennes de 1m est largement suffisant pour du L10 ou LDEN journalier\nbase1m = source\n  |> aggregateWindow(every: 1m, fn: mean)\n  |> filter(fn: (r) => exists r._value)\n\n// 4. CALCUL LDEN\nlden = base1m\n  |> map(fn: (r) => {\n      h = date.hour(t: r._time)\n      p = if h >= 7 and h < 19 then 0.0 else if h >= 19 and h < 22 then 5.0 else 10.0\n      return { r with energy: math.pow(x: 10.0, y: (float(v: r._value) + p) / 10.0) }\n  })\n  |> aggregateWindow(every: 1d, fn: mean, column: \"energy\")\n  |> map(fn: (r) => ({ \n      _time: r._time,\n      frequency_weighting: r.frequency_weighting,\n      time_weighting: r.time_weighting,\n      _field: \"Lden\", \n      _value: 10.0 * math.log10(x: r.energy) \n  }))\n\n// 5. CALCUL PERCENTILES (Sur la base 1m)\nl10 = base1m |> aggregateWindow(every: 1d, fn: (column, tables=<-) => tables |> quantile(q: 0.90)) |> map(fn: (r) => ({ r with _field: \"L10\" }))\nl50 = base1m |> aggregateWindow(every: 1d, fn: (column, tables=<-) => tables |> quantile(q: 0.50)) |> map(fn: (r) => ({ r with _field: \"L50\" }))\nl90 = base1m |> aggregateWindow(every: 1d, fn: (column, tables=<-) => tables |> quantile(q: 0.10)) |> map(fn: (r) => ({ r with _field: \"L90\" }))\n\n// 6. ASSEMBLAGE FINAL\nunion(tables: [l10, l50, l90, lmin, lmax, lden])\n  |> pivot(rowKey: [\"_time\", \"frequency_weighting\", \"time_weighting\"], columnKey: [\"_field\"], valueColumn: \"_value\")\n  |> map(fn: (r) => ({ \n      r with \n      _time: date.truncate(t: r._time, unit: 1d)\n  }))",
+          "refId": "A"
+        }
+      ],
+      "title": "    Synthèse Acoustique Quotidienne: Indicateurs d'Impact et de Nuisance",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "ff9xpmhbcsb9ce"
+      },
       "description": "Calcul de la dynamique du bruit: Différence entre le niveau de pointe (L10) et le niveau de fond (L90).\n\n- Valeur élevée (> 15 dB) : Bruit fluctuant, trafic, événements ponctuels.\n- Valeur faible (< 5 dB) : Bruit monotone et continu. C'est la signature typique d'une **Pompe à Chaleur** ou d'une VMC.",
       "fieldConfig": {
         "defaults": {
@@ -1406,7 +1591,7 @@
         "h": 9,
         "w": 24,
         "x": 0,
-        "y": 115
+        "y": 125
       },
       "id": 22,
       "options": {
@@ -1472,7 +1657,7 @@
         "h": 11,
         "w": 24,
         "x": 0,
-        "y": 124
+        "y": 134
       },
       "id": 5,
       "options": {
