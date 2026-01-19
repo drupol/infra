@@ -18,7 +18,7 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 79,
+  "id": 80,
   "links": [],
   "liveNow": true,
   "panels": [
@@ -793,7 +793,7 @@
       "pluginVersion": "12.3.1",
       "targets": [
         {
-          "query": "import \"timezone\"\nimport \"date\"\n\noption location = timezone.location(name: \"Europe/Brussels\")\n\ndata = from(bucket: \"default\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"dt8852\" and r[\"_field\"] == \"spl\")\n  |> filter(fn: (r) => exists r._value)\n  |> map(fn: (r) => {\n      h = date.hour(t: r._time)\n      limite = if h >= 7 and h < 19 then 50.0 \n               else if (h >= 6 and h < 7) or (h >= 19 and h < 22) then 45.0 \n               else 40.0\n      \n      // On marque 1 si on dépasse, 0 sinon\n      return { _value: if r._value > limite then 1.0 else 0.0 }\n  })\n  |> mean()\n  |> map(fn: (r) => ({ r with _value: r._value * 100.0 }))\n  |> yield(name: \"pourcentage_depassement\")",
+          "query": "import \"timezone\"\nimport \"date\"\n\noption location = timezone.location(name: \"Europe/Brussels\")\n\ndata = from(bucket: \"default\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"dt8852\" and r[\"_field\"] == \"spl\")\n  |> filter(fn: (r) => exists r._value)\n  // On réduit d'abord la densité des données pour éviter d'essouffler le map()\n  // 'v.windowPeriod' s'adapte automatiquement à la plage sélectionnée dans Grafana\n  |> aggregateWindow(every: v.windowPeriod, fn: mean) \n  |> map(fn: (r) => {\n      h = date.hour(t: r._time)\n      limite = if h >= 7 and h < 19 then 50.0 \n               else if (h >= 6 and h < 7) or (h >= 19 and h < 22) then 45.0 \n               else 40.0\n      \n      return { r with _value: if r._value > limite then 1.0 else 0.0 }\n  })\n  |> mean()\n  |> map(fn: (r) => ({ r with _value: r._value * 100.0 }))\n  |> yield(name: \"pourcentage_depassement\")",
           "refId": "A"
         }
       ],
