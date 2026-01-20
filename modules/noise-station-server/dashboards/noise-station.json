@@ -18,7 +18,7 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 80,
+  "id": 81,
   "links": [],
   "liveNow": true,
   "panels": [
@@ -1397,8 +1397,7 @@
               {
                 "id": "custom.lineStyle",
                 "value": {
-                  "dash": [0, 40],
-                  "fill": "dot"
+                  "fill": "solid"
                 }
               },
               {
@@ -1420,8 +1419,7 @@
               {
                 "id": "custom.lineStyle",
                 "value": {
-                  "dash": [0, 40],
-                  "fill": "dot"
+                  "fill": "solid"
                 }
               },
               {
@@ -1459,7 +1457,7 @@
       "pluginVersion": "12.3.1",
       "targets": [
         {
-          "query": "import \"date\"\nimport \"math\"\nimport \"timezone\"\n\noption location = timezone.location(name: \"Europe/Brussels\")\n\n// 1. CHARGEMENT ET PRÉ-RÉDUCTION (La clé de la performance)\n// On crée des \"mini-résumés\" par minute pour soulager le serveur\nsource = from(bucket: \"default\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r._measurement == \"dt8852\" and r._field == \"spl\")\n  |> filter(fn: (r) => r.frequency_weighting == \"dB(A)\")\n  |> filter(fn: (r) => exists r._value)\n  |> keep(columns: [\"_time\", \"_value\", \"frequency_weighting\", \"time_weighting\"])\n\n// 2. CALCULS DES EXTRÊMES (Lmin / Lmax)\n// On fait une première passe à 1m puis à 1d : c'est ultra rapide\nlmax = source \n  |> aggregateWindow(every: 1m, fn: max) \n  |> aggregateWindow(every: 1d, fn: max)\n  |> map(fn: (r) => ({ r with _field: \"Lmax\" }))\n\nlmin = source \n  |> aggregateWindow(every: 1m, fn: min) \n  |> aggregateWindow(every: 1d, fn: min)\n  |> map(fn: (r) => ({ r with _field: \"Lmin\" }))\n\n// 3. PRÉPARATION POUR LE RESTE (Moyenne par minute)\n// Travailler sur des moyennes de 1m est largement suffisant pour du L10 ou LDEN journalier\nbase1m = source\n  |> aggregateWindow(every: 1m, fn: mean)\n  |> filter(fn: (r) => exists r._value)\n\n// 4. CALCUL LDEN\nlden = base1m\n  |> map(fn: (r) => {\n      h = date.hour(t: r._time)\n      p = if h >= 7 and h < 19 then 0.0 else if h >= 19 and h < 22 then 5.0 else 10.0\n      return { r with energy: math.pow(x: 10.0, y: (float(v: r._value) + p) / 10.0) }\n  })\n  |> aggregateWindow(every: 1d, fn: mean, column: \"energy\")\n  |> map(fn: (r) => ({ \n      _time: r._time,\n      frequency_weighting: r.frequency_weighting,\n      time_weighting: r.time_weighting,\n      _field: \"Lden\", \n      _value: 10.0 * math.log10(x: r.energy) \n  }))\n\n// 5. CALCUL PERCENTILES (Sur la base 1m)\nl10 = base1m |> aggregateWindow(every: 1d, fn: (column, tables=<-) => tables |> quantile(q: 0.90)) |> map(fn: (r) => ({ r with _field: \"L10\" }))\nl50 = base1m |> aggregateWindow(every: 1d, fn: (column, tables=<-) => tables |> quantile(q: 0.50)) |> map(fn: (r) => ({ r with _field: \"L50\" }))\nl90 = base1m |> aggregateWindow(every: 1d, fn: (column, tables=<-) => tables |> quantile(q: 0.10)) |> map(fn: (r) => ({ r with _field: \"L90\" }))\n\n// 6. ASSEMBLAGE FINAL\nunion(tables: [l10, l50, l90, lmin, lmax, lden])\n  |> pivot(rowKey: [\"_time\", \"frequency_weighting\", \"time_weighting\"], columnKey: [\"_field\"], valueColumn: \"_value\")\n  |> map(fn: (r) => ({ \n      r with \n      _time: date.truncate(t: r._time, unit: 1d)\n  }))",
+          "query": "import \"date\"\nimport \"math\"\nimport \"timezone\"\n\noption location = timezone.location(name: \"Europe/Brussels\")\nstartDate = 2026-01-15T07:00:00Z\n\n// 1. CHARGEMENT ET PRÉ-RÉDUCTION (La clé de la performance)\n// On crée des \"mini-résumés\" par minute pour soulager le serveur\nsource = from(bucket: \"default\")\n  |> range(start: startDate, stop: now())\n  |> filter(fn: (r) => r._measurement == \"dt8852\" and r._field == \"spl\")\n  |> filter(fn: (r) => r.frequency_weighting == \"dB(A)\")\n  |> filter(fn: (r) => exists r._value)\n  |> keep(columns: [\"_time\", \"_value\", \"frequency_weighting\", \"time_weighting\"])\n\n// 2. CALCULS DES EXTRÊMES (Lmin / Lmax)\n// On fait une première passe à 1m puis à 1d : c est ultra rapide\nlmax = source \n  |> aggregateWindow(every: 1m, fn: max) \n  |> aggregateWindow(every: 1d, fn: max)\n  |> map(fn: (r) => ({ r with _field: \"Lmax\" }))\n\nlmin = source \n  |> aggregateWindow(every: 1m, fn: min) \n  |> aggregateWindow(every: 1d, fn: min)\n  |> map(fn: (r) => ({ r with _field: \"Lmin\" }))\n\n// 3. PRÉPARATION POUR LE RESTE (Moyenne par minute)\n// Travailler sur des moyennes de 1m est largement suffisant pour du L10 ou LDEN journalier\nbase1m = source\n  |> aggregateWindow(every: 1m, fn: mean)\n  |> filter(fn: (r) => exists r._value)\n\n// 4. CALCUL LDEN\nlden = base1m\n  |> map(fn: (r) => {\n      h = date.hour(t: r._time)\n      p = if h >= 7 and h < 19 then 0.0 else if h >= 19 and h < 22 then 5.0 else 10.0\n      return { r with energy: math.pow(x: 10.0, y: (float(v: r._value) + p) / 10.0) }\n  })\n  |> aggregateWindow(every: 1d, fn: mean, column: \"energy\")\n  |> map(fn: (r) => ({ \n      _time: r._time,\n      frequency_weighting: r.frequency_weighting,\n      time_weighting: r.time_weighting,\n      _field: \"Lden\", \n      _value: 10.0 * math.log10(x: r.energy) \n  }))\n\n// 5. CALCUL PERCENTILES (Sur la base 1m)\nl10 = base1m |> aggregateWindow(every: 1d, fn: (column, tables=<-) => tables |> quantile(q: 0.90)) |> map(fn: (r) => ({ r with _field: \"L10\" }))\nl50 = base1m |> aggregateWindow(every: 1d, fn: (column, tables=<-) => tables |> quantile(q: 0.50)) |> map(fn: (r) => ({ r with _field: \"L50\" }))\nl90 = base1m |> aggregateWindow(every: 1d, fn: (column, tables=<-) => tables |> quantile(q: 0.10)) |> map(fn: (r) => ({ r with _field: \"L90\" }))\n\n// 6. ASSEMBLAGE FINAL\nunion(tables: [l10, l50, l90, lmin, lmax, lden])\n  |> pivot(rowKey: [\"_time\", \"frequency_weighting\", \"time_weighting\"], columnKey: [\"_field\"], valueColumn: \"_value\")\n  |> map(fn: (r) => ({ \n      r with \n      _time: date.truncate(t: r._time, unit: 1d)\n  }))",
           "refId": "A"
         }
       ],
