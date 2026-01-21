@@ -21,7 +21,7 @@
           enable = true;
           extraConfig = {
             inputs.exec = {
-              command = [
+              commands = [
                 "${lib.getExe pkgs.local.temper-py}"
               ];
               data_format = "json";
