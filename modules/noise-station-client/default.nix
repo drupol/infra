@@ -14,11 +14,19 @@
       };
 
       users.groups.dialout.members = [ "telegraf" ];
+      users.groups.plugdev.members = [ "telegraf" ];
 
       services = {
         telegraf = {
           enable = true;
           extraConfig = {
+            inputs.exec = {
+              command = [
+                "${lib.getExe pkgs.local.temper-py}"
+              ];
+              data_format = "json";
+              interval = "60s";
+            };
             inputs.execd = {
               command = [
                 "${lib.getExe pkgs.local.dt8852}"
