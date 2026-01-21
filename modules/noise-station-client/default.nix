@@ -42,7 +42,7 @@
                   "--range"
                   "R_30_80"
                   "--freqweighting"
-                  "dbc"
+                  "dba"
                   "--timeweighting"
                   "slow"
                   "--format"
