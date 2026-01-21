@@ -23,6 +23,7 @@
             inputs.exec = {
               commands = [
                 "${lib.getExe pkgs.local.temper-py}"
+                "--json"
               ];
               data_format = "json";
               interval = "60s";
