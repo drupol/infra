@@ -19,9 +19,13 @@
       services =
         let
           temper-py-bin = lib.getExe (
-            pkgs.writeScriptBin "read-temper.sh" ''
-              ${lib.getExe pkgs.local.temper-py} --json
-            ''
+            pkgs.writeShellApplication {
+              name = "read-temper-bin";
+              runtimeInputs = [ pkgs.local.temper-py ];
+              text = ''
+                ${lib.getExe pkgs.local.temper-py} --json
+              '';
+            }
           );
         in
         {
