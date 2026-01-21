@@ -404,7 +404,7 @@
           "refId": "Seuil Légal"
         }
       ],
-      "timeFrom": "now-1d",
+      "timeFrom": "now-12h",
       "title": "Vue en Temps Réel",
       "type": "timeseries"
     },
@@ -507,7 +507,7 @@
           "refId": "A"
         }
       ],
-      "timeFrom": "now-1d",
+      "timeFrom": "now-12h",
       "title": "Historique des Infractions",
       "type": "state-timeline"
     },
@@ -704,7 +704,7 @@
           "refId": "A"
         }
       ],
-      "timeFrom": "now-1d",
+      "timeFrom": "now-12h",
       "title": "Analyse des Émergences : Conformité aux Seuils Légaux",
       "type": "timeseries"
     },
@@ -1281,7 +1281,7 @@
           "refId": "A"
         }
       ],
-      "timeFrom": "now-1d",
+      "timeFrom": "now-12h",
       "title": "Indicateurs de Pression Acoustique",
       "type": "timeseries"
     },
@@ -1620,7 +1620,7 @@
           "refId": "A"
         }
       ],
-      "timeFrom": "now-1d",
+      "timeFrom": "now-12h",
       "title": "Signature du Bruit: Dynamique & Monotonie",
       "type": "timeseries"
     },
