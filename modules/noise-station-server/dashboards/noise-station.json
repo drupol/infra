@@ -18,7 +18,7 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 84,
+  "id": 85,
   "links": [],
   "liveNow": true,
   "panels": [
@@ -404,6 +404,7 @@
           "refId": "Seuil Légal"
         }
       ],
+      "timeFrom": "now-1d",
       "title": "Vue en Temps Réel",
       "type": "timeseries"
     },
@@ -506,6 +507,7 @@
           "refId": "A"
         }
       ],
+      "timeFrom": "now-1d",
       "title": "Historique des Infractions",
       "type": "state-timeline"
     },
@@ -702,6 +704,7 @@
           "refId": "A"
         }
       ],
+      "timeFrom": "now-1d",
       "title": "Analyse des Émergences : Conformité aux Seuils Légaux",
       "type": "timeseries"
     },
@@ -1278,6 +1281,7 @@
           "refId": "A"
         }
       ],
+      "timeFrom": "now-1d",
       "title": "Indicateurs de Pression Acoustique",
       "type": "timeseries"
     },
@@ -1616,6 +1620,7 @@
           "refId": "A"
         }
       ],
+      "timeFrom": "now-1d",
       "title": "Signature du Bruit: Dynamique & Monotonie",
       "type": "timeseries"
     },
