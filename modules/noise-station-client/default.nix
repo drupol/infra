@@ -29,6 +29,9 @@
           );
         in
         {
+          udev.extraRules = ''
+            KERNEL=="hidraw*", SUBSYSTEM=="hidraw", MODE="0660", GROUP="telegraf"
+          '';
           telegraf = {
             enable = true;
             extraConfig = {
