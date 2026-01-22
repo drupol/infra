@@ -26,7 +26,7 @@
                 pkgs.jq
               ];
               text = ''
-                ${lib.getExe pkgs.local.temper-py} --json | jq ".[0]"
+                ${lib.getExe pkgs.local.temper-py} --json | jq '.[0] | with_entries(.key |= gsub(" "; "_"))'
               '';
             }
           );
@@ -49,29 +49,23 @@
                   {
                     measurement_name = "usb_temperature";
 
-                    object = [
+                    tag = [
+                      { path = "product"; }
+                      { path = "port"; }
+                      { path = "vendorid"; }
+                      { path = "firmware"; }
+                    ];
+
+                    field = [
                       {
-                        path = "@this"; # '@this' refers to each element in the JSON array
-
-                        tag = [
-                          { path = "product"; }
-                          { path = "port"; }
-                          { path = "firmware"; }
-                          { path = "vendorid"; }
-                        ];
-
-                        field = [
-                          {
-                            path = "\"internal temperature\"";
-                            rename = "temp_internal";
-                            type = "float";
-                          }
-                          {
-                            path = "\"external temperature\"";
-                            rename = "temp_external";
-                            type = "float";
-                          }
-                        ];
+                        path = "internal_temperature";
+                        rename = "temp_internal";
+                        type = "float";
+                      }
+                      {
+                        path = "external_temperature";
+                        rename = "temp_external";
+                        type = "float";
                       }
                     ];
                   }
