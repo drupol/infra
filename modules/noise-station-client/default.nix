@@ -21,9 +21,12 @@
           temper-py-bin = lib.getExe (
             pkgs.writeShellApplication {
               name = "read-temper-bin";
-              runtimeInputs = [ pkgs.local.temper-py ];
+              runtimeInputs = [
+                pkgs.local.temper-py
+                pkgs.jq
+              ];
               text = ''
-                ${lib.getExe pkgs.local.temper-py} --json
+                ${lib.getExe pkgs.local.temper-py} --json | jq ".[0]"
               '';
             }
           );
