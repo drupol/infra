@@ -44,7 +44,6 @@
                 commands = [
                   temper-script
                 ];
-                interval = "60s";
                 data_format = "json_v2";
 
                 json_v2 = [
@@ -52,9 +51,9 @@
                     measurement_name = "usb_temperature";
 
                     tag = [
-                      { path = "product"; }
-                      { path = "port"; }
-                      { path = "vendorid"; }
+                      { path = "product_id"; }
+                      { path = "path"; }
+                      { path = "vendor_id"; }
                       { path = "firmware"; }
                     ];
 
