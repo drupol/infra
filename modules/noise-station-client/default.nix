@@ -35,39 +35,45 @@
           telegraf = {
             enable = true;
             extraConfig = {
-              # inputs.exec = {
-              #   commands = [
-              #     "${temper-py-bin}"
-              #   ];
-              #   interval = "60s";
-              #   data_format = "json_v2";
+              inputs.exec = {
+                commands = [
+                  "${temper-py-bin}"
+                ];
+                interval = "60s";
+                data_format = "json_v2";
 
-              #   json_v2 = [
-              #     {
-              #       measurement_name = "usb_temperature";
+                json_v2 = [
+                  {
+                    measurement_name = "usb_temperature";
 
-              #       tag = [
-              #         { path = "product"; }
-              #         { path = "port"; }
-              #         { path = "firmware"; }
-              #         { path = "vendorid"; }
-              #       ];
+                    object = [
+                      {
+                        path = "@this"; # '@this' refers to each element in the JSON array
 
-              #       field = [
-              #         {
-              #           path = "internal temperature";
-              #           rename = "temp_internal";
-              #           type = "float";
-              #         }
-              #         {
-              #           path = "external temperature";
-              #           rename = "temp_external";
-              #           type = "float";
-              #         }
-              #       ];
-              #     }
-              #   ];
-              # };
+                        tag = [
+                          { path = "product"; }
+                          { path = "port"; }
+                          { path = "firmware"; }
+                          { path = "vendorid"; }
+                        ];
+
+                        field = [
+                          {
+                            path = "internal temperature";
+                            rename = "temp_internal";
+                            type = "float";
+                          }
+                          {
+                            path = "external temperature";
+                            rename = "temp_external";
+                            type = "float";
+                          }
+                        ];
+                      }
+                    ];
+                  }
+                ];
+              };
 
               inputs.execd = {
                 command = [
@@ -86,12 +92,22 @@
                 signal = "none";
               };
 
-              outputs.influxdb_v2 = {
-                urls = [ "http://192.168.2.116:8086" ];
-                token = "noisestation";
-                organization = "default";
-                bucket = "default";
-              };
+              outputs.influxdb_v2 = [
+                {
+                  urls = [ "http://192.168.2.116:8086" ];
+                  token = "noisestation";
+                  organization = "default";
+                  bucket = "default";
+                  namedrop = [ "usb_temperature" ];
+                }
+                {
+                  urls = [ "http://192.168.2.116:8086" ];
+                  token = "noisestation";
+                  organization = "default";
+                  bucket = "usb_temperature";
+                  namepass = [ "usb_temperature" ];
+                }
+              ];
             };
           };
         };
