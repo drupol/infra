@@ -59,12 +59,12 @@
 
                         field = [
                           {
-                            path = "internal temperature";
+                            path = "\"internal temperature\"";
                             rename = "temp_internal";
                             type = "float";
                           }
                           {
-                            path = "external temperature";
+                            path = "\"external temperature\"";
                             rename = "temp_external";
                             type = "float";
                           }
