@@ -65,11 +65,19 @@
                 default = { };
                 usb_temperature = { };
               };
-              auths.default = {
-                allAccess = true;
-                description = "some noise-station token";
-                # readBuckets = [ "default" ];
-                # writeBuckets = [ "default" ];
+              auths = {
+                usb_temperature = {
+                  allAccess = true;
+                  description = "some noise-station data for Temperature";
+                  # readBuckets = [ "default" ];
+                  # writeBuckets = [ "default" ];
+                };
+                default = {
+                  allAccess = true;
+                  description = "some noise-station data for SPL";
+                  # readBuckets = [ "default" ];
+                  # writeBuckets = [ "default" ];
+                };
               };
             };
           };
