@@ -35,39 +35,39 @@
           telegraf = {
             enable = true;
             extraConfig = {
-              inputs.exec = {
-                commands = [
-                  "${temper-py-bin}"
-                ];
-                interval = "60s";
-                data_format = "json_v2";
+              # inputs.exec = {
+              #   commands = [
+              #     "${temper-py-bin}"
+              #   ];
+              #   interval = "60s";
+              #   data_format = "json_v2";
 
-                json_v2 = [
-                  {
-                    measurement_name = "usb_temperature";
+              #   json_v2 = [
+              #     {
+              #       measurement_name = "usb_temperature";
 
-                    tag = [
-                      { path = "product"; }
-                      { path = "port"; }
-                      { path = "firmware"; }
-                      { path = "vendorid"; }
-                    ];
+              #       tag = [
+              #         { path = "product"; }
+              #         { path = "port"; }
+              #         { path = "firmware"; }
+              #         { path = "vendorid"; }
+              #       ];
 
-                    field = [
-                      {
-                        path = "internal temperature";
-                        rename = "temp_internal";
-                        type = "float";
-                      }
-                      {
-                        path = "external temperature";
-                        rename = "temp_external";
-                        type = "float";
-                      }
-                    ];
-                  }
-                ];
-              };
+              #       field = [
+              #         {
+              #           path = "internal temperature";
+              #           rename = "temp_internal";
+              #           type = "float";
+              #         }
+              #         {
+              #           path = "external temperature";
+              #           rename = "temp_external";
+              #           type = "float";
+              #         }
+              #       ];
+              #     }
+              #   ];
+              # };
 
               inputs.execd = {
                 command = [
