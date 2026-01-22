@@ -61,7 +61,10 @@
               tokenFile = pkgs.writeText "admin-token" "noisestation";
             };
             organizations.default = {
-              buckets.default = { };
+              buckets = {
+                default = { };
+                usb_temperature = { };
+              };
               auths.default = {
                 allAccess = true;
                 description = "some noise-station token";
