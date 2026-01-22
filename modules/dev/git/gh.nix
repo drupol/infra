@@ -1,20 +1,15 @@
 {
   flake.modules = {
-    homeManager.dev =
-      { pkgs, ... }:
-      {
-        programs = {
-          gh = {
-            enable = true;
-            extensions = [
-              pkgs.gh-copilot
-            ];
-          };
-        };
-
-        nixpkgs = {
-          config.allowUnfree = true;
+    homeManager.dev = {
+      programs = {
+        gh = {
+          enable = true;
         };
       };
+
+      nixpkgs = {
+        config.allowUnfree = true;
+      };
+    };
   };
 }
