@@ -18,7 +18,7 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 90,
+  "id": 91,
   "links": [],
   "panels": [
     {
@@ -800,12 +800,106 @@
       "type": "gauge"
     },
     {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "ff9xpmhbcsb9ce"
+      },
+      "description": "Affichage en temps réel de la température mesurée par la sonde USB externe.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "smooth",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "showValues": false,
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "displayName": "Température Extérieure",
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "celsius"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 24,
+        "x": 0,
+        "y": 80
+      },
+      "id": 31,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "12.3.1",
+      "targets": [
+        {
+          "query": "from(bucket: \"usb_temperature\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_field\"] == \"temp_external\")",
+          "refId": "A"
+        }
+      ],
+      "title": "Température Extérieure",
+      "type": "timeseries"
+    },
+    {
       "collapsed": false,
       "gridPos": {
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 80
+        "y": 88
       },
       "id": 20,
       "panels": [],
@@ -821,7 +915,7 @@
         "h": 18,
         "w": 24,
         "x": 0,
-        "y": 81
+        "y": 89
       },
       "id": 21,
       "options": {
@@ -964,7 +1058,7 @@
         "h": 5,
         "w": 24,
         "x": 0,
-        "y": 99
+        "y": 107
       },
       "id": 27,
       "options": {
@@ -1254,7 +1348,7 @@
         "h": 11,
         "w": 24,
         "x": 0,
-        "y": 104
+        "y": 112
       },
       "id": 28,
       "options": {
@@ -1439,7 +1533,7 @@
         "h": 10,
         "w": 24,
         "x": 0,
-        "y": 115
+        "y": 123
       },
       "id": 30,
       "options": {
@@ -1591,7 +1685,7 @@
         "h": 9,
         "w": 24,
         "x": 0,
-        "y": 125
+        "y": 133
       },
       "id": 22,
       "options": {
@@ -1657,7 +1751,7 @@
         "h": 11,
         "w": 24,
         "x": 0,
-        "y": 134
+        "y": 142
       },
       "id": 5,
       "options": {
