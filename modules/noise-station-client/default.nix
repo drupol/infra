@@ -39,9 +39,36 @@
                 commands = [
                   "${temper-py-bin}"
                 ];
-                data_format = "json";
                 interval = "60s";
+                data_format = "json_v2";
+
+                json_v2 = [
+                  {
+                    measurement_name = "usb_temperature";
+
+                    tag = [
+                      { path = "product"; }
+                      { path = "port"; }
+                      { path = "firmware"; }
+                      { path = "vendorid"; }
+                    ];
+
+                    field = [
+                      {
+                        path = "internal temperature";
+                        rename = "temp_internal";
+                        type = "float";
+                      }
+                      {
+                        path = "external temperature";
+                        rename = "temp_external";
+                        type = "float";
+                      }
+                    ];
+                  }
+                ];
               };
+
               inputs.execd = {
                 command = [
                   "${lib.getExe pkgs.local.dt8852}"
@@ -58,6 +85,7 @@
                 ];
                 signal = "none";
               };
+
               outputs.influxdb_v2 = {
                 urls = [ "http://192.168.2.116:8086" ];
                 token = "noisestation";
