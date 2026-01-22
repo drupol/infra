@@ -13,6 +13,8 @@
         ];
       };
 
+      environment.systemPackages = [ pkgs.local.temper ];
+
       users.groups.dialout.members = [ "telegraf" ];
       users.groups.plugdev.members = [ "telegraf" ];
 
