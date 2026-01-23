@@ -18,7 +18,7 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 93,
+  "id": 95,
   "links": [],
   "panels": [
     {
@@ -886,7 +886,7 @@
       "pluginVersion": "12.3.1",
       "targets": [
         {
-          "query": "import \"timezone\"\nimport \"date\"\n\noption location = timezone.location(name: \"Europe/Brussels\")\n\nfrom(bucket: \"usb_temperature\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_field\"] == \"temp_external\")\n  |> keep(columns: [\"_time\", \"_value\"])",
+          "query": "import \"timezone\"\nimport \"date\"\nimport \"math\"\n\noption location = timezone.location(name: \"Europe/Brussels\")\n\nfrom(bucket: \"usb_temperature\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_field\"] == \"temp_external\")\n  |> aggregateWindow(every: 3m, fn: median, createEmpty: false)  \n  |> aggregateWindow(every: v.windowPeriod, fn: median, createEmpty: false)\n  |> map(fn: (r) => ({\n      r with \n      _value: math.round(x: r._value * 2.0) / 2.0\n    }))\n  |> keep(columns: [\"_time\", \"_value\"])",
           "refId": "A"
         }
       ],
@@ -1404,7 +1404,7 @@
             "insertNulls": false,
             "lineInterpolation": "smooth",
             "lineWidth": 1,
-            "pointSize": 5,
+            "pointSize": 10,
             "scaleDistribution": {
               "type": "linear"
             },
@@ -1442,6 +1442,10 @@
               {
                 "id": "displayName",
                 "value": "Lden (${__field.labels.frequency_weighting}, ${__field.labels.time_weighting})"
+              },
+              {
+                "id": "custom.lineWidth",
+                "value": 4
               }
             ]
           },
@@ -1495,10 +1499,6 @@
                 }
               },
               {
-                "id": "custom.pointSize",
-                "value": 10
-              },
-              {
                 "id": "displayName",
                 "value": "Lmax (${__field.labels.frequency_weighting}, ${__field.labels.time_weighting})"
               }
@@ -1516,10 +1516,6 @@
                   "dash": [10, 10],
                   "fill": "dash"
                 }
-              },
-              {
-                "id": "custom.pointSize",
-                "value": 10
               },
               {
                 "id": "displayName",
