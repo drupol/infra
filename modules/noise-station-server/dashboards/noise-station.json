@@ -18,7 +18,7 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 96,
+  "id": 97,
   "links": [],
   "panels": [
     {
@@ -146,6 +146,33 @@
       "pluginVersion": "12.3.1",
       "title": "",
       "type": "text"
+    },
+    {
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 24,
+        "x": 0,
+        "y": 53
+      },
+      "id": 32,
+      "options": {
+        "limit": 10,
+        "navigateAfter": "10m",
+        "navigateBefore": "10m",
+        "navigateToPanel": false,
+        "onlyFromThisDashboard": false,
+        "onlyInTimeRange": false,
+        "showTags": true,
+        "showTime": true,
+        "showUser": false
+      },
+      "pluginVersion": "12.3.1",
+      "title": "Mes annotations",
+      "type": "annolist"
     },
     {
       "datasource": {
@@ -366,7 +393,7 @@
         "h": 15,
         "w": 24,
         "x": 0,
-        "y": 53
+        "y": 62
       },
       "id": 1,
       "options": {
@@ -479,7 +506,7 @@
         "h": 4,
         "w": 24,
         "x": 0,
-        "y": 68
+        "y": 77
       },
       "id": 8,
       "options": {
@@ -678,7 +705,7 @@
         "h": 8,
         "w": 18,
         "x": 0,
-        "y": 72
+        "y": 81
       },
       "id": 23,
       "options": {
@@ -773,7 +800,7 @@
         "h": 8,
         "w": 6,
         "x": 18,
-        "y": 72
+        "y": 81
       },
       "id": 29,
       "options": {
@@ -867,7 +894,7 @@
         "h": 8,
         "w": 24,
         "x": 0,
-        "y": 80
+        "y": 89
       },
       "id": 31,
       "options": {
@@ -899,7 +926,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 88
+        "y": 97
       },
       "id": 20,
       "panels": [],
@@ -915,7 +942,7 @@
         "h": 18,
         "w": 24,
         "x": 0,
-        "y": 89
+        "y": 98
       },
       "id": 21,
       "options": {
@@ -1058,7 +1085,7 @@
         "h": 5,
         "w": 24,
         "x": 0,
-        "y": 107
+        "y": 116
       },
       "id": 27,
       "options": {
@@ -1348,7 +1375,7 @@
         "h": 11,
         "w": 24,
         "x": 0,
-        "y": 112
+        "y": 121
       },
       "id": 28,
       "options": {
@@ -1529,7 +1556,7 @@
         "h": 10,
         "w": 24,
         "x": 0,
-        "y": 123
+        "y": 132
       },
       "id": 30,
       "options": {
@@ -1681,7 +1708,7 @@
         "h": 9,
         "w": 24,
         "x": 0,
-        "y": 133
+        "y": 142
       },
       "id": 22,
       "options": {
@@ -1747,7 +1774,7 @@
         "h": 11,
         "w": 24,
         "x": 0,
-        "y": 142
+        "y": 151
       },
       "id": 5,
       "options": {
