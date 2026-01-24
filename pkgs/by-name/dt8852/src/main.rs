@@ -177,55 +177,53 @@ fn main() -> anyhow::Result<()> {
 
             loop {
                  let result = dt8852.decode_next_token(*verbosity == 4)?;
-                 if let Some((name, token, _value_changed)) = result {
-                     if let OutputFormat::Telegraf = format {
-                         if name == "output_to" {
-                             if let dt8852::Token::OutputTo(OutputTo::Display) = token {
-                                 if let Some(spl) = dt8852.state.current_spl {
-                                    let escape = |s: &str| s.replace(' ', "\\ ").replace(',', "\\,").replace('=', "\\=");
-                                    let mut tags = Vec::new();
-                                    if let Some(fw) = dt8852.state.frequency_weighting { tags.push(format!("frequency_weighting={}", escape(fw.as_str()))); }
-                                    if let Some(tw) = dt8852.state.time_weighting { tags.push(format!("time_weighting={}", escape(tw.as_str()))); }
-                                    if let Some(rm) = dt8852.state.range_mode { tags.push(format!("range_mode={}", escape(rm.as_str()))); }
-                                    if let Some(hm) = dt8852.state.hold_mode { tags.push(format!("hold_mode={}", escape(hm.as_str()))); }
+                 let Some((name, token, _value_changed)) = result else { continue; };
 
-                                    let tag_str = if tags.is_empty() { String::new() } else { format!(",{}", tags.join(",")) };
-                                    println!("dt8852{} spl={}", tag_str, spl);
-                                 }
+                 if let OutputFormat::Telegraf = format {
+                     if name == "output_to" {
+                         if let dt8852::Token::OutputTo(OutputTo::Display) = token {
+                             if let Some(spl) = dt8852.state.current_spl {
+                                let escape = |s: &str| s.replace(' ', "\\ ").replace(',', "\\,").replace('=', "\\=");
+                                let mut tags = Vec::new();
+                                if let Some(fw) = dt8852.state.frequency_weighting { tags.push(format!("frequency_weighting={}", escape(fw.as_str()))); }
+                                if let Some(tw) = dt8852.state.time_weighting { tags.push(format!("time_weighting={}", escape(tw.as_str()))); }
+                                if let Some(rm) = dt8852.state.range_mode { tags.push(format!("range_mode={}", escape(rm.as_str()))); }
+                                if let Some(hm) = dt8852.state.hold_mode { tags.push(format!("hold_mode={}", escape(hm.as_str()))); }
+
+                                let tag_str = if tags.is_empty() { String::new() } else { format!(",{}", tags.join(",")) };
+                                println!("dt8852{} spl={}", tag_str, spl);
                              }
                          }
-                         continue;
                      }
+                     continue;
+                 }
 
-                     if *verbosity <= 1 {
-                         if name == "output_to" {
-                             if let dt8852::Token::OutputTo(OutputTo::Display) = token {
-                                 if let Some(spl) = dt8852.state.current_spl {
-                                      if *verbosity == 0 {
-                                          println!("{}", spl);
-                                      } else {
-                                           let time_str = dt8852.state.current_time.map(|t| t.to_string()).unwrap_or("Unknown".to_string());
-                                           println!("{},{}", time_str, spl);
-                                      }
-                                 }
-                             }
-                         }
-
-                     } else if *verbosity <= 3 {
-                        if name == "current_spl" {
-                             if let dt8852::Token::CurrentSpl(spl) = token {
-                                  if *verbosity == 2 {
-                                      println!("{}", spl);
-                                  } else {
-                                       let time_str = dt8852.state.current_time.map(|t| t.to_string()).unwrap_or("Unknown".to_string());
-                                       println!("{},{}", time_str, spl);
-                                  }
-                             }
-                        }
+                 let print_spl = |val| {
+                     if *verbosity % 2 == 0 {
+                         println!("{}", val);
                      } else {
-                         // Verbosity 4 or 5
-                         println!("{:?}", token);
+                         let time_str = dt8852.state.current_time.map(|t| t.to_string()).unwrap_or("Unknown".to_string());
+                         println!("{},{}", time_str, val);
                      }
+                 };
+
+                 if *verbosity <= 1 {
+                     if name == "output_to" {
+                         if let dt8852::Token::OutputTo(OutputTo::Display) = token {
+                             if let Some(spl) = dt8852.state.current_spl {
+                                 print_spl(spl);
+                             }
+                         }
+                     }
+                 } else if *verbosity <= 3 {
+                    if name == "current_spl" {
+                         if let dt8852::Token::CurrentSpl(spl) = token {
+                             print_spl(spl);
+                         }
+                    }
+                 } else {
+                     // Verbosity 4 or 5
+                     println!("{:?}", token);
                  }
             }
         },
