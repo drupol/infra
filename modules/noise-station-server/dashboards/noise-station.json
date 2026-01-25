@@ -18,7 +18,7 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 101,
+  "id": 102,
   "links": [],
   "panels": [
     {
@@ -40,7 +40,7 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 31,
+        "h": 43,
         "w": 12,
         "x": 0,
         "y": 1
@@ -52,7 +52,7 @@
           "showLineNumbers": false,
           "showMiniMap": false
         },
-        "content": "# Noise Station\n\n### Un système de monitoring acoustique intelligent\n\nLa **Noise Station** est une solution de surveillance environnementale de haute précision conçue pour capturer, analyser et visualiser les niveaux sonores d'un espace en temps réel. Elle transforme des données acoustiques brutes en indicateurs visuels pour suivre l'évolution du bruit, détecter les pics et comprendre le profil sonore d'un lieu sur 24 heures.\n\n# Comment ça fonctionne ?\n\n### 1. La Capture (Le Matériel)\n\nLe système s'appuie sur un microphone professionnel de type **Trotec SL400** (équivalent du **CEM DT-8852**). Ce sonomètre de Classe 2 offre des fonctionnalités indispensables :\n-   **Double Pondération:** Supporte les courbes **dB(A)** (perception humaine) et **dB(C)** (basses fréquences).\n-   **Plage Dynamique:** Mesure précise de 30 à 130 dB (précision : 1,4 dB, résolution : 0,1 dB)\n-   **Modes Temporels:** Analyse en mode \"Fast\" (réactivité immédiate) ou \"Slow\" (stabilité).\n-   **Signaux numériques:** Uniquement les données numériques (et pas analogique) sont transmises. \n-   **Certification:** Livré avec certificat de calibration, conforme à IEC61672-1 Class 2\n\n### 2. Le Cœur du Système (L'Intelligence)\n\nLes données sont traitées par une unité de calcul (**Raspberry Pi**) et stockées dans une base de données temporelle (**InfluxDB**):\n*   **Nettoyage :** Filtrage des métadonnées pour une lecture fluide.\n*   **Agrégation :** Calcul de statistiques avancées (L10, L50, L90) en temps réel.\n\n### 3. La Visualisation (Le Dashboard)\n\nLe dashboard utilise plusieurs méthodes d'analyse pour une vue complète :\n\n*   **Vue Temps Réel (Conformité) :** Vérifie si le **niveau médian (L50)** respecte les seuils légaux (40/45/50 dB). Il colore le graphe en rouge si un dépassement persiste plus de **2 minutes**, ce qui permet de distinguer une nuisance réelle (ex: pompe à chaleur) d'un bruit passager (ex: avion).\n*   **Conformité (Analyse des Émergences) :** Un graphique comparant le niveau médian (**L50**) aux seuils réglementaires pour identifier les dépassements durables.\n*   **Indicateurs de Pression Acoustique (Tableau de Bord)** : Un résumé statistique complet affichant le SEL (Exposition Totale), le **Lden** (Pondération Jour/Soir/Nuit) et les percentiles (L10/L50/L90) pour une lecture rapide de la situation.\n*   **Profil Acoustique (Expert) :** Une analyse fine comparant le standard légal (Leq) et la réalité ressentie (L50) pour identifier la nature du bruit (machine vs trafic).\n*   **Indice de Monotonie :** Un calcul mathématique (L10-L90) qui détermine si le bruit est *stable* (typique d'une installation industrielle) ou *aléatoire*.\n*   **Pic de Volume (Volume Maximum Enregistré) :** Une jauge dynamique qui surveille le volume maximal atteint durant la **période affichée**.\n*   **Profil Statistique (Fréquence Sonore) :** Un histogramme qui regroupe les mesures des dernières 24 heures par paliers de décibels.\n*   **Distribution Horaire :** Un graphique affichant la **moyenne sonore pour chaque heure**.\n*   **Géolocalisation :** Une carte intégrée affichant l'emplacement précis du capteur.\n\n# Pourquoi utiliser Noise Station ?\n\nPasser du ressenti subjectif (\"c'est bruyant\") à une mesure objective (\"la moyenne est de 65 dB avec des pics à 85 dB\"). Que ce soit pour le confort au travail, la surveillance de voisinage ou l'analyse environnementale, la **Noise Station** fournit une preuve scientifique et visuelle de la réalité acoustique de votre environnement.",
+        "content": "# Noise Station\n\n### Un système de monitoring acoustique intelligent\n\nLa **Noise Station** est une solution de surveillance environnementale de haute précision conçue pour capturer, analyser et visualiser les niveaux sonores d'un espace en temps réel. Elle transforme des données acoustiques brutes en indicateurs visuels pour suivre l'évolution du bruit, détecter les pics et comprendre le profil sonore d'un lieu sur 24 heures.\n\n# Comment ça fonctionne ?\n\n### 1. La Capture (Le Matériel)\n\nLe système s'appuie sur un microphone professionnel de type **Trotec SL400** (équivalent du **CEM DT-8852**). Ce sonomètre de Classe 2 offre des fonctionnalités indispensables :\n\n- **Double Pondération:** Supporte les courbes **dB(A)** (perception humaine) et **dB(C)** (basses fréquences).\n- **Plage Dynamique:** Mesure précise de 30 à 130 dB (précision : 1,4 dB, résolution : 0,1 dB)\n- **Modes Temporels:** Analyse en mode \"Fast\" (réactivité immédiate) ou \"Slow\" (stabilité).\n- **Signaux numériques:** Uniquement les données numériques (et pas analogique) sont transmises.\n- **Certification:** Livré avec certificat de calibration, conforme à IEC61672-1 Class 2\n\n### 2. Le Cœur du Système (L'Intelligence)\n\nLes flux de données sont orchestrés par un micro-serveur Raspberry Pi et centralisés dans une base de données spécialisée dans l'analyse temporelle:\n\n- **Raffinage:** Nettoyage et filtrage rigoureux des métadonnées pour garantir une exploitation fluide et cohérente.\n- **Optimisation de précision:** Gestion intelligente des volumes massifs de données afin d'assurer un rendu graphique haute fidélité, parfaitement fidèle à la réalité du terrain.\n- **Analyse Statistique:** Agrégation automatisée des données brutes en indicateurs acoustiques complexes.\n\n### 3. La Visualisation (Le Dashboard)\n\nLe tableau de bord est conçu comme un outil d'aide à la décision et de preuve technique. Il est structuré en trois niveaux de lecture pour offrir une visibilité totale sur l'environnement sonore.\n\n#### A. Pilotage et Conformité Légale (Temps Réel)\n\nCe module permet de vérifier instantanément si l'installation respecte la législation wallonne.\n\n- **Contrôle de Conformité Dynamique :** Un graphique principal qui compare le niveau médian (**L50**) aux seuils réglementaires (40/45/50 dB). Grâce à un algorithme de filtrage, il isole les bruits continus (PAC) des bruits parasites (avions, voitures).\n- **Journal des Infractions :** Un système d'alerte visuel avec temporisation. Une infraction n'est validée et enregistrée en **rouge** que si le dépassement des seuils persiste plus de **2 minutes**.\n- **Indicateurs de Sévérité :** Une jauge affiche le **taux de dépassement global** (en %), répondant précisément à la question : \"Quelle proportion du temps le voisinage a-t-il subi une nuisance ?\"\n\n#### B. Diagnostic et Analyse d'Impact\n\nCes outils permettent de mesurer la gravité réelle de la nuisance et ses causes.\n\n- **Analyse des Émergences :** Un graphique dédié au \"surplus\" sonore. Il affiche uniquement l'écart (en dB) entre le bruit mesuré et la limite légale, permettant de quantifier précisément la gêne.\n- **Corrélation Thermique :** Intégration de la **température extérieure** pour mettre en évidence le lien entre le froid et l'augmentation du régime de la pompe à chaleur (cycles de dégivrage, montée en puissance du compresseur).\n- **Historique Quotidien :** Une vue rétrospective sur 24h pour comparer les performances acoustiques d'un jour à l'autre et identifier des tendances hebdomadaires.\n\n#### C. Expertise Acoustique Avancée\n\nPour une analyse plus pointue, le dashboard fournit les métriques normées utilisées par les experts en acoustique.\n\n- **Bilan Énergétique Global (Lden) :** Calcul automatique de l'indice de référence européen, incluant les pénalités de soirée et de nuit pour évaluer la gêne réelle sur le long terme.\n- **Signature et Monotonie du Bruit :** Utilisation de l'indice de monotonie (**L10 - L90**) pour qualifier la source. Un écart faible (< 5dB) confirme techniquement un bruit de type industriel/mécanique (stable), tandis qu'un écart fort (> 15dB) indique des bruits aléatoires.\n- **Distribution Statistique :** Un profil complet via les percentiles (**L10, L50, L90**) et un histogramme de fréquence pour comprendre la structure du climat sonore (poids du bruit de fond vs pics de pollution sonore).\n- **Cartographie :** Géolocalisation précise du point de mesure pour contextualiser l'emplacement du capteur par rapport aux récepteurs (voisins, façades).\n\n# Pourquoi utiliser Noise Station ?\n\nPasser du ressenti subjectif (\"c'est bruyant\") à une mesure objective (\"la moyenne est de 65 dB avec des pics à 85 dB\"). Que ce soit pour le confort au travail, la surveillance de voisinage ou l'analyse environnementale, la **Noise Station** fournit une preuve scientifique et visuelle de la réalité acoustique de votre environnement.\n",
         "mode": "markdown"
       },
       "pluginVersion": "12.3.1",
@@ -90,7 +90,7 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 13,
+        "h": 25,
         "w": 12,
         "x": 12,
         "y": 19
@@ -118,7 +118,7 @@
         "h": 34,
         "w": 24,
         "x": 0,
-        "y": 32
+        "y": 44
       },
       "id": 17,
       "options": {
@@ -127,7 +127,7 @@
           "showLineNumbers": false,
           "showMiniMap": false
         },
-        "content": "### Vue en Temps Réel (Graphique Principal)\n\nLe panneau central de **contrôle de conformité**. Il affiche le bruit mesuré face à la limite légale dynamique.\n\n*   **Logique de Filtre** : Utilise le **L50** (Médiane) pour écarter les bruits brefs (voitures, avions) et isoler le bruit continu (PAC).\n*   **Temporisation** : Une infraction n'est signalée que si le dépassement dure **plus de 2 minutes**.\n    *   🟢 **Vert** : Conforme.\n    *   🔴 **Rouge** : Infraction confirmée (> 2 min).\n\n### Historique des Infractions (Frise Chronologique)\n\nUn bandeau simple qui fait office de **journal des non-conformités**. Il indique en rouge les périodes où le bruit a été officiellement jugé excessif (après la tolérance de 2 min).\n\n### Analyse des Émergences (Graphique d'Écarts)\n\nCe graphique focus uniquement sur le **surplus de bruit**. Il montre de combien de décibels la limite a été franchie. Utile pour mesurer la gravité de la nuisance.\n\n### Taux de Dépassement (Jauge %)\n\nUn indicateur de sévérité globale. Il répond à la question : *\"Quel pourcentage du temps avons-nous passé en infraction ?\"*.\n\n*   **Seuils pris en compte** : 50dB (Jour) / 45dB (Transition) / 40dB (Nuit).\n\n### Température Extérieure\n\nMet en corrélation le bruit et le froid. Une pompe à chaleur étant plus bruyante à basse température, ce graphique aide à contextualiser les nuisances hivernales.\n\nCette section complète la surveillance temps réel par une analyse approfondie de l'environnement sonore. Elle se décompose en **5 outils d'expertise** :\n\n### Synthèse Avancée (Tableau Global)\n\nUn **bilan chiffré complet** sur la période affichée. Il présente les métriques clés pour l'acusticien :\n*   **Lden** (Day-Evening-Night) : L'indice de référence européen de gêne globale (pénalités soir/nuit incluses).\n*   **Leq** : La moyenne énergétique pure.\n*   **Percentiles (L10/L50/L90)** : La structure statistique du bruit (Pics / Médiane / Fond).\n*   **SEL** : L'exposition sonore totale cumulée.\n\n### Indicateurs de Pression Acoustique (Graphique Temporel)\n\nVisualisation de la **dynamique du bruit** à l'instant T.\n*   Superpose le bruit brut (**SPL**) et les statistiques (**L10/L50/L90**).\n*   Permet de voir *comment* le bruit évolue : est-ce un pic isolé (L10 monte seul) ou une augmentation générale du fond (L90 monte aussi) ?\n*   Affiche les **seuils réglementaires** en pointillé pour repérer les infractions instantanées.\n\n### Synthèse Acoustique Quotidienne (Historique 24h)\n\nUn graphique rétrospectif qui agrège les mesures **jour par jour**. Indispensable pour comparer la nuisance d'aujourd'hui, d'hier ou de la semaine passée.\n*   Affiche le **Lden** quotidien ainsi que les **Lday** / **Lnight**.\n*   Permet de vérifier si une journée a été globalement plus bruyante que la normale.\n\n### Signature du Bruit (Analyse de Monotonie)\n\nCe graphique qualifie la **nature de la source sonore** via l'indice de monotonie (L10 - L90).\n*   **Stable (< 5dB)** : Le bruit est constant et monotone (Signature typique d'une **Pompe à Chaleur** ou VMC).\n*   **Fluctuant (5-10dB)** : Bruit d'environnement standard.\n*   **Impulsif (> 15dB)** : Bruit irrégulier (Passage de voitures, aboiements, travaux).\n\n### Localisation du Capteur\n\nCarte de situation géographique, montrant la position exacte du capteur.",
+        "content": "### Vue en Temps Réel (Graphique Principal)\n\nLe panneau central de **contrôle de conformité**. Il affiche le bruit mesuré face à la limite légale dynamique.\n\n- **Logique de Filtre** : Utilise le **L50** (Médiane) pour écarter les bruits brefs (voitures, avions) et isoler le bruit continu (PAC).\n- **Temporisation** : Une infraction n'est signalée que si le dépassement dure **plus de 2 minutes**.\n  - 🟢 **Vert** : Conforme.\n  - 🔴 **Rouge** : Infraction confirmée (> 2 min).\n\n### Historique des Infractions (Frise Chronologique)\n\nUn bandeau simple qui fait office de **journal des non-conformités**. Il indique en rouge les périodes où le bruit a été officiellement jugé excessif (après la tolérance de 2 min).\n\n### Analyse des Émergences (Graphique d'Écarts)\n\nCe graphique focus uniquement sur le **surplus de bruit**. Il montre de combien de décibels la limite a été franchie. Utile pour mesurer la gravité de la nuisance.\n\n### Taux de Dépassement (Jauge %)\n\nUn indicateur de sévérité globale. Il répond à la question : _\"Quel pourcentage du temps avons-nous passé en infraction ?\"_.\n\n- **Seuils pris en compte** : 50dB (Jour) / 45dB (Transition) / 40dB (Nuit).\n\n### Température Extérieure\n\nMet en corrélation le bruit et le froid. Une pompe à chaleur étant plus bruyante à basse température, ce graphique aide à contextualiser les nuisances hivernales.\n\nCette section complète la surveillance temps réel par une analyse approfondie de l'environnement sonore. Elle se décompose en **5 outils d'expertise** :\n\n### Indicateurs de Pression Acoustique (Graphique Temporel)\n\nVisualisation de la **dynamique du bruit** à l'instant T.\n\n- Superpose le bruit brut (**SPL**) et les statistiques (**L10/L50/L90**).\n- Permet de voir _comment_ le bruit évolue : est-ce un pic isolé (L10 monte seul) ou une augmentation générale du fond (L90 monte aussi) ?\n- Affiche les **seuils réglementaires** en pointillé pour repérer les infractions instantanées.\n\n### Synthèse avancée de l'environnement sonore et analyse statistique instantanée des indicateurs acoustiques.\n\nUn **bilan chiffré complet** sur la période affichée. Il présente les métriques clés pour l'acusticien :\n\n- **Lden** (Day-Evening-Night) : L'indice de référence européen de gêne globale (pénalités soir/nuit incluses).\n- **Leq** : La moyenne énergétique pure.\n- **Percentiles (L10/L50/L90)** : La structure statistique du bruit (Pics / Médiane / Fond).\n- **SEL** : L'exposition sonore totale cumulée.\n\n### Synthèse avancée de l'environnement sonore et analyse statistique quotidenne des indicateurs acoustiques.\n\nUn graphique rétrospectif qui agrège les mesures **jour par jour**. Indispensable pour comparer la nuisance d'aujourd'hui, d'hier ou de la semaine passée.\n\n- Affiche le **Lden** quotidien ainsi que les **Lday** / **Lnight**.\n- Permet de vérifier si une journée a été globalement plus bruyante que la normale.\n\n### Signature du Bruit: Dynamique & Monotonie\n\nCe graphique qualifie la **nature de la source sonore** via l'indice de monotonie (L10 - L90).\n\n- **Stable (< 5dB)** : Le bruit est constant et monotone (Signature typique d'une **Pompe à Chaleur** ou VMC).\n- **Fluctuant (5-10dB)** : Bruit d'environnement standard.\n- **Impulsif (> 15dB)** : Bruit irrégulier (Passage de voitures, aboiements, travaux).\n\n### Localisation du Capteur\n\nCarte de situation géographique, montrant la position exacte du capteur.\n",
         "mode": "markdown"
       },
       "pluginVersion": "12.3.1",
@@ -140,39 +140,12 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 66
+        "y": 78
       },
       "id": 16,
       "panels": [],
       "title": "Surveillance en Temps Réel et Conformité",
       "type": "row"
-    },
-    {
-      "fieldConfig": {
-        "defaults": {},
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 9,
-        "w": 24,
-        "x": 0,
-        "y": 149
-      },
-      "id": 32,
-      "options": {
-        "limit": 10,
-        "navigateAfter": "10m",
-        "navigateBefore": "10m",
-        "navigateToPanel": false,
-        "onlyFromThisDashboard": false,
-        "onlyInTimeRange": false,
-        "showTags": true,
-        "showTime": true,
-        "showUser": false
-      },
-      "pluginVersion": "12.3.1",
-      "title": "Mes annotations",
-      "type": "annolist"
     },
     {
       "datasource": {
@@ -393,7 +366,7 @@
         "h": 15,
         "w": 24,
         "x": 0,
-        "y": 67
+        "y": 79
       },
       "id": 1,
       "options": {
@@ -506,7 +479,7 @@
         "h": 4,
         "w": 24,
         "x": 0,
-        "y": 82
+        "y": 94
       },
       "id": 8,
       "options": {
@@ -705,7 +678,7 @@
         "h": 8,
         "w": 18,
         "x": 0,
-        "y": 86
+        "y": 98
       },
       "id": 23,
       "options": {
@@ -800,7 +773,7 @@
         "h": 8,
         "w": 6,
         "x": 18,
-        "y": 86
+        "y": 98
       },
       "id": 29,
       "options": {
@@ -894,7 +867,7 @@
         "h": 8,
         "w": 24,
         "x": 0,
-        "y": 94
+        "y": 106
       },
       "id": 31,
       "options": {
@@ -926,168 +899,12 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 102
+        "y": 114
       },
       "id": 20,
       "panels": [],
-      "title": "Indicateurs Experts et Contexte",
+      "title": "Indicateurs Experts",
       "type": "row"
-    },
-    {
-      "datasource": {
-        "type": "influxdb",
-        "uid": "ff9xpmhbcsb9ce"
-      },
-      "description": "Synthèse avancée de l'environnement sonore et analyse statistique des indicateurs acoustiques. Ce panneau présente une vue exhaustive de la pollution sonore sur la période sélectionnée en combinant mesures énergétiques et distribution centile. Il calcule le niveau moyen Leq ainsi que l'indice de gêne global Lden, lequel intègre les pénalités réglementaires pour le soir (+5 dB) et la nuit (+10 dB) conformément aux normes d'évaluation de l'exposition au bruit. L'analyse statistique par centiles permet de caractériser précisément la nature du signal : le  L10 (niveau dépassé pendant 10 % de la période) met en évidence les événements sonores ponctuels et les pics de pollution, le L50 (niveau médian dépassé 50 % du temps) définit la tendance centrale du climat sonore, tandis que le L90 (niveau dépassé 90 % du temps) permet d'isoler le bruit de fond permanent en l'absence de sources intermittentes. Enfin, le panneau affiche le niveau d'exposition unique (SEL) et les extrema (Lmax/Lmin) pour offrir une lecture complète de la dynamique acoustique du site.",
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "fixedColor": "text",
-            "mode": "fixed"
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": 0
-              }
-            ]
-          },
-          "unit": "dB"
-        },
-        "overrides": [
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "L10 {frequency_weighting=\"dB(A)\", time_weighting=\"Slow\"}"
-            },
-            "properties": [
-              {
-                "id": "displayName",
-                "value": "L10 (${__field.labels.frequency_weighting}, ${__field.labels.time_weighting})"
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "L50 {frequency_weighting=\"dB(A)\", time_weighting=\"Slow\"}"
-            },
-            "properties": [
-              {
-                "id": "displayName",
-                "value": "L50 (${__field.labels.frequency_weighting}, ${__field.labels.time_weighting})"
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "L90 {frequency_weighting=\"dB(A)\", time_weighting=\"Slow\"}"
-            },
-            "properties": [
-              {
-                "id": "displayName",
-                "value": "L90 (${__field.labels.frequency_weighting}, ${__field.labels.time_weighting})"
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Leq {frequency_weighting=\"dB(A)\", time_weighting=\"Slow\"}"
-            },
-            "properties": [
-              {
-                "id": "displayName",
-                "value": "Leq (${__field.labels.frequency_weighting}, ${__field.labels.time_weighting})"
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Lmax {frequency_weighting=\"dB(A)\", time_weighting=\"Slow\"}"
-            },
-            "properties": [
-              {
-                "id": "displayName",
-                "value": "Lmax (${__field.labels.frequency_weighting}, ${__field.labels.time_weighting})"
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Lmin {frequency_weighting=\"dB(A)\", time_weighting=\"Slow\"}"
-            },
-            "properties": [
-              {
-                "id": "displayName",
-                "value": "Lmin (${__field.labels.frequency_weighting}, ${__field.labels.time_weighting})"
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "SEL {frequency_weighting=\"dB(A)\", time_weighting=\"Slow\"}"
-            },
-            "properties": [
-              {
-                "id": "displayName",
-                "value": "SEL (${__field.labels.frequency_weighting}, ${__field.labels.time_weighting})"
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Lden {frequency_weighting=\"dB(A)\", time_weighting=\"Slow\"}"
-            },
-            "properties": [
-              {
-                "id": "displayName",
-                "value": "Lden (${__field.labels.frequency_weighting}, ${__field.labels.time_weighting})"
-              }
-            ]
-          }
-        ]
-      },
-      "gridPos": {
-        "h": 5,
-        "w": 24,
-        "x": 0,
-        "y": 103
-      },
-      "id": 27,
-      "options": {
-        "colorMode": "value",
-        "graphMode": "area",
-        "justifyMode": "auto",
-        "orientation": "auto",
-        "percentChangeColorMode": "standard",
-        "reduceOptions": {
-          "calcs": ["lastNotNull"],
-          "fields": "",
-          "values": false
-        },
-        "showPercentChange": false,
-        "text": {},
-        "textMode": "auto",
-        "wideLayout": true
-      },
-      "pluginVersion": "12.3.1",
-      "targets": [
-        {
-          "query": "import \"math\"\nimport \"date\"\nimport \"timezone\"\n\noption location = timezone.location(name: \"Europe/Brussels\")\n\nT_START = v.timeRangeStart\nT_STOP = v.timeRangeStop\n\n// 1. PRÉ-RÉDUCTION\nbase1m = from(bucket: \"default\")\n    |> range(start: T_START, stop: T_STOP)\n    |> filter(fn: (r) => r._measurement == \"dt8852\" and r._field == \"spl\" and r.frequency_weighting == \"dB(A)\")\n    |> filter(fn: (r) => exists r._value and exists r.time_weighting)\n    |> keep(columns: [\"_time\", \"_value\", \"frequency_weighting\", \"time_weighting\"])\n    |> aggregateWindow(every: 1m, fn: median)\n    |> filter(fn: (r) => exists r._value)\n    |> map(fn: (r) => {\n        h = date.hour(t: r._time)\n        penalty = if h >= 7 and h < 19 then 1.0 \n                 else if h >= 19 and h < 23 then 3.162277 \n                 else 10.0\n        energy = math.pow(x: 10.0, y: float(v: r._value) / 10.0)\n        return { r with \n            energy: energy,\n            energy_weighted: energy * penalty\n        }\n    })\n\n// 2. CALCUL DES BRANCHES (Correction ici : on s'assure que tout finit dans _value)\nstats_base = base1m |> group(columns: [\"frequency_weighting\", \"time_weighting\"])\n\nlmin = stats_base |> min(column: \"_value\") |> set(key: \"_field\", value: \"lmin\")\nlmax = stats_base |> max(column: \"_value\") |> set(key: \"_field\", value: \"lmax\")\nl10  = stats_base |> quantile(q: 0.90, column: \"_value\") |> set(key: \"_field\", value: \"l10\")\nl50  = stats_base |> quantile(q: 0.50, column: \"_value\") |> set(key: \"_field\", value: \"l50\")\nl90  = stats_base |> quantile(q: 0.10, column: \"_value\") |> set(key: \"_field\", value: \"l90\")\n\n// CORRECTIF : Utilisation de map pour basculer le résultat du mean dans _value\nleq_energy = stats_base \n    |> mean(column: \"energy\") \n    |> map(fn: (r) => ({ r with _value: r.energy })) \n    |> set(key: \"_field\", value: \"energy_avg\")\n\nlden_energy = stats_base \n    |> mean(column: \"energy_weighted\") \n    |> map(fn: (r) => ({ r with _value: r.energy_weighted })) \n    |> set(key: \"_field\", value: \"energy_lden_avg\")\n\n// 3. DURÉE\nduration_sec = float(v: int(v: T_STOP) - int(v: T_START)) / 1000000000.0\n\n// 4. ASSEMBLAGE ET CALCULS FINAUX\nunion(tables: [lmin, lmax, l10, l50, l90, leq_energy, lden_energy])\n    |> pivot(rowKey:[\"frequency_weighting\", \"time_weighting\"], columnKey: [\"_field\"], valueColumn: \"_value\")\n    |> map(fn: (r) => {\n        // On récupère les valeurs pivotées (qui sont maintenant bien là)\n        e_avg = if exists r.energy_avg then float(v: r.energy_avg) else 0.0000000001\n        e_lden = if exists r.energy_lden_avg then float(v: r.energy_lden_avg) else 0.0000000001\n        \n        leq_val = 10.0 * math.log10(x: e_avg)\n        lden_val = 10.0 * math.log10(x: e_lden)\n        sel_val = leq_val + (10.0 * math.log10(x: if duration_sec > 0.0 then duration_sec else 1.0))\n        \n        return {\n            _time: T_STOP,\n            frequency_weighting: r.frequency_weighting,\n            time_weighting: r.time_weighting,\n            \"Leq\": math.round(x: leq_val * 10.0) / 10.0,\n            \"Lden\": math.round(x: lden_val * 10.0) / 10.0,\n            \"L10\": if exists r.l10 then math.round(x: float(v: r.l10) * 10.0) / 10.0 else 0.0,\n            \"L50\": if exists r.l50 then math.round(x: float(v: r.l50) * 10.0) / 10.0 else 0.0,\n            \"L90\": if exists r.l90 then math.round(x: float(v: r.l90) * 10.0) / 10.0 else 0.0,\n            \"Lmax\": if exists r.lmax then math.round(x: float(v: r.lmax) * 10.0) / 10.0 else 0.0,\n            \"Lmin\": if exists r.lmin then math.round(x: float(v: r.lmin) * 10.0) / 10.0 else 0.0,\n            \"SEL\": math.round(x: sel_val * 10.0) / 10.0\n        }\n    })\n    |> keep(columns: [\"_time\", \"frequency_weighting\", \"time_weighting\", \"Leq\", \"Lden\", \"L10\", \"L50\", \"L90\", \"Lmax\", \"Lmin\", \"SEL\"])\n    |> yield(name: \"acoustic_indicators\")",
-          "refId": "A"
-        }
-      ],
-      "title": "Synthèse avancée de l'environnement sonore et analyse statistique des indicateurs acoustiques.",
-      "type": "stat"
     },
     {
       "datasource": {
@@ -1350,7 +1167,7 @@
         "h": 11,
         "w": 24,
         "x": 0,
-        "y": 108
+        "y": 115
       },
       "id": 28,
       "options": {
@@ -1375,6 +1192,162 @@
       ],
       "title": "Indicateurs de Pression Acoustique",
       "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "ff9xpmhbcsb9ce"
+      },
+      "description": "Synthèse avancée de l'environnement sonore et analyse statistique instantanée des indicateurs acoustiques. Ce panneau présente une vue exhaustive de la pollution sonore sur la période sélectionnée en combinant mesures énergétiques et distribution centile. Il calcule le niveau moyen Leq ainsi que l'indice de gêne global Lden, lequel intègre les pénalités réglementaires pour le soir (+5 dB) et la nuit (+10 dB) conformément aux normes d'évaluation de l'exposition au bruit. L'analyse statistique par centiles permet de caractériser précisément la nature du signal : le  L10 (niveau dépassé pendant 10 % de la période) met en évidence les événements sonores ponctuels et les pics de pollution, le L50 (niveau médian dépassé 50 % du temps) définit la tendance centrale du climat sonore, tandis que le L90 (niveau dépassé 90 % du temps) permet d'isoler le bruit de fond permanent en l'absence de sources intermittentes. Enfin, le panneau affiche le niveau d'exposition unique (SEL) et les extrema (Lmax/Lmin) pour offrir une lecture complète de la dynamique acoustique du site.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "text",
+            "mode": "fixed"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              }
+            ]
+          },
+          "unit": "dB"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "L10 {frequency_weighting=\"dB(A)\", time_weighting=\"Slow\"}"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "L10 (${__field.labels.frequency_weighting}, ${__field.labels.time_weighting})"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "L50 {frequency_weighting=\"dB(A)\", time_weighting=\"Slow\"}"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "L50 (${__field.labels.frequency_weighting}, ${__field.labels.time_weighting})"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "L90 {frequency_weighting=\"dB(A)\", time_weighting=\"Slow\"}"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "L90 (${__field.labels.frequency_weighting}, ${__field.labels.time_weighting})"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Leq {frequency_weighting=\"dB(A)\", time_weighting=\"Slow\"}"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Leq (${__field.labels.frequency_weighting}, ${__field.labels.time_weighting})"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Lmax {frequency_weighting=\"dB(A)\", time_weighting=\"Slow\"}"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Lmax (${__field.labels.frequency_weighting}, ${__field.labels.time_weighting})"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Lmin {frequency_weighting=\"dB(A)\", time_weighting=\"Slow\"}"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Lmin (${__field.labels.frequency_weighting}, ${__field.labels.time_weighting})"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "SEL {frequency_weighting=\"dB(A)\", time_weighting=\"Slow\"}"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "SEL (${__field.labels.frequency_weighting}, ${__field.labels.time_weighting})"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Lden {frequency_weighting=\"dB(A)\", time_weighting=\"Slow\"}"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Lden (${__field.labels.frequency_weighting}, ${__field.labels.time_weighting})"
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 5,
+        "w": 24,
+        "x": 0,
+        "y": 126
+      },
+      "id": 27,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": ["lastNotNull"],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "text": {},
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "12.3.1",
+      "targets": [
+        {
+          "query": "import \"math\"\nimport \"date\"\nimport \"timezone\"\n\noption location = timezone.location(name: \"Europe/Brussels\")\n\nT_START = v.timeRangeStart\nT_STOP = v.timeRangeStop\n\n// 1. PRÉ-RÉDUCTION\nbase1m = from(bucket: \"default\")\n    |> range(start: T_START, stop: T_STOP)\n    |> filter(fn: (r) => r._measurement == \"dt8852\" and r._field == \"spl\" and r.frequency_weighting == \"dB(A)\")\n    |> filter(fn: (r) => exists r._value and exists r.time_weighting)\n    |> keep(columns: [\"_time\", \"_value\", \"frequency_weighting\", \"time_weighting\"])\n    |> aggregateWindow(every: 1m, fn: median)\n    |> filter(fn: (r) => exists r._value)\n    |> map(fn: (r) => {\n        h = date.hour(t: r._time)\n        penalty = if h >= 7 and h < 19 then 1.0 \n                 else if h >= 19 and h < 23 then 3.162277 \n                 else 10.0\n        energy = math.pow(x: 10.0, y: float(v: r._value) / 10.0)\n        return { r with \n            energy: energy,\n            energy_weighted: energy * penalty\n        }\n    })\n\n// 2. CALCUL DES BRANCHES (Correction ici : on s'assure que tout finit dans _value)\nstats_base = base1m |> group(columns: [\"frequency_weighting\", \"time_weighting\"])\n\nlmin = stats_base |> min(column: \"_value\") |> set(key: \"_field\", value: \"lmin\")\nlmax = stats_base |> max(column: \"_value\") |> set(key: \"_field\", value: \"lmax\")\nl10  = stats_base |> quantile(q: 0.90, column: \"_value\") |> set(key: \"_field\", value: \"l10\")\nl50  = stats_base |> quantile(q: 0.50, column: \"_value\") |> set(key: \"_field\", value: \"l50\")\nl90  = stats_base |> quantile(q: 0.10, column: \"_value\") |> set(key: \"_field\", value: \"l90\")\n\n// CORRECTIF : Utilisation de map pour basculer le résultat du mean dans _value\nleq_energy = stats_base \n    |> mean(column: \"energy\") \n    |> map(fn: (r) => ({ r with _value: r.energy })) \n    |> set(key: \"_field\", value: \"energy_avg\")\n\nlden_energy = stats_base \n    |> mean(column: \"energy_weighted\") \n    |> map(fn: (r) => ({ r with _value: r.energy_weighted })) \n    |> set(key: \"_field\", value: \"energy_lden_avg\")\n\n// 3. DURÉE\nduration_sec = float(v: int(v: T_STOP) - int(v: T_START)) / 1000000000.0\n\n// 4. ASSEMBLAGE ET CALCULS FINAUX\nunion(tables: [lmin, lmax, l10, l50, l90, leq_energy, lden_energy])\n    |> pivot(rowKey:[\"frequency_weighting\", \"time_weighting\"], columnKey: [\"_field\"], valueColumn: \"_value\")\n    |> map(fn: (r) => {\n        // On récupère les valeurs pivotées (qui sont maintenant bien là)\n        e_avg = if exists r.energy_avg then float(v: r.energy_avg) else 0.0000000001\n        e_lden = if exists r.energy_lden_avg then float(v: r.energy_lden_avg) else 0.0000000001\n        \n        leq_val = 10.0 * math.log10(x: e_avg)\n        lden_val = 10.0 * math.log10(x: e_lden)\n        sel_val = leq_val + (10.0 * math.log10(x: if duration_sec > 0.0 then duration_sec else 1.0))\n        \n        return {\n            _time: T_STOP,\n            frequency_weighting: r.frequency_weighting,\n            time_weighting: r.time_weighting,\n            \"Leq\": math.round(x: leq_val * 10.0) / 10.0,\n            \"Lden\": math.round(x: lden_val * 10.0) / 10.0,\n            \"L10\": if exists r.l10 then math.round(x: float(v: r.l10) * 10.0) / 10.0 else 0.0,\n            \"L50\": if exists r.l50 then math.round(x: float(v: r.l50) * 10.0) / 10.0 else 0.0,\n            \"L90\": if exists r.l90 then math.round(x: float(v: r.l90) * 10.0) / 10.0 else 0.0,\n            \"Lmax\": if exists r.lmax then math.round(x: float(v: r.lmax) * 10.0) / 10.0 else 0.0,\n            \"Lmin\": if exists r.lmin then math.round(x: float(v: r.lmin) * 10.0) / 10.0 else 0.0,\n            \"SEL\": math.round(x: sel_val * 10.0) / 10.0\n        }\n    })\n    |> keep(columns: [\"_time\", \"frequency_weighting\", \"time_weighting\", \"Leq\", \"Lden\", \"L10\", \"L50\", \"L90\", \"Lmax\", \"Lmin\", \"SEL\"])\n    |> yield(name: \"acoustic_indicators\")",
+          "refId": "A"
+        }
+      ],
+      "title": "Synthèse avancée de l'environnement sonore et analyse statistique instantanée des indicateurs acoustiques.",
+      "type": "stat"
     },
     {
       "datasource": {
@@ -1555,7 +1528,7 @@
         "h": 10,
         "w": 24,
         "x": 0,
-        "y": 119
+        "y": 131
       },
       "id": 30,
       "options": {
@@ -1579,7 +1552,7 @@
         }
       ],
       "timeFrom": "now-10d",
-      "title": "Synthèse Acoustique Quotidienne: Indicateurs d'Impact et de Nuisance",
+      "title": "Synthèse avancée de l'environnement sonore et analyse statistique quotidenne des indicateurs acoustiques.",
       "type": "timeseries"
     },
     {
@@ -1707,7 +1680,7 @@
         "h": 9,
         "w": 24,
         "x": 0,
-        "y": 129
+        "y": 141
       },
       "id": 22,
       "options": {
@@ -1773,7 +1746,7 @@
         "h": 11,
         "w": 24,
         "x": 0,
-        "y": 138
+        "y": 150
       },
       "id": 5,
       "options": {
