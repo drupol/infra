@@ -18,7 +18,7 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 103,
+  "id": 104,
   "links": [],
   "panels": [
     {
@@ -1554,11 +1554,23 @@
                 }
               }
             ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Leq"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Leq (${__field.labels.frequency_weighting}, ${__field.labels.time_weighting})"
+              }
+            ]
           }
         ]
       },
       "gridPos": {
-        "h": 10,
+        "h": 15,
         "w": 24,
         "x": 0,
         "y": 131
@@ -1580,7 +1592,7 @@
       "pluginVersion": "12.3.1",
       "targets": [
         {
-          "query": "import \"date\"\nimport \"math\"\nimport \"timezone\"\n\noption location = timezone.location(name: \"Europe/Brussels\")\n\n// --- CONFIGURATION ---\n// Note: En production, utilisez v.timeRangeStart et v.timeRangeStop\nstartDate = 2026-01-15T07:00:00Z\nstopDate = date.truncate(t: now(), unit: 1d)\n\n// 1. PRÉ-RÉDUCTION (Moyenne 1 minute pour fluidifier les calculs lourds)\nbase1m = from(bucket: \"default\")\n  |> range(start: startDate, stop: stopDate)\n  |> filter(fn: (r) => r._measurement == \"dt8852\" and r._field == \"spl\")\n  |> filter(fn: (r) => r.frequency_weighting == \"dB(A)\")\n  |> filter(fn: (r) => exists r._value and exists r.time_weighting)\n  |> aggregateWindow(every: 1m, fn: mean) \n  |> filter(fn: (r) => exists r._value)\n  |> keep(columns: [\"_time\", \"_value\", \"frequency_weighting\", \"time_weighting\"])\n\n// 2. PRÉPARATION ÉNERGÉTIQUE (Pour les moyennes logarithmiques Lday, Lnight, Lden)\nenergy_base = base1m\n  |> map(fn: (r) => ({ r with energy: math.pow(x: 10.0, y: float(v: r._value) / 10.0) }))\n\n// --- INDICATEURS OMS / EUROPE ---\n\n// Lday (07:00 - 22:00)\nlday = energy_base\n  |> filter(fn: (r) => {\n      h = date.hour(t: r._time)\n      return h >= 7 and h < 22\n  })\n  |> aggregateWindow(every: 1d, fn: mean, column: \"energy\")\n  |> map(fn: (r) => ({ r with _field: \"Lday\", _value: 10.0 * math.log10(x: r.energy) }))\n\n// Lnight (22:00 - 07:00)\nlnight = energy_base\n  |> filter(fn: (r) => {\n      h = date.hour(t: r._time)\n      return h >= 22 or h < 7\n  })\n  |> aggregateWindow(every: 1d, fn: mean, column: \"energy\")\n  |> map(fn: (r) => ({ r with _field: \"Lnight\", _value: 10.0 * math.log10(x: r.energy) }))\n\n// Lden (Day-Evening-Night)\n// Application des pénalités : Soir (19h-23h) +5dB, Nuit (23h-07h) +10dB\nlden = energy_base\n  |> map(fn: (r) => {\n      h = date.hour(t: r._time)\n      penalty = if h >= 19 and h < 23 then 5.0 \n                else if h >= 23 or h < 7 then 10.0 \n                else 0.0\n      // On multiplie l énergie par la pénalité convertie (10^(p/10))\n      return { r with energy_weighted: r.energy * math.pow(x: 10.0, y: penalty / 10.0) }\n  })\n  |> aggregateWindow(every: 1d, fn: mean, column: \"energy_weighted\")\n  |> map(fn: (r) => ({ r with _field: \"Lden\", _value: 10.0 * math.log10(x: r.energy_weighted) }))\n\n// --- STATISTIQUES CLASSIQUES ---\nlmax = base1m |> aggregateWindow(every: 1d, fn: max) |> map(fn: (r) => ({ r with _field: \"Lmax\" }))\nlmin = base1m |> aggregateWindow(every: 1d, fn: min) |> map(fn: (r) => ({ r with _field: \"Lmin\" }))\nl10 = base1m |> aggregateWindow(every: 1d, fn: (column, tables=<-) => tables |> quantile(q: 0.90)) |> map(fn: (r) => ({ r with _field: \"L10\" }))\nl50 = base1m |> aggregateWindow(every: 1d, fn: (column, tables=<-) => tables |> quantile(q: 0.50)) |> map(fn: (r) => ({ r with _field: \"L50\" }))\nl90 = base1m |> aggregateWindow(every: 1d, fn: (column, tables=<-) => tables |> quantile(q: 0.10)) |> map(fn: (r) => ({ r with _field: \"L90\" }))\n\n// 5. ASSEMBLAGE FINAL\nunion(tables: [l10, l50, l90, lmin, lmax, lden, lday, lnight])\n  |> pivot(rowKey: [\"_time\", \"frequency_weighting\", \"time_weighting\"], columnKey: [\"_field\"], valueColumn: \"_value\")\n  |> map(fn: (r) => ({ \n      r with \n      _time: date.truncate(t: r._time, unit: 1d)\n  }))",
+          "query": "import \"date\"\nimport \"math\"\nimport \"timezone\"\n\noption location = timezone.location(name: \"Europe/Brussels\")\n\nstartDate = 2026-01-15T07:00:00Z\nstopDate = date.truncate(t: now(), unit: 1d)\n\n// 1. PRÉ-RÉDUCTION\nbase1m = from(bucket: \"default\")\n  |> range(start: startDate, stop: stopDate)\n  |> filter(fn: (r) => r._measurement == \"dt8852\" and r._field == \"spl\")\n  |> filter(fn: (r) => r.frequency_weighting == \"dB(A)\")\n  |> filter(fn: (r) => exists r._value and exists r.time_weighting)\n  |> aggregateWindow(every: 1m, fn: mean) \n  |> filter(fn: (r) => exists r._value)\n  |> keep(columns: [\"_time\", \"_value\", \"frequency_weighting\", \"time_weighting\"])\n\n// 2. PRÉPARATION ÉNERGÉTIQUE\nenergy_base = base1m\n  |> map(fn: (r) => ({ r with energy: math.pow(x: 10.0, y: float(v: r._value) / 10.0) }))\n\n// --- NOUVEL INDICATEUR : Leq (24h) ---\n// Moyenne énergétique pure sur toute la journée\nleq = energy_base\n  |> aggregateWindow(every: 1d, fn: mean, column: \"energy\")\n  |> map(fn: (r) => ({ r with _field: \"Leq\", _value: 10.0 * math.log10(x: r.energy) }))\n\n// --- INDICATEURS OMS / EUROPE ---\nlday = energy_base\n  |> filter(fn: (r) => {\n      h = date.hour(t: r._time)\n      return h >= 7 and h < 22\n  })\n  |> aggregateWindow(every: 1d, fn: mean, column: \"energy\")\n  |> map(fn: (r) => ({ r with _field: \"Lday\", _value: 10.0 * math.log10(x: r.energy) }))\n\nlnight = energy_base\n  |> filter(fn: (r) => {\n      h = date.hour(t: r._time)\n      return h >= 22 or h < 7\n  })\n  |> aggregateWindow(every: 1d, fn: mean, column: \"energy\")\n  |> map(fn: (r) => ({ r with _field: \"Lnight\", _value: 10.0 * math.log10(x: r.energy) }))\n\nlden = energy_base\n  |> map(fn: (r) => {\n      h = date.hour(t: r._time)\n      penalty = if h >= 19 and h < 23 then 5.0 \n                else if h >= 23 or h < 7 then 10.0 \n                else 0.0\n      return { r with energy_weighted: r.energy * math.pow(x: 10.0, y: penalty / 10.0) }\n  })\n  |> aggregateWindow(every: 1d, fn: mean, column: \"energy_weighted\")\n  |> map(fn: (r) => ({ r with _field: \"Lden\", _value: 10.0 * math.log10(x: r.energy_weighted) }))\n\n// --- STATISTIQUES CLASSIQUES ---\nlmax = base1m |> aggregateWindow(every: 1d, fn: max) |> map(fn: (r) => ({ r with _field: \"Lmax\" }))\nlmin = base1m |> aggregateWindow(every: 1d, fn: min) |> map(fn: (r) => ({ r with _field: \"Lmin\" }))\nl10 = base1m |> aggregateWindow(every: 1d, fn: (column, tables=<-) => tables |> quantile(q: 0.90)) |> map(fn: (r) => ({ r with _field: \"L10\" }))\nl50 = base1m |> aggregateWindow(every: 1d, fn: (column, tables=<-) => tables |> quantile(q: 0.50)) |> map(fn: (r) => ({ r with _field: \"L50\" }))\nl90 = base1m |> aggregateWindow(every: 1d, fn: (column, tables=<-) => tables |> quantile(q: 0.10)) |> map(fn: (r) => ({ r with _field: \"L90\" }))\n\n// 5. ASSEMBLAGE FINAL\nunion(tables: [l10, l50, l90, lmin, lmax, lden, lday, lnight, leq])\n  |> pivot(rowKey: [\"_time\", \"frequency_weighting\", \"time_weighting\"], columnKey: [\"_field\"], valueColumn: \"_value\")\n  |> map(fn: (r) => ({ \n      r with \n      _time: date.truncate(t: r._time, unit: 1d)\n  }))",
           "refId": "A"
         }
       ],
@@ -1713,7 +1725,7 @@
         "h": 9,
         "w": 24,
         "x": 0,
-        "y": 141
+        "y": 146
       },
       "id": 22,
       "options": {
@@ -1779,7 +1791,7 @@
         "h": 11,
         "w": 24,
         "x": 0,
-        "y": 150
+        "y": 155
       },
       "id": 5,
       "options": {
