@@ -17,9 +17,7 @@
           guacamole
           noise-station-server
           openssh
-          searx
           shell
-          tika
           vpn
 
           # Users
