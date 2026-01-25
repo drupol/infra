@@ -18,7 +18,7 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 97,
+  "id": 98,
   "links": [],
   "panels": [
     {
@@ -65,7 +65,7 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 11,
+        "h": 18,
         "w": 12,
         "x": 12,
         "y": 1
@@ -77,11 +77,11 @@
           "showLineNumbers": false,
           "showMiniMap": false
         },
-        "content": "En Région Wallonne (https://www.ejustice.just.fgov.be/eli/arrete/2002/07/04/2002027815/justel), le cadre légal est clair et rigoureux. Depuis l’arrêté du Gouvernement wallon du 4 juillet 2022, des limites de bruit spécifiques s’appliquent aux PAC selon les différentes périodes de la journée :\n\n- En journée (7h-19h): le bruit ne doit pas dépasser 50 dB.\n- En transition (6h-7h, 19h-22h): la limite est réduite à 45 dB.\n- La nuit (22h-6h): le niveau sonore doit impérativement rester sous 40 dB.\n\nLe bruit se propage en cercle autour d'une unité extérieure (PAC). \nIl est donc crucial de faire attention aux surfaces environnantes, comme des murs ou d’autres bâtiments, qui peuvent réfléchir le son et provoquer un effet d’écho. Pour limiter cette résonance, maintenez au moins un mètre d’espace autour de la pompe, en particulier par rapport aux fenêtres, aux portes et aux chemins. Si l’unité est placée contre un mur, veillez à respecter une distance minimale de 30 centimètres — l’idéal étant de 50 centimètres — pour garantir une circulation sonore optimale. Il est également important de prendre en compte la distance entre la face avant de la pompe à chaleur et les trottoirs, qui doit être d’au moins 3 mètres et d’au moins 6 mètres pour les plantes.\n\nSource: https://www.bobex.be/fr-be/pompe-a-chaleur/installation/distance-voisin/\n",
+        "content": "En Région Wallonne (https://www.ejustice.just.fgov.be/eli/arrete/2002/07/04/2002027815/justel), le cadre légal est clair et rigoureux. Depuis l’arrêté du Gouvernement wallon du 4 juillet 2022, des limites de bruit spécifiques s’appliquent aux PAC selon les différentes périodes de la journée :\n\n- En journée (7h-19h): le bruit ne doit pas dépasser 50 dB.\n- En transition (6h-7h, 19h-22h): la limite est réduite à 45 dB.\n- La nuit (22h-6h): le niveau sonore doit impérativement rester sous 40 dB.\n\nLe bruit se propage en cercle autour d'une unité extérieure (PAC). \nIl est donc crucial de faire attention aux surfaces environnantes, comme des murs ou d’autres bâtiments, qui peuvent réfléchir le son et provoquer un effet d’écho. Pour limiter cette résonance, maintenez au moins un mètre d’espace autour de la pompe, en particulier par rapport aux fenêtres, aux portes et aux chemins. Si l’unité est placée contre un mur, veillez à respecter une distance minimale de 30 centimètres — l’idéal étant de 50 centimètres — pour garantir une circulation sonore optimale. Il est également important de prendre en compte la distance entre la face avant de la pompe à chaleur et les trottoirs, qui doit être d’au moins 3 mètres et d’au moins 6 mètres pour les plantes.\n\nDes recherches ont montré qu'un stress prolongé causé par le bruit augmente le risque de maladies cardiovasculaires, comme l'hypertension artérielle ou les maladies coronariennes. \nCe risque augmente avec la durée et l'intensité de la nuisance sonore, surtout lorsqu'il s'agit de bruit en soirée ou la nuit. \n\nL'Organisation Mondiale de la Sante recommande de ne pas depasser les 40 dB(A) a partir de 22h et jusque 7h du matin.\n\nSources: \n- https://www.bobex.be/fr-be/pompe-a-chaleur/installation/distance-voisin/\n- https://www.health.belgium.be/fr/themes/sante/votre-sante/environnement-sante/impact-nuisances-sonores-votre-sante/son-nuisances-sonores\n- https://www.who.int/europe/fr/publications/i/item/WHO-EURO-2018-3287-43046-60243?hl=en-US\n- https://www.polisnetwork.eu/wp-content/uploads/2019/06/who-night-noise-guidelines.pdf\n",
         "mode": "markdown"
       },
       "pluginVersion": "12.3.1",
-      "title": "Réglementation en Région Wallonne",
+      "title": "Réglementation",
       "type": "text"
     },
     {
@@ -90,10 +90,10 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 20,
+        "h": 13,
         "w": 12,
         "x": 12,
-        "y": 12
+        "y": 19
       },
       "id": 25,
       "options": {
@@ -1406,7 +1406,7 @@
         "type": "influxdb",
         "uid": "ff9xpmhbcsb9ce"
       },
-      "description": "Tableau de bord consolidé des niveaux de pression acoustique pondérés A, agrégés de minuit à minuit (24h). Ce rapport regroupe les indicateurs réglementaires d'exposition (Lden), la distribution statistique du bruit (L10, L50, L90) ainsi que les extrêmes de la journée (Lmin, Lmax).",
+      "description": "Tableau de bord consolidé des niveaux de pression acoustique pondérés A, agrégés par périodes de 24 heures. Ce rapport regroupe les indicateurs réglementaires d'exposition globale (Lden), les moyennes énergétiques de jour (Lday, 07h-22h) et de nuit (Lnight, 22h-07h), la distribution statistique du bruit (L10, L50, L90) ainsi que les extrêmes de la journée (Lmin, Lmax).",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -1549,6 +1549,30 @@
                 "value": "Lmin (${__field.labels.frequency_weighting}, ${__field.labels.time_weighting})"
               }
             ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Lday"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Lday (7h-22h) (${__field.labels.frequency_weighting}, ${__field.labels.time_weighting})"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Lnight"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Lnight (22h-7h) (${__field.labels.frequency_weighting}, ${__field.labels.time_weighting})"
+              }
+            ]
           }
         ]
       },
@@ -1575,7 +1599,7 @@
       "pluginVersion": "12.3.1",
       "targets": [
         {
-          "query": "import \"date\"\nimport \"math\"\nimport \"timezone\"\n\noption location = timezone.location(name: \"Europe/Brussels\")\n\n// Utilisation des variables Grafana\nstartDate = 2026-01-15T07:00:00Z\nstopDate = date.truncate(t: now(), unit: 1d)\n\n// 1. PRÉ-RÉDUCTION (L'unique passage sur les données brutes)\nbase1m = from(bucket: \"default\")\n  |> range(start: startDate, stop: stopDate)\n  |> filter(fn: (r) => r._measurement == \"dt8852\" and r._field == \"spl\")\n  |> filter(fn: (r) => r.frequency_weighting == \"dB(A)\")\n  |> filter(fn: (r) => exists r._value and exists r.time_weighting)\n  |> aggregateWindow(every: 1m, fn: mean) \n  // --- CORRECTIF : On élimine les minutes vides générées par aggregateWindow ---\n  |> filter(fn: (r) => exists r._value)\n  // ---------------------------------------------------------------------------\n  |> keep(columns: [\"_time\", \"_value\", \"frequency_weighting\", \"time_weighting\"])\n\n// 2. CALCULS DES EXTRÊMES\nlmax = base1m \n  |> aggregateWindow(every: 1d, fn: max)\n  |> map(fn: (r) => ({ r with _field: \"Lmax\" }))\n\nlmin = base1m \n  |> aggregateWindow(every: 1d, fn: min)\n  |> map(fn: (r) => ({ r with _field: \"Lmin\" }))\n\n// 3. CALCUL LDEN\nlden = base1m\n  |> map(fn: (r) => {\n      h = date.hour(t: r._time)\n      // On s'assure que p est bien un float (0.0, 5.0, 10.0)\n      p = if h >= 7 and h < 19 then 0.0 else if h >= 19 and h < 22 then 5.0 else 10.0\n      return { r with energy: math.pow(x: 10.0, y: (float(v: r._value) + p) / 10.0) }\n  })\n  |> aggregateWindow(every: 1d, fn: mean, column: \"energy\")\n  |> map(fn: (r) => ({ \n      _time: r._time,\n      frequency_weighting: r.frequency_weighting,\n      time_weighting: r.time_weighting,\n      _field: \"Lden\", \n      _value: 10.0 * math.log10(x: r.energy) \n  }))\n\n// 4. CALCUL PERCENTILES\nl10 = base1m |> aggregateWindow(every: 1d, fn: (column, tables=<-) => tables |> quantile(q: 0.90)) |> map(fn: (r) => ({ r with _field: \"L10\" }))\nl50 = base1m |> aggregateWindow(every: 1d, fn: (column, tables=<-) => tables |> quantile(q: 0.50)) |> map(fn: (r) => ({ r with _field: \"L50\" }))\nl90 = base1m |> aggregateWindow(every: 1d, fn: (column, tables=<-) => tables |> quantile(q: 0.10)) |> map(fn: (r) => ({ r with _field: \"L90\" }))\n\n// 5. ASSEMBLAGE FINAL\nunion(tables: [l10, l50, l90, lmin, lmax, lden])\n  |> pivot(rowKey: [\"_time\", \"frequency_weighting\", \"time_weighting\"], columnKey: [\"_field\"], valueColumn: \"_value\")\n  |> map(fn: (r) => ({ \n      r with \n      _time: date.truncate(t: r._time, unit: 1d)\n  }))",
+          "query": "import \"date\"\nimport \"math\"\nimport \"timezone\"\n\noption location = timezone.location(name: \"Europe/Brussels\")\n\n// --- CONFIGURATION ---\n// Note: En production, utilisez v.timeRangeStart et v.timeRangeStop\nstartDate = 2026-01-15T07:00:00Z\nstopDate = date.truncate(t: now(), unit: 1d)\n\n// 1. PRÉ-RÉDUCTION (Moyenne 1 minute pour fluidifier les calculs lourds)\nbase1m = from(bucket: \"default\")\n  |> range(start: startDate, stop: stopDate)\n  |> filter(fn: (r) => r._measurement == \"dt8852\" and r._field == \"spl\")\n  |> filter(fn: (r) => r.frequency_weighting == \"dB(A)\")\n  |> filter(fn: (r) => exists r._value and exists r.time_weighting)\n  |> aggregateWindow(every: 1m, fn: mean) \n  |> filter(fn: (r) => exists r._value)\n  |> keep(columns: [\"_time\", \"_value\", \"frequency_weighting\", \"time_weighting\"])\n\n// 2. PRÉPARATION ÉNERGÉTIQUE (Pour les moyennes logarithmiques Lday, Lnight, Lden)\nenergy_base = base1m\n  |> map(fn: (r) => ({ r with energy: math.pow(x: 10.0, y: float(v: r._value) / 10.0) }))\n\n// --- INDICATEURS OMS / EUROPE ---\n\n// Lday (07:00 - 22:00)\nlday = energy_base\n  |> filter(fn: (r) => {\n      h = date.hour(t: r._time)\n      return h >= 7 and h < 22\n  })\n  |> aggregateWindow(every: 1d, fn: mean, column: \"energy\")\n  |> map(fn: (r) => ({ r with _field: \"Lday\", _value: 10.0 * math.log10(x: r.energy) }))\n\n// Lnight (22:00 - 07:00)\nlnight = energy_base\n  |> filter(fn: (r) => {\n      h = date.hour(t: r._time)\n      return h >= 22 or h < 7\n  })\n  |> aggregateWindow(every: 1d, fn: mean, column: \"energy\")\n  |> map(fn: (r) => ({ r with _field: \"Lnight\", _value: 10.0 * math.log10(x: r.energy) }))\n\n// Lden (Day-Evening-Night)\n// Application des pénalités : Soir (19h-23h) +5dB, Nuit (23h-07h) +10dB\nlden = energy_base\n  |> map(fn: (r) => {\n      h = date.hour(t: r._time)\n      penalty = if h >= 19 and h < 23 then 5.0 \n                else if h >= 23 or h < 7 then 10.0 \n                else 0.0\n      // On multiplie l énergie par la pénalité convertie (10^(p/10))\n      return { r with energy_weighted: r.energy * math.pow(x: 10.0, y: penalty / 10.0) }\n  })\n  |> aggregateWindow(every: 1d, fn: mean, column: \"energy_weighted\")\n  |> map(fn: (r) => ({ r with _field: \"Lden\", _value: 10.0 * math.log10(x: r.energy_weighted) }))\n\n// --- STATISTIQUES CLASSIQUES ---\nlmax = base1m |> aggregateWindow(every: 1d, fn: max) |> map(fn: (r) => ({ r with _field: \"Lmax\" }))\nlmin = base1m |> aggregateWindow(every: 1d, fn: min) |> map(fn: (r) => ({ r with _field: \"Lmin\" }))\nl10 = base1m |> aggregateWindow(every: 1d, fn: (column, tables=<-) => tables |> quantile(q: 0.90)) |> map(fn: (r) => ({ r with _field: \"L10\" }))\nl50 = base1m |> aggregateWindow(every: 1d, fn: (column, tables=<-) => tables |> quantile(q: 0.50)) |> map(fn: (r) => ({ r with _field: \"L50\" }))\nl90 = base1m |> aggregateWindow(every: 1d, fn: (column, tables=<-) => tables |> quantile(q: 0.10)) |> map(fn: (r) => ({ r with _field: \"L90\" }))\n\n// 5. ASSEMBLAGE FINAL\nunion(tables: [l10, l50, l90, lmin, lmax, lden, lday, lnight])\n  |> pivot(rowKey: [\"_time\", \"frequency_weighting\", \"time_weighting\"], columnKey: [\"_field\"], valueColumn: \"_value\")\n  |> map(fn: (r) => ({ \n      r with \n      _time: date.truncate(t: r._time, unit: 1d)\n  }))",
           "refId": "A"
         }
       ],
