@@ -18,7 +18,7 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 98,
+  "id": 101,
   "links": [],
   "panels": [
     {
@@ -110,12 +110,37 @@
       "type": "text"
     },
     {
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 34,
+        "w": 24,
+        "x": 0,
+        "y": 32
+      },
+      "id": 17,
+      "options": {
+        "code": {
+          "language": "plaintext",
+          "showLineNumbers": false,
+          "showMiniMap": false
+        },
+        "content": "### Vue en Temps Réel (Graphique Principal)\n\nLe panneau central de **contrôle de conformité**. Il affiche le bruit mesuré face à la limite légale dynamique.\n\n*   **Logique de Filtre** : Utilise le **L50** (Médiane) pour écarter les bruits brefs (voitures, avions) et isoler le bruit continu (PAC).\n*   **Temporisation** : Une infraction n'est signalée que si le dépassement dure **plus de 2 minutes**.\n    *   🟢 **Vert** : Conforme.\n    *   🔴 **Rouge** : Infraction confirmée (> 2 min).\n\n### Historique des Infractions (Frise Chronologique)\n\nUn bandeau simple qui fait office de **journal des non-conformités**. Il indique en rouge les périodes où le bruit a été officiellement jugé excessif (après la tolérance de 2 min).\n\n### Analyse des Émergences (Graphique d'Écarts)\n\nCe graphique focus uniquement sur le **surplus de bruit**. Il montre de combien de décibels la limite a été franchie. Utile pour mesurer la gravité de la nuisance.\n\n### Taux de Dépassement (Jauge %)\n\nUn indicateur de sévérité globale. Il répond à la question : *\"Quel pourcentage du temps avons-nous passé en infraction ?\"*.\n\n*   **Seuils pris en compte** : 50dB (Jour) / 45dB (Transition) / 40dB (Nuit).\n\n### Température Extérieure\n\nMet en corrélation le bruit et le froid. Une pompe à chaleur étant plus bruyante à basse température, ce graphique aide à contextualiser les nuisances hivernales.\n\nCette section complète la surveillance temps réel par une analyse approfondie de l'environnement sonore. Elle se décompose en **5 outils d'expertise** :\n\n### Synthèse Avancée (Tableau Global)\n\nUn **bilan chiffré complet** sur la période affichée. Il présente les métriques clés pour l'acusticien :\n*   **Lden** (Day-Evening-Night) : L'indice de référence européen de gêne globale (pénalités soir/nuit incluses).\n*   **Leq** : La moyenne énergétique pure.\n*   **Percentiles (L10/L50/L90)** : La structure statistique du bruit (Pics / Médiane / Fond).\n*   **SEL** : L'exposition sonore totale cumulée.\n\n### Indicateurs de Pression Acoustique (Graphique Temporel)\n\nVisualisation de la **dynamique du bruit** à l'instant T.\n*   Superpose le bruit brut (**SPL**) et les statistiques (**L10/L50/L90**).\n*   Permet de voir *comment* le bruit évolue : est-ce un pic isolé (L10 monte seul) ou une augmentation générale du fond (L90 monte aussi) ?\n*   Affiche les **seuils réglementaires** en pointillé pour repérer les infractions instantanées.\n\n### Synthèse Acoustique Quotidienne (Historique 24h)\n\nUn graphique rétrospectif qui agrège les mesures **jour par jour**. Indispensable pour comparer la nuisance d'aujourd'hui, d'hier ou de la semaine passée.\n*   Affiche le **Lden** quotidien ainsi que les **Lday** / **Lnight**.\n*   Permet de vérifier si une journée a été globalement plus bruyante que la normale.\n\n### Signature du Bruit (Analyse de Monotonie)\n\nCe graphique qualifie la **nature de la source sonore** via l'indice de monotonie (L10 - L90).\n*   **Stable (< 5dB)** : Le bruit est constant et monotone (Signature typique d'une **Pompe à Chaleur** ou VMC).\n*   **Fluctuant (5-10dB)** : Bruit d'environnement standard.\n*   **Impulsif (> 15dB)** : Bruit irrégulier (Passage de voitures, aboiements, travaux).\n\n### Localisation du Capteur\n\nCarte de situation géographique, montrant la position exacte du capteur.",
+        "mode": "markdown"
+      },
+      "pluginVersion": "12.3.1",
+      "title": "Explications des differentes visualisations",
+      "type": "text"
+    },
+    {
       "collapsed": false,
       "gridPos": {
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 32
+        "y": 66
       },
       "id": 16,
       "panels": [],
@@ -128,35 +153,10 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 20,
-        "w": 24,
-        "x": 0,
-        "y": 33
-      },
-      "id": 17,
-      "options": {
-        "code": {
-          "language": "plaintext",
-          "showLineNumbers": false,
-          "showMiniMap": false
-        },
-        "content": "Cette section met en regard le **niveau sonore médian (L50)** et les **seuils réglementaires applicables en Région Wallonne**. Elle détaille la surveillance via **5 panneaux distincts** :\n\n### 1. Vue en Temps Réel (Graphique Principal)\n\nLe panneau central de **contrôle de conformité**. Il affiche le bruit mesuré face à la limite légale dynamique.\n\n*   **Logique de Filtre** : Utilise le **L50** (Médiane) pour écarter les bruits brefs (voitures, avions) et isoler le bruit continu (PAC).\n*   **Temporisation** : Une infraction n'est signalée que si le dépassement dure **plus de 2 minutes**.\n    *   🟢 **Vert** : Conforme.\n    *   🔴 **Rouge (Zone pleine)** : Infraction confirmée (> 2 min).\n    *   🔴 **Rouge (Estompé/Pointillé)** : En attente de validation (< 2 min).\n\n### 2. Historique des Infractions (Frise Chronologique)\n\nUn bandeau simple qui fait office de **journal des non-conformités**. Il indique en rouge les périodes où le bruit a été officiellement jugé excessif (après la tolérance de 2 min).\n\n### 3. Analyse des Émergences (Graphique d'Écarts)\n\nCe graphique focus uniquement sur le **surplus de bruit**. Il montre de combien de décibels la limite a été franchie. Utile pour mesurer la gravité de la nuisance.\n\n### 4. Taux de Dépassement (Jauge %)\n\nUn indicateur de sévérité globale. Il répond à la question : *\"Quel pourcentage du temps avons-nous passé en infraction ?\"*.\n\n*   **Seuils pris en compte** : 50dB (Jour) / 45dB (Transition) / 40dB (Nuit).\n\n### 5. Température Extérieure\n\nMet en corrélation le bruit et le froid. Une pompe à chaleur étant plus bruyante à basse température, ce graphique aide à contextualiser les nuisances hivernales.",
-        "mode": "markdown"
-      },
-      "pluginVersion": "12.3.1",
-      "title": "",
-      "type": "text"
-    },
-    {
-      "fieldConfig": {
-        "defaults": {},
-        "overrides": []
-      },
-      "gridPos": {
         "h": 9,
         "w": 24,
         "x": 0,
-        "y": 53
+        "y": 149
       },
       "id": 32,
       "options": {
@@ -393,7 +393,7 @@
         "h": 15,
         "w": 24,
         "x": 0,
-        "y": 62
+        "y": 67
       },
       "id": 1,
       "options": {
@@ -506,7 +506,7 @@
         "h": 4,
         "w": 24,
         "x": 0,
-        "y": 77
+        "y": 82
       },
       "id": 8,
       "options": {
@@ -705,7 +705,7 @@
         "h": 8,
         "w": 18,
         "x": 0,
-        "y": 81
+        "y": 86
       },
       "id": 23,
       "options": {
@@ -800,7 +800,7 @@
         "h": 8,
         "w": 6,
         "x": 18,
-        "y": 81
+        "y": 86
       },
       "id": 29,
       "options": {
@@ -894,7 +894,7 @@
         "h": 8,
         "w": 24,
         "x": 0,
-        "y": 89
+        "y": 94
       },
       "id": 31,
       "options": {
@@ -926,37 +926,12 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 97
+        "y": 102
       },
       "id": 20,
       "panels": [],
       "title": "Indicateurs Experts et Contexte",
       "type": "row"
-    },
-    {
-      "fieldConfig": {
-        "defaults": {},
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 18,
-        "w": 24,
-        "x": 0,
-        "y": 98
-      },
-      "id": 21,
-      "options": {
-        "code": {
-          "language": "plaintext",
-          "showLineNumbers": false,
-          "showMiniMap": false
-        },
-        "content": "Cette section complète la surveillance temps réel par une analyse approfondie de l'environnement sonore. Elle se décompose en **5 outils d'expertise** :\n\n### 1. Synthèse Avancée (Tableau Global)\n\nUn **bilan chiffré complet** sur la période affichée. Il présente les métriques clés pour l'acusticien :\n*   **Lden** (Day-Evening-Night) : L'indice de référence européen de gêne globale (pénalités soir/nuit incluses).\n*   **Leq** : La moyenne énergétique pure.\n*   **Percentiles (L10/L50/L90)** : La structure statistique du bruit (Pics / Médiane / Fond).\n*   **SEL** : L'exposition sonore totale cumulée.\n\n### 2. Indicateurs de Pression Acoustique (Graphique Temporel)\n\nVisualisation de la **dynamique du bruit** à l'instant T.\n*   Superpose le bruit brut (**SPL**) et les statistiques (**L10/L50/L90**).\n*   Permet de voir *comment* le bruit évolue : est-ce un pic isolé (L10 monte seul) ou une augmentation générale du fond (L90 monte aussi) ?\n*   Affiche les **seuils réglementaires** en pointillé pour repérer les infractions instantanées.\n\n### 3. Synthèse Acoustique Quotidienne (Historique 24h)\n\nUn graphique rétrospectif qui agrège les mesures **jour par jour**. Indispensable pour comparer la nuisance d'aujourd'hui, d'hier ou de la semaine passée.\n*   Affiche le **Lden** quotidien ainsi que les **Lday** / **Lnight**.\n*   Permet de vérifier si une journée a été globalement plus bruyante que la normale.\n\n### 4. Signature du Bruit (Analyse de Monotonie)\n\nCe graphique qualifie la **nature de la source sonore** via l'indice de monotonie (L10 - L90).\n*   **Stable (< 5dB)** : Le bruit est constant et monotone (Signature typique d'une **Pompe à Chaleur** ou VMC).\n*   **Fluctuant (5-10dB)** : Bruit d'environnement standard.\n*   **Impulsif (> 15dB)** : Bruit irrégulier (Passage de voitures, aboiements, travaux).\n\n### 5. Localisation du Capteur\n\nCarte de situation géographique, montrant la position du capteur.",
-        "mode": "markdown"
-      },
-      "pluginVersion": "12.3.1",
-      "title": "",
-      "type": "text"
     },
     {
       "datasource": {
@@ -1085,7 +1060,7 @@
         "h": 5,
         "w": 24,
         "x": 0,
-        "y": 116
+        "y": 103
       },
       "id": 27,
       "options": {
@@ -1375,7 +1350,7 @@
         "h": 11,
         "w": 24,
         "x": 0,
-        "y": 121
+        "y": 108
       },
       "id": 28,
       "options": {
@@ -1580,7 +1555,7 @@
         "h": 10,
         "w": 24,
         "x": 0,
-        "y": 132
+        "y": 119
       },
       "id": 30,
       "options": {
@@ -1732,7 +1707,7 @@
         "h": 9,
         "w": 24,
         "x": 0,
-        "y": 142
+        "y": 129
       },
       "id": 22,
       "options": {
@@ -1798,7 +1773,7 @@
         "h": 11,
         "w": 24,
         "x": 0,
-        "y": 151
+        "y": 138
       },
       "id": 5,
       "options": {
