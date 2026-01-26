@@ -18,7 +18,7 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 108,
+  "id": 109,
   "links": [],
   "panels": [
     {
@@ -115,7 +115,7 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 39,
+        "h": 49,
         "w": 24,
         "x": 0,
         "y": 44
@@ -127,7 +127,7 @@
           "showLineNumbers": false,
           "showMiniMap": false
         },
-        "content": "### Vue en Temps Réel (Graphique Principal)\n\nLe panneau central de **contrôle de conformité**. Il affiche le bruit mesuré face à la limite légale dynamique.\n\n- **Logique de Filtre** : Utilise le **L50** (Médiane) pour écarter les bruits brefs (voitures, avions) et isoler le bruit continu (PAC).\n- **Temporisation** : Une infraction n'est signalée que si le dépassement dure **plus de 2 minutes**.\n  - 🟢 **Vert** : Conforme.\n  - 🔴 **Rouge** : Infraction confirmée (> 2 min).\n\n### Historique des Infractions (Frise Chronologique)\n\nUn bandeau simple qui fait office de **journal des non-conformités**. Il indique en rouge les périodes où le bruit a été officiellement jugé excessif (après la tolérance de 2 min).\n\n### Analyse des Émergences (Graphique d'Écarts)\n\nCe graphique focus uniquement sur le **surplus de bruit**. Il montre de combien de décibels la limite a été franchie. Utile pour mesurer la gravité de la nuisance.\n\n### Taux de Dépassement (Jauge %)\n\nUn indicateur de sévérité globale. Il répond à la question : _\"Quel pourcentage du temps avons-nous passé en infraction ?\"_.\n\n- **Seuils pris en compte** : 50dB (Jour) / 45dB (Transition) / 40dB (Nuit).\n\n### Température Extérieure\n\nMet en corrélation le bruit et le froid. Une pompe à chaleur étant plus bruyante à basse température, ce graphique aide à contextualiser les nuisances hivernales.\n\nCette section complète la surveillance temps réel par une analyse approfondie de l'environnement sonore. Elle se décompose en **5 outils d'expertise** :\n\n### Indicateurs de Pression Acoustique (Graphique Temporel)\n\nVisualisation de la **dynamique du bruit** à l'instant T.\n\n- Superpose le bruit brut (**SPL**) et les statistiques (**L10/L50/L90**).\n- Permet de voir _comment_ le bruit évolue : est-ce un pic isolé (L10 monte seul) ou une augmentation générale du fond (L90 monte aussi) ?\n- Affiche les **seuils réglementaires** en pointillé pour repérer les infractions instantanées.\n\n### Synthèse avancée de l'environnement sonore et analyse statistique instantanée des indicateurs acoustiques.\n\nUn **bilan chiffré complet** sur la période affichée. Il présente les métriques clés pour l'acusticien :\n\n- **Lden** (Day-Evening-Night) : L'indice de référence européen de gêne globale (pénalités soir/nuit incluses).\n- **Leq** : La moyenne énergétique pure.\n- **Percentiles (L10/L50/L90)** : La structure statistique du bruit (Pics / Médiane / Fond).\n- **SEL** : L'exposition sonore totale cumulée.\n\n### Synthèse avancée de l'environnement sonore et analyse statistique quotidenne des indicateurs acoustiques.\n\nUn graphique rétrospectif qui agrège les mesures **jour par jour**. Indispensable pour comparer la nuisance d'aujourd'hui, d'hier ou de la semaine passée.\n\n- Affiche le **Lden** quotidien ainsi que les **Lday** / **Lnight**.\n- Permet de vérifier si une journée a été globalement plus bruyante que la normale.\n\n#### Pourquoi comparer Leq et Lden ?\n\n1.  **C'est la base de comparaison réelle :** Le Leq est la \"vraie\" moyenne physique du bruit. En le comparant au Lden, vous pouvez quantifier l'impact des pénalités du soir et de la nuit. Si le Lden est beaucoup plus élevé que le Leq, cela prouve techniquement que la nuisance est majoritairement nocturne.\n2.  **Validation scientifique :** Dans un rapport acoustique, le Leq est l'indicateur standard universel. Il permet de s'assurer qu'il n'y a pas d'erreur de calcul dans les indicateurs pondérés.\n3.  **Analyse de la source :** Pour une machine comme une PAC qui tourne de manière constante, le Leq sera très proche du L50. S'ils divergent, cela signifie que le bruit est pollué par des bruits intermittents (trafic, oiseaux, vent).\n\n**En résumé :** Le Lden est un indice de **gêne** (subjectif/légal), le Leq est un indice d'**énergie** (objectif). Avoir les deux sur votre graphique de synthèse quotidienne permet une expertise complète.\n\n### Signature du Bruit: Dynamique & Monotonie\n\nCe graphique qualifie la **nature de la source sonore** via l'indice de monotonie (L10 - L90).\n\n- **Stable (< 5dB)** : Le bruit est constant et monotone (Signature typique d'une **Pompe à Chaleur** ou VMC).\n- **Fluctuant (5-10dB)** : Bruit d'environnement standard.\n- **Impulsif (> 15dB)** : Bruit irrégulier (Passage de voitures, aboiements, travaux).\n\n### Localisation du Capteur\n\nCarte de situation géographique, montrant la position exacte du capteur.\n",
+        "content": "### Vue en Temps Réel (Graphique Principal)\n\nLe panneau central de **contrôle de conformité**. Il affiche le bruit mesuré face à la limite légale dynamique.\n\n- **Logique de Filtre** : Utilise le **L50** (Médiane) pour écarter les bruits brefs (voitures, avions) et isoler le bruit continu (PAC).\n- **Temporisation** : Une infraction n'est signalée que si le dépassement dure **plus de 2 minutes**.\n  - 🟢 **Vert** : Conforme.\n  - 🔴 **Rouge** : Infraction confirmée (> 2 min).\n\n### Historique des Infractions (Frise Chronologique)\n\nUn bandeau simple qui fait office de **journal des non-conformités**. Il indique en rouge les périodes où le bruit a été officiellement jugé excessif (après la tolérance de 2 min).\n\n### Analyse des Émergences (Graphique d'Écarts)\n\nCe graphique focus uniquement sur le **surplus de bruit**. Il montre de combien de décibels la limite a été franchie. Utile pour mesurer la gravité de la nuisance.\n\n### Taux de Dépassement (Jauge %)\n\nUn indicateur de sévérité globale. Il répond à la question : _\"Quel pourcentage du temps avons-nous passé en infraction ?\"_.\n\n- **Seuils pris en compte** : 50dB (Jour) / 45dB (Transition) / 40dB (Nuit).\n\n### Température Extérieure\n\nMet en corrélation le bruit et le froid. Une pompe à chaleur étant plus bruyante à basse température, ce graphique aide à contextualiser les nuisances hivernales.\n\nCette section complète la surveillance temps réel par une analyse approfondie de l'environnement sonore. Elle se décompose en **5 outils d'expertise** :\n\n### Indicateurs de Pression Acoustique (Graphique Temporel)\n\nVisualisation de la **dynamique du bruit** à l'instant T.\n\n- Superpose le bruit brut (**SPL**) et les statistiques (**L10/L50/L90**).\n- Permet de voir _comment_ le bruit évolue : est-ce un pic isolé (L10 monte seul) ou une augmentation générale du fond (L90 monte aussi) ?\n- Affiche les **seuils réglementaires** en pointillé pour repérer les infractions instantanées.\n\n### Synthèse avancée de l'environnement sonore et analyse statistique instantanée des indicateurs acoustiques.\n\nUn **bilan chiffré complet** sur la période affichée. Il présente les métriques clés pour l'acusticien :\n\n- **Lden** (Day-Evening-Night) : L'indice de référence européen de gêne globale (pénalités soir/nuit incluses).\n- **Leq** : La moyenne énergétique pure.\n- **Percentiles (L10/L50/L90)** : La structure statistique du bruit (Pics / Médiane / Fond).\n- **SEL** : L'exposition sonore totale cumulée.\n\n### Synthèse avancée de l'environnement sonore et analyse statistique quotidenne des indicateurs acoustiques.\n\nUn graphique rétrospectif qui agrège les mesures **jour par jour**. Indispensable pour comparer la nuisance d'aujourd'hui, d'hier ou de la semaine passée.\n\n- Affiche le **Lden** quotidien ainsi que les **Lday** / **Lnight**.\n- Permet de vérifier si une journée a été globalement plus bruyante que la normale.\n\n##### Pourquoi comparer Leq et Lden ?\n\n1.  **C'est la base de comparaison réelle :** Le Leq est la \"vraie\" moyenne physique du bruit. En le comparant au Lden, vous pouvez quantifier l'impact des pénalités du soir et de la nuit. Si le Lden est beaucoup plus élevé que le Leq, cela prouve techniquement que la nuisance est majoritairement nocturne.\n2.  **Validation scientifique :** Dans un rapport acoustique, le Leq est l'indicateur standard universel. Il permet de s'assurer qu'il n'y a pas d'erreur de calcul dans les indicateurs pondérés.\n3.  **Analyse de la source :** Pour une machine comme une PAC qui tourne de manière constante, le Leq sera très proche du L50. S'ils divergent, cela signifie que le bruit est pollué par des bruits intermittents (trafic, oiseaux, vent).\n\nLe Lden est un indice de **gêne** (subjectif/légal), le Leq est un indice d'**énergie** (objectif). Avoir les deux sur votre graphique de synthèse quotidienne permet une expertise complète.\n\n### Analyse de Densité : Intensité vs Cycle Circadien\n\nCe graphique de corrélation analyse la distribution de chaque mesure acoustique sur un cycle de 24 heures (axe vertical), indépendamment du jour calendaire. Il permet d’isoler visuellement les **nuisances mécaniques cycliques** (récurrences) des bruits aléatoires de l'environnement, tout en mettant en relief la sévérité des infractions par rapport aux seuils légaux.\nCe graphique constitue une **\"preuve par la récurrence\"**. Si une tache dense apparaît systématiquement en période nocturne (22h-07h) au-delà de 40 dB, cela démontre mathématiquement que la nuisance n'est pas accidentelle mais structurelle, liée au fonctionnement d'un équipement fixe.\n\nCe panneau propose une lecture multidimensionnelle de votre environnement sonore :\n\n- Les Axes (Le \"Où\" et \"Quand\")\n  - **Axe Horizontal (X) :** Intensité du bruit en décibels pondérés A (dB(A)).\n  - **Axe Vertical (Y) :** Heure de la journée (de 00h à 23h59). Chaque point représente une mesure prise à un instant T sur la période sélectionnée (ex: les 7 derniers jours).\n- L’Effet de Densité (Le \"Nuage\" de points)\n  - Le graphique utilise la semi-transparence. Plus une zone est **sombre ou dense**, plus le niveau de bruit mesuré à cette heure précise est **récurrent**.\n  - **Une ligne verticale sombre** indique une source sonore stable et constante (signature typique d'une **pompe à chaleur** ou d'une ventilation).\n  - **Des points dispersés** indiquent des événements aléatoires (passages de véhicules, vent, bruits de voisinage).\n- Taille et Couleur des Points (La Sévérité)\n  - La taille des points augmente proportionnellement au **dépassement des limites légales wallonnes** (40 dB la nuit, 45 dB en transition, 50 dB le jour).\n  - **Gros points (Rouge/Foncé) :** Infractions majeures nécessitant une action corrective.\n  - **Petits points (Vert/Clair) :** Mesures conformes aux recommandations de santé publique et de voisinage.\n\n### Signature du Bruit: Dynamique & Monotonie\n\nCe graphique qualifie la **nature de la source sonore** via l'indice de monotonie (L10 - L90).\n\n- **Stable (< 5dB)** : Le bruit est constant et monotone (Signature typique d'une **Pompe à Chaleur** ou VMC).\n- **Fluctuant (5-10dB)** : Bruit d'environnement standard.\n- **Impulsif (> 15dB)** : Bruit irrégulier (Passage de voitures, aboiements, travaux).\n\n### Localisation du Capteur\n\nCarte de situation géographique, montrant la position exacte du capteur.\n",
         "mode": "markdown"
       },
       "pluginVersion": "12.3.1",
@@ -140,7 +140,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 83
+        "y": 93
       },
       "id": 16,
       "panels": [],
@@ -366,7 +366,7 @@
         "h": 15,
         "w": 24,
         "x": 0,
-        "y": 84
+        "y": 94
       },
       "id": 1,
       "options": {
@@ -479,7 +479,7 @@
         "h": 4,
         "w": 24,
         "x": 0,
-        "y": 99
+        "y": 109
       },
       "id": 8,
       "options": {
@@ -678,7 +678,7 @@
         "h": 8,
         "w": 18,
         "x": 0,
-        "y": 103
+        "y": 113
       },
       "id": 23,
       "options": {
@@ -773,7 +773,7 @@
         "h": 8,
         "w": 6,
         "x": 18,
-        "y": 103
+        "y": 113
       },
       "id": 29,
       "options": {
@@ -867,7 +867,7 @@
         "h": 8,
         "w": 24,
         "x": 0,
-        "y": 111
+        "y": 121
       },
       "id": 31,
       "options": {
@@ -899,7 +899,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 119
+        "y": 129
       },
       "id": 20,
       "panels": [],
@@ -1167,7 +1167,7 @@
         "h": 11,
         "w": 24,
         "x": 0,
-        "y": 120
+        "y": 130
       },
       "id": 28,
       "options": {
@@ -1320,7 +1320,7 @@
         "h": 4,
         "w": 24,
         "x": 0,
-        "y": 131
+        "y": 141
       },
       "id": 27,
       "options": {
@@ -1573,7 +1573,7 @@
         "h": 15,
         "w": 24,
         "x": 0,
-        "y": 135
+        "y": 145
       },
       "id": 30,
       "options": {
@@ -1599,6 +1599,153 @@
       "timeFrom": "now-10d",
       "title": "Synthèse avancée de l'environnement sonore et analyse statistique quotidenne des indicateurs acoustiques.",
       "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "ff9xpmhbcsb9ce"
+      },
+      "description": "Ce graphique de corrélation analyse la distribution de chaque mesure acoustique sur un cycle de 24 heures (axe vertical), indépendamment du jour calendaire. Il permet d’isoler visuellement les nuisances mécaniques cycliques (récurrences) des bruits aléatoires de l'environnement, tout en mettant en relief la sévérité des infractions par rapport aux seuils légaux.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "#78787880",
+            "mode": "continuous-YlRd",
+            "seriesBy": "last"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "Niveai de Pression Sonore (dB(A))",
+            "axisPlacement": "auto",
+            "axisSoftMin": 35,
+            "fillOpacity": 50,
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "pointShape": "circle",
+            "pointSize": {
+              "fixed": 1,
+              "max": 40,
+              "min": 1
+            },
+            "pointStrokeWidth": 1,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "show": "points"
+          },
+          "fieldMinMax": false,
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              }
+            ]
+          },
+          "unit": "dB"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "heure"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": ""
+              },
+              {
+                "id": "custom.axisSoftMax",
+                "value": 24
+              },
+              {
+                "id": "custom.axisSoftMin",
+                "value": 0
+              },
+              {
+                "id": "decimals",
+                "value": 0
+              },
+              {
+                "id": "custom.axisLabel",
+                "value": "Heure de la journée"
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 23,
+        "w": 24,
+        "x": 0,
+        "y": 160
+      },
+      "id": 32,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "mapping": "manual",
+        "series": [
+          {
+            "color": {
+              "matcher": {
+                "id": "byName",
+                "options": "severite"
+              }
+            },
+            "frame": {
+              "matcher": {
+                "id": "byIndex",
+                "options": 0
+              }
+            },
+            "size": {
+              "matcher": {
+                "id": "byName",
+                "options": "severite"
+              }
+            },
+            "x": {
+              "matcher": {
+                "id": "byName",
+                "options": "decibels"
+              }
+            },
+            "y": {
+              "matcher": {
+                "id": "byName",
+                "options": "heure"
+              }
+            }
+          }
+        ],
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "12.3.1",
+      "targets": [
+        {
+          "query": "import \"date\"\nimport \"timezone\"\n\noption location = timezone.location(name: \"Europe/Brussels\")\n\n// --- BORNES ALIGNÉES (Correction du bug de durée 0) ---\n// On commence à minuit le jour du début\nstartAligned = date.truncate(t: v.timeRangeStart, unit: 1d)\n// On finit au minuit SUIVANT le jour de fin (garantit min. 24h de fenêtre de calcul)\nstopAligned = date.add(d: 1d, to: date.truncate(t: v.timeRangeStop, unit: 1d))\n\n// --- INTERVALLE DYNAMIQUE SÉCURISÉ ---\nrangeDuration = uint(v: stopAligned) - uint(v: startAligned)\n// On vise 4000 points. Si la durée est de 24h, l'intervalle sera d'environ 21s.\ntargetInterval = duration(v: uint(v: float(v: rangeDuration) / 4000.0))\n\n// Sécurité : on ne descend pas sous l'intervalle natif ou 10s pour protéger le CPU\nactualInterval = if int(v: targetInterval) < int(v: 10s) then 10s else targetInterval\n\nfrom(bucket: \"default\")\n  |> range(start: startAligned, stop: stopAligned)\n  |> filter(fn: (r) => r._measurement == \"dt8852\" and r._field == \"spl\" and r.frequency_weighting == \"dB(A)\")\n  |> aggregateWindow(every: actualInterval, fn: median)\n  |> filter(fn: (r) => exists r._value)\n  |> map(fn: (r) => {\n      h = date.hour(t: r._time)\n      m = date.minute(t: r._time)\n      s = date.second(t: r._time)\n      \n      // Seuils PAC Wallonie\n      limit = if h >= 7 and h < 19 then 50.0 \n              else if (h >= 6 and h < 7) or (h >= 19 and h < 22) then 45.0 \n              else 40.0\n      \n      diff = if r._value > limit then r._value - limit else 0.0\n\n      return {\n          decibels: r._value,\n          // Heure ultra-précise (Y) pour un nuage de points fluide\n          heure: float(v: h) + (float(v: m) / 60.0) + (float(v: s) / 3600.0),\n          severite: diff + 1.0\n      }\n  })\n  |> keep(columns: [\"decibels\", \"heure\", \"severite\"])\n  |> group()",
+          "refId": "A"
+        }
+      ],
+      "title": "Analyse de Densité : Intensité vs Cycle Circadien",
+      "type": "xychart"
     },
     {
       "datasource": {
@@ -1725,7 +1872,7 @@
         "h": 9,
         "w": 24,
         "x": 0,
-        "y": 150
+        "y": 183
       },
       "id": 22,
       "options": {
@@ -1791,7 +1938,7 @@
         "h": 11,
         "w": 24,
         "x": 0,
-        "y": 159
+        "y": 192
       },
       "id": 5,
       "options": {
