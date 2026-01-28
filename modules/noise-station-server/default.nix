@@ -16,9 +16,6 @@
           settings = {
             server.http_addr = "0.0.0.0";
             server.http_port = 3000;
-            login_logo = ./Small-Untitled-2025-11-17-2024.svg;
-            loading_logo = ./Untitled-2025-11-17-2024.svg;
-            menu_logo = ./Small-Untitled-2025-11-17-2024.svg;
           };
           provision = {
             enable = true;
