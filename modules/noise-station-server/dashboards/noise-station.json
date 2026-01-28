@@ -18,7 +18,7 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 115,
+  "id": 116,
   "links": [],
   "panels": [
     {
@@ -1564,6 +1564,10 @@
               {
                 "id": "displayName",
                 "value": "Leq (${__field.labels.frequency_weighting}, ${__field.labels.time_weighting})"
+              },
+              {
+                "id": "custom.lineWidth",
+                "value": 5
               }
             ]
           }
