@@ -55,9 +55,20 @@
       ];
     };
 
-    boot.loader.timeout = 0;
-    boot.loader.grub.enable = false;
-    boot.loader.generic-extlinux-compatible.enable = true;
+    boot = {
+      loader = {
+        timeout = 0;
+        grub.enable = false;
+        generic-extlinux-compatible.enable = true;
+      };
+      # Prevent issues like: brcmfmac: brcmf_set_channel: set chanspec 0xd026 fail, reason -52
+      kernelParams = [
+        "snd_bcm2835.enable_headphones=1"
+        "snd_bcm2835.enable_hdmi=1"
+        "brcmfmac.roamoff=1"
+        "brcmfmac.feature_disable=0x282000"
+      ];
+    };
 
     facter.reportPath = ./facter.json;
 
