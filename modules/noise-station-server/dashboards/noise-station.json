@@ -18,7 +18,7 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 119,
+  "id": 120,
   "links": [],
   "panels": [
     {
@@ -197,7 +197,7 @@
               "mode": "off"
             }
           },
-          "displayName": "Niveau Sonore - L50 (${__field.labels.frequency_weighting})",
+          "displayName": "Niveau Sonore - L50 SPL (${__field.labels.frequency_weighting}, ${__field.labels.time_weighting})",
           "fieldMinMax": false,
           "mappings": [],
           "thresholds": {
@@ -261,7 +261,7 @@
               },
               {
                 "id": "displayName",
-                "value": "Seuil Légal"
+                "value": "Seuil Légal (dB(A) SPL)"
               },
               {
                 "id": "custom.fillOpacity",
@@ -356,7 +356,7 @@
               },
               {
                 "id": "displayName",
-                "value": "Niveau Sonore Brut (${__field.labels.frequency_weighting})"
+                "value": "Niveau Sonore Brut (${__field.labels.frequency_weighting} SPL)"
               }
             ]
           }
@@ -636,7 +636,7 @@
               },
               {
                 "id": "displayName",
-                "value": "Seuil Légal"
+                "value": "Seuil Légal (dB(A) SPL)"
               }
             ]
           },
@@ -656,7 +656,7 @@
               },
               {
                 "id": "displayName",
-                "value": "Niveau Sonore Brut"
+                "value": "Niveau Sonore Brut (dB(A) SPL)"
               }
             ]
           },
@@ -1011,7 +1011,7 @@
               },
               {
                 "id": "displayName",
-                "value": "Niveau Sonore - L10 (${__field.labels.frequency_weighting}, ${__field.labels.time_weighting})"
+                "value": "Niveau Sonore - L10 SPL (${__field.labels.frequency_weighting}, ${__field.labels.time_weighting})"
               },
               {
                 "id": "custom.lineStyle",
@@ -1037,7 +1037,7 @@
               },
               {
                 "id": "displayName",
-                "value": "Niveau Sonore - L10 (${__field.labels.frequency_weighting}, ${__field.labels.time_weighting})"
+                "value": "Niveau Sonore - L10 SPL (${__field.labels.frequency_weighting}, ${__field.labels.time_weighting})"
               },
               {
                 "id": "custom.lineStyle",
@@ -1063,7 +1063,7 @@
               },
               {
                 "id": "displayName",
-                "value": "Niveau Sonore - L50 (${__field.labels.frequency_weighting}, ${__field.labels.time_weighting})"
+                "value": "Niveau Sonore - L50 SPL (${__field.labels.frequency_weighting}, ${__field.labels.time_weighting})"
               }
             ]
           },
@@ -1082,7 +1082,7 @@
               },
               {
                 "id": "displayName",
-                "value": "Niveau Sonore - L90 (${__field.labels.frequency_weighting}, ${__field.labels.time_weighting})"
+                "value": "Niveau Sonore - L90 SPL (${__field.labels.frequency_weighting}, ${__field.labels.time_weighting})"
               },
               {
                 "id": "custom.lineStyle",
@@ -1108,7 +1108,7 @@
               },
               {
                 "id": "displayName",
-                "value": "Niveau Sonore - L90 (${__field.labels.frequency_weighting}, ${__field.labels.time_weighting})"
+                "value": "Niveau Sonore - L90 SPL (${__field.labels.frequency_weighting}, ${__field.labels.time_weighting})"
               },
               {
                 "id": "custom.lineStyle",
@@ -1137,7 +1137,7 @@
               },
               {
                 "id": "displayName",
-                "value": "Niveau Sonore - L50 (${__field.labels.frequency_weighting}, ${__field.labels.time_weighting})"
+                "value": "Niveau Sonore - L50 SPL (${__field.labels.frequency_weighting}, ${__field.labels.time_weighting})"
               }
             ]
           },
