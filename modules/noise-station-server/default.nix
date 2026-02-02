@@ -14,8 +14,13 @@
           enable = true;
           openFirewall = true;
           settings = {
-            server.http_addr = "0.0.0.0";
-            server.http_port = 3000;
+            server = {
+              http_addr = "0.0.0.0";
+              http_port = 3000;
+            };
+            feature_toggles = {
+              enable = "publicDashboards panelTimeSettings timeComparison";
+            };
           };
           provision = {
             enable = true;
