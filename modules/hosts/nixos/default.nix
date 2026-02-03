@@ -15,7 +15,6 @@
           dev
           facter
           openssh
-          shell
           vpn
 
           # Users

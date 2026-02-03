@@ -15,7 +15,6 @@
         noise-station-client
         openssh
         rpi4-sdimage
-        shell
         vpn
 
         # Users

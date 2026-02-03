@@ -17,7 +17,6 @@
           guacamole
           noise-station-server
           openssh
-          shell
           vpn
 
           # Users

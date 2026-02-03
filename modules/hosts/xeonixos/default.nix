@@ -17,7 +17,6 @@ toplevel: {
           facter
           guacamole
           openssh
-          shell
           vpn
 
           # Users

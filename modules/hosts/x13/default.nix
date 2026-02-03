@@ -20,7 +20,6 @@
         facter
         fwupd
         games
-        shell
         sound
         vpn
 
