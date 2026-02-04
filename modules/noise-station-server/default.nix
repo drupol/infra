@@ -38,6 +38,7 @@
               {
                 name = "InfluxDB";
                 type = "influxdb";
+                isDefault = true;
                 database = "influxdb";
                 editable = false;
                 access = "proxy";
