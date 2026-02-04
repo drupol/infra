@@ -21,6 +21,7 @@
             feature_toggles = {
               enable = "publicDashboards panelTimeSettings timeComparison";
             };
+            dataproxy.timeout = 600;
           };
           provision = {
             enable = true;
