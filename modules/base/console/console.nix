@@ -6,6 +6,18 @@
       programs.zellij = {
         enable = true;
         attachExistingSession = true;
+        settings = {
+          # See https://zellij.dev/documentation/options.html
+          show_startup_tips = true;
+          default_mode = "locked";
+
+          pane_frames = true;
+          simplified_ui = false;
+          default_layout = "default";
+
+          mouse_mode = true;
+          copy_on_select = true;
+        };
       };
     };
 
