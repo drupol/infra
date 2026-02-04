@@ -18,7 +18,7 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 124,
+  "id": 131,
   "links": [],
   "panels": [
     {
@@ -149,8 +149,8 @@
     },
     {
       "datasource": {
-        "type": "influxdb",
-        "name": "InfluxDB"
+        "name": "InfluxDB",
+        "type": "influxdb"
       },
       "description": "Affiche le SPL reconstruit sur des fenêtres de 30s à partir des mesures: conversion dB→énergie, agrégation en énergie, puis reconversion en dB. La courbe est comparée à une limite réglementaire dynamique (40/45/50 dB) calculée à partir de l’heure locale. NOTE: Cette visualisation applique une moyenne mobile exponentielle (n=30) pour lisser les courbes et faciliter la lecture. Pour une expertise acoustique stricte, il est recommandé d'analyser les valeurs brutes.",
       "fieldConfig": {
@@ -386,8 +386,8 @@
       "targets": [
         {
           "datasource": {
-            "type": "influxdb",
-            "name": "InfluxDB"
+            "name": "InfluxDB",
+            "type": "influxdb"
           },
           "hide": false,
           "query": "import \"date\"\nimport \"timezone\"\n\noption location = timezone.location(name: \"Europe/Brussels\")\n\nminSeconds = 120\n\n// 1. On récupère la valeur médiane brute (Source)\nsourceData =\n  from(bucket: \"default\")\n    |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n    |> filter(fn: (r) => r._measurement == \"dt8852\" and r._field == \"spl\" and r.frequency_weighting == \"dB(A)\" and exists r.time_weighting)\n    |> keep(columns: [\"_time\", \"_value\", \"frequency_weighting\", \"time_weighting\"])\n    |> aggregateWindow(\n        every: v.windowPeriod,\n        fn: (column, tables=<-) => tables |> quantile(q: 0.50),\n        createEmpty: true\n      )\n\nemaData = \n  sourceData \n    |> exponentialMovingAverage(n: 30)\n\ncombined = \n  union(tables: [\n    sourceData |> map(fn: (r) => ({ r with _field: \"val_raw\" })),\n    emaData |> map(fn: (r) => ({ r with _field: \"val_ema\" }))\n  ])\n  |> pivot(rowKey: [\"_time\", \"frequency_weighting\"], columnKey: [\"_field\"], valueColumn: \"_value\")\n  |> map(fn: (r) => {\n        h = date.hour(t: r._time)\n        limitValue =\n          if h >= 7 and h < 19 then 50.0\n          else if (h >= 6 and h < 7) or (h >= 19 and h < 22) then 45.0\n          else 40.0\n        \n        return { r with \n            limit: limitValue,\n            exceed_decision: r.val_ema > limitValue \n        }\n  })\n  |> stateDuration(fn: (r) => r.exceed_decision, column: \"exceed_seconds\", unit: 1s)\n  |> map(fn: (r) => {\n        status = if not r.exceed_decision then \"ok\"\n                 else if r.exceed_seconds >= minSeconds then \"nok\"\n                 else \"pending\"\n        \n        return { r with\n            status: status,\n            excess_raw: (r.val_raw - r.limit)\n        }\n  })\n\nstatusSeries = combined |> map(fn: (r) => ({ _time: r._time, time_weighting: r.time_weighting, frequency_weighting: r.frequency_weighting, _field: r.status, _value: r.val_ema }))\nrealSeries   = combined |> map(fn: (r) => ({ _time: r._time, time_weighting: r.time_weighting, frequency_weighting: r.frequency_weighting, _field: \"real_value\", _value: r.val_raw }))\nexcessSeries = combined |> map(fn: (r) => ({ \n    _time: r._time, \n    frequency_weighting: r.frequency_weighting, \n    time_weighting: r.time_weighting, \n    _field: \"excess\", \n    _value: if r.excess_raw > 0.0 then r.excess_raw else 0.0 \n}))\n\nunion(tables: [statusSeries, realSeries, excessSeries])\n  |> group(columns: [\"frequency_weighting\", \"time_weighting\", \"_field\"])\n  |> pivot(rowKey: [\"_time\", \"frequency_weighting\", \"time_weighting\"], columnKey: [\"_field\"], valueColumn: \"_value\")",
@@ -395,8 +395,8 @@
         },
         {
           "datasource": {
-            "type": "influxdb",
-            "name": "InfluxDB"
+            "name": "InfluxDB",
+            "type": "influxdb"
           },
           "hide": false,
           "query": "import \"date\"\nimport \"timezone\"\n\noption location = timezone.location(name: \"Europe/Brussels\")\n\nfrom(bucket: \"default\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r._measurement == \"dt8852\" and r._field == \"spl\")\n  |> aggregateWindow(every: v.windowPeriod, fn: first)\n  |> map(fn: (r) => {\n      h = date.hour(t: r._time)\n      return {\n          _time: r._time,\n          _limit: if h >= 7 and h < 19 then 50.0 \n                  else if h == 6 or (h >= 19 and h < 22) then 45.0 \n                  else 40.0\n      }\n  })",
@@ -408,110 +408,8 @@
     },
     {
       "datasource": {
-        "type": "influxdb",
-        "name": "InfluxDB"
-      },
-      "description": "Encode la conformité temporelle. Les données SPL sont agrégées, puis comparées à la limite horaire (40/45/50 dB). Une infraction est comptabilisée si le dépassement persiste plus de 2 minutes.",
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "palette-classic"
-          },
-          "custom": {
-            "axisPlacement": "auto",
-            "fillOpacity": 70,
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            },
-            "insertNulls": false,
-            "lineWidth": 0,
-            "spanNulls": false
-          },
-          "mappings": [
-            {
-              "options": {
-                "0": {
-                  "color": "dark-green",
-                  "index": 0,
-                  "text": "Conforme"
-                },
-                "1": {
-                  "color": "dark-red",
-                  "index": 1,
-                  "text": "Infraction"
-                }
-              },
-              "type": "value"
-            }
-          ],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": 0
-              }
-            ]
-          }
-        },
-        "overrides": [
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Value"
-            },
-            "properties": [
-              {
-                "id": "custom.axisPlacement",
-                "value": "hidden"
-              },
-              {
-                "id": "displayName",
-                "value": "Conformité"
-              }
-            ]
-          }
-        ]
-      },
-      "gridPos": {
-        "h": 4,
-        "w": 24,
-        "x": 0,
-        "y": 109
-      },
-      "id": 8,
-      "options": {
-        "alignValue": "left",
-        "legend": {
-          "displayMode": "list",
-          "placement": "bottom",
-          "showLegend": true
-        },
-        "mergeValues": true,
-        "rowHeight": 0.9,
-        "showValue": "never",
-        "tooltip": {
-          "hideZeros": false,
-          "mode": "single",
-          "sort": "none"
-        }
-      },
-      "pluginVersion": "12.3.2",
-      "targets": [
-        {
-          "query": "import \"timezone\"\nimport \"date\"\n\noption location = timezone.location(name: \"Europe/Brussels\")\n\nfrom(bucket: \"default\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r._measurement == \"dt8852\" and r._field == \"spl\" and r.frequency_weighting == \"dB(A)\")\n  |> filter(fn: (r) => exists r._value)\n  |> filter(fn: (r) => exists r.time_weighting)  \n  |> aggregateWindow(\n      every: 60s,\n      fn: (column, tables=<-) => tables |> quantile(q: 0.90, column: column),\n      createEmpty: true\n  )\n  |> map(fn: (r) => {\n      h = date.hour(t: r._time)\n\n      limit =\n        if h >= 7 and h < 19 then 50.0\n        else if (h >= 6 and h < 7) or (h >= 19 and h < 22) then 45.0\n        else 40.0\n\n      return {\n        _time: r._time,\n        _value: if r._value > limit then 1.0 else 0.0,\n        is_violation: if r._value > limit then 1 else 0\n      }\n  })\n  |> stateDuration(fn: (r) => r.is_violation == 1, column: \"duration\", unit: 1s)\n  |> map(fn: (r) => ({\n      _time: r._time,\n      _value: if r.is_violation == 1 and r.duration >= 120 then 1.0 else 0.0\n  }))",
-          "refId": "A"
-        }
-      ],
-      "title": "Historique des Infractions",
-      "type": "state-timeline"
-    },
-    {
-      "datasource": {
-        "type": "influxdb",
-        "name": "InfluxDB"
+        "name": "InfluxDB",
+        "type": "influxdb"
       },
       "description": "Suivi en temps réel du dépassement des limites acoustiques réglementaires (50/45/40 dB) avec détection automatique des périodes Jour, Aube, Soir et Nuit.",
       "fieldConfig": {
@@ -675,10 +573,10 @@
         ]
       },
       "gridPos": {
-        "h": 8,
-        "w": 18,
+        "h": 11,
+        "w": 24,
         "x": 0,
-        "y": 113
+        "y": 109
       },
       "id": 23,
       "options": {
@@ -706,106 +604,8 @@
     },
     {
       "datasource": {
-        "type": "influxdb",
-        "name": "InfluxDB"
-      },
-      "description": "Ce panel affiche la proportion de temps (en %) durant laquelle le niveau de pression acoustique (SPL) a excédé les limites réglementaires définies pour la zone. Le calcul tient compte de la variation des seuils selon l'heure : 50 dB (Jour), 45 dB (Aube/Soir/Transition) et 40 dB (Nuit).",
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "thresholds"
-          },
-          "fieldMinMax": false,
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "dark-orange",
-                "value": 0
-              },
-              {
-                "color": "#EAB839",
-                "value": 5
-              },
-              {
-                "color": "dark-orange",
-                "value": 10
-              },
-              {
-                "color": "dark-red",
-                "value": 20
-              },
-              {
-                "color": "dark-red",
-                "value": 30
-              },
-              {
-                "color": "dark-red",
-                "value": 40
-              },
-              {
-                "color": "dark-red",
-                "value": 50
-              },
-              {
-                "color": "dark-red",
-                "value": 60
-              },
-              {
-                "color": "dark-red",
-                "value": 70
-              },
-              {
-                "color": "dark-red",
-                "value": 80
-              },
-              {
-                "color": "dark-red",
-                "value": 90
-              }
-            ]
-          },
-          "unit": "percent"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 8,
-        "w": 6,
-        "x": 18,
-        "y": 113
-      },
-      "id": 29,
-      "options": {
-        "colorMode": "value",
-        "graphMode": "area",
-        "justifyMode": "auto",
-        "orientation": "auto",
-        "percentChangeColorMode": "standard",
-        "reduceOptions": {
-          "calcs": ["lastNotNull"],
-          "fields": "",
-          "values": false
-        },
-        "showPercentChange": false,
-        "textMode": "value",
-        "wideLayout": true
-      },
-      "pluginVersion": "12.3.2",
-      "targets": [
-        {
-          "query": "import \"timezone\"\nimport \"date\"\n\noption location = timezone.location(name: \"Europe/Brussels\")\n\ndata = from(bucket: \"default\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r._measurement == \"dt8852\" and r._field == \"spl\" and r.frequency_weighting == \"dB(A)\" and exists r.time_weighting and exists r._value)\n  |> aggregateWindow(every: 5m, fn: mean) \n  |> map(fn: (r) => {\n      h = date.hour(t: r._time)\n      limite = if h >= 7 and h < 19 then 50.0 \n               else if (h >= 6 and h < 7) or (h >= 19 and h < 22) then 45.0 \n               else 40.0\n      \n      return { r with _value: if r._value > limite then 1.0 else 0.0 }\n  })\n  |> aggregateWindow(every: 1d, fn: mean)\n  |> map(fn: (r) => ({ r with _value: r._value * 100.0 }))\n  |> yield(name: \"pourcentage_depassement_journalier\")\n",
-          "refId": "A"
-        }
-      ],
-      "title": "Taux de Dépassement des Seuils Légaux",
-      "type": "stat"
-    },
-    {
-      "datasource": {
-        "type": "influxdb",
-        "name": "InfluxDB"
+        "name": "InfluxDB",
+        "type": "influxdb"
       },
       "description": "Affichage en temps réel de la température mesurée par la sonde USB externe.",
       "fieldConfig": {
@@ -870,7 +670,7 @@
         "h": 8,
         "w": 24,
         "x": 0,
-        "y": 121
+        "y": 120
       },
       "id": 31,
       "options": {
@@ -902,7 +702,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 129
+        "y": 128
       },
       "id": 20,
       "panels": [],
@@ -911,8 +711,8 @@
     },
     {
       "datasource": {
-        "type": "influxdb",
-        "name": "InfluxDB"
+        "name": "InfluxDB",
+        "type": "influxdb"
       },
       "fieldConfig": {
         "defaults": {
@@ -1170,7 +970,7 @@
         "h": 11,
         "w": 24,
         "x": 0,
-        "y": 130
+        "y": 129
       },
       "id": 28,
       "options": {
@@ -1198,8 +998,8 @@
     },
     {
       "datasource": {
-        "type": "influxdb",
-        "name": "InfluxDB"
+        "name": "InfluxDB",
+        "type": "influxdb"
       },
       "description": "Synthèse avancée de l'environnement sonore et analyse statistique instantanée des indicateurs acoustiques. Ce panneau présente une vue exhaustive de la pollution sonore sur la période sélectionnée en combinant mesures énergétiques et distribution centile. Il calcule le niveau moyen Leq ainsi que l'indice de gêne global Lden, lequel intègre les pénalités réglementaires pour le soir (+5 dB) et la nuit (+10 dB) conformément aux normes d'évaluation de l'exposition au bruit. L'analyse statistique par centiles permet de caractériser précisément la nature du signal : le  L10 (niveau dépassé pendant 10 % de la période) met en évidence les événements sonores ponctuels et les pics de pollution, le L50 (niveau médian dépassé 50 % du temps) définit la tendance centrale du climat sonore, tandis que le L90 (niveau dépassé 90 % du temps) permet d'isoler le bruit de fond permanent en l'absence de sources intermittentes. Enfin, le panneau affiche le niveau d'exposition unique (SEL) et les extrema (Lmax/Lmin) pour offrir une lecture complète de la dynamique acoustique du site.",
       "fieldConfig": {
@@ -1323,7 +1123,7 @@
         "h": 4,
         "w": 24,
         "x": 0,
-        "y": 141
+        "y": 140
       },
       "id": 27,
       "options": {
@@ -1354,8 +1154,8 @@
     },
     {
       "datasource": {
-        "type": "influxdb",
-        "name": "InfluxDB"
+        "name": "InfluxDB",
+        "type": "influxdb"
       },
       "description": "Tableau de bord consolidé des niveaux de pression acoustique pondérés A, agrégés par périodes de 24 heures. Ce rapport regroupe les indicateurs réglementaires d'exposition globale (Lden), les moyennes énergétiques de jour (Lday, 07h-22h) et de nuit (Lnight, 22h-07h), la distribution statistique du bruit (L10, L50, L90) ainsi que les extrêmes de la journée (Lmin, Lmax).",
       "fieldConfig": {
@@ -1580,7 +1380,7 @@
         "h": 15,
         "w": 24,
         "x": 0,
-        "y": 145
+        "y": 144
       },
       "id": 30,
       "options": {
@@ -1610,7 +1410,157 @@
     {
       "datasource": {
         "type": "influxdb",
-        "name": "InfluxDB"
+        "uid": "P951FEA4DE68E13C5"
+      },
+      "description": "Ce graphique présente le pourcentage de temps durant lequel les niveaux sonores ont dépassé les seuils légaux par période de 24h. Les calculs sont basés sur les limites réglementaires : Jour (07h-19h) : 50 dB(A), Aube/Soir (06h-07h, 19h-22h) : 45 dB(A), et Nuit (22h-06h) : 40 dB(A). Une valeur de 100% indique que le bruit a été continuellement au-dessus de la limite pour la période donnée.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "axisSoftMax": 100,
+            "fillOpacity": 80,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineWidth": 1,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "yellow",
+                "value": 10
+              },
+              {
+                "color": "light-orange",
+                "value": 20
+              },
+              {
+                "color": "dark-orange",
+                "value": 30
+              },
+              {
+                "color": "semi-dark-red",
+                "value": 40
+              },
+              {
+                "color": "dark-red",
+                "value": 50
+              }
+            ]
+          },
+          "unit": "time:dddd DD-MM-YYYY"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "1. Jour (07h-19h)"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "percent"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "2. Aube/Soir (06h-07h, 19h-22h)"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "percent"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "3. Nuit (22h-06h)"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "percent"
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 11,
+        "w": 24,
+        "x": 0,
+        "y": 159
+      },
+      "id": 33,
+      "options": {
+        "barRadius": 0,
+        "barWidth": 0.97,
+        "fullHighlight": false,
+        "groupWidth": 0.7,
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": false
+        },
+        "orientation": "auto",
+        "showValue": "auto",
+        "stacking": "none",
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "single",
+          "sort": "none"
+        },
+        "xField": "_time",
+        "xTickLabelRotation": 0,
+        "xTickLabelSpacing": 0
+      },
+      "pluginVersion": "12.3.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "P951FEA4DE68E13C5"
+          },
+          "hide": false,
+          "query": "import \"timezone\"\nimport \"date\"\n\noption location = timezone.location(name: \"Europe/Brussels\")\n\nfullRangeStart = date.add(d: 1d, to: date.truncate(t: v.timeRangeStart, unit: 1d))\nfullRangeStop = date.truncate(t: now(), unit: 1d)\n\nfrom(bucket: \"default\")\n  |> range(start: fullRangeStart, stop: fullRangeStop)\n  |> filter(fn: (r) => r._measurement == \"dt8852\" and r._field == \"spl\" and r.frequency_weighting == \"dB(A)\" and exists r.time_weighting and exists r._value)\n  |> aggregateWindow(every: 1m, fn: median) \n    |> map(fn: (r) => {\n      h = date.hour(t: r._time)\n      info = if h >= 7 and h < 19 then \n                {s: \"1. Jour (07h-19h)\", l: 50.0}\n             else if (h >= 6 and h < 7) or (h >= 19 and h < 22) then \n                {s: \"2. Aube/Soir (06h-07h, 19h-22h)\", l: 45.0}\n             else \n                {s: \"3. Nuit (22h-06h)\", l: 40.0}\n      \n      return { r with \n        tranche: info.s, \n        _value: if r._value > info.l then 1.0 else 0.0 \n      }\n  })\n  |> group(columns: [\"tranche\"])\n  |> aggregateWindow(every: 1d, fn: mean, column: \"_value\", timeSrc: \"_start\")\n  |> map(fn: (r) => ({ _time: r._time, tranche: r.tranche, pct: r._value * 100.0 }))\n  |> group() \n  |> pivot(rowKey:[\"_time\"], columnKey: [\"tranche\"], valueColumn: \"pct\")\n  |> yield(name: \"depassement_legal\")",
+          "refId": "A"
+        }
+      ],
+      "timeFrom": "now-10d",
+      "title": "Suivi Journalier de la Conformité Acoustique",
+      "type": "barchart"
+    },
+    {
+      "datasource": {
+        "name": "InfluxDB",
+        "type": "influxdb"
       },
       "description": "Ce graphique de corrélation analyse la distribution de chaque mesure acoustique sur un cycle de 24 heures (axe vertical), indépendamment du jour calendaire. Il permet d’isoler visuellement les nuisances mécaniques cycliques (récurrences) des bruits aléatoires de l'environnement, tout en mettant en relief la sévérité des infractions par rapport aux seuils légaux.",
       "fieldConfig": {
@@ -1741,7 +1691,7 @@
         "h": 23,
         "w": 24,
         "x": 0,
-        "y": 160
+        "y": 170
       },
       "id": 32,
       "options": {
@@ -1804,8 +1754,8 @@
     },
     {
       "datasource": {
-        "type": "influxdb",
-        "name": "InfluxDB"
+        "name": "InfluxDB",
+        "type": "influxdb"
       },
       "description": "Calcul de la dynamique du bruit: Différence entre le niveau de pointe (L10) et le niveau de fond (L90).\n\n- Valeur élevée (> 15 dB) : Bruit fluctuant, trafic, événements ponctuels.\n- Valeur faible (< 5 dB) : Bruit monotone et continu. C'est la signature typique d'une **Pompe à Chaleur** ou d'une VMC.",
       "fieldConfig": {
@@ -1927,7 +1877,7 @@
         "h": 9,
         "w": 24,
         "x": 0,
-        "y": 183
+        "y": 193
       },
       "id": 22,
       "options": {
@@ -1956,8 +1906,8 @@
     },
     {
       "datasource": {
-        "type": "influxdb",
-        "name": "InfluxDB"
+        "name": "InfluxDB",
+        "type": "influxdb"
       },
       "description": "Affiche la position du capteur à partir de coordonnées définies dans le tableau de bord (point fixe). Sert à interpréter les mesures en fonction de l’environnement immédiat (obstacles, voisinage, géométrie des lieux).",
       "fieldConfig": {
@@ -1993,7 +1943,7 @@
         "h": 11,
         "w": 24,
         "x": 0,
-        "y": 192
+        "y": 202
       },
       "id": 5,
       "options": {
