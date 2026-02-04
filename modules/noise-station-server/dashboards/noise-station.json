@@ -18,7 +18,7 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 133,
+  "id": 134,
   "links": [],
   "panels": [
     {
@@ -1224,7 +1224,7 @@
               },
               {
                 "id": "custom.lineWidth",
-                "value": 4
+                "value": 2
               }
             ]
           },
@@ -1371,7 +1371,7 @@
               },
               {
                 "id": "custom.lineWidth",
-                "value": 5
+                "value": 2
               }
             ]
           },
@@ -1390,7 +1390,7 @@
         ]
       },
       "gridPos": {
-        "h": 15,
+        "h": 12,
         "w": 24,
         "x": 0,
         "y": 144
@@ -1413,7 +1413,7 @@
       "pluginVersion": "12.3.2",
       "targets": [
         {
-          "query": "import \"date\"\nimport \"math\"\nimport \"timezone\"\n\noption location = timezone.location(name: \"Europe/Brussels\")\n\nfullRangeStart = date.add(d: 1d, to: date.truncate(t: v.timeRangeStart, unit: 1d))\nfullRangeStop = date.truncate(t: now(), unit: 1d)\n\n// 1. PRÉ-RÉDUCTION\nbase1m = from(bucket: \"default\")\n  |> range(start: fullRangeStart, stop: fullRangeStop)\n  |> filter(fn: (r) => r._measurement == \"dt8852\" and r._field == \"spl\" and r.frequency_weighting == \"dB(A)\" and exists r._value and exists r.time_weighting)\n  |> aggregateWindow(every: v.windowPeriod, fn: median, timeSrc: \"_start\") \n  |> filter(fn: (r) => exists r._value)\n  |> keep(columns: [\"_time\", \"_value\", \"frequency_weighting\", \"time_weighting\"])\n\n// 2. PRÉPARATION ÉNERGÉTIQUE\nenergy_base = base1m\n  |> map(fn: (r) => ({ r with energy: math.pow(x: 10.0, y: float(v: r._value) / 10.0) }))\n\n// --- NOUVEL INDICATEUR : Leq (24h) ---\n// Moyenne énergétique pure sur toute la journée\nleq = energy_base\n  |> aggregateWindow(every: 1d, fn: mean, column: \"energy\", timeSrc: \"_start\")\n  |> map(fn: (r) => ({ r with _field: \"Leq\", _value: 10.0 * math.log10(x: r.energy) }))\n\n// --- INDICATEURS OMS / EUROPE ---\nlday = energy_base\n  |> filter(fn: (r) => {\n      h = date.hour(t: r._time)\n      return h >= 7 and h < 22\n  })\n  |> aggregateWindow(every: 1d, fn: mean, column: \"energy\", timeSrc: \"_start\")\n  |> map(fn: (r) => ({ r with _field: \"Lday\", _value: 10.0 * math.log10(x: r.energy) }))\n\nlnight = energy_base\n  |> filter(fn: (r) => {\n      h = date.hour(t: r._time)\n      return h >= 22 or h < 7\n  })\n  |> aggregateWindow(every: 1d, fn: mean, column: \"energy\", timeSrc: \"_start\")\n  |> map(fn: (r) => ({ r with _field: \"Lnight\", _value: 10.0 * math.log10(x: r.energy) }))\n\nlden = energy_base\n  |> map(fn: (r) => {\n      h = date.hour(t: r._time)\n      penalty = if h >= 19 and h < 23 then 5.0 \n                else if h >= 23 or h < 7 then 10.0 \n                else 0.0\n      return { r with energy_weighted: r.energy * math.pow(x: 10.0, y: penalty / 10.0) }\n  })\n  |> aggregateWindow(every: 1d, fn: mean, column: \"energy_weighted\", timeSrc: \"_start\")\n  |> map(fn: (r) => ({ r with _field: \"Lden\", _value: 10.0 * math.log10(x: r.energy_weighted) }))\n\n// --- STATISTIQUES CLASSIQUES ---\nlmax = base1m |> aggregateWindow(timeSrc: \"_start\", every: 1d, fn: max) |> map(fn: (r) => ({ r with _field: \"Lmax\" }))\nlmin = base1m |> aggregateWindow(timeSrc: \"_start\", every: 1d, fn: min) |> map(fn: (r) => ({ r with _field: \"Lmin\" }))\nl10 = base1m |> aggregateWindow(timeSrc: \"_start\", every: 1d, fn: (column, tables=<-) => tables |> quantile(q: 0.90)) |> map(fn: (r) => ({ r with _field: \"L10\" }))\nl50 = base1m |> aggregateWindow(timeSrc: \"_start\", every: 1d, fn: (column, tables=<-) => tables |> quantile(q: 0.50)) |> map(fn: (r) => ({ r with _field: \"L50\" }))\nl90 = base1m |> aggregateWindow(timeSrc: \"_start\", every: 1d, fn: (column, tables=<-) => tables |> quantile(q: 0.10)) |> map(fn: (r) => ({ r with _field: \"L90\" }))\n\n// 5. ASSEMBLAGE FINAL\nunion(tables: [l10, l50, l90, lmin, lmax, lden, lday, lnight, leq])\n  |> pivot(rowKey: [\"_time\", \"frequency_weighting\", \"time_weighting\"], columnKey: [\"_field\"], valueColumn: \"_value\")\n",
+          "query": "import \"date\"\nimport \"math\"\nimport \"timezone\"\n\noption location = timezone.location(name: \"Europe/Brussels\")\n\nfullRangeStart = date.add(d: 1d, to: date.truncate(t: v.timeRangeStart, unit: 1d))\nfullRangeStop = date.truncate(t: now(), unit: 1d)\n\n// 1. PRÉ-RÉDUCTION\nbase1m = from(bucket: \"default\")\n  |> range(start: fullRangeStart, stop: fullRangeStop)\n  |> filter(fn: (r) => r._measurement == \"dt8852\" and r._field == \"spl\" and r.frequency_weighting == \"dB(A)\" and exists r._value and exists r.time_weighting)\n  |> keep(columns: [\"_time\", \"_value\", \"frequency_weighting\", \"time_weighting\"])\n  |> aggregateWindow(every: v.windowPeriod, fn: median, timeSrc: \"_start\") \n  |> filter(fn: (r) => exists r._value)\n\n// 2. PRÉPARATION ÉNERGÉTIQUE\nenergy_base = base1m\n  |> map(fn: (r) => ({ r with energy: math.pow(x: 10.0, y: float(v: r._value) / 10.0) }))\n\n// --- NOUVEL INDICATEUR : Leq (24h) ---\n// Moyenne énergétique pure sur toute la journée\nleq = energy_base\n  |> aggregateWindow(every: 1d, fn: mean, column: \"energy\", timeSrc: \"_start\")\n  |> map(fn: (r) => ({ r with _field: \"Leq\", _value: 10.0 * math.log10(x: r.energy) }))\n\n// --- INDICATEURS OMS / EUROPE ---\nlday = energy_base\n  |> filter(fn: (r) => {\n      h = date.hour(t: r._time)\n      return h >= 7 and h < 22\n  })\n  |> aggregateWindow(every: 1d, fn: mean, column: \"energy\", timeSrc: \"_start\")\n  |> map(fn: (r) => ({ r with _field: \"Lday\", _value: 10.0 * math.log10(x: r.energy) }))\n\nlnight = energy_base\n  |> filter(fn: (r) => {\n      h = date.hour(t: r._time)\n      return h >= 22 or h < 7\n  })\n  |> aggregateWindow(every: 1d, fn: mean, column: \"energy\", timeSrc: \"_start\")\n  |> map(fn: (r) => ({ r with _field: \"Lnight\", _value: 10.0 * math.log10(x: r.energy) }))\n\nlden = energy_base\n  |> map(fn: (r) => {\n      h = date.hour(t: r._time)\n      penalty = if h >= 19 and h < 23 then 5.0 \n                else if h >= 23 or h < 7 then 10.0 \n                else 0.0\n      return { r with energy_weighted: r.energy * math.pow(x: 10.0, y: penalty / 10.0) }\n  })\n  |> aggregateWindow(every: 1d, fn: mean, column: \"energy_weighted\", timeSrc: \"_start\")\n  |> map(fn: (r) => ({ r with _field: \"Lden\", _value: 10.0 * math.log10(x: r.energy_weighted) }))\n\n// --- STATISTIQUES CLASSIQUES ---\nlmax = base1m |> aggregateWindow(timeSrc: \"_start\", every: 1d, fn: max) |> map(fn: (r) => ({ r with _field: \"Lmax\" }))\nlmin = base1m |> aggregateWindow(timeSrc: \"_start\", every: 1d, fn: min) |> map(fn: (r) => ({ r with _field: \"Lmin\" }))\nl10 = base1m |> aggregateWindow(timeSrc: \"_start\", every: 1d, fn: (column, tables=<-) => tables |> quantile(q: 0.90)) |> map(fn: (r) => ({ r with _field: \"L10\" }))\nl50 = base1m |> aggregateWindow(timeSrc: \"_start\", every: 1d, fn: (column, tables=<-) => tables |> quantile(q: 0.50)) |> map(fn: (r) => ({ r with _field: \"L50\" }))\nl90 = base1m |> aggregateWindow(timeSrc: \"_start\", every: 1d, fn: (column, tables=<-) => tables |> quantile(q: 0.10)) |> map(fn: (r) => ({ r with _field: \"L90\" }))\n\n// 5. ASSEMBLAGE FINAL\nunion(tables: [l10, l50, l90, lmin, lmax, lden, lday, lnight, leq])\n  |> pivot(rowKey: [\"_time\", \"frequency_weighting\", \"time_weighting\"], columnKey: [\"_field\"], valueColumn: \"_value\")\n",
           "refId": "A"
         }
       ],
@@ -1529,7 +1529,7 @@
         "h": 11,
         "w": 24,
         "x": 0,
-        "y": 159
+        "y": 156
       },
       "id": 33,
       "options": {
@@ -1705,7 +1705,7 @@
         "h": 23,
         "w": 24,
         "x": 0,
-        "y": 170
+        "y": 167
       },
       "id": 32,
       "options": {
@@ -1759,7 +1759,7 @@
       "pluginVersion": "12.3.2",
       "targets": [
         {
-          "query": "import \"date\"\nimport \"timezone\"\n\noption location = timezone.location(name: \"Europe/Brussels\")\n\n// 1. Calcul de la durée sélectionnée par l'utilisateur\nrangeDuration = uint(v: v.timeRangeStop) - uint(v: v.timeRangeStart)\noneDay = uint(v: 24h)\n\n// 2. Définition du point de départ dynamique\n// Si la sélection est < 24h, on force le début à minuit aujourd'hui\nactualStart = if rangeDuration < oneDay then date.truncate(t: now(), unit: 1d) else v.timeRangeStart\n\n// 3. Calcul de la fenêtre d'agrégation dynamique pour éviter le \"Too many datapoints\"\n// On calcule la durée réelle de données qu'on va charger\nactualDuration = uint(v: v.timeRangeStop) - uint(v: actualStart)\n// On divise par 1000 pour viser environ 1000 points sur le graphique\ndivisor = uint(v: 1000)\n// On prend le plus grand entre (durée totale / 1000) et la fenêtre automatique de Grafana\nwindowInNs = if actualDuration / divisor > uint(v: v.windowPeriod) then actualDuration / divisor else uint(v: v.windowPeriod)\ndynamicWindow = duration(v: windowInNs)\n\nfrom(bucket: \"default\")\n  |> range(start: actualStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r._measurement == \"dt8852\" and r._field == \"spl\" and r.frequency_weighting == \"dB(A)\")\n  // Utilisation de la fenêtre dynamique calculée au-dessus\n  |> aggregateWindow(every: dynamicWindow, fn: median)\n  |> filter(fn: (r) => exists r._value)\n  |> map(fn: (r) => {\n      h = date.hour(t: r._time)\n      m = date.minute(t: r._time)\n      s = date.second(t: r._time)\n      \n      // Seuils PAC Wallonie\n      limit = if h >= 7 and h < 19 then 50.0 \n              else if (h >= 6 and h < 7) or (h >= 19 and h < 22) then 45.0 \n              else 40.0\n      \n      diff = if r._value > limit then r._value - limit else 0.0\n\n      return {\n          _time: r._time,\n          decibels: r._value,\n          // Heure décimale pour l'axe X\n          heure: float(v: h) + (float(v: m) / 60.0) + (float(v: s) / 3600.0),\n          severite: diff + 1.0\n      }\n  })\n  |> keep(columns: [\"_time\", \"decibels\", \"heure\", \"severite\"])\n  |> group()",
+          "query": "import \"date\"\nimport \"timezone\"\n\noption location = timezone.location(name: \"Europe/Brussels\")\n\n// 1. Calcul de la durée sélectionnée par lutilisateur\nrangeDuration = uint(v: v.timeRangeStop) - uint(v: v.timeRangeStart)\noneDay = uint(v: 24h)\n\n// 2. Définition du point de départ dynamique\n// Si la sélection est < 24h, on force le début à minuit aujourdhui\nactualStart = if rangeDuration < oneDay then date.truncate(t: now(), unit: 1d) else v.timeRangeStart\n\n// 3. Calcul de la fenêtre dagrégation dynamique pour éviter le \"Too many datapoints\"\n// On calcule la durée réelle de données quon va charger\nactualDuration = uint(v: v.timeRangeStop) - uint(v: actualStart)\n// On divise par 1000 pour viser environ 1000 points sur le graphique\ndivisor = uint(v: 1000)\n// On prend le plus grand entre (durée totale / 1000) et la fenêtre automatique de Grafana\nwindowInNs = if actualDuration / divisor > uint(v: v.windowPeriod) then actualDuration / divisor else uint(v: v.windowPeriod)\ndynamicWindow = duration(v: windowInNs)\n\nfrom(bucket: \"default\")\n  |> range(start: actualStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r._measurement == \"dt8852\" and r._field == \"spl\" and r.frequency_weighting == \"dB(A)\")\n  |> aggregateWindow(every: dynamicWindow, fn: median)\n  |> filter(fn: (r) => exists r._value)\n  |> keep(columns: [\"_time\", \"_value\", \"frequency_weighting\", \"time_weighting\"])\n  |> map(fn: (r) => {\n      h = date.hour(t: r._time)\n      m = date.minute(t: r._time)\n      s = date.second(t: r._time)\n      \n      // Seuils PAC Wallonie\n      limit = if h >= 7 and h < 19 then 50.0 \n              else if (h >= 6 and h < 7) or (h >= 19 and h < 22) then 45.0 \n              else 40.0\n      \n      diff = if r._value > limit then r._value - limit else 0.0\n\n      return {\n          _time: r._time,\n          decibels: r._value,\n          // Heure décimale pour laxe X\n          heure: float(v: h) + (float(v: m) / 60.0) + (float(v: s) / 3600.0),\n          severite: diff + 1.0\n      }\n  })\n  |> keep(columns: [\"_time\", \"decibels\", \"heure\", \"severite\"])\n  |> group()",
           "refId": "A"
         }
       ],
@@ -1891,7 +1891,7 @@
         "h": 9,
         "w": 24,
         "x": 0,
-        "y": 193
+        "y": 190
       },
       "id": 22,
       "options": {
@@ -1911,7 +1911,7 @@
       "targets": [
         {
           "hide": false,
-          "query": "import \"math\"\nimport \"timezone\"\n\n// Configuration de la zone horaire\noption location = timezone.location(name: \"Europe/Brussels\")\n\n// 1. Récupération des données avec nettoyage immédiat\n// Le \"keep\" permet de libérer énormément de mémoire vive\nbase = from(bucket: \"default\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r._measurement == \"dt8852\" and r._field == \"spl\" and r.frequency_weighting == \"dB(A)\")\n  |> filter(fn: (r) => exists r._value and exists r.time_weighting)\n  |> keep(columns: [\"_time\", \"_value\", \"frequency_weighting\", \"time_weighting\"])\n\n// 2. Calcul du L10 (Pics sonores) \n// On enlève createEmpty: true pour ne pas traiter de lignes vides inutiles\nl10 = base\n  |> aggregateWindow(every: 10m, fn: (column, tables=<-) => tables |> quantile(q: 0.90))\n  |> map(fn: (r) => ({ r with _field: \"l10\" }))\n\n// 3. Calcul du L90 (Bruit de fond)\nl90 = base\n  |> aggregateWindow(every: 10m, fn: (column, tables=<-) => tables |> quantile(q: 0.10))\n  |> map(fn: (r) => ({ r with _field: \"l90\" }))\n\n// 4. Fusion et Pivotage sécurisé\nunion(tables: [l10, l90])\n  |> pivot(rowKey:[\"_time\", \"frequency_weighting\", \"time_weighting\"], columnKey: [\"_field\"], valueColumn: \"_value\")\n  // On filtre les lignes où l'un des deux calculs serait manquant\n  |> filter(fn: (r) => exists r.l10 and exists r.l90)\n  |> map(fn: (r) => {\n      // Conversion explicite en float pour éviter l'erreur \"invalid\"\n      val_l10 = float(v: r.l10)\n      val_l90 = float(v: r.l90)\n      diff = val_l10 - val_l90\n      \n      return {\n          _time: r._time,\n          frequency_weighting: r.frequency_weighting,\n          time_weighting: r.time_weighting,\n          _field: \"Climat Sonore (L10-L90)\",\n          _value: if diff < 0.0 then 0.0 else diff\n      }\n  })\n  |> yield(name: \"climat_sonore\")",
+          "query": "import \"math\"\nimport \"timezone\"\n\n// Configuration de la zone horaire\noption location = timezone.location(name: \"Europe/Brussels\")\n\nbase = from(bucket: \"default\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r._measurement == \"dt8852\" and r._field == \"spl\" and r.frequency_weighting == \"dB(A)\" and exists r._value and exists r.time_weighting)\n  |> keep(columns: [\"_time\", \"_value\", \"frequency_weighting\", \"time_weighting\"])\n\n// 2. Calcul du L10 (Pics sonores) \nl10 = base\n  |> aggregateWindow(every: 15m, fn: (column, tables=<-) => tables |> quantile(q: 0.90))\n  |> map(fn: (r) => ({ r with _field: \"l10\" }))\n\n// 3. Calcul du L90 (Bruit de fond)\nl90 = base\n  |> aggregateWindow(every: 15m, fn: (column, tables=<-) => tables |> quantile(q: 0.10))\n  |> map(fn: (r) => ({ r with _field: \"l90\" }))\n\n// 4. Fusion et Pivotage sécurisé\nunion(tables: [l10, l90])\n  |> pivot(rowKey:[\"_time\", \"frequency_weighting\", \"time_weighting\"], columnKey: [\"_field\"], valueColumn: \"_value\")\n  |> filter(fn: (r) => exists r.l10 and exists r.l90)\n  |> map(fn: (r) => {\n      val_l10 = float(v: r.l10)\n      val_l90 = float(v: r.l90)\n      diff = val_l10 - val_l90\n      \n      return {\n          _time: r._time,\n          frequency_weighting: r.frequency_weighting,\n          time_weighting: r.time_weighting,\n          _field: \"Climat Sonore (L10-L90)\",\n          _value: if diff < 0.0 then 0.0 else diff\n      }\n  })\n  |> yield(name: \"climat_sonore\")",
           "refId": "A"
         }
       ],
@@ -1957,7 +1957,7 @@
         "h": 11,
         "w": 24,
         "x": 0,
-        "y": 202
+        "y": 199
       },
       "id": 5,
       "options": {
