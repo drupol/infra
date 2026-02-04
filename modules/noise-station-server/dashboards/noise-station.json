@@ -387,7 +387,7 @@
         {
           "datasource": {
             "type": "influxdb",
-            "uid": "ff9xpmhbcsb9ce"
+            "uid": "P951FEA4DE68E13C5"
           },
           "hide": false,
           "query": "import \"date\"\nimport \"timezone\"\n\noption location = timezone.location(name: \"Europe/Brussels\")\n\nminSeconds = 120\n\n// 1. On récupère la valeur médiane brute (Source)\nsourceData =\n  from(bucket: \"default\")\n    |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n    |> filter(fn: (r) => r._measurement == \"dt8852\" and r._field == \"spl\" and r.frequency_weighting == \"dB(A)\" and exists r.time_weighting)\n    |> keep(columns: [\"_time\", \"_value\", \"frequency_weighting\", \"time_weighting\"])\n    |> aggregateWindow(\n        every: v.windowPeriod,\n        fn: (column, tables=<-) => tables |> quantile(q: 0.50),\n        createEmpty: true\n      )\n\nemaData = \n  sourceData \n    |> exponentialMovingAverage(n: 30)\n\ncombined = \n  union(tables: [\n    sourceData |> map(fn: (r) => ({ r with _field: \"val_raw\" })),\n    emaData |> map(fn: (r) => ({ r with _field: \"val_ema\" }))\n  ])\n  |> pivot(rowKey: [\"_time\", \"frequency_weighting\"], columnKey: [\"_field\"], valueColumn: \"_value\")\n  |> map(fn: (r) => {\n        h = date.hour(t: r._time)\n        limitValue =\n          if h >= 7 and h < 19 then 50.0\n          else if (h >= 6 and h < 7) or (h >= 19 and h < 22) then 45.0\n          else 40.0\n        \n        return { r with \n            limit: limitValue,\n            exceed_decision: r.val_ema > limitValue \n        }\n  })\n  |> stateDuration(fn: (r) => r.exceed_decision, column: \"exceed_seconds\", unit: 1s)\n  |> map(fn: (r) => {\n        status = if not r.exceed_decision then \"ok\"\n                 else if r.exceed_seconds >= minSeconds then \"nok\"\n                 else \"pending\"\n        \n        return { r with\n            status: status,\n            excess_raw: (r.val_raw - r.limit)\n        }\n  })\n\nstatusSeries = combined |> map(fn: (r) => ({ _time: r._time, time_weighting: r.time_weighting, frequency_weighting: r.frequency_weighting, _field: r.status, _value: r.val_ema }))\nrealSeries   = combined |> map(fn: (r) => ({ _time: r._time, time_weighting: r.time_weighting, frequency_weighting: r.frequency_weighting, _field: \"real_value\", _value: r.val_raw }))\nexcessSeries = combined |> map(fn: (r) => ({ \n    _time: r._time, \n    frequency_weighting: r.frequency_weighting, \n    time_weighting: r.time_weighting, \n    _field: \"excess\", \n    _value: if r.excess_raw > 0.0 then r.excess_raw else 0.0 \n}))\n\nunion(tables: [statusSeries, realSeries, excessSeries])\n  |> group(columns: [\"frequency_weighting\", \"time_weighting\", \"_field\"])\n  |> pivot(rowKey: [\"_time\", \"frequency_weighting\", \"time_weighting\"], columnKey: [\"_field\"], valueColumn: \"_value\")",
@@ -396,7 +396,7 @@
         {
           "datasource": {
             "type": "influxdb",
-            "uid": "ff9xpmhbcsb9ce"
+            "uid": "P951FEA4DE68E13C5"
           },
           "hide": false,
           "query": "import \"date\"\nimport \"timezone\"\n\noption location = timezone.location(name: \"Europe/Brussels\")\n\nfrom(bucket: \"default\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r._measurement == \"dt8852\" and r._field == \"spl\")\n  |> aggregateWindow(every: v.windowPeriod, fn: first)\n  |> map(fn: (r) => {\n      h = date.hour(t: r._time)\n      return {\n          _time: r._time,\n          _limit: if h >= 7 and h < 19 then 50.0 \n                  else if h == 6 or (h >= 19 and h < 22) then 45.0 \n                  else 40.0\n      }\n  })",
@@ -409,7 +409,7 @@
     {
       "datasource": {
         "type": "influxdb",
-        "uid": "ff9xpmhbcsb9ce"
+        "uid": "P951FEA4DE68E13C5"
       },
       "description": "Encode la conformité temporelle. Les données SPL sont agrégées, puis comparées à la limite horaire (40/45/50 dB). Une infraction est comptabilisée si le dépassement persiste plus de 2 minutes.",
       "fieldConfig": {
@@ -511,7 +511,7 @@
     {
       "datasource": {
         "type": "influxdb",
-        "uid": "ff9xpmhbcsb9ce"
+        "uid": "P951FEA4DE68E13C5"
       },
       "description": "Suivi en temps réel du dépassement des limites acoustiques réglementaires (50/45/40 dB) avec détection automatique des périodes Jour, Aube, Soir et Nuit.",
       "fieldConfig": {
@@ -707,7 +707,7 @@
     {
       "datasource": {
         "type": "influxdb",
-        "uid": "ff9xpmhbcsb9ce"
+        "uid": "P951FEA4DE68E13C5"
       },
       "description": "Ce panel affiche la proportion de temps (en %) durant laquelle le niveau de pression acoustique (SPL) a excédé les limites réglementaires définies pour la zone. Le calcul tient compte de la variation des seuils selon l'heure : 50 dB (Jour), 45 dB (Aube/Soir/Transition) et 40 dB (Nuit).",
       "fieldConfig": {
@@ -805,7 +805,7 @@
     {
       "datasource": {
         "type": "influxdb",
-        "uid": "ff9xpmhbcsb9ce"
+        "uid": "P951FEA4DE68E13C5"
       },
       "description": "Affichage en temps réel de la température mesurée par la sonde USB externe.",
       "fieldConfig": {
@@ -912,7 +912,7 @@
     {
       "datasource": {
         "type": "influxdb",
-        "uid": "ff9xpmhbcsb9ce"
+        "uid": "P951FEA4DE68E13C5"
       },
       "fieldConfig": {
         "defaults": {
@@ -1199,7 +1199,7 @@
     {
       "datasource": {
         "type": "influxdb",
-        "uid": "ff9xpmhbcsb9ce"
+        "uid": "P951FEA4DE68E13C5"
       },
       "description": "Synthèse avancée de l'environnement sonore et analyse statistique instantanée des indicateurs acoustiques. Ce panneau présente une vue exhaustive de la pollution sonore sur la période sélectionnée en combinant mesures énergétiques et distribution centile. Il calcule le niveau moyen Leq ainsi que l'indice de gêne global Lden, lequel intègre les pénalités réglementaires pour le soir (+5 dB) et la nuit (+10 dB) conformément aux normes d'évaluation de l'exposition au bruit. L'analyse statistique par centiles permet de caractériser précisément la nature du signal : le  L10 (niveau dépassé pendant 10 % de la période) met en évidence les événements sonores ponctuels et les pics de pollution, le L50 (niveau médian dépassé 50 % du temps) définit la tendance centrale du climat sonore, tandis que le L90 (niveau dépassé 90 % du temps) permet d'isoler le bruit de fond permanent en l'absence de sources intermittentes. Enfin, le panneau affiche le niveau d'exposition unique (SEL) et les extrema (Lmax/Lmin) pour offrir une lecture complète de la dynamique acoustique du site.",
       "fieldConfig": {
@@ -1355,7 +1355,7 @@
     {
       "datasource": {
         "type": "influxdb",
-        "uid": "ff9xpmhbcsb9ce"
+        "uid": "P951FEA4DE68E13C5"
       },
       "description": "Tableau de bord consolidé des niveaux de pression acoustique pondérés A, agrégés par périodes de 24 heures. Ce rapport regroupe les indicateurs réglementaires d'exposition globale (Lden), les moyennes énergétiques de jour (Lday, 07h-22h) et de nuit (Lnight, 22h-07h), la distribution statistique du bruit (L10, L50, L90) ainsi que les extrêmes de la journée (Lmin, Lmax).",
       "fieldConfig": {
@@ -1610,7 +1610,7 @@
     {
       "datasource": {
         "type": "influxdb",
-        "uid": "ff9xpmhbcsb9ce"
+        "uid": "P951FEA4DE68E13C5"
       },
       "description": "Ce graphique de corrélation analyse la distribution de chaque mesure acoustique sur un cycle de 24 heures (axe vertical), indépendamment du jour calendaire. Il permet d’isoler visuellement les nuisances mécaniques cycliques (récurrences) des bruits aléatoires de l'environnement, tout en mettant en relief la sévérité des infractions par rapport aux seuils légaux.",
       "fieldConfig": {
@@ -1805,7 +1805,7 @@
     {
       "datasource": {
         "type": "influxdb",
-        "uid": "ff9xpmhbcsb9ce"
+        "uid": "P951FEA4DE68E13C5"
       },
       "description": "Calcul de la dynamique du bruit: Différence entre le niveau de pointe (L10) et le niveau de fond (L90).\n\n- Valeur élevée (> 15 dB) : Bruit fluctuant, trafic, événements ponctuels.\n- Valeur faible (< 5 dB) : Bruit monotone et continu. C'est la signature typique d'une **Pompe à Chaleur** ou d'une VMC.",
       "fieldConfig": {
@@ -1957,7 +1957,7 @@
     {
       "datasource": {
         "type": "influxdb",
-        "uid": "ff9xpmhbcsb9ce"
+        "uid": "P951FEA4DE68E13C5"
       },
       "description": "Affiche la position du capteur à partir de coordonnées définies dans le tableau de bord (point fixe). Sert à interpréter les mesures en fonction de l’environnement immédiat (obstacles, voisinage, géométrie des lieux).",
       "fieldConfig": {
