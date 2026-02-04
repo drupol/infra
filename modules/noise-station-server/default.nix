@@ -19,7 +19,7 @@
               http_port = 3000;
             };
             feature_toggles = {
-              enable = "publicDashboards panelTimeSettings timeComparison";
+              enable = "publicDashboards, panelTimeSettings, timeComparison, dashboardNewLayouts, timeSeriesTable, dashboardScene";
             };
             dataproxy.timeout = 600;
           };
