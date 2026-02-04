@@ -50,6 +50,7 @@
                   defaultBucket = "default";
                   tlsSkipVerify = true;
                 };
+                secureJsonData.token = "noisestation";
               }
             ];
           };
