@@ -5,7 +5,7 @@
       xdg = {
         userDirs = {
           extraConfig = {
-            XDG_CODE_DIR = "${config.home.homeDirectory}/Code";
+            CODE = "${config.home.homeDirectory}/Code";
           };
         };
       };
