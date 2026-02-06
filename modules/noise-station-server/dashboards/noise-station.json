@@ -18,7 +18,7 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 143,
+  "id": 144,
   "links": [],
   "panels": [
     {
@@ -197,7 +197,7 @@
               "mode": "off"
             }
           },
-          "displayName": "Niveau Sonore - L50 SPL (${__field.labels.frequency_weighting}, ${__field.labels.time_weighting})",
+          "displayName": "Niveau Sonore Leq (${__field.labels.frequency_weighting}, $__interval)",
           "fieldMinMax": false,
           "mappings": [],
           "thresholds": {
@@ -215,7 +215,7 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "nok"
+              "options": "leq_excess"
             },
             "properties": [
               {
@@ -272,34 +272,7 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "pending"
-            },
-            "properties": [
-              {
-                "id": "color",
-                "value": {
-                  "fixedColor": "dark-red",
-                  "mode": "fixed"
-                }
-              },
-              {
-                "id": "custom.fillOpacity",
-                "value": 20
-              },
-              {
-                "id": "custom.hideFrom",
-                "value": {
-                  "legend": true,
-                  "tooltip": false,
-                  "viz": false
-                }
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "ok"
+              "options": "leq_ok"
             },
             "properties": [
               {
@@ -311,7 +284,7 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "excess"
+              "options": "depassement"
             },
             "properties": [
               {
@@ -324,39 +297,7 @@
               },
               {
                 "id": "displayName",
-                "value": "Dépassement"
-              },
-              {
-                "id": "color",
-                "value": {
-                  "fixedColor": "text",
-                  "mode": "fixed"
-                }
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "real_value"
-            },
-            "properties": [
-              {
-                "id": "custom.lineStyle",
-                "value": {
-                  "fill": "solid"
-                }
-              },
-              {
-                "id": "color",
-                "value": {
-                  "fixedColor": "#e0e0e080",
-                  "mode": "fixed"
-                }
-              },
-              {
-                "id": "displayName",
-                "value": "Niveau Sonore Brut SPL (${__field.labels.frequency_weighting}, ${__field.labels.time_weighting})"
+                "value": "Depassement"
               }
             ]
           }
@@ -390,7 +331,7 @@
             "uid": "P951FEA4DE68E13C5"
           },
           "hide": false,
-          "query": "import \"date\"\nimport \"timezone\"\n\noption location = timezone.location(name: \"Europe/Brussels\")\n\nminSeconds = 120\n\n// 1. On récupère la valeur médiane brute (Source)\nsourceData =\n  from(bucket: \"default\")\n    |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n    |> filter(fn: (r) => r._measurement == \"dt8852\" and r._field == \"spl\" and r.frequency_weighting == \"dB(A)\" and exists r.time_weighting)\n    |> keep(columns: [\"_time\", \"_value\", \"frequency_weighting\", \"time_weighting\"])\n    |> aggregateWindow(\n        every: v.windowPeriod,\n        fn: (column, tables=<-) => tables |> quantile(q: 0.50),\n        createEmpty: true\n      )\n\nemaData = \n  sourceData \n    |> exponentialMovingAverage(n: 30)\n\ncombined = \n  union(tables: [\n    sourceData |> map(fn: (r) => ({ r with _field: \"val_raw\" })),\n    emaData |> map(fn: (r) => ({ r with _field: \"val_ema\" }))\n  ])\n  |> pivot(rowKey: [\"_time\", \"frequency_weighting\"], columnKey: [\"_field\"], valueColumn: \"_value\")\n  |> map(fn: (r) => {\n        h = date.hour(t: r._time)\n        limitValue =\n          if h >= 7 and h < 19 then 50.0\n          else if (h >= 6 and h < 7) or (h >= 19 and h < 22) then 45.0\n          else 40.0\n        \n        return { r with \n            limit: limitValue,\n            exceed_decision: r.val_ema > limitValue \n        }\n  })\n  |> stateDuration(fn: (r) => r.exceed_decision, column: \"exceed_seconds\", unit: 1s)\n  |> map(fn: (r) => {\n        status = if not r.exceed_decision then \"ok\"\n                 else if r.exceed_seconds >= minSeconds then \"nok\"\n                 else \"pending\"\n        \n        return { r with\n            status: status,\n            excess_raw: (r.val_raw - r.limit)\n        }\n  })\n\nstatusSeries = combined |> map(fn: (r) => ({ _time: r._time, time_weighting: r.time_weighting, frequency_weighting: r.frequency_weighting, _field: r.status, _value: r.val_ema }))\nrealSeries   = combined |> map(fn: (r) => ({ _time: r._time, time_weighting: r.time_weighting, frequency_weighting: r.frequency_weighting, _field: \"real_value\", _value: r.val_raw }))\nexcessSeries = combined |> map(fn: (r) => ({ \n    _time: r._time, \n    frequency_weighting: r.frequency_weighting, \n    time_weighting: r.time_weighting, \n    _field: \"excess\", \n    _value: if r.excess_raw > 0.0 then r.excess_raw else 0.0 \n}))\n\nunion(tables: [statusSeries, realSeries, excessSeries])\n  |> group(columns: [\"frequency_weighting\", \"time_weighting\", \"_field\"])\n  |> pivot(rowKey: [\"_time\", \"frequency_weighting\", \"time_weighting\"], columnKey: [\"_field\"], valueColumn: \"_value\")",
+          "query": "import \"date\"\nimport \"timezone\"\nimport \"math\"\n\noption location = timezone.location(name: \"Europe/Brussels\")\n\n// 1. Récupération et calcul du Leq (Moyenne énergétique)\nsourceData = from(bucket: \"default\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r._measurement == \"dt8852\" and r._field == \"spl\" and r.frequency_weighting == \"dB(A)\" and exists r.time_weighting)\n  |> map(fn: (r) => ({ r with _value: math.pow(x: 10.0, y: r._value / 10.0) }))\n  |> aggregateWindow(\n        every: v.windowPeriod,\n        fn: mean,\n        createEmpty: false\n     )\n  |> map(fn: (r) => ({ r with _value: 10.0 * math.log10(x: r._value) }))\n\nsourceData\n  |> map(fn: (r) => {\n        h = date.hour(t: r._time)\n        limitValue =\n          if h >= 7 and h < 19 then 50.0\n          else if (h >= 6 and h < 7) or (h >= 19 and h < 22) then 45.0\n          else 40.0\n        \n        return {\n            _time: r._time,\n            leq_ok: if r._value <= limitValue then r._value else float(v: \"NaN\"),\n            leq_excess: if r._value > limitValue then r._value else float(v: \"NaN\"),\n            depassement: if r._value > limitValue then r._value - limitValue else 0.0,\n            time_weighting: r.time_weighting,\n            frequency_weighting: r.frequency_weighting\n        }\n  })\n  |> yield(name: \"results\")",
           "refId": "A"
         },
         {
@@ -595,7 +536,7 @@
       "pluginVersion": "12.3.2",
       "targets": [
         {
-          "query": "import \"math\"\nimport \"timezone\"\nimport \"date\"\n\noption location = timezone.location(name: \"Europe/Brussels\")\n\nfrom(bucket: \"default\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r._measurement == \"dt8852\" and r._field == \"spl\" and r.frequency_weighting == \"dB(A)\")\n  |> filter(fn: (r) => exists r._value)\n  \n  //|> aggregateWindow(every: v.windowPeriod, fn: mean, createEmpty: true)\n  |> aggregateWindow(every: v.windowPeriod, fn: (column, tables=<-) => tables |> quantile(q: 0.50), createEmpty: true)\n  // 3. Calcul des limites horaires et du dépassement\n  |> map(fn: (r) => {\n      h = date.hour(t: r._time)\n      \n      // Seuils réglementaires (50 / 45 / 40 dB)\n      limite = if h >= 7 and h < 19 then 50.0 \n               else if (h >= 6 and h < 7) or (h >= 19 and h < 22) then 45.0 \n               else 40.0\n      \n      // Calcul du dépassement\n      diff = if r._value > limite then r._value - limite else 0.0\n      \n      return {\n          _time: r._time,\n          _value: diff,\n          _field: \"Dépassement\",\n          niveau_reel: r._value,\n          seuil_legal: limite\n      }\n  })\n  \n  // 4. Envoi des données vers Grafana\n  |> yield(name: \"depassement_acoustique\")",
+          "query": "import \"math\"\nimport \"timezone\"\nimport \"date\"\n\noption location = timezone.location(name: \"Europe/Brussels\")\n\nsourceData = from(bucket: \"default\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r._measurement == \"dt8852\" and r._field == \"spl\" and r.frequency_weighting == \"dB(A)\" and exists r.time_weighting)\n  |> map(fn: (r) => ({ r with _value: math.pow(x: 10.0, y: r._value / 10.0) }))\n  |> aggregateWindow(\n        every: v.windowPeriod,\n        fn: mean,\n        createEmpty: false\n     )\n  |> map(fn: (r) => ({ r with _value: 10.0 * math.log10(x: r._value) }))\n  // 3. Calcul des limites horaires et du dépassement\n  |> map(fn: (r) => {\n      h = date.hour(t: r._time)\n      \n      // Seuils réglementaires (50 / 45 / 40 dB)\n      limite = if h >= 7 and h < 19 then 50.0 \n               else if (h >= 6 and h < 7) or (h >= 19 and h < 22) then 45.0 \n               else 40.0\n      \n      // Calcul du dépassement\n      diff = if r._value > limite then r._value - limite else 0.0\n      \n      return {\n          _time: r._time,\n          _value: diff,\n          _field: \"Dépassement\",\n          niveau_reel: r._value,\n          seuil_legal: limite\n      }\n  })\n  \n  // 4. Envoi des données vers Grafana\n  |> yield(name: \"depassement_acoustique\")",
           "refId": "A"
         }
       ],
@@ -1029,7 +970,7 @@
             "properties": [
               {
                 "id": "displayName",
-                "value": "L10 (${__field.labels.frequency_weighting}, ${__field.labels.time_weighting})"
+                "value": "L10 (${__field.labels.frequency_weighting}, $__interval)"
               }
             ]
           },
@@ -1041,7 +982,7 @@
             "properties": [
               {
                 "id": "displayName",
-                "value": "L50 (${__field.labels.frequency_weighting}, ${__field.labels.time_weighting})"
+                "value": "L50 (${__field.labels.frequency_weighting}, $__interval)"
               }
             ]
           },
@@ -1053,7 +994,7 @@
             "properties": [
               {
                 "id": "displayName",
-                "value": "L90 (${__field.labels.frequency_weighting}, ${__field.labels.time_weighting})"
+                "value": "L90 (${__field.labels.frequency_weighting}, $__interval)"
               }
             ]
           },
@@ -1065,7 +1006,7 @@
             "properties": [
               {
                 "id": "displayName",
-                "value": "Leq (${__field.labels.frequency_weighting}, ${__field.labels.time_weighting})"
+                "value": "Leq (${__field.labels.frequency_weighting}, $__interval)"
               }
             ]
           },
@@ -1077,7 +1018,7 @@
             "properties": [
               {
                 "id": "displayName",
-                "value": "Lmax (${__field.labels.frequency_weighting}, ${__field.labels.time_weighting})"
+                "value": "Lmax (${__field.labels.frequency_weighting})"
               }
             ]
           },
@@ -1089,7 +1030,7 @@
             "properties": [
               {
                 "id": "displayName",
-                "value": "Lmin (${__field.labels.frequency_weighting}, ${__field.labels.time_weighting})"
+                "value": "Lmin (${__field.labels.frequency_weighting})"
               }
             ]
           },
@@ -1101,7 +1042,7 @@
             "properties": [
               {
                 "id": "displayName",
-                "value": "SEL (${__field.labels.frequency_weighting}, ${__field.labels.time_weighting})"
+                "value": "SEL (${__field.labels.frequency_weighting}, $__interval)"
               }
             ]
           },
@@ -1113,7 +1054,7 @@
             "properties": [
               {
                 "id": "displayName",
-                "value": "Lden (${__field.labels.frequency_weighting}, ${__field.labels.time_weighting})"
+                "value": "Lden (${__field.labels.frequency_weighting}, $__interval)"
               }
             ]
           }
@@ -1145,7 +1086,7 @@
       "pluginVersion": "12.3.2",
       "targets": [
         {
-          "query": "import \"math\"\nimport \"date\"\nimport \"timezone\"\n\noption location = timezone.location(name: \"Europe/Brussels\")\n\nT_START = v.timeRangeStart\nT_STOP = v.timeRangeStop\n\n// 1. PRÉ-RÉDUCTION ET CALCUL DES ÉNERGIES\nbase1m = from(bucket: \"default\")\n    |> range(start: T_START, stop: T_STOP)\n    |> filter(fn: (r) => r._measurement == \"dt8852\" and r._field == \"spl\" and r.frequency_weighting == \"dB(A)\" and exists r._value and exists r.time_weighting)\n    |> keep(columns: [\"_time\", \"_value\", \"frequency_weighting\", \"time_weighting\"])\n    |> aggregateWindow(every: 1m, fn: median)\n    |> filter(fn: (r) => exists r._value)\n    |> map(fn: (r) => {\n        h = date.hour(t: r._time)\n        \n        // Définition de la pénalité en dB (Addition)\n        penalty_db = if h >= 7 and h < 19 then 0.0 \n                     else if h >= 19 and h < 23 then 5.0 \n                     else 10.0\n        \n        // Calcul de l'énergie pour le Leq (sans pénalité)\n        energy = math.pow(x: 10.0, y: float(v: r._value) / 10.0)\n        \n        // Calcul de l'énergie pour le Lden (Valeur + Pénalité dB)\n        // On additionne avant de passer en échelle logarithmique\n        energy_weighted = math.pow(x: 10.0, y: (float(v: r._value) + penalty_db) / 10.0)\n        \n        return { r with \n            energy: energy,\n            energy_weighted: energy_weighted\n        }\n    })\n\n// 2. CALCUL DES BRANCHES (Statistiques et Moyennes énergétiques)\nstats_base = base1m |> group(columns: [\"frequency_weighting\", \"time_weighting\"])\n\nlmin = stats_base |> min(column: \"_value\") |> set(key: \"_field\", value: \"lmin\")\nlmax = stats_base |> max(column: \"_value\") |> set(key: \"_field\", value: \"lmax\")\nl10  = stats_base |> quantile(q: 0.90, column: \"_value\") |> set(key: \"_field\", value: \"l10\")\nl50  = stats_base |> quantile(q: 0.50, column: \"_value\") |> set(key: \"_field\", value: \"l50\")\nl90  = stats_base |> quantile(q: 0.10, column: \"_value\") |> set(key: \"_field\", value: \"l90\")\n\nleq_energy = stats_base \n    |> mean(column: \"energy\") \n    |> map(fn: (r) => ({ r with _value: r.energy })) \n    |> set(key: \"_field\", value: \"energy_avg\")\n\nlden_energy = stats_base \n    |> mean(column: \"energy_weighted\") \n    |> map(fn: (r) => ({ r with _value: r.energy_weighted })) \n    |> set(key: \"_field\", value: \"energy_lden_avg\")\n\n// 3. DURÉE POUR LE CALCUL DU SEL\nduration_sec = float(v: int(v: T_STOP) - int(v: T_START)) / 1000000000.0\n\n// 4. ASSEMBLAGE ET CALCULS FINAUX\nunion(tables: [lmin, lmax, l10, l50, l90, leq_energy, lden_energy])\n    |> pivot(rowKey:[\"frequency_weighting\", \"time_weighting\"], columnKey: [\"_field\"], valueColumn: \"_value\")\n    |> map(fn: (r) => {\n        e_avg = if exists r.energy_avg then float(v: r.energy_avg) else 0.0000000001\n        e_lden = if exists r.energy_lden_avg then float(v: r.energy_lden_avg) else 0.0000000001\n        \n        leq_val = 10.0 * math.log10(x: e_avg)\n        lden_val = 10.0 * math.log10(x: e_lden)\n        sel_val = leq_val + (10.0 * math.log10(x: if duration_sec > 0.0 then duration_sec else 1.0))\n        \n        return {\n            _time: T_STOP,\n            frequency_weighting: r.frequency_weighting,\n            time_weighting: r.time_weighting,\n            \"Leq\": math.round(x: leq_val * 10.0) / 10.0,\n            \"Lden\": math.round(x: lden_val * 10.0) / 10.0,\n            \"L10\": if exists r.l10 then math.round(x: float(v: r.l10) * 10.0) / 10.0 else 0.0,\n            \"L50\": if exists r.l50 then math.round(x: float(v: r.l50) * 10.0) / 10.0 else 0.0,\n            \"L90\": if exists r.l90 then math.round(x: float(v: r.l90) * 10.0) / 10.0 else 0.0,\n            \"Lmax\": if exists r.lmax then math.round(x: float(v: r.lmax) * 10.0) / 10.0 else 0.0,\n            \"Lmin\": if exists r.lmin then math.round(x: float(v: r.lmin) * 10.0) / 10.0 else 0.0,\n            \"SEL\": math.round(x: sel_val * 10.0) / 10.0\n        }\n    })\n    |> keep(columns: [\"_time\", \"frequency_weighting\", \"time_weighting\", \"Leq\", \"Lden\", \"L10\", \"L50\", \"L90\", \"Lmax\", \"Lmin\", \"SEL\"])\n    |> yield(name: \"acoustic_indicators\")",
+          "query": "import \"math\"\nimport \"date\"\nimport \"timezone\"\n\noption location = timezone.location(name: \"Europe/Brussels\")\n\nT_START = v.timeRangeStart\nT_STOP = v.timeRangeStop\n\n// 1. PRÉ-RÉDUCTION ET CALCUL DES ÉNERGIES\nbase1m = from(bucket: \"default\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r._measurement == \"dt8852\" and r._field == \"spl\" and r.frequency_weighting == \"dB(A)\" and exists r.time_weighting)\n  |> map(fn: (r) => ({ r with _value: math.pow(x: 10.0, y: r._value / 10.0) }))\n  |> aggregateWindow(\n        every: v.windowPeriod,\n        fn: mean,\n        createEmpty: false\n     )\n  |> map(fn: (r) => ({ r with _value: 10.0 * math.log10(x: r._value) }))\n  |> map(fn: (r) => {\n        h = date.hour(t: r._time)\n        \n        // Définition de la pénalité en dB (Addition)\n        penalty_db = if h >= 7 and h < 19 then 0.0 \n                     else if h >= 19 and h < 23 then 5.0 \n                     else 10.0\n        \n        // Calcul de l'énergie pour le Leq (sans pénalité)\n        energy = math.pow(x: 10.0, y: float(v: r._value) / 10.0)\n        \n        // Calcul de l'énergie pour le Lden (Valeur + Pénalité dB)\n        // On additionne avant de passer en échelle logarithmique\n        energy_weighted = math.pow(x: 10.0, y: (float(v: r._value) + penalty_db) / 10.0)\n        \n        return { r with \n            energy: energy,\n            energy_weighted: energy_weighted\n        }\n    })\n\n// 2. CALCUL DES BRANCHES (Statistiques et Moyennes énergétiques)\nstats_base = base1m |> group(columns: [\"frequency_weighting\", \"time_weighting\"])\n\nlmin = stats_base |> min(column: \"_value\") |> set(key: \"_field\", value: \"lmin\")\nlmax = stats_base |> max(column: \"_value\") |> set(key: \"_field\", value: \"lmax\")\nl10  = stats_base |> quantile(q: 0.90, column: \"_value\") |> set(key: \"_field\", value: \"l10\")\nl50  = stats_base |> quantile(q: 0.50, column: \"_value\") |> set(key: \"_field\", value: \"l50\")\nl90  = stats_base |> quantile(q: 0.10, column: \"_value\") |> set(key: \"_field\", value: \"l90\")\n\nleq_energy = stats_base \n    |> mean(column: \"energy\") \n    |> map(fn: (r) => ({ r with _value: r.energy })) \n    |> set(key: \"_field\", value: \"energy_avg\")\n\nlden_energy = stats_base \n    |> mean(column: \"energy_weighted\") \n    |> map(fn: (r) => ({ r with _value: r.energy_weighted })) \n    |> set(key: \"_field\", value: \"energy_lden_avg\")\n\n// 3. DURÉE POUR LE CALCUL DU SEL\nduration_sec = float(v: int(v: T_STOP) - int(v: T_START)) / 1000000000.0\n\n// 4. ASSEMBLAGE ET CALCULS FINAUX\nunion(tables: [lmin, lmax, l10, l50, l90, leq_energy, lden_energy])\n    |> pivot(rowKey:[\"frequency_weighting\", \"time_weighting\"], columnKey: [\"_field\"], valueColumn: \"_value\")\n    |> map(fn: (r) => {\n        e_avg = if exists r.energy_avg then float(v: r.energy_avg) else 0.0000000001\n        e_lden = if exists r.energy_lden_avg then float(v: r.energy_lden_avg) else 0.0000000001\n        \n        leq_val = 10.0 * math.log10(x: e_avg)\n        lden_val = 10.0 * math.log10(x: e_lden)\n        sel_val = leq_val + (10.0 * math.log10(x: if duration_sec > 0.0 then duration_sec else 1.0))\n        \n        return {\n            _time: T_STOP,\n            frequency_weighting: r.frequency_weighting,\n            time_weighting: r.time_weighting,\n            \"Leq\": math.round(x: leq_val * 10.0) / 10.0,\n            \"Lden\": math.round(x: lden_val * 10.0) / 10.0,\n            \"L10\": if exists r.l10 then math.round(x: float(v: r.l10) * 10.0) / 10.0 else 0.0,\n            \"L50\": if exists r.l50 then math.round(x: float(v: r.l50) * 10.0) / 10.0 else 0.0,\n            \"L90\": if exists r.l90 then math.round(x: float(v: r.l90) * 10.0) / 10.0 else 0.0,\n            \"Lmax\": if exists r.lmax then math.round(x: float(v: r.lmax) * 10.0) / 10.0 else 0.0,\n            \"Lmin\": if exists r.lmin then math.round(x: float(v: r.lmin) * 10.0) / 10.0 else 0.0,\n            \"SEL\": math.round(x: sel_val * 10.0) / 10.0\n        }\n    })\n    |> keep(columns: [\"_time\", \"frequency_weighting\", \"time_weighting\", \"Leq\", \"Lden\", \"L10\", \"L50\", \"L90\", \"Lmax\", \"Lmin\", \"SEL\"])\n    |> yield(name: \"acoustic_indicators\")",
           "refId": "A"
         }
       ],
@@ -1220,7 +1161,7 @@
             "properties": [
               {
                 "id": "displayName",
-                "value": "Lden (${__field.labels.frequency_weighting}, ${__field.labels.time_weighting})"
+                "value": "Lden (${__field.labels.frequency_weighting}, $__interval)"
               },
               {
                 "id": "custom.lineWidth",
@@ -1236,7 +1177,7 @@
             "properties": [
               {
                 "id": "displayName",
-                "value": "L10 (${__field.labels.frequency_weighting}, ${__field.labels.time_weighting})"
+                "value": "L10 (${__field.labels.frequency_weighting}, $__interval)"
               },
               {
                 "id": "custom.lineStyle",
@@ -1255,7 +1196,7 @@
             "properties": [
               {
                 "id": "displayName",
-                "value": "L50 (${__field.labels.frequency_weighting}, ${__field.labels.time_weighting})"
+                "value": "L50 (${__field.labels.frequency_weighting}, $__interval)"
               },
               {
                 "id": "custom.lineStyle",
@@ -1274,7 +1215,7 @@
             "properties": [
               {
                 "id": "displayName",
-                "value": "L90 (${__field.labels.frequency_weighting}, ${__field.labels.time_weighting})"
+                "value": "L90 (${__field.labels.frequency_weighting}, $__interval)"
               },
               {
                 "id": "custom.lineStyle",
@@ -1300,7 +1241,7 @@
               },
               {
                 "id": "displayName",
-                "value": "Lmax (${__field.labels.frequency_weighting}, ${__field.labels.time_weighting})"
+                "value": "Lmax (${__field.labels.frequency_weighting})"
               }
             ]
           },
@@ -1319,7 +1260,7 @@
               },
               {
                 "id": "displayName",
-                "value": "Lmin (${__field.labels.frequency_weighting}, ${__field.labels.time_weighting})"
+                "value": "Lmin (${__field.labels.frequency_weighting})"
               }
             ]
           },
@@ -1331,7 +1272,7 @@
             "properties": [
               {
                 "id": "displayName",
-                "value": "Lday (7h-22h) (${__field.labels.frequency_weighting}, ${__field.labels.time_weighting})"
+                "value": "Lday (7h-22h) (${__field.labels.frequency_weighting}, $__interval)"
               },
               {
                 "id": "custom.lineStyle",
@@ -1349,7 +1290,7 @@
             "properties": [
               {
                 "id": "displayName",
-                "value": "Lnight (22h-7h) (${__field.labels.frequency_weighting}, ${__field.labels.time_weighting})"
+                "value": "Lnight (22h-7h) (${__field.labels.frequency_weighting}, $__interval)"
               },
               {
                 "id": "custom.lineStyle",
@@ -1367,7 +1308,7 @@
             "properties": [
               {
                 "id": "displayName",
-                "value": "Leq (${__field.labels.frequency_weighting}, ${__field.labels.time_weighting})"
+                "value": "Leq (${__field.labels.frequency_weighting}, $__interval)"
               },
               {
                 "id": "custom.lineWidth",
@@ -1413,7 +1354,7 @@
       "pluginVersion": "12.3.2",
       "targets": [
         {
-          "query": "import \"date\"\nimport \"math\"\nimport \"timezone\"\n\noption location = timezone.location(name: \"Europe/Brussels\")\n\nfullRangeStart = date.add(d: 1d, to: date.truncate(t: v.timeRangeStart, unit: 1d))\nfullRangeStop = v.timeRangeStop\n\n// 1. PRÉ-RÉDUCTION\nbase1m = from(bucket: \"default\")\n  |> range(start: fullRangeStart, stop: fullRangeStop)\n  |> filter(fn: (r) => r._measurement == \"dt8852\" and r._field == \"spl\" and r.frequency_weighting == \"dB(A)\" and exists r._value and exists r.time_weighting)\n  |> keep(columns: [\"_time\", \"_value\", \"frequency_weighting\", \"time_weighting\"])\n  |> aggregateWindow(every: v.windowPeriod, fn: median, timeSrc: \"_start\") \n  |> filter(fn: (r) => exists r._value)\n\n// 2. PRÉPARATION ÉNERGÉTIQUE\nenergy_base = base1m\n  |> map(fn: (r) => ({ r with energy: math.pow(x: 10.0, y: float(v: r._value) / 10.0) }))\n\n// --- NOUVEL INDICATEUR : Leq (24h) ---\n// Moyenne énergétique pure sur toute la journée\nleq = energy_base\n  |> aggregateWindow(every: 1d, fn: mean, column: \"energy\", timeSrc: \"_start\")\n  |> map(fn: (r) => ({ r with _field: \"Leq\", _value: 10.0 * math.log10(x: r.energy) }))\n\n// --- INDICATEURS OMS / EUROPE ---\nlday = energy_base\n  |> filter(fn: (r) => {\n      h = date.hour(t: r._time)\n      return h >= 7 and h < 22\n  })\n  |> aggregateWindow(every: 1d, fn: mean, column: \"energy\", timeSrc: \"_start\")\n  |> map(fn: (r) => ({ r with _field: \"Lday\", _value: 10.0 * math.log10(x: r.energy) }))\n\nlnight = energy_base\n  |> filter(fn: (r) => {\n      h = date.hour(t: r._time)\n      return h >= 22 or h < 7\n  })\n  |> aggregateWindow(every: 1d, fn: mean, column: \"energy\", timeSrc: \"_start\")\n  |> map(fn: (r) => ({ r with _field: \"Lnight\", _value: 10.0 * math.log10(x: r.energy) }))\n\nlden = energy_base\n  |> map(fn: (r) => {\n      h = date.hour(t: r._time)\n      penalty = if h >= 19 and h < 23 then 5.0 \n                else if h >= 23 or h < 7 then 10.0 \n                else 0.0\n      return { r with energy_weighted: r.energy * math.pow(x: 10.0, y: penalty / 10.0) }\n  })\n  |> aggregateWindow(every: 1d, fn: mean, column: \"energy_weighted\", timeSrc: \"_start\")\n  |> map(fn: (r) => ({ r with _field: \"Lden\", _value: 10.0 * math.log10(x: r.energy_weighted) }))\n\n// --- STATISTIQUES CLASSIQUES ---\nlmax = base1m |> aggregateWindow(timeSrc: \"_start\", every: 1d, fn: max) |> map(fn: (r) => ({ r with _field: \"Lmax\" }))\nlmin = base1m |> aggregateWindow(timeSrc: \"_start\", every: 1d, fn: min) |> map(fn: (r) => ({ r with _field: \"Lmin\" }))\nl10 = base1m |> aggregateWindow(timeSrc: \"_start\", every: 1d, fn: (column, tables=<-) => tables |> quantile(q: 0.90)) |> map(fn: (r) => ({ r with _field: \"L10\" }))\nl50 = base1m |> aggregateWindow(timeSrc: \"_start\", every: 1d, fn: (column, tables=<-) => tables |> quantile(q: 0.50)) |> map(fn: (r) => ({ r with _field: \"L50\" }))\nl90 = base1m |> aggregateWindow(timeSrc: \"_start\", every: 1d, fn: (column, tables=<-) => tables |> quantile(q: 0.10)) |> map(fn: (r) => ({ r with _field: \"L90\" }))\n\n// 5. ASSEMBLAGE FINAL\nunion(tables: [l10, l50, l90, lmin, lmax, lden, lday, lnight, leq])\n  |> pivot(rowKey: [\"_time\", \"frequency_weighting\", \"time_weighting\"], columnKey: [\"_field\"], valueColumn: \"_value\")\n",
+          "query": "import \"date\"\nimport \"math\"\nimport \"timezone\"\n\noption location = timezone.location(name: \"Europe/Brussels\")\n\nfullRangeStart = date.add(d: 1d, to: date.truncate(t: v.timeRangeStart, unit: 1d))\nfullRangeStop = v.timeRangeStop\n\nbase1m = from(bucket: \"default\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r._measurement == \"dt8852\" and r._field == \"spl\" and r.frequency_weighting == \"dB(A)\" and exists r.time_weighting)\n  |> map(fn: (r) => ({ r with _value: math.pow(x: 10.0, y: r._value / 10.0) }))\n  |> aggregateWindow(\n        every: v.windowPeriod,\n        fn: mean,\n        createEmpty: false\n     )\n  |> map(fn: (r) => ({ r with _value: 10.0 * math.log10(x: r._value) }))\n\n// 2. PRÉPARATION ÉNERGÉTIQUE\nenergy_base = base1m\n  |> map(fn: (r) => ({ r with energy: math.pow(x: 10.0, y: float(v: r._value) / 10.0) }))\n\n// --- NOUVEL INDICATEUR : Leq (24h) ---\n// Moyenne énergétique pure sur toute la journée\nleq = energy_base\n  |> aggregateWindow(every: 1d, fn: mean, column: \"energy\", timeSrc: \"_start\")\n  |> map(fn: (r) => ({ r with _field: \"Leq\", _value: 10.0 * math.log10(x: r.energy) }))\n\n// --- INDICATEURS OMS / EUROPE ---\nlday = energy_base\n  |> filter(fn: (r) => {\n      h = date.hour(t: r._time)\n      return h >= 7 and h < 22\n  })\n  |> aggregateWindow(every: 1d, fn: mean, column: \"energy\", timeSrc: \"_start\")\n  |> map(fn: (r) => ({ r with _field: \"Lday\", _value: 10.0 * math.log10(x: r.energy) }))\n\nlnight = energy_base\n  |> filter(fn: (r) => {\n      h = date.hour(t: r._time)\n      return h >= 22 or h < 7\n  })\n  |> aggregateWindow(every: 1d, fn: mean, column: \"energy\", timeSrc: \"_start\")\n  |> map(fn: (r) => ({ r with _field: \"Lnight\", _value: 10.0 * math.log10(x: r.energy) }))\n\nlden = energy_base\n  |> map(fn: (r) => {\n      h = date.hour(t: r._time)\n      penalty = if h >= 19 and h < 23 then 5.0 \n                else if h >= 23 or h < 7 then 10.0 \n                else 0.0\n      return { r with energy_weighted: r.energy * math.pow(x: 10.0, y: penalty / 10.0) }\n  })\n  |> aggregateWindow(every: 1d, fn: mean, column: \"energy_weighted\", timeSrc: \"_start\")\n  |> map(fn: (r) => ({ r with _field: \"Lden\", _value: 10.0 * math.log10(x: r.energy_weighted) }))\n\n// --- STATISTIQUES CLASSIQUES ---\nlmax = base1m |> aggregateWindow(timeSrc: \"_start\", every: 1d, fn: max) |> map(fn: (r) => ({ r with _field: \"Lmax\" }))\nlmin = base1m |> aggregateWindow(timeSrc: \"_start\", every: 1d, fn: min) |> map(fn: (r) => ({ r with _field: \"Lmin\" }))\nl10 = base1m |> aggregateWindow(timeSrc: \"_start\", every: 1d, fn: (column, tables=<-) => tables |> quantile(q: 0.90)) |> map(fn: (r) => ({ r with _field: \"L10\" }))\nl50 = base1m |> aggregateWindow(timeSrc: \"_start\", every: 1d, fn: (column, tables=<-) => tables |> quantile(q: 0.50)) |> map(fn: (r) => ({ r with _field: \"L50\" }))\nl90 = base1m |> aggregateWindow(timeSrc: \"_start\", every: 1d, fn: (column, tables=<-) => tables |> quantile(q: 0.10)) |> map(fn: (r) => ({ r with _field: \"L90\" }))\n\n// 5. ASSEMBLAGE FINAL\nunion(tables: [l10, l50, l90, lmin, lmax, lden, lday, lnight, leq])\n  |> pivot(rowKey: [\"_time\", \"frequency_weighting\", \"time_weighting\"], columnKey: [\"_field\"], valueColumn: \"_value\")\n",
           "refId": "A"
         }
       ],
