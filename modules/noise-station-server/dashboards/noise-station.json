@@ -18,7 +18,7 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 142,
+  "id": 143,
   "links": [],
   "panels": [
     {
@@ -1581,7 +1581,7 @@
         "defaults": {
           "color": {
             "fixedColor": "#78787880",
-            "mode": "continuous-YlRd",
+            "mode": "continuous-GrYlRd",
             "seriesBy": "last"
           },
           "custom": {
@@ -1600,7 +1600,7 @@
             "pointShape": "circle",
             "pointSize": {
               "fixed": 1,
-              "max": 40,
+              "max": 50,
               "min": 1
             },
             "pointStrokeWidth": 1,
@@ -1615,7 +1615,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
+                "color": "light-green",
                 "value": 0
               }
             ]
@@ -1629,10 +1629,6 @@
               "options": "heure"
             },
             "properties": [
-              {
-                "id": "unit",
-                "value": ""
-              },
               {
                 "id": "custom.axisSoftMax",
                 "value": 24
@@ -1648,6 +1644,10 @@
               {
                 "id": "custom.axisLabel",
                 "value": "Heure de la journée"
+              },
+              {
+                "id": "unit",
+                "value": ""
               }
             ]
           },
@@ -1661,9 +1661,13 @@
                 "id": "custom.hideFrom",
                 "value": {
                   "legend": true,
-                  "tooltip": true,
+                  "tooltip": false,
                   "viz": true
                 }
+              },
+              {
+                "id": "displayName",
+                "value": "Dépassement"
               }
             ]
           },
@@ -1696,6 +1700,18 @@
                   "tooltip": false,
                   "viz": false
                 }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "limit"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Seuil légal"
               }
             ]
           }
@@ -1759,7 +1775,7 @@
       "pluginVersion": "12.3.2",
       "targets": [
         {
-          "query": "import \"date\"\nimport \"timezone\"\n\noption location = timezone.location(name: \"Europe/Brussels\")\n\n// 1. Calcul de la durée sélectionnée par lutilisateur\nrangeDuration = uint(v: v.timeRangeStop) - uint(v: v.timeRangeStart)\noneDay = uint(v: 24h)\n\n// 2. Définition du point de départ dynamique\n// Si la sélection est < 24h, on force le début à minuit aujourdhui\nactualStart = if rangeDuration < oneDay then date.truncate(t: now(), unit: 1d) else v.timeRangeStart\n\n// 3. Calcul de la fenêtre dagrégation dynamique pour éviter le \"Too many datapoints\"\n// On calcule la durée réelle de données quon va charger\nactualDuration = uint(v: v.timeRangeStop) - uint(v: actualStart)\n// On divise par 1000 pour viser environ 1000 points sur le graphique\ndivisor = uint(v: 1000)\n// On prend le plus grand entre (durée totale / 1000) et la fenêtre automatique de Grafana\nwindowInNs = if actualDuration / divisor > uint(v: v.windowPeriod) then actualDuration / divisor else uint(v: v.windowPeriod)\ndynamicWindow = duration(v: windowInNs)\n\nfrom(bucket: \"default\")\n  |> range(start: actualStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r._measurement == \"dt8852\" and r._field == \"spl\" and r.frequency_weighting == \"dB(A)\")\n  |> aggregateWindow(every: dynamicWindow, fn: median)\n  |> filter(fn: (r) => exists r._value)\n  |> keep(columns: [\"_time\", \"_value\", \"frequency_weighting\", \"time_weighting\"])\n  |> map(fn: (r) => {\n      h = date.hour(t: r._time)\n      m = date.minute(t: r._time)\n      s = date.second(t: r._time)\n      \n      // Seuils PAC Wallonie\n      limit = if h >= 7 and h < 19 then 50.0 \n              else if (h >= 6 and h < 7) or (h >= 19 and h < 22) then 45.0 \n              else 40.0\n      \n      diff = if r._value > limit then r._value - limit else 0.0\n\n      return {\n          _time: r._time,\n          decibels: r._value,\n          // Heure décimale pour laxe X\n          heure: float(v: h) + (float(v: m) / 60.0) + (float(v: s) / 3600.0),\n          severite: diff + 1.0\n      }\n  })\n  |> keep(columns: [\"_time\", \"decibels\", \"heure\", \"severite\"])\n  |> group()",
+          "query": "import \"date\"\nimport \"timezone\"\nimport \"math\"\n\noption location = timezone.location(name: \"Europe/Brussels\")\n\n// 1. Calcul de la durée sélectionnée par lutilisateur\nrangeDuration = uint(v: v.timeRangeStop) - uint(v: v.timeRangeStart)\noneDay = uint(v: 24h)\n\n// 2. Définition du point de départ dynamique\n// Si la sélection est < 24h, on force le début à minuit aujourdhui\nactualStart = if rangeDuration < oneDay then date.truncate(t: now(), unit: 1d) else v.timeRangeStart\n\n// 3. Calcul de la fenêtre dagrégation dynamique pour éviter le \"Too many datapoints\"\n// On calcule la durée réelle de données quon va charger\nactualDuration = uint(v: v.timeRangeStop) - uint(v: actualStart)\n// On divise par 1000 pour viser environ 1000 points sur le graphique\ndivisor = uint(v: 1000)\n// On prend le plus grand entre (durée totale / 1000) et la fenêtre automatique de Grafana\nwindowInNs = if actualDuration / divisor > uint(v: v.windowPeriod) then actualDuration / divisor else uint(v: v.windowPeriod)\ndynamicWindow = duration(v: windowInNs)\n\nfrom(bucket: \"default\")\n  |> range(start: actualStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r._measurement == \"dt8852\" and r._field == \"spl\" and r.frequency_weighting == \"dB(A)\")\n  |> aggregateWindow(every: dynamicWindow, fn: median)\n  |> filter(fn: (r) => exists r._value)\n  |> keep(columns: [\"_time\", \"_value\", \"frequency_weighting\", \"time_weighting\"])\n    |> map(fn: (r) => {\n      h = date.hour(t: r._time)\n      m = date.minute(t: r._time)\n      s = date.second(t: r._time)\n      \n      // Formule pour arrondir à 0.5 près\n      roundedValue = math.round(x: r._value * 4.0) / 4.0\n\n      // Seuils PAC Wallonie\n      limit = if h >= 7 and h < 19 then 50.0 \n              else if (h >= 6 and h < 7) or (h >= 19 and h < 22) then 45.0 \n              else 40.0\n      \n      // On utilise la valeur arrondie pour calculer la sévérité si on veut de la cohérence\n      diff = if roundedValue > limit then roundedValue - limit else 0.0\n\n      return {\n          _time: r._time,\n          decibels: roundedValue,\n          heure: float(v: h) + (float(v: m) / 60.0) + (float(v: s) / 3600.0),\n          limit: limit,\n          severite: diff + 1.0\n      }\n  })\n  |> keep(columns: [\"_time\", \"decibels\", \"heure\", \"severite\", \"limit\"])\n  |> group()",
           "refId": "A"
         }
       ],
