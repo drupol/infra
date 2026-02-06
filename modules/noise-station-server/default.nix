@@ -22,6 +22,11 @@
               enable = "publicDashboards, panelTimeSettings, timeComparison, timeSeriesTable";
             };
             dataproxy.timeout = 600;
+            auth = {
+              disable_login_form = true;
+              anonymous = {
+                enabled = true;
+              };
           };
           provision = {
             enable = true;
