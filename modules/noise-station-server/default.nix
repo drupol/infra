@@ -17,16 +17,15 @@
             server = {
               http_addr = "0.0.0.0";
               http_port = 3000;
+              enable_gzip = true;
             };
             feature_toggles = {
               enable = "publicDashboards, panelTimeSettings, timeComparison, timeSeriesTable";
             };
             dataproxy.timeout = 600;
-            auth = {
-              disable_login_form = true;
-              anonymous = {
-                enabled = true;
-              };
+            auth.disable_login_form = true;
+            "auth.anonymous" = {
+              enabled = true;
             };
           };
           provision = {
