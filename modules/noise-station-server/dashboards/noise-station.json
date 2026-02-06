@@ -18,7 +18,7 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 144,
+  "id": 146,
   "links": [],
   "panels": [
     {
@@ -300,6 +300,21 @@
                 "value": "Depassement"
               }
             ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "leq_raw"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "#80808080",
+                  "mode": "fixed"
+                }
+              }
+            ]
           }
         ]
       },
@@ -331,7 +346,7 @@
             "uid": "P951FEA4DE68E13C5"
           },
           "hide": false,
-          "query": "import \"date\"\nimport \"timezone\"\nimport \"math\"\n\noption location = timezone.location(name: \"Europe/Brussels\")\n\n// 1. Récupération et calcul du Leq (Moyenne énergétique)\nsourceData = from(bucket: \"default\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r._measurement == \"dt8852\" and r._field == \"spl\" and r.frequency_weighting == \"dB(A)\" and exists r.time_weighting)\n  |> map(fn: (r) => ({ r with _value: math.pow(x: 10.0, y: r._value / 10.0) }))\n  |> aggregateWindow(\n        every: v.windowPeriod,\n        fn: mean,\n        createEmpty: false\n     )\n  |> map(fn: (r) => ({ r with _value: 10.0 * math.log10(x: r._value) }))\n\nsourceData\n  |> map(fn: (r) => {\n        h = date.hour(t: r._time)\n        limitValue =\n          if h >= 7 and h < 19 then 50.0\n          else if (h >= 6 and h < 7) or (h >= 19 and h < 22) then 45.0\n          else 40.0\n        \n        return {\n            _time: r._time,\n            leq_ok: if r._value <= limitValue then r._value else float(v: \"NaN\"),\n            leq_excess: if r._value > limitValue then r._value else float(v: \"NaN\"),\n            depassement: if r._value > limitValue then r._value - limitValue else 0.0,\n            time_weighting: r.time_weighting,\n            frequency_weighting: r.frequency_weighting\n        }\n  })\n  |> yield(name: \"results\")",
+          "query": "import \"date\"\nimport \"timezone\"\nimport \"math\"\n\noption location = timezone.location(name: \"Europe/Brussels\")\n\n// 1. Calcul du Leq de base (fenêtré mais non lissé)\nbaseLeq = from(bucket: \"default\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r._measurement == \"dt8852\" and r._field == \"spl\" and r.frequency_weighting == \"dB(A)\" and exists r.time_weighting)\n  |> map(fn: (r) => ({ r with _value: math.pow(x: 10.0, y: r._value / 10.0) }))\n  |> aggregateWindow(every: v.windowPeriod, fn: mean, createEmpty: false)\n  |> map(fn: (r) => ({ r with _value: 10.0 * math.log10(x: r._value) }))\n\n// 2. Création de la version lissée (EMA)\nemaLeq = baseLeq \n  |> exponentialMovingAverage(n: 10)\n\n// 3. Fusion des deux séries pour avoir \"raw\" et \"ema\" sur la même ligne\nunion(tables: [\n    baseLeq |> map(fn: (r) => ({ r with _field: \"val_raw\" })),\n    emaLeq |> map(fn: (r) => ({ r with _field: \"val_ema\" }))\n  ])\n  |> pivot(rowKey: [\"_time\"], columnKey: [\"_field\"], valueColumn: \"_value\")\n  |> map(fn: (r) => {\n        h = date.hour(t: r._time)\n        limitValue =\n          if h >= 7 and h < 19 then 50.0\n          else if (h >= 6 and h < 7) or (h >= 19 and h < 22) then 45.0\n          else 40.0\n        \n        return {\n            _time: r._time,\n            leq_raw: r.val_raw,\n            leq_ok: if r.val_ema <= limitValue then r.val_ema else float(v: \"NaN\"),\n            leq_excess: if r.val_ema > limitValue then r.val_ema else float(v: \"NaN\"),\n            depassement: if r.val_ema > limitValue then r.val_ema - limitValue else 0.0,\n            time_weighting: r.time_weighting,\n            frequency_weighting: r.frequency_weighting\n        }\n  })\n  |> yield(name: \"results\")",
           "refId": "A"
         },
         {
@@ -536,7 +551,7 @@
       "pluginVersion": "12.3.2",
       "targets": [
         {
-          "query": "import \"math\"\nimport \"timezone\"\nimport \"date\"\n\noption location = timezone.location(name: \"Europe/Brussels\")\n\nsourceData = from(bucket: \"default\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r._measurement == \"dt8852\" and r._field == \"spl\" and r.frequency_weighting == \"dB(A)\" and exists r.time_weighting)\n  |> map(fn: (r) => ({ r with _value: math.pow(x: 10.0, y: r._value / 10.0) }))\n  |> aggregateWindow(\n        every: v.windowPeriod,\n        fn: mean,\n        createEmpty: false\n     )\n  |> map(fn: (r) => ({ r with _value: 10.0 * math.log10(x: r._value) }))\n  // 3. Calcul des limites horaires et du dépassement\n  |> map(fn: (r) => {\n      h = date.hour(t: r._time)\n      \n      // Seuils réglementaires (50 / 45 / 40 dB)\n      limite = if h >= 7 and h < 19 then 50.0 \n               else if (h >= 6 and h < 7) or (h >= 19 and h < 22) then 45.0 \n               else 40.0\n      \n      // Calcul du dépassement\n      diff = if r._value > limite then r._value - limite else 0.0\n      \n      return {\n          _time: r._time,\n          _value: diff,\n          _field: \"Dépassement\",\n          niveau_reel: r._value,\n          seuil_legal: limite\n      }\n  })\n  \n  // 4. Envoi des données vers Grafana\n  |> yield(name: \"depassement_acoustique\")",
+          "query": "import \"math\"\nimport \"timezone\"\nimport \"date\"\n\noption location = timezone.location(name: \"Europe/Brussels\")\n\nsourceData = from(bucket: \"default\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r._measurement == \"dt8852\" and r._field == \"spl\" and r.frequency_weighting == \"dB(A)\" and exists r.time_weighting)\n  |> map(fn: (r) => ({ r with _value: math.pow(x: 10.0, y: r._value / 10.0) }))\n  |> aggregateWindow(\n        every: v.windowPeriod,\n        fn: mean,\n        createEmpty: false\n     )\n  |> map(fn: (r) => ({ r with _value: 10.0 * math.log10(x: r._value) }))\n  |> exponentialMovingAverage(n: 10)\n  // 3. Calcul des limites horaires et du dépassement\n  |> map(fn: (r) => {\n      h = date.hour(t: r._time)\n      \n      // Seuils réglementaires (50 / 45 / 40 dB)\n      limite = if h >= 7 and h < 19 then 50.0 \n               else if (h >= 6 and h < 7) or (h >= 19 and h < 22) then 45.0 \n               else 40.0\n      \n      // Calcul du dépassement\n      diff = if r._value > limite then r._value - limite else 0.0\n      \n      return {\n          _time: r._time,\n          _value: diff,\n          _field: \"Dépassement\",\n          niveau_reel: r._value,\n          seuil_legal: limite\n      }\n  })\n  \n  // 4. Envoi des données vers Grafana\n  |> yield(name: \"depassement_acoustique\")",
           "refId": "A"
         }
       ],
