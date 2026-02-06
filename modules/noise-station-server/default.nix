@@ -27,6 +27,7 @@
               anonymous = {
                 enabled = true;
               };
+            };
           };
           provision = {
             enable = true;
