@@ -16,6 +16,7 @@
           provisionGrafana = true;
           settings = {
             server.addr = "0.0.0.0:8081";
+            browser.readiness.timeout = 0;
           };
         };
 
