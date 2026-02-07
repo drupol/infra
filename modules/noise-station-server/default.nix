@@ -10,8 +10,13 @@
       };
 
       services = {
+        grafana-image-renderer = {
+          enable = true;
+        };
+
         grafana = {
           enable = true;
+          declarativePlugins = [ pkgs.grafana-image-renderer ];
           openFirewall = true;
           settings = {
             server = {
