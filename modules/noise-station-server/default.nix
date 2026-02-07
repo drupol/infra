@@ -6,6 +6,7 @@
         allowedTCPPorts = [
           # InfluxDB
           8086
+          8081 # Image Renderer
         ];
       };
 
@@ -19,6 +20,10 @@
           declarativePlugins = [ pkgs.grafana-image-renderer ];
           openFirewall = true;
           settings = {
+            rendering = {
+              server_url = "http://127.0.0.1:8081/render";
+              callback_url = "http://127.0.0.1:3000/";
+            };
             server = {
               http_addr = "0.0.0.0";
               http_port = 3000;
