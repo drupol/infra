@@ -26,6 +26,7 @@
           settings = {
             rendering = {
               server_url = "http://0.0.0.0:8081/render";
+              renderer_token = "noisestation";
             };
             server = {
               http_addr = "0.0.0.0";
