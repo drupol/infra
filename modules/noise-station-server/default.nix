@@ -26,7 +26,6 @@
           settings = {
             rendering = {
               server_url = "http://0.0.0.0:8081/render";
-              callback_url = "http://127.0.0.1:3000/";
             };
             server = {
               http_addr = "0.0.0.0";
