@@ -14,6 +14,9 @@
         grafana-image-renderer = {
           enable = true;
           provisionGrafana = true;
+          settings = {
+            server.addr = "0.0.0.0:8081";
+          };
         };
 
         grafana = {
