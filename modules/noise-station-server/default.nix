@@ -22,7 +22,7 @@
           openFirewall = true;
           settings = {
             server = {
-              http_addr = "192.168.2.164";
+              http_addr = "0.0.0.0";
               http_port = 3000;
               enable_gzip = true;
             };
