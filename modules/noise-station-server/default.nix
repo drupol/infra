@@ -6,7 +6,6 @@
         allowedTCPPorts = [
           # InfluxDB
           8086
-          8081 # Image Renderer
         ];
       };
 
@@ -14,9 +13,6 @@
         grafana-image-renderer = {
           enable = true;
           provisionGrafana = true;
-          settings = {
-            server.addr = "0.0.0.0:8081";
-          };
         };
 
         grafana = {
@@ -24,10 +20,6 @@
           declarativePlugins = [ pkgs.grafana-image-renderer ];
           openFirewall = true;
           settings = {
-            rendering = {
-              server_url = "http://0.0.0.0:8081/render";
-              renderer_token = "noisestation";
-            };
             server = {
               http_addr = "0.0.0.0";
               http_port = 3000;
