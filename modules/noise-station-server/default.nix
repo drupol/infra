@@ -21,9 +21,6 @@
           declarativePlugins = [ pkgs.grafana-image-renderer ];
           openFirewall = true;
           settings = {
-            rendering = {
-              server_url = "http://127.0.0.1:8081/render";
-            };
             server = {
               http_addr = "192.168.2.164";
               http_port = 3000;
