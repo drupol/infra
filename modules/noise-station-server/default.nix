@@ -25,6 +25,7 @@
           openFirewall = true;
           settings = {
             server = {
+              domain = "78d2074a4db5.sn.mynetname.net";
               http_addr = "0.0.0.0";
               http_port = 3000;
               enable_gzip = true;
