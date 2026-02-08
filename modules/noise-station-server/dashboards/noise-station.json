@@ -197,7 +197,7 @@
               "mode": "off"
             }
           },
-          "displayName": "Niveau Sonore Leq (${__field.labels.frequency_weighting}, $interval)",
+          "displayName": "Niveau Sonore Leq (${__field.labels.frequency_weighting}, 15m)",
           "fieldMinMax": false,
           "mappings": [],
           "thresholds": {
@@ -331,7 +331,7 @@
             "uid": "P951FEA4DE68E13C5"
           },
           "hide": false,
-          "query": "import \"date\"\nimport \"timezone\"\nimport \"math\"\n\noption location = timezone.location(name: \"Europe/Brussels\")\n\n// 1. Récupération et calcul du Leq (Moyenne énergétique)\nsourceData = from(bucket: \"default\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r._measurement == \"dt8852\" and r._field == \"spl\" and r.frequency_weighting == \"dB(A)\" and exists r.time_weighting)\n  |> map(fn: (r) => ({ r with _value: math.pow(x: 10.0, y: r._value / 10.0) }))\n  |> aggregateWindow(\n        every: ${interval},\n        fn: mean,\n        createEmpty: false\n     )\n  |> aggregateWindow(\n        every: v.windowPeriod,\n        fn: mean,\n        createEmpty: false\n     )\n  |> map(fn: (r) => ({ r with _value: 10.0 * math.log10(x: r._value) }))\n\nsourceData\n  |> map(fn: (r) => {\n        h = date.hour(t: r._time)\n        limitValue =\n          if h >= 7 and h < 19 then 50.0\n          else if (h >= 6 and h < 7) or (h >= 19 and h < 22) then 45.0\n          else 40.0\n        \n        return {\n            _time: r._time,\n            leq_ok: if r._value <= limitValue then r._value else float(v: \"NaN\"),\n            leq_excess: if r._value > limitValue then r._value else float(v: \"NaN\"),\n            depassement: if r._value > limitValue then r._value - limitValue else 0.0,\n            time_weighting: r.time_weighting,\n            frequency_weighting: r.frequency_weighting\n        }\n  })\n  |> yield(name: \"results\")",
+          "query": "import \"date\"\nimport \"timezone\"\nimport \"math\"\n\noption location = timezone.location(name: \"Europe/Brussels\")\n\n// 1. Récupération et calcul du Leq (Moyenne énergétique)\nsourceData = from(bucket: \"default\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r._measurement == \"dt8852\" and r._field == \"spl\" and r.frequency_weighting == \"dB(A)\" and exists r.time_weighting)\n  |> map(fn: (r) => ({ r with _value: math.pow(x: 10.0, y: r._value / 10.0) }))\n  |> aggregateWindow(\n        every: 15m,\n        fn: mean,\n        createEmpty: false\n     )\n  |> aggregateWindow(\n        every: v.windowPeriod,\n        fn: mean,\n        createEmpty: false\n     )\n  |> map(fn: (r) => ({ r with _value: 10.0 * math.log10(x: r._value) }))\n\nsourceData\n  |> map(fn: (r) => {\n        h = date.hour(t: r._time)\n        limitValue =\n          if h >= 7 and h < 19 then 50.0\n          else if (h >= 6 and h < 7) or (h >= 19 and h < 22) then 45.0\n          else 40.0\n        \n        return {\n            _time: r._time,\n            leq_ok: if r._value <= limitValue then r._value else float(v: \"NaN\"),\n            leq_excess: if r._value > limitValue then r._value else float(v: \"NaN\"),\n            depassement: if r._value > limitValue then r._value - limitValue else 0.0,\n            time_weighting: r.time_weighting,\n            frequency_weighting: r.frequency_weighting\n        }\n  })\n  |> yield(name: \"results\")",
           "refId": "A"
         },
         {
@@ -424,7 +424,7 @@
                 "value": {
                   "legend": true,
                   "tooltip": false,
-                  "viz": false
+                  "viz": true
                 }
               },
               {
@@ -495,7 +495,7 @@
               },
               {
                 "id": "displayName",
-                "value": "Niveau Sonore Brut (dB(A) SPL)"
+                "value": "Niveau Sonore Leq (dB(A), 15m)"
               }
             ]
           },
@@ -507,7 +507,7 @@
             "properties": [
               {
                 "id": "displayName",
-                "value": "Dépassement"
+                "value": "Dépassement (T = 15m)"
               }
             ]
           }
@@ -536,7 +536,7 @@
       "pluginVersion": "12.3.2",
       "targets": [
         {
-          "query": "import \"math\"\nimport \"timezone\"\nimport \"date\"\n\noption location = timezone.location(name: \"Europe/Brussels\")\n\nsourceData = from(bucket: \"default\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r._measurement == \"dt8852\" and r._field == \"spl\" and r.frequency_weighting == \"dB(A)\" and exists r.time_weighting)\n  |> map(fn: (r) => ({ r with _value: math.pow(x: 10.0, y: r._value / 10.0) }))\n  |> aggregateWindow(\n        every: ${interval},\n        fn: mean,\n        createEmpty: false\n     )\n  |> aggregateWindow(\n        every: v.windowPeriod,\n        fn: mean,\n        createEmpty: false\n     )\n  |> map(fn: (r) => ({ r with _value: 10.0 * math.log10(x: r._value) }))\n  // 3. Calcul des limites horaires et du dépassement\n  |> map(fn: (r) => {\n      h = date.hour(t: r._time)\n      \n      // Seuils réglementaires (50 / 45 / 40 dB)\n      limite = if h >= 7 and h < 19 then 50.0 \n               else if (h >= 6 and h < 7) or (h >= 19 and h < 22) then 45.0 \n               else 40.0\n      \n      // Calcul du dépassement\n      diff = if r._value > limite then r._value - limite else 0.0\n      \n      return {\n          _time: r._time,\n          _value: diff,\n          _field: \"Dépassement\",\n          niveau_reel: r._value,\n          seuil_legal: limite\n      }\n  })\n  \n  // 4. Envoi des données vers Grafana\n  |> yield(name: \"depassement_acoustique\")",
+          "query": "import \"math\"\nimport \"timezone\"\nimport \"date\"\n\noption location = timezone.location(name: \"Europe/Brussels\")\n\nsourceData = from(bucket: \"default\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r._measurement == \"dt8852\" and r._field == \"spl\" and r.frequency_weighting == \"dB(A)\" and exists r.time_weighting)\n  |> map(fn: (r) => ({ r with _value: math.pow(x: 10.0, y: r._value / 10.0) }))\n  |> aggregateWindow(\n        every: 15m,\n        fn: mean,\n        createEmpty: false\n     )\n  |> aggregateWindow(\n        every: v.windowPeriod,\n        fn: mean,\n        createEmpty: false\n     )\n  |> map(fn: (r) => ({ r with _value: 10.0 * math.log10(x: r._value) }))\n  // 3. Calcul des limites horaires et du dépassement\n  |> map(fn: (r) => {\n      h = date.hour(t: r._time)\n      \n      // Seuils réglementaires (50 / 45 / 40 dB)\n      limite = if h >= 7 and h < 19 then 50.0 \n               else if (h >= 6 and h < 7) or (h >= 19 and h < 22) then 45.0 \n               else 40.0\n      \n      // Calcul du dépassement\n      diff = if r._value > limite then r._value - limite else 0.0\n      \n      return {\n          _time: r._time,\n          _value: diff,\n          _field: \"Dépassement\",\n          niveau_reel: r._value,\n          seuil_legal: limite\n      }\n  })\n  \n  // 4. Envoi des données vers Grafana\n  |> yield(name: \"depassement_acoustique\")",
           "refId": "A"
         }
       ],
@@ -1770,7 +1770,7 @@
               "mode": "dashed"
             }
           },
-          "displayName": "Indice de Monotonie (L10,T - L90,T), (T = ${interval})",
+          "displayName": "Indice de Monotonie (L10,T - L90,T), (T = 15m)",
           "fieldMinMax": false,
           "mappings": [],
           "thresholds": {
@@ -1868,7 +1868,7 @@
       "targets": [
         {
           "hide": false,
-          "query": "import \"math\"\nimport \"timezone\"\n\n// Configuration de la zone horaire\noption location = timezone.location(name: \"Europe/Brussels\")\n\nbase = from(bucket: \"default\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r._measurement == \"dt8852\" and r._field == \"spl\" and r.frequency_weighting == \"dB(A)\" and exists r._value and exists r.time_weighting)\n  |> keep(columns: [\"_time\", \"_value\", \"frequency_weighting\", \"time_weighting\"])\n\n// 2. Calcul du L10 (Pics sonores) \nl10 = base\n  |> aggregateWindow(\n        every: v.windowPeriod,\n        fn: (column, tables=<-) => tables |> quantile(q: 0.90),\n        createEmpty: false\n     )\n  |> aggregateWindow(\n        every: ${interval},\n        fn: mean,\n        createEmpty: false\n     )\n  |> map(fn: (r) => ({ r with _field: \"l10\" }))\n\n// 3. Calcul du L90 (Bruit de fond)\nl90 = base\n  |> aggregateWindow(\n        every: v.windowPeriod,\n        fn: (column, tables=<-) => tables |> quantile(q: 0.10),\n        createEmpty: false\n     )\n  |> aggregateWindow(\n        every: ${interval},\n        fn: mean,\n        createEmpty: false\n     )\n  |> map(fn: (r) => ({ r with _field: \"l90\" }))\n\n// 4. Fusion et Pivotage sécurisé\nunion(tables: [l10, l90])\n  |> pivot(rowKey:[\"_time\", \"frequency_weighting\", \"time_weighting\"], columnKey: [\"_field\"], valueColumn: \"_value\")\n  |> filter(fn: (r) => exists r.l10 and exists r.l90)\n  |> map(fn: (r) => {\n      val_l10 = float(v: r.l10)\n      val_l90 = float(v: r.l90)\n      diff = val_l10 - val_l90\n      \n      return {\n          _time: r._time,\n          frequency_weighting: r.frequency_weighting,\n          time_weighting: r.time_weighting,\n          _field: \"Climat Sonore (L10-L90)\",\n          _value: if diff < 0.0 then 0.0 else diff\n      }\n  })\n  |> yield(name: \"climat_sonore\")",
+          "query": "import \"math\"\nimport \"timezone\"\n\n// Configuration de la zone horaire\noption location = timezone.location(name: \"Europe/Brussels\")\n\nbase = from(bucket: \"default\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r._measurement == \"dt8852\" and r._field == \"spl\" and r.frequency_weighting == \"dB(A)\" and exists r._value and exists r.time_weighting)\n  |> keep(columns: [\"_time\", \"_value\", \"frequency_weighting\", \"time_weighting\"])\n\n// 2. Calcul du L10 (Pics sonores) \nl10 = base\n  |> aggregateWindow(\n        every: v.windowPeriod,\n        fn: (column, tables=<-) => tables |> quantile(q: 0.90),\n        createEmpty: false\n     )\n  |> aggregateWindow(\n        every: 15m,\n        fn: mean,\n        createEmpty: false\n     )\n  |> map(fn: (r) => ({ r with _field: \"l10\" }))\n\n// 3. Calcul du L90 (Bruit de fond)\nl90 = base\n  |> aggregateWindow(\n        every: v.windowPeriod,\n        fn: (column, tables=<-) => tables |> quantile(q: 0.10),\n        createEmpty: false\n     )\n  |> aggregateWindow(\n        every: ${interval},\n        fn: mean,\n        createEmpty: false\n     )\n  |> map(fn: (r) => ({ r with _field: \"l90\" }))\n\n// 4. Fusion et Pivotage sécurisé\nunion(tables: [l10, l90])\n  |> pivot(rowKey:[\"_time\", \"frequency_weighting\", \"time_weighting\"], columnKey: [\"_field\"], valueColumn: \"_value\")\n  |> filter(fn: (r) => exists r.l10 and exists r.l90)\n  |> map(fn: (r) => {\n      val_l10 = float(v: r.l10)\n      val_l90 = float(v: r.l90)\n      diff = val_l10 - val_l90\n      \n      return {\n          _time: r._time,\n          frequency_weighting: r.frequency_weighting,\n          time_weighting: r.time_weighting,\n          _field: \"Climat Sonore (L10-L90)\",\n          _value: if diff < 0.0 then 0.0 else diff\n      }\n  })\n  |> yield(name: \"climat_sonore\")",
           "refId": "A"
         }
       ],
