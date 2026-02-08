@@ -157,7 +157,7 @@
         "type": "influxdb",
         "uid": "P951FEA4DE68E13C5"
       },
-      "description": "Affiche le SPL reconstruit sur des fenêtres de 30s à partir des mesures: conversion dB→énergie, agrégation en énergie, puis reconversion en dB. La courbe est comparée à une limite réglementaire dynamique (40/45/50 dB) calculée à partir de l’heure locale. NOTE: Cette visualisation applique une moyenne mobile exponentielle (n=30) pour lisser les courbes et faciliter la lecture. Pour une expertise acoustique stricte, il est recommandé d'analyser les valeurs brutes.",
+      "description": "Affiche le SPL reconstruit sur des fenêtres de ${interval} à partir des mesures: conversion dB→énergie, agrégation en énergie, puis reconversion en dB. La courbe est comparée à une limite réglementaire dynamique (40/45/50 dB) calculée à partir de l’heure locale.",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -349,7 +349,7 @@
           "refId": "Seuil Légal"
         }
       ],
-      "title": "Vue en Temps Réel",
+      "title": "Vue en Temps Réel (${__from:date} -> ${__to:date})",
       "type": "timeseries"
     },
     {
@@ -1055,7 +1055,7 @@
           "refId": "A"
         }
       ],
-      "title": "Synthèse avancée de l'environnement sonore et analyse statistique instantanée des indicateurs acoustiques.",
+      "title": "Synthèse avancée de l'environnement sonore et analyse statistique instantanée des indicateurs acoustiques (${__from:date} -> ${__to:date})",
       "type": "stat"
     },
     {
