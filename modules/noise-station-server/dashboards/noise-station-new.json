@@ -349,7 +349,7 @@
           "refId": "Seuil Légal"
         }
       ],
-      "title": "Vue en Temps Réel (${__from:date} -> ${__to:date})",
+      "title": "Vue en Temps Réel (${__from:date:YYYY/MM/DD-HH:MM:SS} -> ${__to:date:YYYY/MM/DD-HH:MM:SS})",
       "type": "timeseries"
     },
     {
@@ -1055,7 +1055,7 @@
           "refId": "A"
         }
       ],
-      "title": "Synthèse avancée de l'environnement sonore et analyse statistique instantanée des indicateurs acoustiques (${__from:date} -> ${__to:date})",
+      "title": "Synthèse avancée de l'environnement sonore et analyse statistique instantanée des indicateurs acoustiques (${__from:date:YYYY/MM/DD-HH:MM:SS} -> ${__to:date:YYYY/MM/DD-HH:MM:SS})",
       "type": "stat"
     },
     {
