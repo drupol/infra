@@ -18,7 +18,7 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 162,
+  "id": 164,
   "links": [],
   "panels": [
     {
@@ -1126,7 +1126,7 @@
             "properties": [
               {
                 "id": "displayName",
-                "value": "Lden (${__field.labels.frequency_weighting}, $__interval)"
+                "value": "Lden (${__field.labels.frequency_weighting}, 24h)"
               },
               {
                 "id": "custom.lineWidth",
@@ -1142,7 +1142,7 @@
             "properties": [
               {
                 "id": "displayName",
-                "value": "L10 (${__field.labels.frequency_weighting}, $__interval)"
+                "value": "L10 (${__field.labels.frequency_weighting}, 24h)"
               },
               {
                 "id": "custom.lineStyle",
@@ -1161,7 +1161,7 @@
             "properties": [
               {
                 "id": "displayName",
-                "value": "L50 (${__field.labels.frequency_weighting}, $__interval)"
+                "value": "L50 (${__field.labels.frequency_weighting}, 24h)"
               },
               {
                 "id": "custom.lineStyle",
@@ -1180,7 +1180,7 @@
             "properties": [
               {
                 "id": "displayName",
-                "value": "L90 (${__field.labels.frequency_weighting}, $__interval)"
+                "value": "L90 (${__field.labels.frequency_weighting}, 24h)"
               },
               {
                 "id": "custom.lineStyle",
@@ -1237,7 +1237,7 @@
             "properties": [
               {
                 "id": "displayName",
-                "value": "Lday (7h-22h) (${__field.labels.frequency_weighting}, $__interval)"
+                "value": "Lday (7h-22h) (${__field.labels.frequency_weighting}, 24h)"
               },
               {
                 "id": "custom.lineStyle",
@@ -1255,7 +1255,7 @@
             "properties": [
               {
                 "id": "displayName",
-                "value": "Lnight (22h-7h) (${__field.labels.frequency_weighting}, $__interval)"
+                "value": "Lnight (22h-7h) (${__field.labels.frequency_weighting}, 24h)"
               },
               {
                 "id": "custom.lineStyle",
@@ -1273,7 +1273,7 @@
             "properties": [
               {
                 "id": "displayName",
-                "value": "Leq (${__field.labels.frequency_weighting}, $__interval)"
+                "value": "Leq (${__field.labels.frequency_weighting}, 24h)"
               },
               {
                 "id": "custom.lineWidth",
