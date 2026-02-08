@@ -23,6 +23,13 @@
         grafana = {
           enable = true;
           declarativePlugins = [
+            (pkgs.grafanaPlugins.grafanaPlugin {
+              pname = "mesak-imagesave-panel";
+              version = "1.0.4";
+              zipHash = {
+                x86_64-linux = "sha256-WwGCcMhPhE8q2E/0uXYNMpd0HitPvVOCbazhpX/1q2U=";
+              };
+            })
             (pkgs.grafana-image-renderer.overrideAttrs (oldAttrs: {
               version = "5.5.0";
               src = oldAttrs.src.overrideAttrs (_oldSrcAttrs: {
