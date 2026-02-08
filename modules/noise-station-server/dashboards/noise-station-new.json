@@ -18,7 +18,7 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 152,
+  "id": 154,
   "links": [],
   "panels": [
     {
@@ -82,7 +82,7 @@
           "showLineNumbers": false,
           "showMiniMap": false
         },
-        "content": "En Région Wallonne (https://www.ejustice.just.fgov.be/eli/arrete/2002/07/04/2002027815/justel), le cadre légal est clair et rigoureux. Depuis l’arrêté du Gouvernement wallon du 4 juillet 2022, des limites de bruit spécifiques s’appliquent aux PAC selon les différentes périodes de la journée :\n\n- En journée (7h-19h): le bruit ne doit pas dépasser 50 dB.\n- En transition (6h-7h, 19h-22h): la limite est réduite à 45 dB.\n- La nuit (22h-6h): le niveau sonore doit impérativement rester sous 40 dB.\n\nLe bruit se propage en cercle autour d'une unité extérieure (PAC). \nIl est donc crucial de faire attention aux surfaces environnantes, comme des murs ou d’autres bâtiments, qui peuvent réfléchir le son et provoquer un effet d’écho. Pour limiter cette résonance, maintenez au moins un mètre d’espace autour de la pompe, en particulier par rapport aux fenêtres, aux portes et aux chemins. Si l’unité est placée contre un mur, veillez à respecter une distance minimale de 30 centimètres — l’idéal étant de 50 centimètres — pour garantir une circulation sonore optimale. Il est également important de prendre en compte la distance entre la face avant de la pompe à chaleur et les trottoirs, qui doit être d’au moins 3 mètres et d’au moins 6 mètres pour les plantes.\n\nDes recherches ont montré qu'un stress prolongé causé par le bruit augmente le risque de maladies cardiovasculaires, comme l'hypertension artérielle ou les maladies coronariennes. \nCe risque augmente avec la durée et l'intensité de la nuisance sonore, surtout lorsqu'il s'agit de bruit en soirée ou la nuit. \n\nL'Organisation Mondiale de la Sante recommande de ne pas depasser les 40 dB(A) a partir de 22h et jusque 7h du matin.\n\nSources: \n- https://www.bobex.be/fr-be/pompe-a-chaleur/installation/distance-voisin/\n- https://www.health.belgium.be/fr/themes/sante/votre-sante/environnement-sante/impact-nuisances-sonores-votre-sante/son-nuisances-sonores\n- https://www.who.int/europe/fr/publications/i/item/WHO-EURO-2018-3287-43046-60243?hl=en-US\n- https://www.polisnetwork.eu/wp-content/uploads/2019/06/who-night-noise-guidelines.pdf\n",
+        "content": "En Région Wallonne (https://www.ejustice.just.fgov.be/eli/arrete/2002/07/04/2002027815/justel), le cadre légal est clair et rigoureux. Depuis l’arrêté du Gouvernement wallon du 4 juillet 2022, des limites de bruit spécifiques s’appliquent aux PAC selon les différentes périodes de la journée :\n\n- En journée (7h-19h): le bruit ne doit pas dépasser 50 dB.\n- En transition (6h-7h, 19h-22h): la limite est réduite à 45 dB.\n- La nuit (22h-6h): le niveau sonore doit impérativement rester sous 40 dB.\n\nLe bruit se propage en cercle autour d'une unité extérieure (PAC). \nIl est donc crucial de faire attention aux surfaces environnantes, comme des murs ou d'autres bâtiments, qui peuvent réfléchir le son et provoquer un effet d’écho. Pour limiter cette résonance, maintenez au moins un mètre d’espace autour de la pompe, en particulier par rapport aux fenêtres, aux portes et aux chemins. Si l’unité est placée contre un mur, veillez à respecter une distance minimale de 30 centimètres — l’idéal étant de 50 centimètres — pour garantir une circulation sonore optimale. Il est également important de prendre en compte la distance entre la face avant de la pompe à chaleur et les trottoirs, qui doit être d’au moins 3 mètres et d’au moins 6 mètres pour les plantes.\n\nDes recherches ont montré qu'un stress prolongé causé par le bruit augmente le risque de maladies cardiovasculaires, comme l'hypertension artérielle ou les maladies coronariennes. \nCe risque augmente avec la durée et l'intensité de la nuisance sonore, surtout lorsqu'il s'agit de bruit en soirée ou la nuit. \n\nL'Organisation Mondiale de la Santé recommande de ne pas dépasser les 40 dB(A) à partir de 22h et jusque 7h du matin.\n\nSources: \n- https://www.bobex.be/fr-be/pompe-a-chaleur/installation/distance-voisin/\n- https://www.health.belgium.be/fr/themes/sante/votre-sante/environnement-sante/impact-nuisances-sonores-votre-sante/son-nuisances-sonores\n- https://www.who.int/europe/fr/publications/i/item/WHO-EURO-2018-3287-43046-60243?hl=en-US\n- https://www.polisnetwork.eu/wp-content/uploads/2019/06/who-night-noise-guidelines.pdf\n",
         "mode": "markdown"
       },
       "pluginVersion": "12.3.2",
@@ -635,7 +635,7 @@
       "pluginVersion": "12.3.2",
       "targets": [
         {
-          "query": "import \"timezone\"\nimport \"date\"\nimport \"math\"\n\noption location = timezone.location(name: \"Europe/Brussels\")\n\nfrom(bucket: \"usb_temperature\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_field\"] == \"temp_external\")\n  |> aggregateWindow(every: 3m, fn: median, createEmpty: false)  \n  |> aggregateWindow(every: v.windowPeriod, fn: median, createEmpty: false)\n  |> map(fn: (r) => ({\n      r with \n      _value: math.round(x: r._value * 2.0) / 2.0\n    }))\n  |> keep(columns: [\"_time\", \"_value\"])",
+          "query": "import \"timezone\"\nimport \"date\"\nimport \"math\"\n\noption location = timezone.location(name: \"Europe/Brussels\")\n\nfrom(bucket: \"usb_temperature\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_field\"] == \"temp_external\")\n  |> aggregateWindow(every: ${interval}, fn: mean, createEmpty: false)\n  |> aggregateWindow(every: v.windowPeriod, fn: mean, createEmpty: false)\n  |> map(fn: (r) => ({\n      r with \n      _value: if exists r._value then math.round(x: r._value * 2.0) / 2.0 else r._value\n    }))\n  |> keep(columns: [\"_time\", \"_value\"])",
           "refId": "A"
         }
       ],
@@ -660,10 +660,11 @@
         "type": "influxdb",
         "uid": "P951FEA4DE68E13C5"
       },
+      "description": "Suivi dynamique de l'environnement sonore. Le dépassement de la ligne grise pointillée indique une non-conformité par rapport aux objectifs réglementaires.",
       "fieldConfig": {
         "defaults": {
           "color": {
-            "mode": "fixed"
+            "mode": "thresholds"
           },
           "custom": {
             "axisBorderShow": false,
@@ -675,7 +676,7 @@
             "barWidthFactor": 0.6,
             "drawStyle": "line",
             "fillOpacity": 0,
-            "gradientMode": "none",
+            "gradientMode": "scheme",
             "hideFrom": {
               "legend": false,
               "tooltip": false,
@@ -686,12 +687,12 @@
             "lineStyle": {
               "fill": "solid"
             },
-            "lineWidth": 5,
-            "pointSize": 10,
+            "lineWidth": 2,
+            "pointSize": 3,
             "scaleDistribution": {
               "type": "linear"
             },
-            "showPoints": "never",
+            "showPoints": "always",
             "showValues": false,
             "spanNulls": false,
             "stacking": {
@@ -707,7 +708,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
+                "color": "text",
                 "value": 0
               }
             ]
@@ -742,25 +743,29 @@
               {
                 "id": "custom.lineWidth",
                 "value": 1
+              },
+              {
+                "id": "custom.pointSize",
+                "value": 1
               }
             ]
           },
           {
             "matcher": {
               "id": "byName",
-              "options": "L10_exced"
+              "options": "val_l10"
             },
             "properties": [
               {
                 "id": "color",
                 "value": {
-                  "fixedColor": "#c4162a40",
+                  "fixedColor": "red",
                   "mode": "fixed"
                 }
               },
               {
                 "id": "displayName",
-                "value": "Niveau Sonore - L10 SPL (${__field.labels.frequency_weighting}, ${__field.labels.time_weighting})"
+                "value": "Niveau Sonore - L10 SPL (${__field.labels.frequency_weighting}, ${interval})"
               },
               {
                 "id": "custom.lineStyle",
@@ -774,19 +779,19 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "L10_ok"
+              "options": "val_l50"
             },
             "properties": [
               {
                 "id": "color",
                 "value": {
-                  "fixedColor": "#37872d40",
+                  "fixedColor": "blue",
                   "mode": "fixed"
                 }
               },
               {
                 "id": "displayName",
-                "value": "Niveau Sonore - L10 SPL (${__field.labels.frequency_weighting}, ${__field.labels.time_weighting})"
+                "value": "Niveau Sonore - L50 SPL (${__field.labels.frequency_weighting}, ${interval})"
               },
               {
                 "id": "custom.lineStyle",
@@ -800,38 +805,19 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "L50_ok"
+              "options": "val_l90"
             },
             "properties": [
               {
                 "id": "color",
                 "value": {
-                  "fixedColor": "dark-green",
+                  "fixedColor": "green",
                   "mode": "fixed"
                 }
               },
               {
                 "id": "displayName",
-                "value": "Niveau Sonore - L50 SPL (${__field.labels.frequency_weighting}, ${__field.labels.time_weighting})"
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "L90_exced"
-            },
-            "properties": [
-              {
-                "id": "color",
-                "value": {
-                  "fixedColor": "#c4162a40",
-                  "mode": "fixed"
-                }
-              },
-              {
-                "id": "displayName",
-                "value": "Niveau Sonore - L90 SPL (${__field.labels.frequency_weighting}, ${__field.labels.time_weighting})"
+                "value": "Niveau Sonore - L90 SPL (${__field.labels.frequency_weighting}, ${interval})"
               },
               {
                 "id": "custom.lineStyle",
@@ -845,33 +831,7 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "L90_ok"
-            },
-            "properties": [
-              {
-                "id": "color",
-                "value": {
-                  "fixedColor": "#37872d40",
-                  "mode": "fixed"
-                }
-              },
-              {
-                "id": "displayName",
-                "value": "Niveau Sonore - L90 SPL (${__field.labels.frequency_weighting}, ${__field.labels.time_weighting})"
-              },
-              {
-                "id": "custom.lineStyle",
-                "value": {
-                  "dash": [0, 10],
-                  "fill": "dot"
-                }
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "L50_exced"
+              "options": "val_spl"
             },
             "properties": [
               {
@@ -880,13 +840,13 @@
               {
                 "id": "color",
                 "value": {
-                  "fixedColor": "dark-red",
+                  "fixedColor": "text",
                   "mode": "fixed"
                 }
               },
               {
                 "id": "displayName",
-                "value": "Niveau Sonore - L50 SPL (${__field.labels.frequency_weighting}, ${__field.labels.time_weighting})"
+                "value": "Niveau Sonore - Leq (${__field.labels.frequency_weighting}, ${interval})"
               }
             ]
           },
@@ -935,11 +895,11 @@
       "pluginVersion": "12.3.2",
       "targets": [
         {
-          "query": "import \"date\"\nimport \"timezone\"\n\n// --- CONFIGURATION ---\noption location = timezone.location(name: \"Europe/Brussels\")\n\nactualInterval = if int(v: v.windowPeriod) < int(v: 15s) then 15s else v.windowPeriod\n\nsource = from(bucket: \"default\")\n    |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n    |> filter(fn: (r) => r._measurement == \"dt8852\" and r._field == \"spl\" and r.frequency_weighting == \"dB(A)\")\n    |> filter(fn: (r) => exists r._value and exists r.time_weighting)\n    |> aggregateWindow(\n      every: v.windowPeriod,\n      fn: median,\n      createEmpty: false\n    )\n    |> keep(columns: [\"_time\", \"_value\", \"frequency_weighting\", \"time_weighting\"])\n\nl10 = source \n    |> aggregateWindow(every: actualInterval, fn: (column, tables=<-) => tables |> quantile(q: 0.90)) \n    |> map(fn: (r) => ({ r with _field: \"L10\" }))\n\nl50 = source \n    |> aggregateWindow(every: actualInterval, fn: (column, tables=<-) => tables |> quantile(q: 0.50)) \n    |> map(fn: (r) => ({ r with _field: \"L50\" }))\n\nl90 = source \n    |> aggregateWindow(every: actualInterval, fn: (column, tables=<-) => tables |> quantile(q: 0.10)) \n    |> map(fn: (r) => ({ r with _field: \"L90\" }))\n\nspl_raw = source \n    |> aggregateWindow(every: actualInterval, fn: mean) \n    |> map(fn: (r) => ({ r with _field: \"SPL_raw\" }))\n\n// 3. ASSEMBLAGE\nunion(tables: [l10, l50, l90, spl_raw])\n    |> pivot(rowKey: [\"_time\", \"frequency_weighting\", \"time_weighting\"], columnKey: [\"_field\"], valueColumn: \"_value\")\n    |> map(fn: (r) => {\n        h = date.hour(t: r._time)\n        // Logique de seuil réglementaire\n        limit = if h >= 7 and h < 19 then 50.0\n                else if (h >= 6 and h < 7) or (h >= 19 and h < 22) then 45.0\n                else 40.0\n        \n        nan = float(v: \"NaN\")\n\n        // Sécurisation des valeurs (cast en float pour éviter les erreurs \"invalid\")\n        val_spl = if exists r.SPL_raw then float(v: r.SPL_raw) else 0.0\n        val_l10 = if exists r.L10 then float(v: r.L10) else nan\n        val_l50 = if exists r.L50 then float(v: r.L50) else nan\n        val_l90 = if exists r.L90 then float(v: r.L90) else nan\n\n        return {\n            _time: r._time,\n            frequency_weighting: r.frequency_weighting,\n            time_weighting: r.time_weighting,\n            seuil_legal: limit,\n            \n            // Si SPL_raw > limit, on renvoie la différence, sinon 0\n            depassement: if val_spl > limit then val_spl - limit else 0.0,\n\n            // Répartition pour coloration Grafana\n            L10_ok:     if val_l10 <= limit then val_l10 else nan,\n            L10_exced:  if val_l10 > limit  then val_l10 else nan,\n            L50_ok:     if val_l50 <= limit then val_l50 else nan,\n            L50_exced:  if val_l50 > limit  then val_l50 else nan,\n            L90_ok:     if val_l90 <= limit then val_l90 else nan,\n            L90_exced:  if val_l90 > limit  then val_l90 else nan\n        }\n    })\n    |> yield(name: \"acoustic_data\")",
+          "query": "import \"date\"\nimport \"timezone\"\n\n// --- CONFIGURATION ---\noption location = timezone.location(name: \"Europe/Brussels\")\n\nsource = from(bucket: \"default\")\n    |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n    |> filter(fn: (r) => r._measurement == \"dt8852\" and r._field == \"spl\" and r.frequency_weighting == \"dB(A)\")\n    |> filter(fn: (r) => exists r._value and exists r.time_weighting)\n    |> aggregateWindow(\n      every: v.windowPeriod,\n      fn: median,\n      createEmpty: false\n    )\n    |> keep(columns: [\"_time\", \"_value\", \"frequency_weighting\", \"time_weighting\"])\n\nl10 = source \n    |> aggregateWindow(every: ${interval}, fn: (column, tables=<-) => tables |> quantile(q: 0.90)) \n    |> map(fn: (r) => ({ r with _field: \"L10\" }))\n\nl50 = source \n    |> aggregateWindow(every: ${interval}, fn: (column, tables=<-) => tables |> quantile(q: 0.50)) \n    |> map(fn: (r) => ({ r with _field: \"L50\" }))\n\nl90 = source \n    |> aggregateWindow(every: ${interval}, fn: (column, tables=<-) => tables |> quantile(q: 0.10)) \n    |> map(fn: (r) => ({ r with _field: \"L90\" }))\n\nspl_raw = source \n    |> aggregateWindow(every: ${interval}, fn: mean) \n    |> map(fn: (r) => ({ r with _field: \"SPL_raw\" }))\n\n// 3. ASSEMBLAGE\nunion(tables: [l10, l50, l90, spl_raw])\n    |> pivot(rowKey: [\"_time\", \"frequency_weighting\", \"time_weighting\"], columnKey: [\"_field\"], valueColumn: \"_value\")\n    |> map(fn: (r) => {\n        h = date.hour(t: r._time)\n        // Logique de seuil réglementaire\n        limit = if h >= 7 and h < 19 then 50.0\n                else if (h >= 6 and h < 7) or (h >= 19 and h < 22) then 45.0\n                else 40.0\n        \n        nan = float(v: \"NaN\")\n\n        // Sécurisation des valeurs (cast en float pour éviter les erreurs \"invalid\")\n        val_spl = if exists r.SPL_raw then float(v: r.SPL_raw) else nan\n        val_l10 = if exists r.L10 then float(v: r.L10) else nan\n        val_l50 = if exists r.L50 then float(v: r.L50) else nan\n        val_l90 = if exists r.L90 then float(v: r.L90) else nan\n\n        return {\n            _time: r._time,\n            frequency_weighting: r.frequency_weighting,\n            time_weighting: r.time_weighting,\n            seuil_legal: limit,\n            \n            // Si SPL_raw > limit, on renvoie la différence, sinon 0\n            depassement: if val_spl > limit then val_spl - limit else 0.0,\n\n            // Répartition pour coloration Grafana\n            // L10_ok:     if val_l10 <= limit then val_l10 else nan,\n            // L10_exced:  if val_l10 > limit  then val_l10 else nan,\n            // L50_ok:     if val_l50 <= limit then val_l50 else nan,\n            // L50_exced:  if val_l50 > limit  then val_l50 else nan,\n            // L90_ok:     if val_l90 <= limit then val_l90 else nan,\n            // L90_exced:  if val_l90 > limit  then val_l90 else nan,\n            val_l10: val_l10,\n            val_l50: val_l50,\n            val_l90: val_l90,\n            val_spl: val_spl\n        }\n    })\n    |> yield(name: \"acoustic_data\")",
           "refId": "A"
         }
       ],
-      "title": "Indicateurs de Pression Acoustique",
+      "title": "Indicateurs de pression acoustique (Leq,${interval} et fractiles)",
       "type": "timeseries"
     },
     {
@@ -2051,6 +2011,11 @@
           },
           {
             "selected": true,
+            "text": "15m",
+            "value": "15m"
+          },
+          {
+            "selected": false,
             "text": "30m",
             "value": "30m"
           },
