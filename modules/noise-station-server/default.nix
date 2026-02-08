@@ -25,7 +25,7 @@
           declarativePlugins = [
             (pkgs.grafana-image-renderer.overrideAttrs (oldAttrs: {
               version = "5.5.0";
-              src = oldAttrs.src.overrideAttrs (oldSrcAttrs: {
+              src = oldAttrs.src.overrideAttrs (_oldSrcAttrs: {
                 version = "5.5.0";
                 hash = "sha256-/ZvWE8FVK9EBXo1V0AD/rCc5ZyQFea1WiQrKg1JOwt4=";
               });
