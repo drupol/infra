@@ -18,7 +18,7 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 182,
+  "id": 188,
   "links": [],
   "panels": [
     {
@@ -1070,7 +1070,7 @@
         "type": "influxdb",
         "uid": "P951FEA4DE68E13C5"
       },
-      "description": "Tableau de bord consolidé des niveaux de pression acoustique pondérés A, agrégés par périodes de 24 heures. Ce rapport regroupe les indicateurs réglementaires d'exposition globale (Lden), les moyennes énergétiques de jour (Lday, 07h-22h) et de nuit (Lnight, 22h-07h), la distribution statistique du bruit (L10, L50, L90) ainsi que les extrêmes de la journée (Lmin, Lmax).",
+      "description": "Tableau de bord consolidé des niveaux de pression acoustique pondérés A, agrégés par périodes de 1h, puis 24 heures. Ce rapport regroupe les indicateurs réglementaires d'exposition globale (Lden), les moyennes énergétiques de jour (Lday, 07h-22h) et de nuit (Lnight, 22h-07h), la distribution statistique du bruit (L10, L50, L90) ainsi que les extrêmes de la journée (Lmin, Lmax).",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -1133,7 +1133,7 @@
             "properties": [
               {
                 "id": "displayName",
-                "value": "Lden (${__field.labels.frequency_weighting}, 24h)"
+                "value": "Lden"
               },
               {
                 "id": "custom.lineWidth",
@@ -1149,7 +1149,7 @@
             "properties": [
               {
                 "id": "displayName",
-                "value": "L10 (${__field.labels.frequency_weighting}, 24h)"
+                "value": "L10"
               },
               {
                 "id": "custom.lineStyle",
@@ -1168,7 +1168,7 @@
             "properties": [
               {
                 "id": "displayName",
-                "value": "L50 (${__field.labels.frequency_weighting}, 24h)"
+                "value": "L50"
               },
               {
                 "id": "custom.lineStyle",
@@ -1187,7 +1187,7 @@
             "properties": [
               {
                 "id": "displayName",
-                "value": "L90 (${__field.labels.frequency_weighting}, 24h)"
+                "value": "L90"
               },
               {
                 "id": "custom.lineStyle",
@@ -1213,7 +1213,7 @@
               },
               {
                 "id": "displayName",
-                "value": "Lmax (${__field.labels.frequency_weighting})"
+                "value": "Lmax"
               }
             ]
           },
@@ -1232,7 +1232,7 @@
               },
               {
                 "id": "displayName",
-                "value": "Lmin (${__field.labels.frequency_weighting})"
+                "value": "Lmin"
               }
             ]
           },
@@ -1244,7 +1244,7 @@
             "properties": [
               {
                 "id": "displayName",
-                "value": "Lday (7h-22h) (${__field.labels.frequency_weighting}, 24h)"
+                "value": "Lday (7h-22h)"
               },
               {
                 "id": "custom.lineStyle",
@@ -1262,7 +1262,7 @@
             "properties": [
               {
                 "id": "displayName",
-                "value": "Lnight (22h-7h) (${__field.labels.frequency_weighting}, 24h)"
+                "value": "Lnight (22h-7h)"
               },
               {
                 "id": "custom.lineStyle",
@@ -1280,7 +1280,7 @@
             "properties": [
               {
                 "id": "displayName",
-                "value": "Leq (${__field.labels.frequency_weighting}, 24h)"
+                "value": "Leq"
               },
               {
                 "id": "custom.lineWidth",
@@ -1326,12 +1326,12 @@
       "pluginVersion": "12.3.2",
       "targets": [
         {
-          "query": "import \"date\"\nimport \"math\"\nimport \"timezone\"\n\noption location = timezone.location(name: \"Europe/Brussels\")\n\n// --- 1. PRÉPARATION DES DONNÉES ÉNERGÉTIQUES ---\n// On convertit en énergie UNE SEULE FOIS au début\nbase_energy = from(bucket: \"default\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r._measurement == \"dt8852\" and r._field == \"spl\" and r.frequency_weighting == \"dB(A)\" and exists r.time_weighting)\n  |> map(fn: (r) => ({ r with _value: math.pow(x: 10.0, y: r._value / 10.0) }))\n  |> aggregateWindow(every: v.windowPeriod, fn: mean, createEmpty: false)\n\n// --- 2. CALCULS DES INDICATEURS PAR JOUR ---\n// Fonction helper pour convertir l énergie en dB à la fin\ntoDB = (val) => if exists val and val > 0.0 then 10.0 * math.log10(x: val) else 0.0\n\n// Branche commune groupée par jour\ndaily_base = base_energy |> group(columns: [\"frequency_weighting\", \"time_weighting\"])\n\n// Leq (24h)\nleq = daily_base \n  |> aggregateWindow(every: 1d, fn: mean, timeSrc: \"_start\")\n  |> map(fn: (r) => ({ r with _field: \"Leq\", _value: toDB(val: r._value) }))\n\n// Lday (07h - 22h)\nlday = daily_base\n  |> filter(fn: (r) => {\n      h = date.hour(t: r._time)\n      return h >= 7 and h < 22\n  })\n  |> aggregateWindow(every: 1d, fn: mean, timeSrc: \"_start\")\n  |> map(fn: (r) => ({ r with _field: \"Lday\", _value: toDB(val: r._value) }))\n\n// Lnight (22h - 07h)\nlnight = daily_base\n  |> filter(fn: (r) => {\n      h = date.hour(t: r._time)\n      return h >= 22 or h < 7\n  })\n  |> aggregateWindow(every: 1d, fn: mean, timeSrc: \"_start\")\n  |> map(fn: (r) => ({ r with _field: \"Lnight\", _value: toDB(val: r._value) }))\n\n// Lden (avec pénalités énergétiques)\nlden = daily_base\n  |> map(fn: (r) => {\n      h = date.hour(t: r._time)\n      penalty_db = if h >= 19 and h < 23 then 5.0 \n                   else if h >= 23 or h < 7 then 10.0 \n                   else 0.0\n      return { r with _value: r._value * math.pow(x: 10.0, y: penalty_db / 10.0) }\n  })\n  |> aggregateWindow(every: 1d, fn: mean, timeSrc: \"_start\")\n  |> map(fn: (r) => ({ r with _field: \"Lden\", _value: toDB(val: r._value) }))\n\n// --- 3. STATISTIQUES (Min, Max, Quantiles) ---\n// Note : on les calcule sur l énergie car c est plus rapide (le résultat en dB sera identique)\nstats = daily_base |> aggregateWindow(every: 1d, fn: mean, timeSrc: \"_start\") // juste pour avoir la structure\n\nlmax = daily_base |> aggregateWindow(every: 1d, fn: max, timeSrc: \"_start\") |> map(fn: (r) => ({ r with _field: \"Lmax\", _value: toDB(val: r._value) }))\nlmin = daily_base |> aggregateWindow(every: 1d, fn: min, timeSrc: \"_start\") |> map(fn: (r) => ({ r with _field: \"Lmin\", _value: toDB(val: r._value) }))\nl10  = daily_base |> aggregateWindow(every: 1d, fn: (column, tables=<-) => tables |> quantile(q: 0.90), timeSrc: \"_start\") |> map(fn: (r) => ({ r with _field: \"L10\", _value: toDB(val: r._value) }))\nl50  = daily_base |> aggregateWindow(every: 1d, fn: (column, tables=<-) => tables |> quantile(q: 0.50), timeSrc: \"_start\") |> map(fn: (r) => ({ r with _field: \"L50\", _value: toDB(val: r._value) }))\nl90  = daily_base |> aggregateWindow(every: 1d, fn: (column, tables=<-) => tables |> quantile(q: 0.10), timeSrc: \"_start\") |> map(fn: (r) => ({ r with _field: \"L90\", _value: toDB(val: r._value) }))\n\n// --- 4. ASSEMBLAGE FINAL ---\nunion(tables: [l10, l50, l90, lmin, lmax, lden, lday, lnight, leq])\n  |> pivot(rowKey: [\"_time\", \"frequency_weighting\", \"time_weighting\"], columnKey: [\"_field\"], valueColumn: \"_value\")",
+          "query": "import \"date\"\nimport \"math\"\nimport \"timezone\"\n\noption location = timezone.location(name: \"Europe/Brussels\")\n\n// --- 1. DONNÉES DE BASE (NETTOYÉES) ---\n// On récupère les données une seule fois\nraw_data = from(bucket: \"default\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r._measurement == \"dt8852\" and r._field == \"spl\" and exists r.frequency_weighting and exists r.time_weighting)\n  |> drop(columns: [\"frequency_weighting\", \"time_weighting\", \"device\", \"host\"])\n\n// --- 2. PRÉ-AGRÉGATION POUR LEQ ET LDEN (VITESSE) ---\nbase_1h = raw_data\n  |> map(fn: (r) => ({ r with _energy: math.pow(x: 10.0, y: r._value / 10.0) }))\n  |> aggregateWindow(every: 1h, fn: mean, column: \"_energy\")\n\n// --- 3. CALCUL DU LDEN, LDAY, LNIGHT ---\ndaily_energy_periods = base_1h\n  |> map(fn: (r) => {\n      h = date.hour(t: r._time)\n      p = if h >= 7 and h < 19 then \"E_day\"\n          else if h >= 19 and h < 23 then \"E_evening\"\n          else \"E_night\"\n      return { r with period: p }\n  })\n  |> group(columns: [\"period\"])\n  |> aggregateWindow(every: 1d, fn: mean, column: \"_energy\", timeSrc: \"_start\")\n  |> group()\n\nlden = daily_energy_periods\n  |> pivot(rowKey: [\"_time\"], columnKey: [\"period\"], valueColumn: \"_energy\")\n  |> map(fn: (r) => ({ r with \n      E_day: if exists r.E_day then r.E_day else 0.0,\n      E_evening: if exists r.E_evening then r.E_evening else 0.0,\n      E_night: if exists r.E_night then r.E_night else 0.0\n  }))\n  |> map(fn: (r) => ({\n      _time: r._time,\n      _field: \"Lden\",\n      _value: 10.0 * math.log10(x: ( (12.0 * r.E_day) + (4.0 * r.E_evening * 3.1622) + (8.0 * r.E_night * 10.0) ) / 24.0)\n  }))\n\nlday = daily_energy_periods |> filter(fn: (r) => r.period == \"E_day\") |> map(fn: (r) => ({ _time: r._time, _field: \"Lday\", _value: 10.0 * math.log10(x: r._energy) }))\nlnight = daily_energy_periods |> filter(fn: (r) => r.period == \"E_night\") |> map(fn: (r) => ({ _time: r._time, _field: \"Lnight\", _value: 10.0 * math.log10(x: r._energy) }))\nleq = base_1h |> aggregateWindow(every: 1d, fn: mean, column: \"_energy\", timeSrc: \"_start\") |> map(fn: (r) => ({ _time: r._time, _field: \"Leq\", _value: 10.0 * math.log10(x: r._energy) }))\n\n// --- 4. CALCUL DES FRACTILES ET STATS (SUR DONNÉES BRUTES) ---\n// Note: On calcule les quantiles sur les valeurs en dB (norme standard)\nl10 = raw_data |> aggregateWindow(every: 1d, fn: (column, tables=<-) => tables |> quantile(q: 0.90), timeSrc: \"_start\") |> map(fn: (r) => ({ _time: r._time, _field: \"L10\", _value: r._value }))\nl50 = raw_data |> aggregateWindow(every: 1d, fn: (column, tables=<-) => tables |> quantile(q: 0.50), timeSrc: \"_start\") |> map(fn: (r) => ({ _time: r._time, _field: \"L50\", _value: r._value }))\nl90 = raw_data |> aggregateWindow(every: 1d, fn: (column, tables=<-) => tables |> quantile(q: 0.10), timeSrc: \"_start\") |> map(fn: (r) => ({ _time: r._time, _field: \"L90\", _value: r._value }))\nlmax = raw_data |> aggregateWindow(every: 1d, fn: max, timeSrc: \"_start\") |> map(fn: (r) => ({ _time: r._time, _field: \"Lmax\", _value: r._value }))\nlmin = raw_data |> aggregateWindow(every: 1d, fn: min, timeSrc: \"_start\") |> map(fn: (r) => ({ _time: r._time, _field: \"Lmin\", _value: r._value }))\n\n// --- 5. ASSEMBLAGE FINAL ---\nunion(tables: [lden, lday, lnight, leq, l10, l50, l90, lmax, lmin])\n  |> group() \n  |> pivot(rowKey: [\"_time\"], columnKey: [\"_field\"], valueColumn: \"_value\")",
           "refId": "A"
         }
       ],
       "timeFrom": "now-10d",
-      "title": "Synthèse avancée de l'environnement sonore et analyse statistique quotidenne des indicateurs acoustiques.",
+      "title": "Synthèse avancée de l'environnement sonore et analyse statistique quotidenne (T = 24h) des indicateurs acoustiques.",
       "type": "timeseries"
     },
     {
