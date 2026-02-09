@@ -18,7 +18,7 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 194,
+  "id": 196,
   "links": [],
   "panels": [
     {
@@ -1964,8 +1964,8 @@
         "auto_count": 30,
         "auto_min": "10s",
         "current": {
-          "text": "2s",
-          "value": "2s"
+          "text": "15m",
+          "value": "15m"
         },
         "description": "Elle représente la période de temps totale sur laquelle le niveau sonore est moyenné de manière énergétique.",
         "label": "Durée d'intégration",
@@ -1977,7 +1977,7 @@
             "value": "1s"
           },
           {
-            "selected": true,
+            "selected": false,
             "text": "2s",
             "value": "2s"
           },
@@ -2017,7 +2017,7 @@
             "value": "10m"
           },
           {
-            "selected": false,
+            "selected": true,
             "text": "15m",
             "value": "15m"
           },
