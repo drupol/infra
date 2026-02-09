@@ -27,7 +27,7 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 4,
+        "h": 5,
         "w": 24,
         "x": 0,
         "y": 0
@@ -39,7 +39,7 @@
           "showLineNumbers": false,
           "showMiniMap": false
         },
-        "content": "# Changement d'adresse\n\nVous trouverez la nouvelle version du dashboard a cette adresse:\n\n- [Version light](/d/noise-station/noise-station-next?theme=light)\n- [Version dark](/d/noise-station/noise-station-next?theme=dark)\n\n",
+        "content": "# Changement d'adresse\n\nVous trouverez la nouvelle version du dashboard ici:\n\n- [Version claire](/d/noise-station/noise-station-next?theme=light)\n- [Version sombre](/d/noise-station/noise-station-next?theme=dark)\n\n",
         "mode": "markdown"
       },
       "pluginVersion": "12.3.2",
