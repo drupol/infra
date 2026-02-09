@@ -39,7 +39,7 @@
           "showLineNumbers": false,
           "showMiniMap": false
         },
-        "content": "# Changement d'adresse\n\nVous trouverez la nouvelle version du dashboard ici:\n\n- [Version claire](/d/noise-station/noise-station-next?theme=light)\n- [Version sombre](/d/noise-station/noise-station-next?theme=dark)\n\n",
+        "content": "# Changement d'adresse\n\nVous trouverez la nouvelle version du dashboard ici:\n\n- [Interface claire](/d/noise-station/noise-station-next?theme=light)\n- [Interface sombre](/d/noise-station/noise-station-next?theme=dark)\n\n",
         "mode": "markdown"
       },
       "pluginVersion": "12.3.2",
