@@ -18,7 +18,7 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 188,
+  "id": 190,
   "links": [],
   "panels": [
     {
@@ -343,7 +343,7 @@
             "uid": "P951FEA4DE68E13C5"
           },
           "hide": false,
-          "query": "import \"date\"\nimport \"timezone\"\nimport \"math\"\n\noption location = timezone.location(name: \"Europe/Brussels\")\n\n// Conversion en entier (nanosecondes) pour la comparaison\nselectedInterval = duration(v: \"${interval}\")\nautoInterval = v.windowPeriod\ntargetInterval = if int(v: selectedInterval) > int(v: autoInterval) then selectedInterval else autoInterval\n\n// 1. Récupération et calcul du Leq (Moyenne énergétique)\nsourceData = from(bucket: \"default\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r._measurement == \"dt8852\" and r._field == \"spl\" and r.frequency_weighting == \"dB(A)\" and exists r.time_weighting)\n  |> map(fn: (r) => ({ r with _value: math.pow(x: 10.0, y: r._value / 10.0) }))\n  |> aggregateWindow(\n    every: targetInterval,\n    fn: mean,\n    createEmpty: true\n  )\n  // Remplissage des trous pour garantir la continuité de la ligne\n  |> fill(usePrevious: true)   \n  |> map(fn: (r) => ({ r with _value: 10.0 * math.log10(x: r._value) }))\n\nsourceData\n  |> map(fn: (r) => {\n        h = date.hour(t: r._time)\n        limitValue =\n          if h >= 7 and h < 19 then 50.0\n          else if (h >= 6 and h < 7) or (h >= 19 and h < 22) then 45.0\n          else 40.0\n        \n        return {\n            _time: r._time,\n            _value: r._value,\n            depassement: if r._value > limitValue then r._value - limitValue else 0.0,\n            time_weighting: r.time_weighting,\n            frequency_weighting: r.frequency_weighting\n        }\n  })\n  |> yield(name: \"results\")",
+          "query": "import \"date\"\nimport \"timezone\"\nimport \"math\"\n\noption location = timezone.location(name: \"Europe/Brussels\")\n\n// Conversion en entier (nanosecondes) pour la comparaison\nselectedInterval = duration(v: \"${interval}\")\nautoInterval = v.windowPeriod\ntargetInterval = if int(v: selectedInterval) > int(v: autoInterval) then selectedInterval else autoInterval\n\n// 1. Récupération et calcul du Leq (Moyenne énergétique)\nsourceData = from(bucket: \"default\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r._measurement == \"dt8852\" and r._field == \"spl\" and r.frequency_weighting == \"dB(A)\" and exists r.time_weighting)\n  |> map(fn: (r) => ({ r with _value: math.pow(x: 10.0, y: r._value / 10.0) }))\n  |> aggregateWindow(\n    every: targetInterval,\n    fn: mean,\n    createEmpty: true\n  )\n  |> map(fn: (r) => ({ r with _value: 10.0 * math.log10(x: r._value) }))\n\nsourceData\n  |> map(fn: (r) => {\n        h = date.hour(t: r._time)\n        limitValue =\n          if h >= 7 and h < 19 then 50.0\n          else if (h >= 6 and h < 7) or (h >= 19 and h < 22) then 45.0\n          else 40.0\n        \n        return {\n            _time: r._time,\n            _value: r._value,\n            depassement: if r._value > limitValue then r._value - limitValue else 0.0,\n            frequency_weighting: r.frequency_weighting\n        }\n  })\n  |> yield(name: \"results\")",
           "refId": "A"
         },
         {
