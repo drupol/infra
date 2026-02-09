@@ -1,20 +1,12 @@
 topLevel: {
   flake.modules = {
     homeManager.dev =
-      { pkgs, config, ... }:
+      { config, ... }:
       {
-        home.packages = [
-          pkgs.watchman
-        ];
         programs = {
           jujutsu = {
             enable = true;
             settings = {
-              fsmonitor = {
-                backend = "watchman";
-                watchman.register-snapshot-trigger = true;
-              };
-
               snapshot = {
                 auto-update-stale = true;
                 max-new-file-size = "15M";
