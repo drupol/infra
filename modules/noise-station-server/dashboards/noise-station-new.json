@@ -1953,7 +1953,7 @@
       "type": "geomap"
     }
   ],
-  "preload": true,
+  "preload": false,
   "refresh": "",
   "schemaVersion": 42,
   "tags": [],
