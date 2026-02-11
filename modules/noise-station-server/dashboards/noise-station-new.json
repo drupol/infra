@@ -18,7 +18,7 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 206,
+  "id": 214,
   "links": [],
   "panels": [
     {
@@ -202,7 +202,7 @@
               "mode": "off"
             }
           },
-          "displayName": "Niveau Sonore LAeq,$interval",
+          "displayName": "Niveau sonore LAeq,$interval",
           "fieldMinMax": false,
           "mappings": [],
           "thresholds": {
@@ -217,33 +217,6 @@
           "unit": "dB"
         },
         "overrides": [
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "leq_excess"
-            },
-            "properties": [
-              {
-                "id": "color",
-                "value": {
-                  "fixedColor": "dark-red",
-                  "mode": "fixed"
-                }
-              },
-              {
-                "id": "custom.fillOpacity",
-                "value": 20
-              },
-              {
-                "id": "custom.hideFrom",
-                "value": {
-                  "legend": false,
-                  "tooltip": false,
-                  "viz": false
-                }
-              }
-            ]
-          },
           {
             "matcher": {
               "id": "byFrameRefID",
@@ -266,23 +239,11 @@
               },
               {
                 "id": "displayName",
-                "value": "Seuil Légal SPL"
+                "value": "Seuil légal"
               },
               {
                 "id": "custom.fillOpacity",
                 "value": 0
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "leq_ok"
-            },
-            "properties": [
-              {
-                "id": "custom.fillOpacity",
-                "value": 20
               }
             ]
           },
@@ -356,7 +317,7 @@
           "refId": "Seuil Légal"
         }
       ],
-      "title": "Évolution du Niveau de Pression Acoustique (${__from:date:YYYY/MM/DD-HH:MM:SS} -> ${__to:date:YYYY/MM/DD-HH:MM:SS})",
+      "title": "Évolution du niveau de pression acoustique (${__from:date:YYYY/MM/DD-HH:MM:SS} → ${__to:date:YYYY/MM/DD-HH:MM:SS})",
       "type": "timeseries"
     },
     {
@@ -552,7 +513,7 @@
           "refId": "A"
         }
       ],
-      "title": "Analyse des Émergences : Conformité aux Seuils Légaux",
+      "title": "Analyse des émergences: conformité aux seuils légaux",
       "type": "timeseries"
     },
     {
@@ -600,7 +561,7 @@
               "mode": "off"
             }
           },
-          "displayName": "Température Extérieure",
+          "displayName": "Température extérieure",
           "mappings": [],
           "thresholds": {
             "mode": "absolute",
@@ -646,7 +607,7 @@
           "refId": "A"
         }
       ],
-      "title": "Température Extérieure",
+      "title": "Température extérieure",
       "type": "timeseries"
     },
     {
@@ -739,7 +700,7 @@
               },
               {
                 "id": "displayName",
-                "value": "Niveau Sonore L10,${interval}"
+                "value": "Niveau sonore L10,${interval}"
               },
               {
                 "id": "custom.lineStyle",
@@ -764,7 +725,7 @@
               },
               {
                 "id": "displayName",
-                "value": "Niveau Sonore L50,${interval}"
+                "value": "Niveau sonore L50,${interval}"
               },
               {
                 "id": "custom.lineStyle",
@@ -789,7 +750,7 @@
               },
               {
                 "id": "displayName",
-                "value": "Niveau Sonore L90,${interval}"
+                "value": "Niveau sonore L90,${interval}"
               },
               {
                 "id": "custom.lineStyle",
@@ -817,7 +778,7 @@
               },
               {
                 "id": "displayName",
-                "value": "Niveau Sonore LAeq,${interval}"
+                "value": "Niveau sonore LAeq,${interval}"
               },
               {
                 "id": "custom.lineWidth",
@@ -853,7 +814,7 @@
             "properties": [
               {
                 "id": "displayName",
-                "value": "Seuil Légal"
+                "value": "Seuil légal"
               },
               {
                 "id": "custom.lineStyle",
@@ -1484,7 +1445,7 @@
         }
       ],
       "timeFrom": "now-10d",
-      "title": "Suivi Journalier de la Conformité Acoustique",
+      "title": "Suivi journalier de la conformité acoustique",
       "type": "barchart"
     },
     {
@@ -1695,7 +1656,7 @@
           "refId": "A"
         }
       ],
-      "title": "Analyse de densité: Intensité et cycle circadien",
+      "title": "Analyse de densité: intensité et cycle circadien",
       "type": "xychart"
     },
     {
@@ -1847,7 +1808,7 @@
           "refId": "A"
         }
       ],
-      "title": "Signature du Bruit: Dynamique & Monotonie",
+      "title": "Signature du bruit: dynamique & monotonie",
       "type": "timeseries"
     },
     {
@@ -1952,7 +1913,7 @@
           "refId": "A"
         }
       ],
-      "title": "Localisation du Capteur",
+      "title": "Localisation du capteur",
       "type": "geomap"
     }
   ],
