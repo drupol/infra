@@ -330,7 +330,8 @@
         "defaults": {
           "color": {
             "fixedColor": "dark-red",
-            "mode": "fixed"
+            "mode": "thresholds",
+            "seriesBy": "last"
           },
           "custom": {
             "axisBorderShow": false,
@@ -342,7 +343,7 @@
             "barWidthFactor": 0.6,
             "drawStyle": "line",
             "fillOpacity": 50,
-            "gradientMode": "none",
+            "gradientMode": "scheme",
             "hideFrom": {
               "legend": false,
               "tooltip": false,
@@ -378,8 +379,8 @@
                 "value": 0
               },
               {
-                "color": "red",
-                "value": 80
+                "color": "dark-red",
+                "value": 0
               }
             ]
           },
@@ -509,7 +510,7 @@
       "pluginVersion": "12.3.2",
       "targets": [
         {
-          "query": "import \"math\"\nimport \"timezone\"\nimport \"date\"\n\noption location = timezone.location(name: \"Europe/Brussels\")\n\n// Conversion en entier (nanosecondes) pour la comparaison\nselectedInterval = duration(v: \"${interval}\")\nautoInterval = v.windowPeriod\ntargetInterval = if int(v: selectedInterval) > int(v: autoInterval) then selectedInterval else autoInterval\n\nsourceData = from(bucket: \"default\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r._measurement == \"dt8852\" and r._field == \"spl\" and exists r.frequency_weighting and exists r.time_weighting)\n  |> map(fn: (r) => ({ r with _value: math.pow(x: 10.0, y: r._value / 10.0) }))\n  |> aggregateWindow(\n        every: targetInterval,\n        fn: mean,\n        createEmpty: false\n     )\n  |> map(fn: (r) => ({ r with _value: 10.0 * math.log10(x: r._value) }))\n  // 3. Calcul des limites horaires et du dépassement\n  |> map(fn: (r) => {\n      h = date.hour(t: r._time)\n      \n      // Seuils réglementaires (50 / 45 / 40 dB)\n      limite = if h >= 7 and h < 19 then 50.0 \n               else if (h >= 6 and h < 7) or (h >= 19 and h < 22) then 45.0 \n               else 40.0\n      \n      // Calcul du dépassement\n      diff = if r._value > limite then r._value - limite else 0.0\n      \n      return {\n          _time: r._time,\n          _value: diff,\n          _field: \"Dépassement\",\n          niveau_reel: r._value,\n          seuil_legal: limite\n      }\n  })\n  \n  // 4. Envoi des données vers Grafana\n  |> yield(name: \"depassement_acoustique\")",
+          "query": "import \"math\"\nimport \"timezone\"\nimport \"date\"\n\noption location = timezone.location(name: \"Europe/Brussels\")\n\nsourceData = from(bucket: \"default\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r._measurement == \"dt8852\" and r._field == \"spl\" and exists r.frequency_weighting and exists r.time_weighting)\n  |> map(fn: (r) => ({ r with _value: math.pow(x: 10.0, y: r._value / 10.0) }))\n  |> aggregateWindow(\n        every: ${interval},\n        fn: mean,\n        createEmpty: false\n     )\n  |> map(fn: (r) => ({ r with _value: 10.0 * math.log10(x: r._value) }))\n  // 3. Calcul des limites horaires et du dépassement\n  |> map(fn: (r) => {\n      h = date.hour(t: r._time)\n      \n      // Seuils réglementaires (50 / 45 / 40 dB)\n      limite = if h >= 7 and h < 19 then 50.0 \n               else if (h >= 6 and h < 7) or (h >= 19 and h < 22) then 45.0 \n               else 40.0\n      \n      // Calcul du dépassement\n      diff = r._value - limite\n      \n      return {\n          _time: r._time,\n          _value: diff,\n          _field: \"Dépassement\",\n          niveau_reel: r._value,\n          seuil_legal: limite\n      }\n  })\n  \n  // 4. Envoi des données vers Grafana\n  |> yield(name: \"depassement_acoustique\")",
           "refId": "A"
         }
       ],
