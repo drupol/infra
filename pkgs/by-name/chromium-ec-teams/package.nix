@@ -10,5 +10,5 @@ pkgs.nix-webapps-lib.mkChromiumApp {
   class = "chrome-teams.microsoft.com__-Default";
   desktopName = "MS Teams @ European Commission";
   icon = ./Microsoft_Office_Teams.svg;
-  url = "https://teams.microsoft.com";
+  url = "https://teams.cloud.microsoft";
 }
