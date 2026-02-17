@@ -14,7 +14,6 @@
         base
         bluetooth
         desktop
-        displaylink
         dev
         education
         facter
