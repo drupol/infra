@@ -15,7 +15,6 @@
         base
         bluetooth
         desktop
-        displaylink
         dev
         facter
         fwupd
