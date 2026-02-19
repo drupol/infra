@@ -1258,7 +1258,7 @@
             "properties": [
               {
                 "id": "unit",
-                "value": "time:DD-MM-YYYY"
+                "value": "time:DD-MM"
               }
             ]
           }
@@ -1359,7 +1359,7 @@
               }
             ]
           },
-          "unit": "time:DD-MM-YYYY"
+          "unit": "time:DD-MM"
         },
         "overrides": [
           {
