@@ -1,6 +1,6 @@
 {
-  flake.modules = {
-    homeManager.base = {
+  unify.modules.base = {
+    home = {
       programs.fish.enable = true;
 
       programs.zellij = {
@@ -21,7 +21,7 @@
       };
     };
 
-    nixos.base =
+    nixos =
       { pkgs, ... }:
       {
         users.defaultUserShell = pkgs.fish;

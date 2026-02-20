@@ -53,6 +53,11 @@
       url = "github:nix-community/disko";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    unify = {
+      url = "git+https://codeberg.org/quasigod/unify";
+      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.home-manager.follows = "home-manager";
+    };
 
     # This is a private repository.
     # If you want to clone this project, it won't work unless you have access to it.

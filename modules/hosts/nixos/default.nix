@@ -1,38 +1,34 @@
 {
   config,
+  lib,
   ...
 }:
 {
-  flake.modules.nixos."hosts/nixos" =
-    { lib, ... }:
-    {
-      imports =
-        with config.flake.modules.nixos;
-        [
-          # Modules
-          ai
-          base
-          dev
-          facter
-          openssh
-          vpn
+  unify.hosts.nixos.nixos = {
+    users.pol.modules = config.unify.hosts.nixos.nixos.modules;
 
-          # Users
-          root
-          pol
-        ]
-        # Specific Home-Manager modules
-        ++ [
-          {
-            home-manager.users.pol = {
-              imports = with config.flake.modules.homeManager; [
-                base
-                shell
-              ];
-            };
-          }
-        ];
+    modules = with config.unify.modules; [
+      base
+      ai
+      dev
+      facter
+      openssh
+      pol
+      shell
+      vpn
+    ];
 
+    tags = [
+      "base"
+      "ai"
+      "facter"
+      "openssh"
+      "shell"
+    ];
+
+    fqdn = "nixos.netbird.cloud";
+
+    nixos = {
       boot = {
         # Use the GRUB 2 boot loader.
         loader.grub.enable = true;
@@ -84,4 +80,5 @@
         interfaces.eno1.useDHCP = true;
       };
     };
+  };
 }

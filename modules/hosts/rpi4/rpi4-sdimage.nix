@@ -1,6 +1,6 @@
 { lib, ... }:
 {
-  flake.modules.nixos.rpi4-sdimage =
+  unify.modules.rpi4-sdimage.nixos =
     { modulesPath, ... }:
     {
       # Build with `nix-build -A nixosConfigurations.rpi4.config.system.build.sdImage`

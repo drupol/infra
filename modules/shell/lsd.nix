@@ -1,10 +1,8 @@
 {
-  flake.modules = {
-    homeManager.shell = {
-      programs = {
-        lsd = {
-          enable = true;
-        };
+  unify.modules.shell.home = {
+    programs = {
+      lsd = {
+        enable = true;
       };
     };
   };

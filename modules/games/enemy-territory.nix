@@ -1,12 +1,11 @@
 {
-  flake.modules = {
-    homeManager.games =
+  unify.modules.games = {
+    home =
       { pkgs, lib, ... }:
       {
         home.packages = with pkgs; [
           pkgsi686Linux.etlegacy
         ];
-
         xdg.desktopEntries.et-fr-beginner-xps = {
           name = "Enemy Territory @ France Beginner XPS";
           exec = "${lib.getExe pkgs.etlegacy} +connect 147.135.128.206:27960";
@@ -36,7 +35,7 @@
         };
       };
 
-    nixos.games = {
+    nixos = {
       # Only to play enemy territory with Jaymod
       hardware.graphics.enable32Bit = true;
     };

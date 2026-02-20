@@ -3,90 +3,87 @@
   ...
 }:
 {
-  flake.modules.nixos."hosts/x260" = {
-    imports =
-      with config.flake.modules.nixos;
-      [
-        # Modules
-        base
-        bluetooth
-        desktop
-        dev
-        facter
-        fwupd
-        sound
-        vpn
+  unify.hosts.nixos.x260 = {
+    users.pol.modules = config.unify.hosts.nixos.x260.modules;
 
-        # Users
-        root
-        pol
-      ]
-      # Specific Home-Manager modules
-      ++ [
-        {
-          home-manager.users.pol = {
-            imports = with config.flake.modules.homeManager; [
-              base
-              desktop
-              dev
-              shell
-              pol
-            ];
-          };
-        }
-      ];
+    modules = with config.unify.modules; [
+      base
+      bluetooth
+      desktop
+      dev
+      facter
+      fwupd
+      pol
+      shell
+      sound
+    ];
 
-    boot = {
-      loader = {
-        systemd-boot.enable = true;
-        efi.canTouchEfiVariables = true;
-      };
+    tags = [
+      "base"
+      "bluetooth"
+      "desktop"
+      "dev"
+      "facter"
+      "fwupd"
+      "shell"
+      "sound"
+    ];
 
-      initrd.availableKernelModules = [
-        "xhci_pci"
-        "ahci"
-        "usb_storage"
-        "sd_mod"
-        "rtsx_pci_sdmmc"
-      ];
+    fqdn = "x260.netbird.cloud";
 
-      kernelModules = [ "kvm-intel" ];
-    };
-
-    facter.reportPath = ./facter.json;
-
-    fileSystems."/" = {
-      device = "/dev/disk/by-uuid/0441f1d3-2c4c-4038-a76b-b3b4beb755f9";
-      fsType = "ext4";
-    };
-
-    fileSystems."/boot" = {
-      device = "/dev/disk/by-uuid/7104-F69A";
-      fsType = "vfat";
-    };
-
-    fileSystems."/nix" = {
-      device = "/dev/disk/by-uuid/1c6de7e9-6a0d-47c5-ac8b-47f0ba6eecc2";
-      fsType = "ext4";
-      neededForBoot = true;
-      options = [ "noatime" ];
-    };
-
-    fileSystems."/home" = {
-      device = "/dev/disk/by-uuid/2523be1d-4020-4442-b6c6-6983137be565";
-      fsType = "ext4";
-    };
-
-    swapDevices = [ { device = "/dev/disk/by-uuid/d71fd11a-2609-4c3f-abc2-5ab794180d89"; } ];
-
-    services = {
-      xserver = {
-        xkb = {
-          layout = "be";
+    nixos = {
+      boot = {
+        loader = {
+          systemd-boot.enable = true;
+          efi.canTouchEfiVariables = true;
         };
+
+        initrd.availableKernelModules = [
+          "xhci_pci"
+          "ahci"
+          "usb_storage"
+          "sd_mod"
+          "rtsx_pci_sdmmc"
+        ];
+
+        kernelModules = [ "kvm-intel" ];
       };
-      thermald.enable = true;
-      avahi.enable = true;
+
+      facter.reportPath = ./facter.json;
+
+      fileSystems."/" = {
+        device = "/dev/disk/by-uuid/0441f1d3-2c4c-4038-a76b-b3b4beb755f9";
+        fsType = "ext4";
+      };
+
+      fileSystems."/boot" = {
+        device = "/dev/disk/by-uuid/7104-F69A";
+        fsType = "vfat";
+      };
+
+      fileSystems."/nix" = {
+        device = "/dev/disk/by-uuid/1c6de7e9-6a0d-47c5-ac8b-47f0ba6eecc2";
+        fsType = "ext4";
+        neededForBoot = true;
+        options = [ "noatime" ];
+      };
+
+      fileSystems."/home" = {
+        device = "/dev/disk/by-uuid/2523be1d-4020-4442-b6c6-6983137be565";
+        fsType = "ext4";
+      };
+
+      swapDevices = [ { device = "/dev/disk/by-uuid/d71fd11a-2609-4c3f-abc2-5ab794180d89"; } ];
+
+      services = {
+        xserver = {
+          xkb = {
+            layout = "be";
+          };
+        };
+        thermald.enable = true;
+        avahi.enable = true;
+      };
     };
   };
 }
