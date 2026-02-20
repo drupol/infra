@@ -47,6 +47,9 @@
               http_port = 3000;
               enable_gzip = true;
             };
+            security = {
+              secret_key = "11111111111111111111";
+            };
             feature_toggles = {
               enable = "publicDashboards, panelTimeSettings, timeComparison, timeSeriesTable";
             };
