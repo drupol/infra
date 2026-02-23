@@ -20,6 +20,7 @@
         fwupd
         games
         lora
+        shell
         sound
         vpn
 
