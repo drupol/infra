@@ -4,6 +4,7 @@
       programs.zellij = {
         enable = true;
         attachExistingSession = true;
+        enableFishIntegration = true;
         settings = {
           # See https://zellij.dev/documentation/options.html
           show_startup_tips = true;
