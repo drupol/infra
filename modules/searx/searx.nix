@@ -1,5 +1,5 @@
 {
-  flake.modules.nixos.searx = {
+  den.aspects.searx.nixos = {
     services = {
       searx = {
         enable = true;

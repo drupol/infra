@@ -1,23 +1,14 @@
 {
-  config,
+  den,
   ...
 }:
 {
-  flake = {
-    meta.users = {
-      benix = {
-        name = "Benix User Group";
-        email = "demo@example.com";
-        key = "";
-        username = "benix";
-        keygrip = [
-        ];
-        authorizedKeys = [
-        ];
-      };
-    };
+  den.aspects.benix = {
+    includes = [
+      den.aspects.tools.provides.nix-trusted-user
+    ];
 
-    modules.nixos.benix = {
+    nixos = {
       users.users.benix = {
         description = "Benix User Group";
         isNormalUser = true;
@@ -31,11 +22,9 @@
         ];
         initialPassword = "benix";
       };
-
-      nix.settings.trusted-users = [ config.flake.meta.users.user.username ];
     };
 
-    modules.homeManager.benix =
+    homeManager =
       { pkgs, ... }:
       {
         home.packages = with pkgs; [

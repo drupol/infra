@@ -1,6 +1,6 @@
 {
-  flake.modules = {
-    homeManager.base = {
+  den.aspects.base = {
+    homeManager = {
       programs.zellij = {
         enable = true;
         attachExistingSession = true;
@@ -20,7 +20,7 @@
       };
     };
 
-    nixos.base =
+    nixos =
       { pkgs, ... }:
       {
         console = {

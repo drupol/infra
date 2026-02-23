@@ -1,5 +1,6 @@
 {
   config,
+  den,
   ...
 }:
 {
@@ -15,8 +16,15 @@
         ];
       };
     };
+  };
 
-    modules.nixos.user = {
+  den.aspects.user = {
+    includes = [
+      den.provides.primary-user
+      den.aspects.tools.provides.nix-trusted-user
+    ];
+
+    nixos = {
       users.users.user = {
         description = config.flake.meta.users.user.name;
         isNormalUser = true;
@@ -30,8 +38,6 @@
         ];
         initialPassword = "id";
       };
-
-      nix.settings.trusted-users = [ config.flake.meta.users.user.username ];
     };
   };
 }

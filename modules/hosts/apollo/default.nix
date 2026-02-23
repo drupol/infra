@@ -1,48 +1,30 @@
 {
-  config,
+  lib,
+  den,
   ...
 }:
 {
-  flake.modules.nixos."hosts/apollo" =
-    { lib, pkgs, ... }:
-    {
-      imports =
-        with config.flake.modules.nixos;
-        [
-          # Modules
-          base
-          desktop
-          dev
-          facter
-          guacamole
-          noise-station-server
-          openssh
-          shell
-          tika
-          vpn
+  den.hosts.x86_64-linux.apollo.users.pol = { };
 
-          # Users
-          root
-          pol
-        ]
-        # Specific Home-Manager modules
-        ++ [
-          {
-            home-manager.users.pol = {
-              imports = with config.flake.modules.homeManager; [
-                base
-                desktop
-                dev
-                shell
-              ];
+  den.aspects.apollo = {
+    includes = with den.aspects; [
+      base
+      desktop
+      dev
+      (facter ./facter.json)
+      guacamole
+      noise-station-server
+      openssh
+      shell
+      tika
+      vpn
 
-              home.packages = with pkgs; [
-                thunderbird
-              ];
-            };
-          }
-        ];
+      # Users
+      root
+      pol
+    ];
 
+    nixos = {
       boot = {
         # Use the GRUB 2 boot loader.
         loader.grub.enable = true;
@@ -72,8 +54,6 @@
         kernelModules = [ "kvm-intel" ];
       };
 
-      facter.reportPath = ./facter.json;
-
       fileSystems."/" = {
         device = "/dev/disk/by-uuid/6fb8e36f-069c-43db-a843-1e345b17ec04";
         fsType = "ext4";
@@ -83,4 +63,5 @@
         { device = "/dev/disk/by-uuid/f70058b0-0600-4a7c-a226-37bf10eb307d"; }
       ];
     };
+  };
 }

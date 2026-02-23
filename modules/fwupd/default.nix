@@ -1,5 +1,5 @@
 {
-  flake.modules.nixos.fwupd = {
+  den.aspects.fwupd.nixos = {
     services = {
       fwupd = {
         enable = true;

@@ -1,5 +1,7 @@
-topLevel@{
+{
   inputs,
+  den,
+  config,
   ...
 }:
 {
@@ -18,29 +20,30 @@ topLevel@{
         ];
       };
     };
+  };
 
-    modules.nixos.pol = {
+  den.aspects.pol = {
+    includes = [
+      den.provides.primary-user
+      den.aspects.tools.provides.nix-trusted-user
+    ];
+
+    nixos = {
       users.users.pol = {
-        description = topLevel.config.flake.meta.users.pol.name;
+        description = config.flake.meta.users.pol.name;
         isNormalUser = true;
         createHome = true;
         extraGroups = [
-          "audio"
           "dialout" # Or else: Permission denied: ‘/dev/ttyUSB0’
           "input"
-          "networkmanager"
-          "sound"
           "tty"
-          "wheel"
         ];
-        openssh.authorizedKeys.keys = topLevel.config.flake.meta.users.pol.authorizedKeys;
+        openssh.authorizedKeys.keys = config.flake.meta.users.pol.authorizedKeys;
         initialPassword = "id";
       };
-
-      nix.settings.trusted-users = [ topLevel.config.flake.meta.users.pol.username ];
     };
 
-    modules.homeManager.pol = {
+    homeManager = {
       # Remove this part if no access to the private repository.
       imports = [
         (if inputs ? infra-private then inputs.infra-private.homeModules.pol else { })
