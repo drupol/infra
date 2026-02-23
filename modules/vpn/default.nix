@@ -1,6 +1,6 @@
 {
-  flake.modules = {
-    nixos.vpn =
+  den.aspects.vpn = {
+    nixos =
       { config, ... }:
       {
         services.netbird = {

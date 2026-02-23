@@ -1,6 +1,10 @@
-topLevel: {
-  flake.modules = {
-    homeManager.dev =
+{
+  den,
+  ...
+}:
+{
+  den.aspects.dev = {
+    homeManager =
       { config, ... }:
       {
         programs = {
@@ -13,8 +17,8 @@ topLevel: {
             ];
             settings = {
               user = {
-                inherit (topLevel.config.flake.meta.users.${config.home.username}) name;
-                inherit (topLevel.config.flake.meta.users.${config.home.username}) email;
+                name = den.aspects.${config.home.username}.meta.fullname;
+                inherit (den.aspects.${config.home.username}.meta) email;
               };
               branch = {
                 autosetuprebase = "always";
@@ -64,7 +68,7 @@ topLevel: {
               };
               signing = {
                 signByDefault = true;
-                inherit (topLevel.config.flake.meta.users.${config.home.username}) key;
+                inherit (den.aspects.${config.home.username}.meta) key;
               };
               commit = {
                 gpgsign = true;

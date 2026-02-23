@@ -1,7 +1,11 @@
-topLevel: {
-  flake.modules = {
-    homeManager.base =
-      { config, pkgs, ... }:
+{
+  den,
+  ...
+}:
+{
+  den.aspects.base = {
+    homeManager =
+      { pkgs, config, ... }:
       {
         programs = {
           password-store = {
@@ -9,7 +13,7 @@ topLevel: {
             package = pkgs.gopass;
             settings = {
               PASSWORD_STORE_DIR = "${config.xdg.configHome}/.password-store";
-              PASSWORD_STORE_KEY = topLevel.config.flake.meta.users.${config.home.username}.key;
+              PASSWORD_STORE_KEY = den.aspects.${config.home.username}.meta.key;
             };
           };
         };

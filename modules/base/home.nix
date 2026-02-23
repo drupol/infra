@@ -1,6 +1,6 @@
 {
-  flake.modules = {
-    homeManager.base = {
+  den.aspects.base = {
+    homeManager = {
       programs.home-manager.enable = true;
       # See https://ohai.social/@rycee/112502545466617762
       # See https://github.com/nix-community/home-manager/issues/5452

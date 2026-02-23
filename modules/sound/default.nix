@@ -1,6 +1,6 @@
 {
-  flake.modules = {
-    nixos.sound = {
+  den.aspects.sound = {
+    nixos = {
       services = {
         pipewire = {
           enable = true;
@@ -9,6 +9,13 @@
           pulse.enable = true;
         };
       };
+    };
+
+    user = {
+      extraGroups = [
+        "sound"
+        "audio"
+      ];
     };
   };
 }

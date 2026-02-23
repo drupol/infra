@@ -1,7 +1,7 @@
 { inputs, ... }:
 {
-  flake.modules = {
-    nixos.base =
+  den.aspects.base = {
+    nixos =
       { config, ... }:
       {
         users.motdFile = "/etc/motd";

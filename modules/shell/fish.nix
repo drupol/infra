@@ -1,13 +1,13 @@
 {
-  flake.modules = {
-    nixos.shell =
+  den.aspects.shell = {
+    nixos =
       { pkgs, ... }:
       {
         users.defaultUserShell = pkgs.fish;
         programs.fish.enable = true;
       };
 
-    homeManager.shell =
+    homeManager =
       { pkgs, ... }:
       {
         home.shell.enableFishIntegration = true;

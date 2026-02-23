@@ -1,6 +1,6 @@
 {
-  flake.modules = {
-    homeManager.news =
+  den.aspects.news = {
+    homeManager =
       { pkgs, ... }:
       {
         home.packages = with pkgs; [

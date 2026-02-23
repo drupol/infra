@@ -1,20 +1,24 @@
-topLevel: {
-  flake.modules = {
-    homeManager.dev =
+{
+  den,
+  ...
+}:
+{
+  den.aspects.dev = {
+    homeManager =
       { config, ... }:
       {
         programs = {
           jujutsu = {
             enable = true;
             settings = {
+              user = {
+                name = den.aspects.${config.home.username}.meta.fullname;
+                inherit (den.aspects.${config.home.username}.meta) email;
+              };
+
               snapshot = {
                 auto-update-stale = true;
                 max-new-file-size = "15M";
-              };
-
-              user = {
-                inherit (topLevel.config.flake.meta.users.${config.home.username}) name;
-                inherit (topLevel.config.flake.meta.users.${config.home.username}) email;
               };
 
               ui = {

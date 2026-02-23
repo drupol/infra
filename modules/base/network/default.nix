@@ -1,26 +1,36 @@
 {
-  flake.modules = {
-    nixos.base =
-      { hostConfig, ... }:
-      {
-        networking = {
-          hostName = hostConfig.name;
+  den,
+  ...
+}:
+{
+  den.aspects.base = {
+    includes = [
+      den.provides.hostname
+    ];
 
-          dhcpcd.enable = false;
+    nixos = {
+      networking = {
+        dhcpcd.enable = false;
 
-          networkmanager = {
-            enable = true;
-          };
-        };
-
-        systemd = {
-          services.NetworkManager-wait-online.enable = false;
-          network.wait-online.enable = false;
-        };
-
-        services.resolved = {
+        networkmanager = {
           enable = true;
         };
       };
+
+      systemd = {
+        services.NetworkManager-wait-online.enable = false;
+        network.wait-online.enable = false;
+      };
+
+      services.resolved = {
+        enable = true;
+      };
+    };
+
+    user = {
+      extraGroups = [
+        "networkmanager"
+      ];
+    };
   };
 }
