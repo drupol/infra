@@ -1,6 +1,11 @@
 {
   flake.modules.nixos.base = {
-    security.sudo-rs.enable = true;
-    security.sudo-rs.wheelNeedsPassword = false; # Use 'sudo' without a password
+    security = {
+      sudo.enable = false;
+      sudo-rs = {
+        enable = true;
+        wheelNeedsPassword = false; # Use 'sudo' without a password
+      };
+    };
   };
 }
