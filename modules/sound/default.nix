@@ -8,5 +8,12 @@
         pulse.enable = true;
       };
     };
+
+    users.users.pol = {
+      extraGroups = [
+        "sound"
+        "audio"
+      ];
+    };
   };
 }
