@@ -1,5 +1,5 @@
 {
-  flake.modules.nixos.tika = {
+  den.aspects.tika.nixos = {
     services = {
       tika = {
         enable = true;

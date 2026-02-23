@@ -1,6 +1,6 @@
 { lib, ... }:
 {
-  flake.modules.nixos.base = {
+  den.aspects.base.nixos = {
     powerManagement = {
       enable = true;
       cpuFreqGovernor = lib.mkDefault "powersave";

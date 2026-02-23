@@ -1,15 +1,18 @@
 {
-  flake.modules.nixos.sound = {
-    services = {
-      pipewire = {
-        enable = true;
-        alsa.enable = true;
-        alsa.support32Bit = true;
-        pulse.enable = true;
+  den.aspects.sound = {
+    nixos = {
+      services = {
+        pipewire = {
+          enable = true;
+          alsa.enable = true;
+          alsa.support32Bit = true;
+          pulse.enable = true;
+        };
       };
+
     };
 
-    users.users.pol = {
+    user = {
       extraGroups = [
         "sound"
         "audio"

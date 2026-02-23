@@ -1,5 +1,6 @@
 {
   config,
+  den,
   ...
 }:
 {
@@ -11,8 +12,14 @@
         ];
       };
     };
+  };
 
-    modules.nixos.root = {
+  den.aspects.root = {
+    includes = [
+      den.aspects.tools.provides.nix-trusted-user
+    ];
+
+    nixos = {
       users.users.root = {
         openssh.authorizedKeys.keys = config.flake.meta.users.pol.authorizedKeys;
         initialPassword = "id";

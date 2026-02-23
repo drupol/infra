@@ -1,5 +1,5 @@
 {
-  flake.modules.homeManager.email =
+  den.aspects.email.homeManager =
     { pkgs, ... }:
     {
       programs.thunderbird = {

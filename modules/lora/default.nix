@@ -3,8 +3,8 @@
   ...
 }:
 {
-  flake.modules = {
-    nixos.lora =
+  den.aspects.lora = {
+    nixos =
       { pkgs, ... }:
       {
         nixpkgs.overlays = [
