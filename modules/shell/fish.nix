@@ -1,5 +1,12 @@
 {
   flake.modules = {
+    nixos.shell =
+      { pkgs, ... }:
+      {
+        users.defaultUserShell = pkgs.fish;
+        programs.fish.enable = true;
+      };
+
     homeManager.shell =
       { pkgs, ... }:
       {
@@ -7,6 +14,7 @@
 
         programs = {
           fish = {
+            enable = true;
             plugins = [
               {
                 name = "autopair";
