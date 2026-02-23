@@ -1,11 +1,28 @@
 {
-  config,
+  den,
+  lib,
   ...
 }:
 {
-  flake.modules.homeManager.user =
-    { lib, ... }:
-    {
+  den.hosts.x86_64-linux.x280.users.user = { };
+
+  den.aspects.x280 = {
+    provides.to-users = {
+      includes = with den.aspects; [
+        base
+        bluetooth
+        desktop
+        (facter ./facter.json)
+        fwupd
+        openssh
+        sound
+        vpn
+        # Users
+        root
+      ];
+    };
+
+    user = {
       programs.plasma = {
         fonts = lib.mkForce { };
 
@@ -94,104 +111,73 @@
       };
     };
 
-  flake.modules.nixos."hosts/x280" =
-    { pkgs, lib, ... }:
-    {
-      imports =
-        with config.flake.modules.nixos;
-        [
-          # Modules
-          base
-          bluetooth
-          desktop
-          facter
-          fwupd
-          openssh
-          sound
-          vpn
+    nixos =
+      { pkgs, ... }:
+      {
+        boot.loader = {
+          systemd-boot.enable = true;
+          efi.canTouchEfiVariables = true;
+          efi.efiSysMountPoint = "/boot/efi";
+        };
 
-          # Users
-          root
-          user
-        ]
-        # Specific Home-Manager modules
-        ++ [
-          {
-            home-manager.users.user = {
-              imports = with config.flake.modules.homeManager; [
-                base
-                desktop
-                user
-              ];
-            };
-          }
+        programs.firefox.policies.SecurityDevices.p11-kit-proxy = "${pkgs.p11-kit}/lib/p11-kit-proxy.so";
+        # Source: https://wiki.nixos.org/wiki/Web_eID
+        systemd.tmpfiles.rules = [
+          "L+ /usr/lib/x86_64-linux-gnu/libbeidpkcs11.so.0 - - - - ${pkgs.eid-mw}/lib/pkcs11/beidpkcs11.so"
         ];
 
-      boot.loader = {
-        systemd-boot.enable = true;
-        efi.canTouchEfiVariables = true;
-        efi.efiSysMountPoint = "/boot/efi";
-      };
+        services = {
+          xserver = {
+            xkb = {
+              layout = "be";
+            };
+          };
+          thermald.enable = true;
+          avahi.enable = true;
+          pcscd.enable = true;
 
-      programs.firefox.policies.SecurityDevices.p11-kit-proxy = "${pkgs.p11-kit}/lib/p11-kit-proxy.so";
-      # Source: https://wiki.nixos.org/wiki/Web_eID
-      systemd.tmpfiles.rules = [
-        "L+ /usr/lib/x86_64-linux-gnu/libbeidpkcs11.so.0 - - - - ${pkgs.eid-mw}/lib/pkcs11/beidpkcs11.so"
-      ];
+        };
 
-      services = {
-        xserver = {
-          xkb = {
-            layout = "be";
+        fileSystems = {
+          "/" = {
+            device = "/dev/disk/by-uuid/89a4586a-eefb-4dd4-bf06-3953902edc1e";
+            fsType = "ext4";
+          };
+
+          "/boot/efi" = {
+            device = "/dev/disk/by-uuid/155B-2355";
+            fsType = "vfat";
+          };
+
+          "/home" = {
+            device = "/dev/disk/by-uuid/ce407b75-260e-47f0-822e-1984866571db";
+            fsType = "ext4";
+          };
+
+          "/nix" = {
+            device = "/dev/disk/by-uuid/c56d5d01-df37-471e-8827-dc193ceb182b";
+            fsType = "ext4";
           };
         };
-        thermald.enable = true;
-        avahi.enable = true;
-        pcscd.enable = true;
 
+        swapDevices = [ { device = "/dev/disk/by-uuid/005040e5-7773-438e-8ede-f3f63a242d7d"; } ];
+
+        environment.systemPackages = with pkgs; [
+          thunderbird
+          libreoffice
+          eid-mw
+          beidconnect
+        ];
+
+        system.autoUpgrade = lib.mkForce {
+          enable = true;
+          flake = "git+https://github.com/drupol/infra";
+          allowReboot = true;
+        };
+
+        i18n.defaultLocale = lib.mkForce "fr_BE.UTF-8";
+
+        fonts.packages = lib.mkForce [ ];
       };
-
-      facter.reportPath = ./facter.json;
-
-      fileSystems = {
-        "/" = {
-          device = "/dev/disk/by-uuid/89a4586a-eefb-4dd4-bf06-3953902edc1e";
-          fsType = "ext4";
-        };
-
-        "/boot/efi" = {
-          device = "/dev/disk/by-uuid/155B-2355";
-          fsType = "vfat";
-        };
-
-        "/home" = {
-          device = "/dev/disk/by-uuid/ce407b75-260e-47f0-822e-1984866571db";
-          fsType = "ext4";
-        };
-
-        "/nix" = {
-          device = "/dev/disk/by-uuid/c56d5d01-df37-471e-8827-dc193ceb182b";
-          fsType = "ext4";
-        };
-      };
-
-      swapDevices = [ { device = "/dev/disk/by-uuid/005040e5-7773-438e-8ede-f3f63a242d7d"; } ];
-
-      environment.systemPackages = with pkgs; [
-        thunderbird
-        libreoffice
-        eid-mw
-        beidconnect
-      ];
-
-      system.autoUpgrade = lib.mkForce {
-        enable = true;
-        flake = "git+https://github.com/drupol/infra";
-        allowReboot = true;
-      };
-
-      i18n.defaultLocale = lib.mkForce "fr_BE.UTF-8";
-
-      fonts.packages = lib.mkForce [ ];
-    };
+  };
 }

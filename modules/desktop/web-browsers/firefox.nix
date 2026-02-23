@@ -7,8 +7,8 @@
     nur.url = "github:nix-community/NUR";
   };
 
-  flake.modules = {
-    homeManager.desktop =
+  den.aspects.desktop = {
+    homeManager =
       { pkgs, ... }:
       {
         nixpkgs.overlays = [

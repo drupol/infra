@@ -1,6 +1,6 @@
 {
-  flake.modules = {
-    homeManager.dev =
+  den.aspects.dev = {
+    homeManager =
       { pkgs, ... }:
       {
         home.packages = with pkgs; [ corkscrew ];

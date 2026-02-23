@@ -1,6 +1,6 @@
 {
-  flake.modules = {
-    homeManager.education =
+  den.aspects.education = {
+    homeManager =
       {
         pkgs,
         ...
@@ -9,7 +9,7 @@
         home.packages = with pkgs; [ zotero ];
       };
 
-    nixos.education = {
+    nixos = {
       programs = {
         noisetorch = {
           enable = true;

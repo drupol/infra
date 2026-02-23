@@ -1,6 +1,6 @@
 {
-  flake.modules = {
-    nixos.docling =
+  den.aspects.docling = {
+    nixos =
       { pkgs, ... }:
       {
         services = {

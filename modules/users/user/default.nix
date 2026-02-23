@@ -1,37 +1,43 @@
 {
-  config,
+  den,
   ...
 }:
 {
-  flake = {
-    meta.users = {
-      user = {
-        name = "Utilisateur";
-        key = "";
+  den.aspects.user =
+    { config, ... }:
+    {
+      includes = [
+        den.provides.define-user
+        den.provides.primary-user
+        den.aspects.tools.provides.nix-trusted-user
+      ];
+
+      meta = {
+        description = "user";
+        email = "";
+        name = "User";
         username = "user";
+        key = ""; # ed25519/0x0AAF2901E8040715
         keygrip = [
         ];
         authorizedKeys = [
         ];
       };
-    };
 
-    modules.nixos.user = {
-      users.users.user = {
-        description = config.flake.meta.users.user.name;
-        isNormalUser = true;
-        createHome = true;
-        extraGroups = [
-          "audio"
-          "input"
-          "networkmanager"
-          "sound"
-          "tty"
-        ];
-        initialPassword = "id";
+      nixos = {
+        users.users.user = {
+          inherit (config.meta) description;
+          isNormalUser = true;
+          createHome = true;
+          extraGroups = [
+            "audio"
+            "input"
+            "networkmanager"
+            "sound"
+            "tty"
+          ];
+          initialPassword = "id";
+        };
       };
-
-      nix.settings.trusted-users = [ config.flake.meta.users.user.username ];
     };
-  };
 }

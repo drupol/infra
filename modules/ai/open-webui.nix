@@ -1,10 +1,14 @@
 {
-  flake.modules = {
-    nixos.ai = {
-      nixpkgs = {
-        config.allowUnfree = true;
-      };
+  den,
+  ...
+}:
+{
+  den.aspects.ai = {
+    includes = [
+      (den.provides.unfree [ "open-webui" ])
+    ];
 
+    nixos = {
       services = {
         open-webui = {
           enable = true;

@@ -1,9 +1,10 @@
 { inputs, ... }:
 {
   flake-file.inputs = {
-    make-shell.url = "github:nicknovitski/make-shell";
     git-hooks.url = "github:cachix/git-hooks.nix";
     git-hooks.inputs.nixpkgs.follows = "nixpkgs";
+
+    make-shell.url = "github:nicknovitski/make-shell";
   };
 
   imports = [

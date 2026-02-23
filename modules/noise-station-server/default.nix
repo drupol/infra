@@ -1,6 +1,6 @@
 {
-  flake.modules = {
-    nixos.noise-station-server =
+  den.aspects.noise-station-server = {
+    nixos =
       { pkgs, ... }:
       {
         networking.firewall = {

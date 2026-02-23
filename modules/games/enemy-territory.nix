@@ -1,6 +1,17 @@
 {
-  flake.modules = {
-    homeManager.games =
+  den,
+  ...
+}:
+{
+  den.aspects.games = {
+    includes = [
+      (den.provides.unfree [
+        "etlegacy"
+        "etlegacy-assets"
+      ])
+    ];
+
+    homeManager =
       { pkgs, lib, ... }:
       {
         home.packages = with pkgs; [
@@ -30,13 +41,9 @@
           categories = [ "Game" ];
           terminal = false;
         };
-
-        nixpkgs = {
-          config.allowUnfree = true;
-        };
       };
 
-    nixos.games = {
+    nixos = {
       # Only to play enemy territory with Jaymod
       hardware.graphics.enable32Bit = true;
     };
