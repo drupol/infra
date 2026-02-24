@@ -1,6 +1,7 @@
 {
   flake.modules.nixos.base = {
     i18n.defaultLocale = "en_GB.UTF-8";
+    i18n.supportedLocales = [ "all" ];
     i18n.extraLocaleSettings = {
       LC_ADDRESS = "fr_BE.UTF-8";
       LC_IDENTIFICATION = "fr_BE.UTF-8";
