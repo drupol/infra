@@ -19,6 +19,8 @@
 
     nur.url = "github:nix-community/NUR";
 
+    flake-compat.url = "github:NixOS/flake-compat";
+
     flake-parts.url = "github:hercules-ci/flake-parts";
     flake-parts.inputs.nixpkgs-lib.follows = "nixpkgs";
 
