@@ -8,6 +8,7 @@ topLevel: {
             enable = true;
             ignores = [
               ".direnv/"
+              ".jj/"
               "result"
             ];
             settings = {
@@ -60,9 +61,6 @@ topLevel: {
               };
               rerere = {
                 enabled = true;
-              };
-              sequence = {
-                editor = "code --wait";
               };
               signing = {
                 signByDefault = true;
