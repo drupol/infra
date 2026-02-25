@@ -15,7 +15,6 @@
 
     home = {
       sessionPath = [ "$HOME/.local/bin" ];
-      sessionVariables.NIXPKGS_ALLOW_UNFREE = "1";
     };
   };
 }
