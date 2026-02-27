@@ -32,8 +32,6 @@
               enableExtensionUpdateCheck = false;
               enableUpdateCheck = false;
               extensions = [
-                pkgs.vscode-extensions.anweber.vscode-httpyac
-                pkgs.vscode-extensions.arcticicestudio.nord-visual-studio-code
                 pkgs.vscode-extensions.bbenoist.nix
                 pkgs.vscode-extensions.bmewburn.vscode-intelephense-client
                 pkgs.vscode-extensions.charliermarsh.ruff
@@ -54,14 +52,7 @@
                 pkgs.vscode-extensions.jebbs.plantuml
                 pkgs.vscode-extensions.jnoortheen.nix-ide
                 pkgs.vscode-extensions.mkhl.direnv
-                pkgs.vscode-extensions.mongodb.mongodb-vscode
 
-                pkgs.vscode-extensions.ms-python.debugpy
-                pkgs.vscode-extensions.ms-python.mypy-type-checker
-                pkgs.vscode-extensions.ms-python.python
-                pkgs.vscode-extensions.ms-python.vscode-pylance
-
-                pkgs.vscode-extensions.ms-toolsai.jupyter
                 pkgs.vscode-extensions.ms-vscode-remote.remote-containers
                 pkgs.vscode-extensions.ms-vscode-remote.remote-ssh
                 pkgs.vscode-extensions.ms-vsliveshare.vsliveshare
@@ -73,8 +64,6 @@
                 pkgs.vscode-extensions.tamasfe.even-better-toml
                 pkgs.vscode-extensions.tekumara.typos-vscode
                 pkgs.vscode-extensions.usernamehw.errorlens
-
-                pkgs.vscode-extensions.visualjj.visualjj
 
                 pkgs.vscode-extensions.yzhang.markdown-all-in-one
                 pkgs.vscode-extensions.zhuangtongfa.material-theme
