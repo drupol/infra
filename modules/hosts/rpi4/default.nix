@@ -5,7 +5,7 @@
 }:
 {
   flake.modules.nixos."hosts/rpi4" =
-    { ... }:
+    { pkgs, ... }:
     {
       imports =
         with config.flake.modules.nixos;
@@ -83,13 +83,13 @@
 
       networking.networkmanager.wifi.powersave = false;
 
-      # systemd.services.restart-network-manager = {
-      #   description = "Restart NetworkManager to fix connection drops";
-      #   serviceConfig = {
-      #     Type = "oneshot";
-      #     ExecStart = "${pkgs.systemd}/bin/systemctl restart NetworkManager";
-      #   };
-      #   startAt = "0/30:00";
-      # };
+      systemd.services.restart-network-manager = {
+        description = "Restart NetworkManager to fix connection drops";
+        serviceConfig = {
+          Type = "oneshot";
+          ExecStart = "${pkgs.systemd}/bin/systemctl restart NetworkManager.service";
+        };
+        startAt = "0/30:00";
+      };
     };
 }
