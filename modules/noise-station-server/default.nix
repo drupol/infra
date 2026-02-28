@@ -54,7 +54,7 @@
               enable = "publicDashboards, panelTimeSettings, timeComparison, timeSeriesTable";
             };
             dataproxy.timeout = 600;
-            auth.disable_login_form = true;
+            auth.disable_login_form = false;
             "auth.anonymous" = {
               enabled = true;
             };
