@@ -18,6 +18,7 @@ topLevel: {
               };
 
               ui = {
+                editor = "micro";
                 default-command = "l";
                 diff-editor = ":builtin";
                 graph.style = "square";
