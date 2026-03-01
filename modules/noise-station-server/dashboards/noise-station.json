@@ -2002,7 +2002,7 @@
       "type": "geomap"
     }
   ],
-  "preload": false,
+  "preload": true,
   "refresh": "",
   "schemaVersion": 42,
   "tags": [],
