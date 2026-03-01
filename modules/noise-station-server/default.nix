@@ -41,6 +41,7 @@
           ];
           openFirewall = true;
           settings = {
+            dashboards.default_home_dashboard_path = ./noise-station.json;
             server = {
               domain = "78d2074a4db5.sn.mynetname.net";
               http_addr = "0.0.0.0";
