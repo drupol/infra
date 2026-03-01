@@ -17,6 +17,7 @@
           guacamole
           noise-station-server
           openssh
+          shell
           tika
           vpn
 
