@@ -262,6 +262,51 @@
                 }
               }
             ]
+          },
+          {
+            "matcher": {
+              "id": "byFrameRefID",
+              "options": "Temperature"
+            },
+            "properties": [
+              {
+                "id": "custom.axisPlacement",
+                "value": "right"
+              },
+              {
+                "id": "displayName",
+                "value": "Température"
+              },
+              {
+                "id": "unit",
+                "value": "celsius"
+              },
+              {
+                "id": "custom.lineStyle",
+                "value": {
+                  "fill": "solid"
+                }
+              },
+              {
+                "id": "custom.fillOpacity",
+                "value": 0
+              },
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "#ccccdb66",
+                  "mode": "fixed"
+                }
+              },
+              {
+                "id": "custom.pointSize",
+                "value": 5
+              },
+              {
+                "id": "custom.showPoints",
+                "value": "always"
+              }
+            ]
           }
         ]
       },
@@ -269,7 +314,7 @@
         "h": 15,
         "w": 24,
         "x": 0,
-        "y": 39
+        "y": 41
       },
       "id": 1,
       "options": {
@@ -286,7 +331,6 @@
         }
       },
       "pluginVersion": "12.3.3",
-      "repeatDirection": "h",
       "targets": [
         {
           "datasource": {
@@ -305,9 +349,18 @@
           "hide": false,
           "query": "import \"date\"\nimport \"timezone\"\n\noption location = timezone.location(name: \"Europe/Brussels\")\n\nfrom(bucket: \"default\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r._measurement == \"dt8852\" and r._field == \"spl\")\n  |> aggregateWindow(every: v.windowPeriod, fn: first)\n  |> map(fn: (r) => {\n      h = date.hour(t: r._time)\n      return {\n          _time: r._time,\n          _limit: if h >= 7 and h < 19 then 50.0 \n                  else if h == 6 or (h >= 19 and h < 22) then 45.0 \n                  else 40.0\n      }\n  })",
           "refId": "Seuil Légal"
+        },
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "P951FEA4DE68E13C5"
+          },
+          "hide": false,
+          "query": "import \"timezone\"\nimport \"date\"\nimport \"math\"\n\noption location = timezone.location(name: \"Europe/Brussels\")\n\n// Conversion en entier (nanosecondes) pour la comparaison\ninterval = if \"${interval}\" != \"auto\" then duration(v: \"${interval}\") else v.windowPeriod\n\nfrom(bucket: \"usb_temperature\")\n  |> range(start: date.add(d: duration(v: -int(v: interval)), to: v.timeRangeStart), stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_field\"] == \"temp_external\")\n  |> aggregateWindow(every: interval, fn: mean, createEmpty: true)\n  // On remplit les vides pour éviter les points isolés\n  |> fill(usePrevious: true)  \n  |> map(fn: (r) => ({\n      r with \n      _value: if exists r._value then math.round(x: r._value * 2.0) / 2.0 else r._value\n    }))\n  |> keep(columns: [\"_time\", \"_value\"])",
+          "refId": "Temperature"
         }
       ],
-      "title": "Évolution du niveau de pression acoustique (${__from:date:YYYY/MM/DD-HH:MM:SS} → ${__to:date:YYYY/MM/DD-HH:MM:SS})",
+      "title": "Évolution du niveau de pression acoustique et de la température (${__from:date:YYYY/MM/DD-HH:MM:SS} → ${__to:date:YYYY/MM/DD-HH:MM:SS})",
       "type": "timeseries"
     },
     {
@@ -481,7 +534,7 @@
         "h": 11,
         "w": 24,
         "x": 0,
-        "y": 54
+        "y": 56
       },
       "id": 23,
       "options": {
@@ -575,7 +628,7 @@
         "h": 8,
         "w": 24,
         "x": 0,
-        "y": 65
+        "y": 67
       },
       "id": 31,
       "options": {
@@ -607,7 +660,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 73
+        "y": 75
       },
       "id": 20,
       "panels": [],
@@ -822,6 +875,41 @@
                 }
               }
             ]
+          },
+          {
+            "matcher": {
+              "id": "byFrameRefID",
+              "options": "Temperature"
+            },
+            "properties": [
+              {
+                "id": "custom.axisPlacement",
+                "value": "right"
+              },
+              {
+                "id": "displayName",
+                "value": "Température"
+              },
+              {
+                "id": "unit",
+                "value": "celsius"
+              },
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "#ccccdb66",
+                  "mode": "fixed"
+                }
+              },
+              {
+                "id": "custom.showPoints",
+                "value": "always"
+              },
+              {
+                "id": "custom.pointSize",
+                "value": 5
+              }
+            ]
           }
         ]
       },
@@ -829,7 +917,7 @@
         "h": 11,
         "w": 24,
         "x": 0,
-        "y": 74
+        "y": 76
       },
       "id": 28,
       "options": {
@@ -859,6 +947,15 @@
           "hide": false,
           "query": "import \"date\"\nimport \"timezone\"\n\noption location = timezone.location(name: \"Europe/Brussels\")\n\nfrom(bucket: \"default\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r._measurement == \"dt8852\" and r._field == \"spl\")\n  |> aggregateWindow(every: v.windowPeriod, fn: first)\n  |> map(fn: (r) => {\n      h = date.hour(t: r._time)\n      return {\n          _time: r._time,\n          _limit: if h >= 7 and h < 19 then 50.0 \n                  else if h == 6 or (h >= 19 and h < 22) then 45.0 \n                  else 40.0\n      }\n  })",
           "refId": "B"
+        },
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "P951FEA4DE68E13C5"
+          },
+          "hide": false,
+          "query": "import \"timezone\"\nimport \"date\"\nimport \"math\"\n\noption location = timezone.location(name: \"Europe/Brussels\")\n\n// Conversion en entier (nanosecondes) pour la comparaison\ninterval = if \"${interval}\" != \"auto\" then duration(v: \"${interval}\") else v.windowPeriod\n\nfrom(bucket: \"usb_temperature\")\n  |> range(start: date.add(d: duration(v: -int(v: interval)), to: v.timeRangeStart), stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_field\"] == \"temp_external\")\n  |> aggregateWindow(every: interval, fn: mean, createEmpty: true)\n  // On remplit les vides pour éviter les points isolés\n  |> fill(usePrevious: true)  \n  |> map(fn: (r) => ({\n      r with \n      _value: if exists r._value then math.round(x: r._value * 2.0) / 2.0 else r._value\n    }))\n  |> keep(columns: [\"_time\", \"_value\"])",
+          "refId": "Temperature"
         }
       ],
       "title": "Indicateurs de pression acoustique (LAeq,${interval} et fractiles)",
@@ -991,7 +1088,7 @@
         "h": 4,
         "w": 24,
         "x": 0,
-        "y": 85
+        "y": 87
       },
       "id": 27,
       "options": {
@@ -1258,7 +1355,7 @@
         "h": 18,
         "w": 24,
         "x": 0,
-        "y": 89
+        "y": 91
       },
       "id": 30,
       "options": {
@@ -1394,7 +1491,7 @@
         "h": 11,
         "w": 24,
         "x": 0,
-        "y": 107
+        "y": 109
       },
       "id": 33,
       "options": {
@@ -1586,7 +1683,7 @@
         "h": 23,
         "w": 24,
         "x": 0,
-        "y": 118
+        "y": 120
       },
       "id": 32,
       "options": {
@@ -1772,7 +1869,7 @@
         "h": 9,
         "w": 24,
         "x": 0,
-        "y": 141
+        "y": 143
       },
       "id": 22,
       "options": {
@@ -1838,7 +1935,7 @@
         "h": 11,
         "w": 24,
         "x": 0,
-        "y": 150
+        "y": 152
       },
       "id": 5,
       "options": {
@@ -1905,7 +2002,7 @@
       "type": "geomap"
     }
   ],
-  "preload": true,
+  "preload": false,
   "refresh": "",
   "schemaVersion": 42,
   "tags": [],
