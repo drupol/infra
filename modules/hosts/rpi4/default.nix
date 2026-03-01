@@ -89,7 +89,7 @@
           Type = "oneshot";
           ExecStart = "${pkgs.systemd}/bin/systemctl restart NetworkManager.service";
         };
-        startAt = "0/30:00";
+        startAt = "*:0/15";
       };
     };
 }
