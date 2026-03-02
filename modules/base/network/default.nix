@@ -8,8 +8,6 @@
         networkmanager = {
           enable = true;
         };
-
-        useDHCP = false;
       };
 
       systemd = {
