@@ -82,7 +82,10 @@
         };
       };
 
-      networking.networkmanager.wifi.powersave = false;
+      networking.networkmanager.wifi = {
+        powersave = false;
+        backend = "iwd";
+      };
 
       systemd.services.restart-network-manager = {
         description = "Restart NetworkManager to fix connection drops";
