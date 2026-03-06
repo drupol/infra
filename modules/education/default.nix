@@ -1,5 +1,5 @@
 {
-  flake.modules.nixos.education =
+  den.aspects.education.nixos =
     {
       pkgs,
       ...

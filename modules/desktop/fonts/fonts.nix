@@ -1,6 +1,6 @@
 {
-  flake.modules = {
-    nixos.desktop =
+  den.aspects.desktop = {
+    nixos =
       { pkgs, ... }:
       {
         fonts.packages = with pkgs; [
@@ -21,7 +21,7 @@
         };
       };
 
-    homeManager.desktop = {
+    homeManager = {
       fonts = {
         fontconfig = {
           enable = true;

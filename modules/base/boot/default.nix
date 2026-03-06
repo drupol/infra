@@ -1,5 +1,5 @@
 {
-  flake.modules.nixos.base.boot = {
+  den.aspects.base.nixos.boot = {
     initrd.systemd.enable = true;
 
     tmp = {

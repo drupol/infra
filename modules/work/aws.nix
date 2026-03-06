@@ -1,16 +1,22 @@
 {
-  flake.modules = {
-    homeManager.work =
+  den,
+  ...
+}:
+{
+  den.aspects.work = {
+    includes = [
+      (den.provides.unfree [
+        "aws-workspaces"
+        "workspacesclient"
+      ])
+    ];
+
+    homeManager =
       { pkgs, ... }:
       {
-        nixpkgs = {
-          config.allowUnfree = true;
-        };
-
         home.packages = with pkgs; [
           aws-workspaces
         ];
       };
   };
-
 }

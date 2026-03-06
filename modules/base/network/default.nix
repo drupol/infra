@@ -1,10 +1,7 @@
 {
-  flake.modules.nixos.base =
-    { hostConfig, ... }:
-    {
+  den.aspects.base = {
+    nixos = {
       networking = {
-        hostName = hostConfig.name;
-
         networkmanager = {
           enable = true;
         };
@@ -19,4 +16,11 @@
         enable = true;
       };
     };
+
+    user = {
+      extraGroups = [
+        "networkmanager"
+      ];
+    };
+  };
 }

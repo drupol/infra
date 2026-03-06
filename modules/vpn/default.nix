@@ -1,6 +1,6 @@
 {
-  flake.modules = {
-    nixos.vpn = {
+  den.aspects.vpn = {
+    nixos = {
       services.netbird = {
         enable = true;
         ui.enable = true;

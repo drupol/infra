@@ -3,8 +3,8 @@
   ...
 }:
 {
-  flake.modules = {
-    homeManager.messaging =
+  den.aspects.messaging = {
+    homeManager =
       { pkgs, ... }:
       {
         nixpkgs.overlays = [
@@ -22,6 +22,5 @@
           pkgs.signal-desktop
         ];
       };
-
   };
 }
