@@ -15,9 +15,16 @@
               };
             }
             {
-              model_name = "gpt-4o";
+              model_name = "ChatGPT 5.4";
               litellm_params = {
-                model = "openai/gpt-4o";
+                model = "openai/gpt-5.4";
+                api_key = "os.environ/OPENAI_API_KEY";
+              };
+            }
+            {
+              model_name = "ChatGPT 5.3 Codex";
+              litellm_params = {
+                model = "openai/gpt-5.3-codex";
                 api_key = "os.environ/OPENAI_API_KEY";
               };
             }
@@ -43,9 +50,16 @@
               };
             }
             {
-              model_name = "Gemini";
+              model_name = "Gemini 3.1 pro preview";
               litellm_params = {
-                model = "gemini/gemini-2.5-pro-exp-03-25";
+                model = "gemini/gemini-3.1-pro-preview";
+                api_key = "os.environ/GEMINI_API_KEY";
+              };
+            }
+            {
+              model_name = "Gemini 3.1 Flash Lite Preview";
+              litellm_params = {
+                model = "gemini/gemini-3.1-flash-lite-preview";
                 api_key = "os.environ/GEMINI_API_KEY";
               };
             }
