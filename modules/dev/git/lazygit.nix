@@ -1,6 +1,6 @@
 {
-  flake.modules = {
-    homeManager.dev = {
+  den.aspects.dev = {
+    homeManager = {
       programs = {
         lazygit = {
           enable = true;

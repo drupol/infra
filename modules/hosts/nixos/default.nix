@@ -1,38 +1,27 @@
 {
-  config,
+  den,
+  lib,
   ...
 }:
 {
-  flake.modules.nixos."hosts/nixos" =
-    { lib, ... }:
-    {
-      imports =
-        with config.flake.modules.nixos;
-        [
-          # Modules
-          ai
-          base
-          dev
-          facter
-          openssh
-          vpn
+  den.hosts.x86_64-linux.nixos.users.pol = { };
 
-          # Users
-          root
-          pol
-        ]
-        # Specific Home-Manager modules
-        ++ [
-          {
-            home-manager.users.pol = {
-              imports = with config.flake.modules.homeManager; [
-                base
-                shell
-              ];
-            };
-          }
-        ];
+  den.aspects.nixos = {
+    includes = with den.aspects; [
+      # Modules
+      ai
+      base
+      dev
+      (facter ./facter.json)
+      openssh
+      vpn
 
+      # Users
+      root
+      pol
+    ];
+
+    nixos = {
       boot = {
         # Use the GRUB 2 boot loader.
         loader.grub.enable = true;
@@ -61,8 +50,6 @@
         kernelModules = [ "kvm-intel" ];
       };
 
-      facter.reportPath = ./facter.json;
-
       fileSystems."/" = {
         device = "/dev/disk/by-uuid/7bb30cda-a7fd-4f83-9cea-a4a80ede8a6e";
         fsType = "ext4";
@@ -84,4 +71,5 @@
         interfaces.eno1.useDHCP = true;
       };
     };
+  };
 }

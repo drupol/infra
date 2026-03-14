@@ -1,6 +1,6 @@
 { inputs, ... }:
 {
-  flake.modules.homeManager.desktop =
+  den.aspects.desktop.homeManager =
     { pkgs, ... }:
     {
       imports = [

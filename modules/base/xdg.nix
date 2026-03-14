@@ -1,5 +1,5 @@
 {
-  flake.modules.homeManager.base = {
+  den.aspects.base.homeManager = {
     xdg = {
       enable = true;
       mime.enable = true;

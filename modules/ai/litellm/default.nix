@@ -1,5 +1,5 @@
 {
-  flake.modules.nixos.ai = {
+  den.aspects.ai.nixos = {
     services = {
       litellm = {
         enable = true;

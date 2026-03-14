@@ -1,6 +1,6 @@
 { inputs, ... }:
 {
-  flake.modules.homeManager.desktop = {
+  den.aspects.desktop.homeManager = {
     imports = [
       inputs.plasma-manager.homeManagerModules.plasma-manager
     ];

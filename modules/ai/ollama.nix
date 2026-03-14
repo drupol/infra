@@ -1,5 +1,5 @@
 {
-  flake.modules.nixos.ai = {
+  den.aspects.ai.nixos = {
     services = {
       ollama = {
         enable = true;

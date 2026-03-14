@@ -1,10 +1,10 @@
 {
-  flake.modules = {
-    nixos.base = {
+  den.aspects.base = {
+    nixos = {
       programs.command-not-found.enable = false;
     };
 
-    homeManager.base = {
+    homeManager = {
       programs.command-not-found.enable = false;
     };
   };
