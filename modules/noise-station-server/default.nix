@@ -23,21 +23,8 @@
         grafana = {
           enable = true;
           declarativePlugins = [
-            (pkgs.grafanaPlugins.grafanaPlugin {
-              pname = "mesak-imagesave-panel";
-              version = "1.0.4";
-              zipHash = {
-                x86_64-linux = "sha256-WwGCcMhPhE8q2E/0uXYNMpd0HitPvVOCbazhpX/1q2U=";
-              };
-            })
-            (pkgs.grafana-image-renderer.overrideAttrs (oldAttrs: {
-              version = "5.5.0";
-              src = oldAttrs.src.overrideAttrs (_oldSrcAttrs: {
-                version = "5.5.0";
-                hash = "sha256-/ZvWE8FVK9EBXo1V0AD/rCc5ZyQFea1WiQrKg1JOwt4=";
-              });
-              vendorHash = "sha256-kGLvstSkucM0tN5l+Vp78IP9EwDx62kukAiOwYD4Vfs=";
-            }))
+            pkgs.grafanaPlugins.mesak-imagesave-panel
+            pkgs.grafana-image-renderer
           ];
           openFirewall = true;
           settings = {
