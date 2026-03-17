@@ -5,6 +5,8 @@
       networking = {
         hostName = hostConfig.name;
 
+        dhcpcd.enable = false;
+
         networkmanager = {
           enable = true;
         };
