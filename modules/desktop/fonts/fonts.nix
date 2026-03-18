@@ -3,12 +3,15 @@
     nixos.desktop =
       { pkgs, ... }:
       {
-        fonts.packages = with pkgs; [
-          dina-font
-          aporetic
-          monaspace
-          victor-mono
-        ];
+        fonts = {
+          enableDefaultPackages = true;
+          packages = with pkgs; [
+            dina-font
+            aporetic
+            monaspace
+            victor-mono
+          ];
+        };
 
         fonts.fontconfig = {
           defaultFonts = {
