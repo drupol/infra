@@ -18,11 +18,8 @@ topLevel: {
               };
 
               ui = {
-                editor = "micro";
                 default-command = "l";
-                diff-editor = ":builtin";
                 graph.style = "square";
-                pager = ":builtin";
                 show-cryptographic-signatures = true;
                 revsets-use-glob-by-default = true;
               };
