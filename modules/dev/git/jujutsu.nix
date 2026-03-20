@@ -26,6 +26,7 @@ topLevel: {
 
               git = {
                 private-commits = "description(glob:'wip:*') | description(glob:'private:*')";
+                remotes.origin.track-bookmarks = "*";
                 fetch = [
                   "origin"
                 ];
