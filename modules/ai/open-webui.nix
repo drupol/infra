@@ -24,7 +24,7 @@
             OPENAI_API_KEY = "";
             PDF_EXTRACT_IMAGES = "True";
             RAG_EMBEDDING_ENGINE = "ollama";
-            RAG_EMBEDDING_MODEL = "embeddinggemma:latest";
+            RAG_EMBEDDING_MODEL = "qwen3-embedding:0.6b";
             RAG_EMBEDDING_MODEL_AUTO_UPDATE = "True";
             RAG_FILE_MAX_COUNT = "2";
             RAG_RERANKING_MODEL = "BAAI/bge-reranker-v2-m3";
