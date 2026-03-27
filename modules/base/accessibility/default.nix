@@ -1,6 +1,8 @@
 {
-  flake.modules.nixos.base = {
-    services.orca.enable = false;
-    services.speechd.enable = false;
+  flake.modules = {
+    nixos.base = {
+      services.orca.enable = false;
+      services.speechd.enable = false;
+    };
   };
 }

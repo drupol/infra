@@ -1,119 +1,121 @@
 {
-  flake.modules.nixos.noise-station-server =
-    { pkgs, ... }:
-    {
-      networking.firewall = {
-        allowedTCPPorts = [
-          # InfluxDB
-          8086
-          8081 # Image Renderer
-        ];
-      };
-
-      services = {
-        grafana-image-renderer = {
-          enable = true;
-          provisionGrafana = true;
-          settings = {
-            server.addr = "0.0.0.0:8081";
-            browser."readiness.timeout" = "0";
-          };
+  flake.modules = {
+    nixos.noise-station-server =
+      { pkgs, ... }:
+      {
+        networking.firewall = {
+          allowedTCPPorts = [
+            # InfluxDB
+            8086
+            8081 # Image Renderer
+          ];
         };
 
-        grafana = {
-          enable = true;
-          declarativePlugins = [
-            pkgs.grafanaPlugins.mesak-imagesave-panel
-            pkgs.grafana-image-renderer
-          ];
-          openFirewall = true;
-          settings = {
-            dashboards.default_home_dashboard_path = "${./dashboards/noise-station.json}";
-            server = {
-              domain = "78d2074a4db5.sn.mynetname.net";
-              http_addr = "0.0.0.0";
-              http_port = 3000;
-              enable_gzip = true;
-            };
-            security = {
-              secret_key = "11111111111111111111";
-            };
-            feature_toggles = {
-              enable = "publicDashboards, panelTimeSettings, timeComparison, timeSeriesTable";
-            };
-            dataproxy.timeout = 600;
-            auth.disable_login_form = false;
-            "auth.anonymous" = {
-              enabled = true;
+        services = {
+          grafana-image-renderer = {
+            enable = true;
+            provisionGrafana = true;
+            settings = {
+              server.addr = "0.0.0.0:8081";
+              browser."readiness.timeout" = "0";
             };
           };
-          provision = {
+
+          grafana = {
             enable = true;
-            dashboards.settings = {
-              apiVersion = 1;
-              providers = [
+            declarativePlugins = [
+              pkgs.grafanaPlugins.mesak-imagesave-panel
+              pkgs.grafana-image-renderer
+            ];
+            openFirewall = true;
+            settings = {
+              dashboards.default_home_dashboard_path = "${./dashboards/noise-station.json}";
+              server = {
+                domain = "78d2074a4db5.sn.mynetname.net";
+                http_addr = "0.0.0.0";
+                http_port = 3000;
+                enable_gzip = true;
+              };
+              security = {
+                secret_key = "11111111111111111111";
+              };
+              feature_toggles = {
+                enable = "publicDashboards, panelTimeSettings, timeComparison, timeSeriesTable";
+              };
+              dataproxy.timeout = 600;
+              auth.disable_login_form = false;
+              "auth.anonymous" = {
+                enabled = true;
+              };
+            };
+            provision = {
+              enable = true;
+              dashboards.settings = {
+                apiVersion = 1;
+                providers = [
+                  {
+                    name = "default";
+                    options.path = ./dashboards;
+                  }
+                ];
+              };
+              datasources.settings.datasources = [
                 {
-                  name = "default";
-                  options.path = ./dashboards;
+                  name = "InfluxDB";
+                  type = "influxdb";
+                  isDefault = true;
+                  database = "influxdb";
+                  editable = false;
+                  access = "proxy";
+                  user = "admin";
+                  password = "noisestation";
+                  url = "http://127.0.0.1:8086";
+                  jsonData = {
+                    version = "Flux";
+                    organization = "default";
+                    defaultBucket = "default";
+                    tlsSkipVerify = true;
+                  };
+                  secureJsonData.token = "noisestation";
                 }
               ];
             };
-            datasources.settings.datasources = [
-              {
-                name = "InfluxDB";
-                type = "influxdb";
-                isDefault = true;
-                database = "influxdb";
-                editable = false;
-                access = "proxy";
-                user = "admin";
-                password = "noisestation";
-                url = "http://127.0.0.1:8086";
-                jsonData = {
-                  version = "Flux";
-                  organization = "default";
-                  defaultBucket = "default";
-                  tlsSkipVerify = true;
-                };
-                secureJsonData.token = "noisestation";
-              }
-            ];
           };
-        };
 
-        influxdb2 = {
-          enable = true;
-
-          provision = {
+          influxdb2 = {
             enable = true;
-            initialSetup = {
-              bucket = "default";
-              organization = "default";
-              passwordFile = pkgs.writeText "admin-pw" "noisestation";
-              tokenFile = pkgs.writeText "admin-token" "noisestation";
-            };
-            organizations.default = {
-              buckets = {
-                default = { };
-                usb_temperature = { };
+
+            provision = {
+              enable = true;
+              initialSetup = {
+                bucket = "default";
+                organization = "default";
+                passwordFile = pkgs.writeText "admin-pw" "noisestation";
+                tokenFile = pkgs.writeText "admin-token" "noisestation";
               };
-              auths = {
-                usb_temperature = {
-                  allAccess = true;
-                  description = "some noise-station data for Temperature";
-                  # readBuckets = [ "default" ];
-                  # writeBuckets = [ "default" ];
+              organizations.default = {
+                buckets = {
+                  default = { };
+                  usb_temperature = { };
                 };
-                default = {
-                  allAccess = true;
-                  description = "some noise-station data for SPL";
-                  # readBuckets = [ "default" ];
-                  # writeBuckets = [ "default" ];
+                auths = {
+                  usb_temperature = {
+                    allAccess = true;
+                    description = "some noise-station data for Temperature";
+                    # readBuckets = [ "default" ];
+                    # writeBuckets = [ "default" ];
+                  };
+                  default = {
+                    allAccess = true;
+                    description = "some noise-station data for SPL";
+                    # readBuckets = [ "default" ];
+                    # writeBuckets = [ "default" ];
+                  };
                 };
               };
             };
           };
         };
       };
-    };
+  };
 }
