@@ -1,12 +1,12 @@
 {
   flake.modules = {
-    nixos.education =
+    homeManager.education =
       {
         pkgs,
         ...
       }:
       {
-        environment.systemPackages = with pkgs; [ zotero ];
+        home.packages = with pkgs; [ zotero ];
       };
   };
 }

@@ -4,14 +4,14 @@
 }:
 {
   flake.modules = {
-    nixos.lora =
+    homeManager.lora =
       { pkgs, ... }:
       {
         nixpkgs.overlays = [
           inputs.self.overlays.default
         ];
 
-        environment.systemPackages = [ pkgs.local.meshtastic-client ];
+        home.packages = [ pkgs.local.meshtastic-client ];
       };
   };
 }
