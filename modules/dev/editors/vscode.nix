@@ -22,6 +22,7 @@
 
         home.packages = with pkgs; [
           vscode-runner
+          lean4
         ];
 
         programs.vscode = {
@@ -31,42 +32,39 @@
             default = {
               enableExtensionUpdateCheck = false;
               enableUpdateCheck = false;
-              extensions = [
-                pkgs.vscode-extensions.bbenoist.nix
-                pkgs.vscode-extensions.bmewburn.vscode-intelephense-client
-                pkgs.vscode-extensions.charliermarsh.ruff
-                pkgs.vscode-extensions.christian-kohler.path-intellisense
-                pkgs.vscode-extensions.coder.coder-remote
-                pkgs.vscode-extensions.codezombiech.gitignore
-                pkgs.vscode-extensions.dhall.vscode-dhall-lsp-server
-                pkgs.vscode-extensions.dhall.dhall-lang
-                pkgs.vscode-extensions.donjayamanne.githistory
-                pkgs.vscode-extensions.editorconfig.editorconfig
-                pkgs.vscode-extensions.esbenp.prettier-vscode
-
-                pkgs.vscode-extensions.github.copilot-chat
-                pkgs.vscode-extensions.github.github-vscode-theme
-                pkgs.vscode-extensions.github.vscode-pull-request-github
-                pkgs.vscode-extensions.golang.go
-                # Customized to minimize dependencies, avoiding downloading 605MB of rarely used resources.
-                pkgs.vscode-extensions.jebbs.plantuml
-                pkgs.vscode-extensions.jnoortheen.nix-ide
-                pkgs.vscode-extensions.mkhl.direnv
-
-                pkgs.vscode-extensions.ms-vscode-remote.remote-containers
-                pkgs.vscode-extensions.ms-vscode-remote.remote-ssh
-                pkgs.vscode-extensions.ms-vsliveshare.vsliveshare
-                pkgs.vscode-extensions.myriad-dreamin.tinymist
-                pkgs.vscode-extensions.pkief.material-icon-theme
-                pkgs.vscode-extensions.redhat.vscode-yaml
-                pkgs.vscode-extensions.redhat.vscode-xml
-                pkgs.vscode-extensions.rust-lang.rust-analyzer
-                pkgs.vscode-extensions.tamasfe.even-better-toml
-                pkgs.vscode-extensions.tekumara.typos-vscode
-                pkgs.vscode-extensions.usernamehw.errorlens
-
-                pkgs.vscode-extensions.yzhang.markdown-all-in-one
-                pkgs.vscode-extensions.zhuangtongfa.material-theme
+              extensions = with pkgs.vscode-extensions; [
+                bbenoist.nix
+                bmewburn.vscode-intelephense-client
+                charliermarsh.ruff
+                christian-kohler.path-intellisense
+                coder.coder-remote
+                codezombiech.gitignore
+                dhall.vscode-dhall-lsp-server
+                dhall.dhall-lang
+                donjayamanne.githistory
+                editorconfig.editorconfig
+                esbenp.prettier-vscode
+                github.copilot-chat
+                github.github-vscode-theme
+                github.vscode-pull-request-github
+                golang.go
+                jebbs.plantuml
+                jnoortheen.nix-ide
+                leanprover.lean4
+                mkhl.direnv
+                ms-vscode-remote.remote-containers
+                ms-vscode-remote.remote-ssh
+                ms-vsliveshare.vsliveshare
+                myriad-dreamin.tinymist
+                pkief.material-icon-theme
+                redhat.vscode-yaml
+                redhat.vscode-xml
+                rust-lang.rust-analyzer
+                tamasfe.even-better-toml
+                tekumara.typos-vscode
+                usernamehw.errorlens
+                yzhang.markdown-all-in-one
+                zhuangtongfa.material-theme
               ];
               userSettings = {
                 "[css]" = {

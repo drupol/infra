@@ -7,6 +7,10 @@
     homeManager.dev =
       { pkgs, ... }:
       {
+        home.packages = with pkgs; [
+          lean4
+        ];
+
         programs.zed-editor = {
           enable = true;
           extensions = [
@@ -17,6 +21,7 @@
             "http"
             "just"
             "latex"
+            "lean4"
             "make"
             "material-icon-theme"
             "nix"
@@ -158,7 +163,6 @@
             preview_tabs = {
               enabled = true;
               enable_preview_from_file_finder = true;
-              enable_preview_from_code_navigation = true;
             };
             show_edit_predictions = true;
             tabs = {
