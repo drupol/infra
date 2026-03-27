@@ -44,11 +44,6 @@
 
     make-shell.url = "github:nicknovitski/make-shell";
 
-    lazy-apps = {
-      url = "sourcehut:~rycee/lazy-apps";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
     disko = {
       url = "github:nix-community/disko";
       inputs.nixpkgs.follows = "nixpkgs";
