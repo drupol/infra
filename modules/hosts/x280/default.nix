@@ -182,7 +182,7 @@
 
       system.autoUpgrade = lib.mkForce {
         enable = true;
-        flake = "https://github.com/drupol/infra";
+        flake = "git+https://github.com/drupol/infra";
         allowReboot = true;
       };
 
