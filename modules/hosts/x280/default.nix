@@ -134,6 +134,10 @@
       };
 
       programs.firefox.policies.SecurityDevices.p11-kit-proxy = "${pkgs.p11-kit}/lib/p11-kit-proxy.so";
+      # Source: https://wiki.nixos.org/wiki/Web_eID
+      systemd.tmpfiles.rules = [
+        "L+ /usr/lib/x86_64-linux-gnu/libbeidpkcs11.so.0 - - - - ${pkgs.eid-mw}/lib/pkcs11/beidpkcs11.so"
+      ];
 
       services = {
         xserver = {
