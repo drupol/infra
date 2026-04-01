@@ -827,26 +827,6 @@
           },
           {
             "matcher": {
-              "id": "byName",
-              "options": "depassement"
-            },
-            "properties": [
-              {
-                "id": "custom.hideFrom",
-                "value": {
-                  "legend": true,
-                  "tooltip": false,
-                  "viz": true
-                }
-              },
-              {
-                "id": "displayName",
-                "value": "Dépassement"
-              }
-            ]
-          },
-          {
-            "matcher": {
               "id": "byFrameRefID",
               "options": "B"
             },
@@ -905,6 +885,34 @@
                 "value": 5
               }
             ]
+          },
+          {
+            "__systemRef": "hideSeriesFrom",
+            "matcher": {
+              "id": "byNames",
+              "options": {
+                "mode": "exclude",
+                "names": [
+                  "Niveau sonore L10,6h",
+                  "Niveau sonore L50,6h",
+                  "Niveau sonore L90,6h",
+                  "Niveau sonore LAeq,6h",
+                  "Seuil légal"
+                ],
+                "prefix": "All except:",
+                "readOnly": true
+              }
+            },
+            "properties": [
+              {
+                "id": "custom.hideFrom",
+                "value": {
+                  "legend": false,
+                  "tooltip": true,
+                  "viz": true
+                }
+              }
+            ]
           }
         ]
       },
@@ -928,10 +936,10 @@
           "sort": "desc"
         }
       },
-      "pluginVersion": "12.4.0",
+      "pluginVersion": "12.4.1",
       "targets": [
         {
-          "query": "import \"date\"\nimport \"timezone\"\n\n// --- CONFIGURATION ---\noption location = timezone.location(name: \"Europe/Brussels\")\n\ntargetInterval = if \"${interval}\" != \"auto\" then duration(v: \"${interval}\") else v.windowPeriod\n\n// 2. Chargement de la donnée brute (sans agrégation préalable)\nbaseData = from(bucket: \"default\")\n    |> range(start: date.add(d: duration(v: -int(v: targetInterval)), to: v.timeRangeStart), stop: v.timeRangeStop)\n    |> filter(fn: (r) => r._measurement == \"dt8852\" and r._field == \"spl\" and exists r.frequency_weighting and exists r.time_weighting)\n    |> keep(columns: [\"_time\", \"_value\"])\n\n// 3. Calculs des indicateurs (un seul passage par indicateur)\nl10 = baseData \n    |> aggregateWindow(every: targetInterval, fn: (column, tables=<-) => tables |> quantile(q: 0.90), createEmpty: true) \n    |> fill(usePrevious: true)\n    |> set(key: \"_field\", value: \"L10\")\n\nl50 = baseData \n    |> aggregateWindow(every: targetInterval, fn: (column, tables=<-) => tables |> quantile(q: 0.50), createEmpty: true) \n    |> fill(usePrevious: true)\n    |> set(key: \"_field\", value: \"L50\")\n\nl90 = baseData \n    |> aggregateWindow(every: targetInterval, fn: (column, tables=<-) => tables |> quantile(q: 0.10), createEmpty: true) \n    |> fill(usePrevious: true)\n    |> set(key: \"_field\", value: \"L90\")\n\nspl_raw = baseData \n    |> aggregateWindow(every: targetInterval, fn: mean, createEmpty: true) \n    |> fill(usePrevious: true)\n    |> set(key: \"_field\", value: \"SPL_raw\")\n\n// 4. ASSEMBLAGE\nunion(tables: [l10, l50, l90, spl_raw])\n    |> pivot(rowKey: [\"_time\"], columnKey: [\"_field\"], valueColumn: \"_value\")\n    |> map(fn: (r) => {\n        h = date.hour(t: r._time)\n        limit = if h >= 7 and h < 19 then 50.0\n                else if (h >= 6 and h < 7) or (h >= 19 and h < 22) then 45.0\n                else 40.0\n        \n        nan = float(v: \"NaN\")\n        val_spl = if exists r.SPL_raw then float(v: r.SPL_raw) else nan\n        \n        return {\n            _time: r._time,\n            val_spl: val_spl,\n            val_l10: if exists r.L10 then r.L10 else nan,\n            val_l50: if exists r.L50 then r.L50 else nan,\n            val_l90: if exists r.L90 then r.L90 else nan,\n            depassement: if exists r.SPL_raw and r.SPL_raw > limit then r.SPL_raw - limit else 0.0,\n        }\n    })\n    |> yield(name: \"acoustic_data\")",
+          "query": "import \"date\"\nimport \"timezone\"\n\n// --- CONFIGURATION ---\noption location = timezone.location(name: \"Europe/Brussels\")\n\ntargetInterval = if \"${interval}\" != \"auto\" then duration(v: \"${interval}\") else v.windowPeriod\n\n// 2. Chargement de la donnée brute (sans agrégation préalable)\nbaseData = from(bucket: \"default\")\n    |> range(start: date.add(d: duration(v: -int(v: targetInterval)), to: v.timeRangeStart), stop: v.timeRangeStop)\n    |> filter(fn: (r) => r._measurement == \"dt8852\" and r._field == \"spl\" and exists r.frequency_weighting and exists r.time_weighting)\n    |> keep(columns: [\"_time\", \"_value\"])\n\n// 3. Calculs des indicateurs (un seul passage par indicateur)\nl10 = baseData \n    |> aggregateWindow(every: targetInterval, fn: (column, tables=<-) => tables |> quantile(q: 0.90), createEmpty: true) \n    |> fill(usePrevious: true)\n    |> set(key: \"_field\", value: \"L10\")\n\nl50 = baseData \n    |> aggregateWindow(every: targetInterval, fn: (column, tables=<-) => tables |> quantile(q: 0.50), createEmpty: true) \n    |> fill(usePrevious: true)\n    |> set(key: \"_field\", value: \"L50\")\n\nl90 = baseData \n    |> aggregateWindow(every: targetInterval, fn: (column, tables=<-) => tables |> quantile(q: 0.10), createEmpty: true) \n    |> fill(usePrevious: true)\n    |> set(key: \"_field\", value: \"L90\")\n\nspl_raw = baseData \n    |> aggregateWindow(every: targetInterval, fn: mean, createEmpty: true) \n    |> fill(usePrevious: true)\n    |> set(key: \"_field\", value: \"SPL_raw\")\n\n// 4. ASSEMBLAGE\nunion(tables: [l10, l50, l90, spl_raw])\n    |> pivot(rowKey: [\"_time\"], columnKey: [\"_field\"], valueColumn: \"_value\")\n    |> map(fn: (r) => {\n        nan = float(v: \"NaN\")\n        \n        return {\n            _time: r._time,\n            val_spl: if exists r.SPL_raw then float(v: r.SPL_raw) else nan,\n            val_l10: if exists r.L10 then r.L10 else nan,\n            val_l50: if exists r.L50 then r.L50 else nan,\n            val_l90: if exists r.L90 then r.L90 else nan,\n        }\n    })\n    |> yield(name: \"acoustic_data\")",
           "refId": "A"
         },
         {
