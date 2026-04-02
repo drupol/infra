@@ -38,6 +38,7 @@
               dev
               email
               messaging
+              news
               pol
               games
               shell
