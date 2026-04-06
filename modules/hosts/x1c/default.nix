@@ -15,11 +15,9 @@
         bluetooth
         desktop
         dev
-        education
         facter
         fwupd
         games
-        lora
         shell
         sound
         vpn
@@ -36,7 +34,9 @@
               base
               desktop
               dev
+              education
               email
+              lora
               messaging
               news
               pol
