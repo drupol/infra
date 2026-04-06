@@ -8,6 +8,7 @@
     imports =
       with config.flake.modules.nixos;
       [
+        inputs.nixos-hardware.nixosModules.lenovo-thinkpad-x1-13th-gen
         inputs.disko.nixosModules.disko
 
         # Modules
