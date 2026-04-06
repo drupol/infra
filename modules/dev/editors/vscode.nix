@@ -44,7 +44,14 @@
                 donjayamanne.githistory
                 editorconfig.editorconfig
                 esbenp.prettier-vscode
-                github.copilot-chat
+                (pkgs.vscode-utils.buildVscodeMarketplaceExtension {
+                  mktplcRef = {
+                    name = "copilot-chat";
+                    publisher = "github";
+                    version = "0.42.3";
+                    hash = "sha256-bkVfwPFQSuTMcIEoEa/M91foSZC+0H4ESFXFwDDDhbc=";
+                  };
+                })
                 github.github-vscode-theme
                 github.vscode-pull-request-github
                 golang.go
@@ -139,6 +146,9 @@
                 "[yaml]" = {
                   "editor.defaultFormatter" = "redhat.vscode-yaml";
                 };
+                "chat.mcp.access" = "all";
+                "chat.mcp.gallery.enabled" = false;
+                "chat.mcp.autostart" = "newAndOutdated";
                 "debug.console.fontFamily" = "'Aporetic Sans Mono'";
                 "diffEditor.ignoreTrimWhitespace" = false;
                 "editor.bracketPairColorization.enabled" = true;
@@ -149,9 +159,6 @@
                 "editor.formatOnSave" = false;
                 "editor.guides.bracketPairs" = true;
                 "editor.inlineSuggest.enabled" = true;
-                "editor.inlineSuggest.edits" = {
-                  renderSideBySide = true;
-                };
                 "editor.renderWhitespace" = "boundary";
                 "editor.suggestFontSize" = 0;
                 "editor.suggest.preview" = true;
@@ -194,7 +201,6 @@
                 "git.confirmSync" = false;
                 "git.enableSmartCommit" = true;
                 "git.showPushSuccessNotification" = true;
-                "github.copilot.nextEditSuggestions" = true;
                 "github.copilot.enable" = {
                   "*" = true;
                   yaml = true;
@@ -203,7 +209,6 @@
                 };
                 "githubPullRequests.pullBranch" = "always";
                 "markdown.preview.fontFamily" = "'Aporetic Sans Mono'";
-                "mdb.mcp.server" = "prompt";
                 "nix.formatterPath" = [ (lib.getExe pkgs.nixfmt) ];
                 "nix.serverPath" = lib.getExe pkgs.nixd;
                 "nix.enableLanguageServer" = true;
@@ -211,7 +216,6 @@
                 "plantuml.previewSnapIndicators" = true;
                 "plantuml.render" = "Local";
                 "plantuml.server" = "https://www.plantuml.com/plantuml";
-                "python.analysis.autoImportCompletions" = true;
                 "redhat.telemetry.enabled" = false;
                 "search.seedWithNearestWord" = true;
                 "search.showLineNumbers" = true;
