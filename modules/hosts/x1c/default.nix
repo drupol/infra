@@ -19,6 +19,7 @@
         facter
         fwupd
         games
+        npu
         shell
         sound
         vpn
