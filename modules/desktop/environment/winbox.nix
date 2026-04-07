@@ -1,17 +1,14 @@
 {
   flake.modules = {
-    nixos.desktop =
-      { pkgs, ... }:
-      {
-        programs.winbox = {
-          enable = true;
-          package = pkgs.winbox4;
-          openFirewall = true;
-        };
-
-        nixpkgs = {
-          config.allowUnfree = true;
-        };
+    nixos.desktop = {
+      programs.winbox = {
+        enable = true;
+        openFirewall = true;
       };
+
+      nixpkgs = {
+        config.allowUnfree = true;
+      };
+    };
   };
 }

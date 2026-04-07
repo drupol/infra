@@ -1,7 +1,4 @@
 {
-  ...
-}:
-{
   # Todo: revisit when https://github.com/NixOS/nixpkgs/pull/507423
   # has landed in unstable
   flake.modules.nixos.npu =
