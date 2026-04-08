@@ -41,6 +41,12 @@
             {
               enable = true;
               extraConfig = {
+                agent = {
+                  ## Maximum number of unwritten metrics per output.  Increasing this value
+                  ## allows for longer periods of output downtime without dropping metrics at the
+                  ## cost of higher maximum memory usage.
+                  metric_buffer_limit = 20000;
+                };
                 inputs.exec = {
                   commands = [
                     temper-script
