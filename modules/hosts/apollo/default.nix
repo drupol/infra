@@ -5,12 +5,31 @@
 }:
 {
   den.hosts.x86_64-linux.apollo.users.pol = { };
+  den.homes.x86_64-linux."pol@apollo" = { };
 
-  den.aspects.apollo = {
-    provides.to-users = {
+  den.hosts.x86_64-linux.apollo.users.root = { };
+  den.homes.x86_64-linux."root@apollo" = { };
+
+  den.aspects.pol = {
+    provides.apollo = {
       includes = with den.aspects; [
         base
+        desktop
+        dev
         (facter ./facter.json)
+        guacamole
+        noise-station-server
+        openssh
+        shell
+        tika
+        vpn
+      ];
+    };
+  };
+
+  den.aspects.root = {
+    provides.apollo = {
+      includes = with den.aspects; [
         desktop
         dev
         guacamole
@@ -19,11 +38,11 @@
         shell
         tika
         vpn
-        # Users
-        root
       ];
     };
+  };
 
+  den.aspects.apollo = {
     nixos = {
       boot = {
         # Use the GRUB 2 boot loader.
