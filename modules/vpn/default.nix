@@ -1,11 +1,13 @@
 {
   flake.modules = {
-    nixos.vpn = {
-      services.netbird = {
-        enable = true;
-        ui.enable = true;
-        useRoutingFeatures = "both";
+    nixos.vpn =
+      { config, ... }:
+      {
+        services.netbird = {
+          enable = true;
+          ui.enable = config.services.xserver.enable;
+          useRoutingFeatures = "both";
+        };
       };
-    };
   };
 }
