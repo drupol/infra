@@ -35,7 +35,6 @@
               extensions = with pkgs.vscode-extensions; [
                 bbenoist.nix
                 bmewburn.vscode-intelephense-client
-                charliermarsh.ruff
                 christian-kohler.path-intellisense
                 coder.coder-remote
                 codezombiech.gitignore
