@@ -5,7 +5,7 @@
         sudo.enable = false;
         sudo-rs = {
           enable = true;
-          wheelNeedsPassword = false; # Use 'sudo' without a password
+          wheelNeedsPassword = false;
         };
       };
     };
