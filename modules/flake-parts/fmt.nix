@@ -1,5 +1,11 @@
 { inputs, lib, ... }:
 {
+  flake-file.inputs = {
+    git-hooks.url = "github:cachix/git-hooks.nix";
+    git-hooks.inputs.nixpkgs.follows = "nixpkgs";
+    treefmt-nix.url = "github:numtide/treefmt-nix";
+  };
+
   imports = [
     inputs.treefmt-nix.flakeModule
     inputs.git-hooks.flakeModule

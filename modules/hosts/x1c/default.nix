@@ -4,6 +4,16 @@
   ...
 }:
 {
+  flake-file.inputs = {
+    home-manager.url = "github:nix-community/home-manager";
+    home-manager.inputs.nixpkgs.follows = "nixpkgs";
+    disko = {
+      url = "github:nix-community/disko";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    nixos-hardware.url = "github:NixOS/nixos-hardware/master";
+  };
+
   flake.modules.nixos."hosts/x1c" = {
     imports =
       with config.flake.modules.nixos;

@@ -3,6 +3,10 @@
   ...
 }:
 {
+  flake-file.inputs = {
+    nur.url = "github:nix-community/NUR";
+  };
+
   flake.modules = {
     homeManager.desktop =
       { pkgs, ... }:

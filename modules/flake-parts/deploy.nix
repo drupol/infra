@@ -3,6 +3,12 @@
   ...
 }:
 {
+  flake-file.inputs = {
+    deploy-rs.url = "github:serokell/deploy-rs";
+    deploy-rs.inputs.nixpkgs.follows = "nixpkgs";
+    make-shell.url = "github:nicknovitski/make-shell";
+  };
+
   imports = [
     inputs.make-shell.flakeModules.default
   ];

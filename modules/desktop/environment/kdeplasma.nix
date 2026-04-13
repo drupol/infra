@@ -1,5 +1,10 @@
 { inputs, ... }:
 {
+  flake-file.inputs = {
+    plasma-manager.url = "github:nix-community/plasma-manager";
+    plasma-manager.inputs.nixpkgs.follows = "nixpkgs";
+  };
+
   flake.modules = {
     homeManager.desktop =
       { pkgs, ... }:
