@@ -90,6 +90,8 @@
 
     facter.reportPath = ./facter.json;
 
+    hardware.cpu.intel.npu.enable = true;
+
     programs = {
       noisetorch = {
         enable = true;
