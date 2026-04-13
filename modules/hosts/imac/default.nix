@@ -78,33 +78,19 @@
         pulse.enable = true;
       };
 
-      system.stateVersion = "25.05";
-
       nixpkgs.config.nvidia.acceptLicense = true;
       nixpkgs.config.allowBroken = true;
       hardware = {
-        opengl = {
+        graphics = {
           enable = true;
-          driSupport = true;
-          driSupport32Bit = true;
+          enable32Bit = true;
         };
-        graphics.enable = true;
         nvidia = {
           # Optionally, you may need to select the appropriate driver version for your specific GPU.
           package = pkgs.linuxPackages_latest.nvidiaPackages.legacy_390;
 
           # Modesetting is required.
           modesetting.enable = true;
-
-          # Nvidia power management. Experimental, and can cause sleep/suspend to fail.
-          # Enable this if you have graphical corruption issues or application crashes after waking
-          # up from sleep. This fixes it by saving the entire VRAM memory to /tmp/ instead
-          # of just the bare essentials.
-          powerManagement.enable = true;
-
-          # Fine-grained power management. Turns off GPU when not in use.
-          # Experimental and only works on modern Nvidia GPUs (Turing or newer).
-          powerManagement.finegrained = false;
 
           # Use the NVidia open source kernel module (not to be confused with the
           # independent third-party "nouveau" open source driver).
