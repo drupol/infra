@@ -114,6 +114,7 @@
               };
               settings = {
                 "app.update.auto" = false;
+                # 0000: disable about:config warning **
                 "browser.aboutConfig.showWarning" = false;
                 "browser.urlbar.update2.engineAliasRefresh" = true;
                 "browser.shell.checkDefaultBrowser" = false;
@@ -187,6 +188,9 @@
                 "font.name.sans-serif.x-western" = "${defaultFont}";
                 "font.name.serif.x-western" = "${defaultFont}";
                 "browser.display.use_document_fonts" = 0;
+                "layout.css.system-ui.enabled" = false;
+                "font.language.group" = "x-western";
+                "font.default.x-western" = "sans-serif";
 
                 # Disable mailto popup
                 "network.protocol-handler.external.mailto" = false;
@@ -199,6 +203,30 @@
 
                 # Enable hardware video decoding (requires VAAPI support in the GPU driver and the presence of the `vainfo` (libva-utils) utility in the system).
                 "media.ffmpeg.vaapi.enabled" = true;
+
+                # 0320: disable recommendation pane in about:addons (uses Google Analytics) **
+                "extensions.getAddons.showPane" = false;
+
+                # 0321: disable recommendations in about:addons' Extensions and Themes panes [FF68+] **
+                "extensions.htmlaboutaddons.recommendations.enabled" = false;
+
+                # 0322: disable personalized Extension Recommendations in about:addons and AMO [FF65+]
+                "browser.discovery.enabled" = false;
+
+                # 0601: disable link prefetching
+                "network.prefetch-next" = false;
+                # 0602: disable DNS prefetching
+                "network.dns.disablePrefetch" = true;
+                "network.dns.disablePrefetchFromHTTPS" = true;
+                # 0603: disable predictor / prefetching **
+                "network.predictor.enabled" = false;
+                "network.predictor.enable-prefetch" = false; # [FF48+] [DEFAULT: false]
+                # 0604: disable link-mouseover opening connection to linked server
+                "network.http.speculative-parallel-limit" = 0;
+                # 0605: disable mousedown speculative connections on bookmarks and history [FF98+] **
+                "browser.places.speculativeConnect.enabled" = false;
+                # 0702: set the proxy server to do any DNS lookups when using SOCKS
+                "network.proxy.socks_remote_dns" = true;
               };
             };
           };
