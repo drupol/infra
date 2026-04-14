@@ -193,6 +193,12 @@
 
                 # Don't use the built-in password manager.
                 "signon.rememberSignons" = false;
+
+                # Increase the number of pages Firefox keeps in history.
+                "places.history.expiration.max_pages" = 128 * 1024 * 1024;
+
+                # Enable hardware video decoding (requires VAAPI support in the GPU driver and the presence of the `vainfo` (libva-utils) utility in the system).
+                "media.ffmpeg.vaapi.enabled" = true;
               };
             };
           };
