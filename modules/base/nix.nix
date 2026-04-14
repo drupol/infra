@@ -19,6 +19,7 @@
           '';
           optimise.automatic = true;
           settings = {
+            use-xdg-base-directories = true;
             trusted-users = [
               "root"
             ];
