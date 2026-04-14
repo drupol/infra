@@ -7,7 +7,7 @@
         enableFishIntegration = true;
         settings = {
           # See https://zellij.dev/documentation/options.html
-          show_startup_tips = true;
+          show_startup_tips = false;
           default_mode = "locked";
 
           pane_frames = true;

@@ -44,14 +44,6 @@
             };
           };
         };
-
-        # See https://github.com/NixOS/nixpkgs/issues/414909#issuecomment-3216038215
-        system.userActivationScripts = {
-          "restart-plasma" = ''
-            ${pkgs.xdg-utils}/bin/xdg-desktop-menu forceupdate
-          '';
-        };
-
       };
 
     homeManager.desktop =
