@@ -91,14 +91,6 @@
 
     hardware.cpu.intel.npu.enable = true;
 
-    programs = {
-      noisetorch = {
-        enable = true;
-      };
-      projecteur = {
-        enable = true;
-      };
-    };
 
     services = {
       xserver = {
