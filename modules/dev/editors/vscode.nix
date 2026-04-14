@@ -43,14 +43,7 @@
                 donjayamanne.githistory
                 editorconfig.editorconfig
                 esbenp.prettier-vscode
-                (pkgs.vscode-utils.buildVscodeMarketplaceExtension {
-                  mktplcRef = {
-                    name = "copilot-chat";
-                    publisher = "github";
-                    version = "0.42.3";
-                    hash = "sha256-bkVfwPFQSuTMcIEoEa/M91foSZC+0H4ESFXFwDDDhbc=";
-                  };
-                })
+                github.copilot-chat
                 github.github-vscode-theme
                 github.vscode-pull-request-github
                 golang.go
@@ -157,7 +150,11 @@
                 "editor.fontSize" = 14;
                 "editor.formatOnSave" = false;
                 "editor.guides.bracketPairs" = true;
+                "editor.guides.bracketPairsHorizontal" = "active";
+                "editor.guides.indentation" = true;
                 "editor.inlineSuggest.enabled" = true;
+                "editor.linkedEditing" = true;
+                "editor.matchBrackets" = "always";
                 "editor.renderWhitespace" = "boundary";
                 "editor.suggestFontSize" = 0;
                 "editor.suggest.preview" = true;
