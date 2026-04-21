@@ -12,13 +12,12 @@
   ];
 
   perSystem =
-    { self', ... }:
+    { self', pkgs, ... }:
     {
       treefmt = {
         projectRootFile = "flake.nix";
         programs = {
           deadnix.enable = true;
-          json-sort-cli.enable = true;
           jsonfmt.enable = true;
           nixfmt.enable = true;
           prettier.enable = true;
@@ -28,6 +27,13 @@
         };
         settings = {
           on-unmatched = "warn";
+          formatter = {
+            "json-sort" = {
+              command = lib.getExe pkgs.json-sort;
+              options = [ "--fix" ];
+              includes = [ "*.json" ];
+            };
+          };
         };
       };
 
