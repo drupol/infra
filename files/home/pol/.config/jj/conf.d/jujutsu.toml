@@ -1,0 +1,33 @@
+[revset-aliases]
+"/" = "trunk()"
+"_" = "fork_point(trunk() | @)"
+"_(x)" = "fork_point(trunk() | x)"
+"mine()" = "author(exact:'@name@') | author(exact:'@email@')"
+
+"wip()" = "description(glob:'wip:*')"
+"private()" = "description(glob:'private:*')"
+
+"stack()" = "stack(@, 2)"
+"stack(x)" = "stack(x, 2)"
+"stack(x, n)" = "ancestors(reachable(x, mutable()), n)"
+
+"streams()" = "heads(::@ & bookmarks())"
+"streams(x)" = "heads(::x & bookmarks())"
+'base_point(x)' = "heads(immutable_heads() & ::x)"
+
+"open()" = "stack(trunk().. & mine(), 2)"
+"open(n)" = "stack(trunk().. & mine(), n)"
+
+'why_immutable(r)' = '(r & immutable()) | roots(r:: & immutable_heads())'
+
+safe_heads = "remote_bookmarks()"
+
+custom_log = '''none()
+  | base_point(@)
+  | ancestors(@, 10) & trunk()..@
+  | trunk()
+  | bookmarks()
+  | mutable() & visible_heads()
+  | fork_point(mutable() & visible_heads())
+  | (mutable() & merges())-
+'''
