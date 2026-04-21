@@ -1,6 +1,6 @@
 {
-  flake.modules = {
-    nixos.base = {
+  den.aspects.base = {
+    nixos = {
       security = {
         sudo.enable = false;
         sudo-rs = {
@@ -8,6 +8,10 @@
           wheelNeedsPassword = false;
         };
       };
+    };
+
+    user = {
+      extraGroups = [ "wheel" ];
     };
   };
 }

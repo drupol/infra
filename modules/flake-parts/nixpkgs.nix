@@ -22,9 +22,6 @@
     {
       _module.args.pkgs = import inputs.nixpkgs {
         inherit system;
-        config = {
-          allowUnfreePredicate = _pkg: true;
-        };
         overlays = [
           (final: _prev: {
             master = import inputs.nixpkgs-master {
@@ -39,8 +36,6 @@
             };
           })
           inputs.nix-webapps.overlays.lib
-          # inputs.deploy-rs.overlays.default
-          # (self: super: { deploy-rs = { inherit (pkgs) deploy-rs; lib = super.deploy-rs.lib; }; })
         ];
       };
       pkgsDirectory = ../../pkgs/by-name;

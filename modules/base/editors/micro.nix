@@ -1,6 +1,6 @@
 {
-  flake.modules = {
-    homeManager.base = {
+  den.aspects.base = {
+    homeManager = {
       programs = {
         micro = {
           enable = true;

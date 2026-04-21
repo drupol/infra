@@ -1,25 +1,30 @@
 {
   lib,
+  den,
   ...
 }:
 {
-  flake.modules = {
-    nixos.dev = {
+  den.aspects.dev = {
+    includes = [
+      (den.provides.unfree [
+        "vscode"
+        "vscode-extension-bmewburn-vscode-intelephense-client"
+        "vscode-extension-ms-vscode-remote-remote-containers"
+        "vscode-extension-ms-vscode-remote-remote-ssh"
+        "vscode-extension-ms-vsliveshare-vsliveshare"
+      ])
+    ];
+
+    nixos = {
       services = {
         # needed for store VS Code auth token
         gnome.gnome-keyring.enable = true;
       };
     };
 
-    homeManager.dev =
+    homeManager =
       { pkgs, ... }:
       {
-        nixpkgs = {
-          config = {
-            allowUnfree = true;
-          };
-        };
-
         home.packages = with pkgs; [
           vscode-runner
           lean4

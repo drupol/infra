@@ -1,6 +1,6 @@
 {
-  flake.modules = {
-    nixos.desktop =
+  den.aspects.desktop = {
+    nixos =
       { pkgs, ... }:
       {
         programs = {
@@ -46,7 +46,7 @@
         };
       };
 
-    homeManager.desktop =
+    homeManager =
       { pkgs, ... }:
       {
         home = {

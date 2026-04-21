@@ -1,6 +1,6 @@
 {
-  flake.modules = {
-    nixos.base =
+  den.aspects.base = {
+    nixos =
       { pkgs, ... }:
       {
         nix = {

@@ -1,6 +1,6 @@
 {
-  flake.modules = {
-    nixos.base = {
+  den.aspects.base = {
+    nixos = {
       i18n.defaultLocale = "en_GB.UTF-8";
       i18n.supportedLocales = [ "all" ];
       i18n.extraLocaleSettings = {

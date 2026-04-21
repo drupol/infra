@@ -1,13 +1,17 @@
 {
-  flake.modules = {
-    nixos.desktop = {
+  den,
+  ...
+}:
+{
+  den.aspects.desktop = {
+    includes = [
+      (den.provides.unfree [ "winbox" ])
+    ];
+
+    nixos = {
       programs.winbox = {
         enable = true;
         openFirewall = true;
-      };
-
-      nixpkgs = {
-        config.allowUnfree = true;
       };
     };
   };
