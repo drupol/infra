@@ -1,12 +1,21 @@
 {
   den,
+  lib,
   ...
 }:
 {
   den.aspects.dev = {
     homeManager =
-      { config, ... }:
+      { config, pkgs, ... }:
       {
+        programs.starship.settings = {
+          custom.jj = {
+            when = "jj-starship detect";
+            shell = [ (lib.getExe pkgs.jj-starship) ];
+            format = "$output ";
+          };
+        };
+
         programs = {
           jujutsu = {
             enable = true;
