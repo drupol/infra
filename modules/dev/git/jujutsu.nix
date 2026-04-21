@@ -25,6 +25,8 @@
                 default-command = [
                   "--ignore-working-copy"
                   "log"
+                  "-T"
+                  "builtin_log_oneline"
                 ];
                 graph.style = "square";
                 show-cryptographic-signatures = true;
@@ -195,27 +197,33 @@
                 l = [
                   "log"
                   "-T"
-                  "builtin_log_compact"
+                  "builtin_log_oneline"
                 ];
                 lr = [
                   "log"
                   "--reversed"
                   "-T"
-                  "builtin_log_compact"
+                  "builtin_log_oneline"
                 ];
                 ll = [
                   "log"
                   "-T"
-                  "builtin_log_detailed"
+                  "builtin_log_compact"
                 ];
                 llr = [
                   "log"
                   "--reversed"
                   "-T"
-                  "builtin_log_detailed"
+                  "builtin_log_compact"
                 ];
                 xl = [
                   "log"
+                  "-T"
+                  "builtin_log_detailed"
+                ];
+                xlr = [
+                  "log"
+                  "--reversed"
                   "-T"
                   "builtin_log_detailed"
                 ];
