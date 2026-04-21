@@ -1,5 +1,20 @@
 {
   "nodes": {
+    "den": {
+      "locked": {
+        "lastModified": 1776710169,
+        "narHash": "sha256-q4WXIX2E3w9Ld3MZ1Pl8Lh5SgrEFdEuzvY1Lj/Wo2kY=",
+        "owner": "vic",
+        "repo": "den",
+        "rev": "0af82e24be89b9fd400bd0b58b0fed5ea0f269ad",
+        "type": "github"
+      },
+      "original": {
+        "owner": "vic",
+        "repo": "den",
+        "type": "github"
+      }
+    },
     "deploy-rs": {
       "inputs": {
         "flake-compat": "flake-compat",
@@ -491,11 +506,11 @@
     },
     "nixpkgs-master_2": {
       "locked": {
-        "lastModified": 1776760960,
-        "narHash": "sha256-+0KUYqEV8c9V9u5Qp1847+0KCte9u2258PtZ8lyqjlk=",
+        "lastModified": 1776762888,
+        "narHash": "sha256-jhzv+tdggQS4FHtjr3+CLbsF0id+D2Yjf3uUQKJ7Tsk=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "d302626b3c908ee299a990a89f3095579a67ecbe",
+        "rev": "5a5ab24e4b2c164f12d599e538bb13578ca9100d",
         "type": "github"
       },
       "original": {
@@ -607,11 +622,11 @@
         "nixpkgs": "nixpkgs_4"
       },
       "locked": {
-        "lastModified": 1776759007,
-        "narHash": "sha256-fADdai0VxvPc/HS5NRiANUrU6s4m57p4GvshZgAXbWM=",
+        "lastModified": 1776763987,
+        "narHash": "sha256-Bdy5pn/20zwwZ0QF4pjlzYY+aIXGKW7PuVzM+bJRRgU=",
         "owner": "nix-community",
         "repo": "NUR",
-        "rev": "a08b6e321847e7c0cf581341bcfd56460002c54b",
+        "rev": "43c4616f6743a353a8789eea0e834a48eca53837",
         "type": "github"
       },
       "original": {
@@ -673,6 +688,7 @@
     },
     "root": {
       "inputs": {
+        "den": "den",
         "deploy-rs": "deploy-rs",
         "disko": "disko",
         "files": "files",
