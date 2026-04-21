@@ -18,7 +18,10 @@ topLevel: {
               };
 
               ui = {
-                default-command = "l";
+                default-command = [
+                  "--ignore-working-copy"
+                  "log"
+                ];
                 graph.style = "square";
                 show-cryptographic-signatures = true;
                 revsets-use-glob-by-default = true;
@@ -40,47 +43,28 @@ topLevel: {
               };
 
               revset-aliases = {
-                "immutable_heads()" = "trunk() | tags() | remote_bookmarks(remote=origin)";
-                "closest_bookmark(to)" = "heads(::to & bookmarks())";
-                "closest_pushable(to)" =
-                  "heads(::to & mutable() & ~description(exact:\"\") & (~empty() | merges()))";
                 # Source: https://github.com/bryceberger/config/blob/38c6caf0823517b5423b2ca2a25f7fd79d445e0e/home/jj/config.toml
+                "/" = "trunk()";
+                "_" = "fork_point(trunk() | @)";
+                "_(x)" = "fork_point(trunk() | x)";
                 "mine()" = "author(exact:'@name@') | author(exact:'@email@')";
-                "wip()" = "description(glob:'wip:*')";
-                "private()" = "description(glob:'private:*')";
-                "stack()" = "ancestors(mutable() & (..@ | @::), 2)";
-                "stack(x)" = "ancestors(mutable() & (..x | x::), 2)";
-                "stack(x, n)" = "ancestors(mutable() & (..x | x::), n)";
+
+                "immutable_heads()" = "trunk() | tags() | remote_bookmarks(remote=origin)";
+
                 "streams()" = "heads(::@ & bookmarks())";
                 "streams(x)" = "heads(::x & bookmarks())";
-                "base_point(x)" = "heads(immutable_heads() & ::x)";
-                "open()" = "stack(trunk().. & mine(), 2)";
-                "open(n)" = "stack(trunk().. & mine(), n)";
+
+                "wip()" = "description(glob:'wip:*')";
+                "private()" = "description(glob:'private:*')";
+                safe_heads = "remote_bookmarks()";
                 "why_immutable(r)" = "(r & immutable()) | roots(r:: & immutable_heads())";
-                # To replace `jj next` multiple times.
-                "tip" = "exactly(heads(@-::~@), 1)";
               };
 
               revsets = {
-                log = ''
-                  none()
-                    | base_point(@)
-                    | ancestors(@, 10) & trunk()..@
-                    | trunk()
-                    | bookmarks()
-                    | mutable() & visible_heads()
-                    | fork_point(mutable() & visible_heads())
-                    | (mutable() & merges())-
-                '';
-                short-prefixes = "stack(@)";
+                bookmark-advance-to = "heads(streams()::@- ~ private()::)";
               };
 
               template-aliases = {
-                "link(target, text)" =
-                  ''raw_escape_sequence("\x1b]8;;" ++ target ++ "\x1b\\") ++ label("text link", text) ++ raw_escape_sequence("\x1b]8;;\x1b\\")'';
-                "italic(text)" = ''raw_escape_sequence("\x1b[3m") ++ text ++ raw_escape_sequence("\x1b[23m")'';
-                "dim(text)" = ''raw_escape_sequence("\x1b[2m") ++ text ++ raw_escape_sequence("\x1b[22m")'';
-
                 "commit_description_verbose(commit)" = ''
                   concat(
                     commit_description(commit),
@@ -160,15 +144,6 @@ topLevel: {
                   )
                 '';
 
-                default_log = ''
-                  separate(" ",
-                    format_commit_info(self),
-                    format_commit_bookmarks(self),
-                    format_description(self),
-                    format_author(self),
-                    format_commit_date(self),
-                  )'';
-
                 "format_short_change_id_with_hidden_and_divergent_info(commit)" = ''
                   if(commit.hidden(),
                     label("hidden",
@@ -202,61 +177,36 @@ topLevel: {
                 draft_commit_description = "commit_description(self)";
 
                 file_annotate = "annotate_header";
-
-                log = "default_log";
-                log_node = ''
-                  label("node", coalesce(
-                    if(!self, label("elided", "~")),
-                    label(
-                      separate(" ",
-                        if(current_working_copy, "working_copy"),
-                        if(conflict, "conflict"),
-                        if(immutable, "immutable"),
-                        if(description.starts_with("wip:"), "wip"),
-                        if(description.starts_with("private:"), "wip"),
-                      ),
-                      coalesce(
-                        if(current_working_copy, "@"),
-                        if(conflict, "x"),
-                        if(immutable, "◆"),
-                        if(description.starts_with("wip:"), "!"),
-                        if(description.starts_with("private:"), "◇"),
-                        "○",
-                      )
-                    )
-                  ))
-                '';
               };
 
               aliases = {
                 tug = [
                   "bookmark"
-                  "move"
-                  "--from"
-                  "closest_bookmark(@)"
-                  "--to"
-                  "closest_pushable(@)"
+                  "advance"
                 ];
                 ds = [
                   "diff"
                   "--stat"
                 ];
-                dv = [
-                  "--config=templates.draft_commit_description=commit_description_verbose(self)"
-                  "describe"
-                ];
-                # Too slow - TODO investigate why
-                # l = ["log" "-T" "builtin_log_compact"];
-                # ll = ["log" "-T" "builtin_log_detailed"];
                 l = [
                   "log"
-                  "-r"
-                  "all()"
+                  "-T"
+                  "builtin_log_compact"
+                ];
+                lr = [
+                  "log"
+                  "--reversed"
+                  "-T"
+                  "builtin_log_compact"
                 ];
                 ll = [
                   "log"
-                  "-r"
-                  "all()"
+                  "-T"
+                  "builtin_log_detailed"
+                ];
+                llr = [
+                  "log"
+                  "--reversed"
                   "-T"
                   "builtin_log_detailed"
                 ];
@@ -264,39 +214,6 @@ topLevel: {
                   "log"
                   "-T"
                   "builtin_log_detailed"
-                ];
-                evolve = [
-                  "rebase"
-                  "--skip-empty"
-                  "-d"
-                  "main"
-                ];
-                streams = [
-                  "log"
-                  "--no-graph"
-                  "-r"
-                  "streams()"
-                  "-T"
-                  "bookmarks.map(|b| b ++ ' ')"
-                ];
-                open = [
-                  "log"
-                  "-r"
-                  "open()"
-                ];
-                stack = [
-                  "log"
-                  "-r"
-                  "stack()"
-                ];
-                s = [ "stack" ];
-                yank = [
-                  "rebase"
-                  "--skip-emptied"
-                  "-s"
-                  "all:roots(mutable() & mine())"
-                  "-d"
-                  "trunk()"
                 ];
               };
             };
