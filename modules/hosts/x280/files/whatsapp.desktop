@@ -1,0 +1,10 @@
+[Desktop Entry]
+Categories=AudioVideo;Network
+Comment=Whatsapp
+Exec=firefox --new-window https://web.whatsapp.com
+GenericName=Messenger
+Icon=@icon@
+Name=Whatsapp
+Terminal=false
+Type=Application
+Version=1.5

@@ -7,33 +7,15 @@
   den.hosts.x86_64-linux.x280.users.user = { };
 
   den.aspects.user = {
-    homeManager = {
-      programs.plasma = {
-        fonts = lib.mkForce { };
-
-        input.keyboard.layouts = lib.mkForce [
-          {
-            layout = "be";
-          }
-        ];
-
-        configFile = {
-          plasma-localerc = lib.mkForce {
-            Formats = {
-              LANG = "fr_BE.UTF-8";
-            };
-          };
-        };
-      };
-
-      xdg.desktopEntries = {
+    meta = {
+      desktopEntries = {
         whatsapp = {
           type = "Application";
           name = "Whatsapp";
           genericName = "Messenger";
           comment = "Whatsapp";
           exec = "firefox --new-window https://web.whatsapp.com";
-          icon = ./WhatsApp.svg;
+          icon = ./files/whatsapp.svg;
           terminal = false;
           categories = [
             "AudioVideo"
@@ -46,7 +28,7 @@
           genericName = "Messenger";
           comment = "Google Messages Web";
           exec = "firefox --new-window https://messages.google.com/web/conversations";
-          icon = ./Google_Messages.svg;
+          icon = ./files/google-messages.svg;
           terminal = false;
           categories = [
             "AudioVideo"
@@ -59,7 +41,7 @@
           genericName = "Banking";
           comment = "Crelan Online Banking";
           exec = "firefox --new-window https://mycrelan.crelan.be/";
-          icon = ./crelan.svg;
+          icon = ./files/crelan.svg;
           terminal = false;
           categories = [
             "Network"
@@ -72,7 +54,7 @@
           genericName = "Banking";
           comment = "BNP Paribas Fortis Online Banking";
           exec = "firefox --new-window https://www.bnpparibasfortis.be/en/generic/logon";
-          icon = ./BNP_Paribas.svg;
+          icon = ./files/bnp-paribas-fortis.svg;
           terminal = false;
           categories = [
             "Network"
@@ -80,22 +62,63 @@
           ];
         };
       };
-
-      programs.firefox.languagePacks = lib.mkForce [ "fr" ];
-      programs.firefox.profiles.default.settings."intl.locale.requested" = lib.mkForce "fr,it";
-      programs.firefox.profiles.default.settings."intl.accept_languages" = lib.mkForce "fr,it";
-      programs.firefox.profiles.default.settings."font.name.monospace.x-western" = lib.mkForce "";
-      programs.firefox.profiles.default.settings."font.name.sans-serif.x-western" = lib.mkForce "";
-      programs.firefox.profiles.default.settings."font.name.serif.x-western" = lib.mkForce "";
-
-      programs.thunderbird = {
-        settings = {
-          "intl.locale.requested" = lib.mkForce "fr,it";
-          "intl.accept_languages" = lib.mkForce "fr,it";
-        };
-      };
-
     };
+
+    homeManager =
+      { pkgs, config, ... }:
+      {
+        programs.plasma = {
+          fonts = lib.mkForce { };
+
+          input.keyboard.layouts = lib.mkForce [
+            {
+              layout = "be";
+            }
+          ];
+
+          configFile = {
+            plasma-localerc = lib.mkForce {
+              Formats = {
+                LANG = "fr_BE.UTF-8";
+              };
+            };
+          };
+        };
+
+        home.file = builtins.listToAttrs (
+          builtins.attrValues (
+            builtins.mapAttrs (k: v: {
+              name = "${k}.desktop";
+              value = {
+                force = true;
+                source =
+                  let
+                    desktopFile = (pkgs.makeDesktopItem (v // { desktopName = v.name; }));
+                  in
+                  "${desktopFile}/share/applications/${v.name}.desktop";
+                recursive = true;
+              };
+            }) (den.aspects.user.meta.desktopEntries or { })
+          )
+        );
+
+        xdg.desktopEntries = den.aspects.user.meta.desktopEntries;
+
+        programs.firefox.languagePacks = lib.mkForce [ "fr" ];
+        programs.firefox.profiles.default.settings."intl.locale.requested" = lib.mkForce "fr,it";
+        programs.firefox.profiles.default.settings."intl.accept_languages" = lib.mkForce "fr,it";
+        programs.firefox.profiles.default.settings."font.name.monospace.x-western" = lib.mkForce "";
+        programs.firefox.profiles.default.settings."font.name.sans-serif.x-western" = lib.mkForce "";
+        programs.firefox.profiles.default.settings."font.name.serif.x-western" = lib.mkForce "";
+
+        programs.thunderbird = {
+          settings = {
+            "intl.locale.requested" = lib.mkForce "fr,it";
+            "intl.accept_languages" = lib.mkForce "fr,it";
+          };
+        };
+
+      };
   };
 
   den.aspects.x280 = {

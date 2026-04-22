@@ -1,0 +1,10 @@
+[Desktop Entry]
+Categories=Network;Office
+Comment=BNP Paribas Fortis Online Banking
+Exec=firefox --new-window https://www.bnpparibasfortis.be/en/generic/logon
+GenericName=Banking
+Icon=@icon@
+Name=BNP Paribas Fortis
+Terminal=false
+Type=Application
+Version=1.5

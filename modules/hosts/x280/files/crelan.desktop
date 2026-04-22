@@ -1,0 +1,10 @@
+[Desktop Entry]
+Categories=Network;Office
+Comment=Crelan Online Banking
+Exec=firefox --new-window https://mycrelan.crelan.be/
+GenericName=Banking
+Icon=@icon@
+Name=Crelan
+Terminal=false
+Type=Application
+Version=1.5

@@ -1,0 +1,10 @@
+[Desktop Entry]
+Categories=AudioVideo;Network
+Comment=Google Messages Web
+Exec=firefox --new-window https://messages.google.com/web/conversations
+GenericName=Messenger
+Icon=@icon@
+Name=Messages
+Terminal=false
+Type=Application
+Version=1.5
