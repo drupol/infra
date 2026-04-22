@@ -6,23 +6,8 @@
 {
   den.hosts.x86_64-linux.x280.users.user = { };
 
-  den.aspects.x280 = {
-    provides.to-users = {
-      includes = with den.aspects; [
-        base
-        bluetooth
-        desktop
-        (facter ./facter.json)
-        fwupd
-        openssh
-        sound
-        vpn
-        # Users
-        root
-      ];
-    };
-
-    user = {
+  den.aspects.user = {
+    homeManager = {
       programs.plasma = {
         fonts = lib.mkForce { };
 
@@ -109,6 +94,25 @@
           "intl.accept_languages" = lib.mkForce "fr,it";
         };
       };
+
+    };
+  };
+
+  den.aspects.x280 = {
+    provides.to-users = {
+      includes = with den.aspects; [
+        base
+        bluetooth
+        desktop
+        (facter ./facter.json)
+        fwupd
+        openssh
+        sound
+        vpn
+        # Users
+        root
+        user
+      ];
     };
 
     nixos =
