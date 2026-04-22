@@ -16,9 +16,11 @@
         ];
       };
 
-      user = {
-        initialPassword = "id";
-        openssh.authorizedKeys.keys = config.meta.authorizedKeys;
+      nixos = {
+        users.users.root = {
+          initialPassword = "id";
+          openssh.authorizedKeys.keys = config.meta.authorizedKeys;
+        };
       };
     };
 }
