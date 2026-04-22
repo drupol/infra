@@ -99,6 +99,11 @@
                   "push"
                   "--ignore-immutable"
                 ];
+                sync = [
+                  "git"
+                  "fetch"
+                  "--all-remotes"
+                ];
                 tug = [
                   "bookmark"
                   "advance"
