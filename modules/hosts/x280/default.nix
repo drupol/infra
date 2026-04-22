@@ -65,7 +65,7 @@
     };
 
     homeManager =
-      { pkgs, config, ... }:
+      { pkgs, ... }:
       {
         programs.plasma = {
           fonts = lib.mkForce { };
@@ -88,7 +88,7 @@
         home.file = builtins.listToAttrs (
           builtins.attrValues (
             builtins.mapAttrs (k: v: {
-              name = "${k}.desktop";
+              name = "Desktop/${k}.desktop";
               value = {
                 force = true;
                 source =
