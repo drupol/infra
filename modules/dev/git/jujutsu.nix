@@ -84,7 +84,7 @@
                 ll = [
                   "log"
                   "-T"
-                  "builtin_log_compact"
+                  "builtin_log_comfortable"
                 ];
                 llr = [
                   "ll"
@@ -106,9 +106,18 @@
                 xl = [
                   "log"
                   "-T"
-                  "builtin_log_detailed"
+                  "builtin_log_compact_full_description"
                 ];
                 xlr = [
+                  "xl"
+                  "--reversed"
+                ];
+                xxl = [
+                  "log"
+                  "-T"
+                  "builtin_log_detailed"
+                ];
+                xxlr = [
                   "xl"
                   "--reversed"
                 ];
