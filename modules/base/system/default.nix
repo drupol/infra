@@ -1,5 +1,5 @@
 let
-  stateVersion = "25.11";
+  stateVersion = "26.05";
 in
 {
   den.aspects.base = {
