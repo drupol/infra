@@ -6,7 +6,7 @@
 }:
 {
   flake-file.inputs = {
-    den.url = "github:vic/den";
+    den.url = "github:denful/den/feat/fx-pipeline";
     flake-file.url = "github:vic/flake-file";
   };
 
