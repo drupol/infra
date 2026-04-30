@@ -34,6 +34,7 @@
         shell
         sound
         vpn
+        wifi
         work
       ];
     };
