@@ -114,48 +114,48 @@
                 };
                 show_edit_predictions = true;
               };
-              Python = {
-                language_servers = [
-                  "ty"
-                  "ruff"
-                ];
-                format_on_save = "on";
-                formatter = [
-                  {
-                    code_action = "source.fixAll.ruff";
-                  }
-                  {
-                    code_action = "source.organizeImports.ruff";
-                  }
-                  {
-                    language_server = {
-                      name = "ruff";
-                    };
-                  }
-                ];
-                show_edit_predictions = true;
-              };
+              # Python = {
+              #   language_servers = [
+              #     "ty"
+              #     "ruff"
+              #   ];
+              #   format_on_save = "on";
+              #   formatter = [
+              #     {
+              #       code_action = "source.fixAll.ruff";
+              #     }
+              #     {
+              #       code_action = "source.organizeImports.ruff";
+              #     }
+              #     {
+              #       language_server = {
+              #         name = "ruff";
+              #       };
+              #     }
+              #   ];
+              #   show_edit_predictions = true;
+              # };
             };
             load_direnv = "direct";
             lsp = {
               nixd = {
                 binary.path = lib.getExe pkgs.nixd;
               };
-              ruff = {
-                binary = {
-                  path = lib.getExe pkgs.ruff;
-                  arguments = [ "server" ];
-                };
-              };
+              # ruff = {
+              #   binary = {
+              #     path = lib.getExe pkgs.ruff;
+              #     arguments = [ "server" ];
+              #   };
+              # };
               tinymist = {
                 binary.path = lib.getExe pkgs.tinymist;
               };
-              ty = {
-                binary = {
-                  path = lib.getExe pkgs.ty;
-                  arguments = [ "server" ];
-                };
-              };
+              # ty = {
+              #   binary = {
+              #     path = lib.getExe pkgs.ty;
+              #     arguments = [ "server" ];
+              #   };
+              # };
               typos = {
                 binary.path = lib.getExe pkgs.typos-lsp;
               };
