@@ -1,16 +1,9 @@
 {
-  den,
-  ...
-}:
-{
-  den.aspects.tools.provides.nix-trusted-user = den.lib.take.atLeast (
-    { user, ... }:
-    {
-      includes = [
-        {
-          nixos.nix.settings.trusted-users = [ user.userName ];
-        }
-      ];
-    }
-  );
+  den.aspects.tools.provides.nix-trusted-user = {
+    nixos =
+      { user, ... }:
+      {
+        nix.settings.trusted-users = [ user.userName ];
+      };
+  };
 }
