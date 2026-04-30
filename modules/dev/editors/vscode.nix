@@ -28,6 +28,8 @@
         home.packages = with pkgs; [
           vscode-runner
           lean4
+          json-sort
+          nixfmt
         ];
 
         programs.vscode = {
@@ -53,6 +55,7 @@
                 github.vscode-pull-request-github
                 golang.go
                 jebbs.plantuml
+                jkillian.custom-local-formatters
                 jnoortheen.nix-ide
                 leanprover.lean4
                 mkhl.direnv
