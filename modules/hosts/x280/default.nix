@@ -93,7 +93,7 @@
                 force = true;
                 source =
                   let
-                    desktopFile = (pkgs.makeDesktopItem (v // { desktopName = v.name; }));
+                    desktopFile = pkgs.makeDesktopItem (v // { desktopName = v.name; });
                   in
                   "${desktopFile}/share/applications/${v.name}.desktop";
                 recursive = true;

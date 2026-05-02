@@ -98,7 +98,7 @@
                   "!nil"
                 ];
                 formatter.external = {
-                  command = "${lib.getExe pkgs.nixfmt}";
+                  command = "${lib.getExe pkgs.master.nixfmt-rs}";
                   arguments = [
                     "--quiet"
                     "--"

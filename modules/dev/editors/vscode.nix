@@ -29,7 +29,7 @@
           vscode-runner
           lean4
           json-sort
-          nixfmt
+          master.nixfmt-rs
         ];
 
         programs.vscode = {
@@ -216,7 +216,7 @@
                 "nix.formatterPath" = [ (lib.getExe pkgs.nixfmt) ];
                 "nix.serverPath" = lib.getExe pkgs.nixd;
                 "nix.enableLanguageServer" = true;
-                "nix.serverSettings".nixd.formatting.command = [ (lib.getExe pkgs.nixfmt) ];
+                "nix.serverSettings".nixd.formatting.command = [ (lib.getExe pkgs.master.nixfmt-rs) ];
                 "plantuml.previewSnapIndicators" = true;
                 "plantuml.render" = "Local";
                 "plantuml.server" = "https://www.plantuml.com/plantuml";

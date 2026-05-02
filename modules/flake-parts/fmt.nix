@@ -4,6 +4,7 @@
     git-hooks.url = "github:cachix/git-hooks.nix";
     git-hooks.inputs.nixpkgs.follows = "nixpkgs";
     treefmt-nix.url = "github:numtide/treefmt-nix";
+    nixpkgs-master.url = "github:nixos/nixpkgs/master";
   };
 
   imports = [
@@ -19,7 +20,10 @@
         programs = {
           deadnix.enable = true;
           jsonfmt.enable = true;
-          nixfmt.enable = true;
+          nixfmt = {
+            enable = true;
+            package = pkgs.master.nixfmt-rs;
+          };
           prettier.enable = true;
           shfmt.enable = true;
           statix.enable = true;
