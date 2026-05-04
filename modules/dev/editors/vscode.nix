@@ -1,6 +1,7 @@
 {
   lib,
   den,
+  inputs,
   ...
 }:
 {
@@ -25,6 +26,17 @@
     homeManager =
       { pkgs, ... }:
       {
+        nixpkgs = {
+          overlays = [
+            (final: _prev: {
+              master = import inputs.nixpkgs-master {
+                inherit (final) config;
+                inherit (final) system;
+              };
+            })
+          ];
+        };
+
         home.packages = with pkgs; [
           vscode-runner
           lean4
