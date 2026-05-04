@@ -8,11 +8,11 @@
         settings = {
           # See https://zellij.dev/documentation/options.html
           show_startup_tips = false;
-          default_mode = "locked";
+          # default_mode = "locked";
 
           pane_frames = true;
           simplified_ui = false;
-          default_layout = "default";
+          default_layout = "welcome";
 
           mouse_mode = true;
           copy_on_select = true;
