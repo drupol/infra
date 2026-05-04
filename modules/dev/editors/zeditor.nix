@@ -175,8 +175,8 @@
               metrics = false;
             };
             terminal.env = {
-              EDITOR = "zed --wait";
-              VISUAL = "zed --wait";
+              EDITOR = "zeditor --wait";
+              VISUAL = "zeditor --wait";
             };
             ui_font_family = "Aporetic Sans Mono";
             ui_font_size = 14;
