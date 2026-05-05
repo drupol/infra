@@ -6,8 +6,8 @@
 }:
 {
   flake-file.inputs = {
-    den.url = "github:denful/den/feat/fx-pipeline";
-    flake-file.url = "github:vic/flake-file";
+    den.url = "github:denful/den";
+    flake-file.url = "github:denful/flake-file";
   };
 
   imports = [
@@ -15,6 +15,6 @@
     (inputs.flake-file.flakeModules.dendritic or { })
   ];
 
-  den.ctx.user.includes = [ den._.mutual-provider ];
+  den.schema.user.includes = [ den._.mutual-provider ];
   den.schema.user.classes = lib.mkDefault [ "homeManager" ];
 }
