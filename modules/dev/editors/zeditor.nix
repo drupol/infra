@@ -91,7 +91,11 @@
               enabled = true;
             };
             languages = {
-              Markdown = { };
+              Markdown = {
+                formatter.external = {
+                  command = "${lib.getExe pkgs.oxfmt}";
+                };
+              };
               Nix = {
                 language_servers = [
                   "nixd"

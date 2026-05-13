@@ -41,7 +41,6 @@
           vscode-runner
           lean4
           json-sort
-          master.nixfmt-rs
         ];
 
         programs.vscode = {
@@ -61,7 +60,6 @@
                 dhall.dhall-lang
                 donjayamanne.githistory
                 editorconfig.editorconfig
-                esbenp.prettier-vscode
                 github.copilot-chat
                 github.github-vscode-theme
                 github.vscode-pull-request-github
@@ -84,46 +82,73 @@
                 usernamehw.errorlens
                 yzhang.markdown-all-in-one
                 zhuangtongfa.material-theme
+                (pkgs.vscode-utils.buildVscodeMarketplaceExtension {
+                  mktplcRef = {
+                    name = "oxc-vscode";
+                    publisher = "oxc";
+                    version = "1.55.0";
+                    hash = "sha256-QAuN9Qe1AErcGIbbqsYYO6kikgaEiX0Y3ddnNhuOB6Q=I me";
+                  };
+
+                  nativeBuildInputs = with pkgs; [
+                    jaq
+                    moreutils
+                  ];
+
+                  postInstall = ''
+                    cd "$out/$installPrefix"
+
+                    jaq -e '
+                      .contributes.configuration.properties."oxc.path.oxlint" += {
+                        "default": "${lib.getExe pkgs.oxlint}"
+                      }
+                      |
+                      .contributes.configuration.properties."oxc.path.oxfmt" += {
+                        "default": "${lib.getExe pkgs.oxfmt}"
+                      }
+                    ' package.json | sponge package.json
+                  '';
+                })
               ];
               userSettings = {
                 "[css]" = {
-                  "editor.defaultFormatter" = "esbenp.prettier-vscode";
+                  "editor.defaultFormatter" = "oxc.oxc-vscode";
                 };
                 "[go]" = {
                   "editor.defaultFormatter" = "golang.go";
                 };
                 "[graphql]" = {
-                  "editor.defaultFormatter" = "esbenp.prettier-vscode";
+                  "editor.defaultFormatter" = "oxc.oxc-vscode";
                 };
                 "[handlebars]" = {
-                  "editor.defaultFormatter" = "esbenp.prettier-vscode";
+                  "editor.defaultFormatter" = "oxc.oxc-vscode";
                 };
                 "[html]" = {
-                  "editor.defaultFormatter" = "esbenp.prettier-vscode";
+                  "editor.defaultFormatter" = "oxc.oxc-vscode";
                 };
                 "[javascript]" = {
-                  "editor.defaultFormatter" = "esbenp.prettier-vscode";
+                  "editor.defaultFormatter" = "oxc.oxc-vscode";
                 };
                 "[javascriptreact]" = {
-                  "editor.defaultFormatter" = "esbenp.prettier-vscode";
+                  "editor.defaultFormatter" = "oxc.oxc-vscode";
                 };
                 "[json]" = {
-                  "editor.defaultFormatter" = "esbenp.prettier-vscode";
+                  "editor.defaultFormatter" = "oxc.oxc-vscode";
                 };
                 "[jsonc]" = {
-                  "editor.defaultFormatter" = "esbenp.prettier-vscode";
+                  "editor.defaultFormatter" = "oxc.oxc-vscode";
                 };
                 "[json5]" = {
-                  "editor.defaultFormatter" = "esbenp.prettier-vscode";
+                  "editor.defaultFormatter" = "oxc.oxc-vscode";
                 };
                 "[less]" = {
-                  "editor.defaultFormatter" = "esbenp.prettier-vscode";
+                  "editor.defaultFormatter" = "oxc.oxc-vscode";
                 };
                 "[markdown]" = {
-                  "editor.defaultFormatter" = "esbenp.prettier-vscode";
+                  "editor.defaultFormatter" = "oxc.oxc-vscode";
                 };
                 "[mdx]" = {
-                  "editor.defaultFormatter" = "esbenp.prettier-vscode";
+                  "editor.defaultFormatter" = "oxc.oxc-vscode";
                 };
                 "[nix]" = {
                   "editor.defaultFormatter" = "jnoortheen.nix-ide";
@@ -132,10 +157,10 @@
                   "editor.defaultFormatter" = "bmewburn.vscode-intelephense-client";
                 };
                 "[postcss]" = {
-                  "editor.defaultFormatter" = "esbenp.prettier-vscode";
+                  "editor.defaultFormatter" = "oxc.oxc-vscode";
                 };
                 "[scss]" = {
-                  "editor.defaultFormatter" = "esbenp.prettier-vscode";
+                  "editor.defaultFormatter" = "oxc.oxc-vscode";
                 };
                 "[toml]" = {
                   "editor.defaultFormatter" = "tamasfe.even-better-toml";
@@ -144,16 +169,16 @@
                   "editor.formatOnSave" = false;
                 };
                 "[typescript]" = {
-                  "editor.defaultFormatter" = "esbenp.prettier-vscode";
+                  "editor.defaultFormatter" = "oxc.oxc-vscode";
                 };
                 "[typescriptreact]" = {
-                  "editor.defaultFormatter" = "esbenp.prettier-vscode";
+                  "editor.defaultFormatter" = "oxc.oxc-vscode";
                 };
                 "[typst]" = {
                   "editor.defaultFormatter" = "myriad-dreamin.tinymist";
                 };
                 "[vue]" = {
-                  "editor.defaultFormatter" = "esbenp.prettier-vscode";
+                  "editor.defaultFormatter" = "oxc.oxc-vscode";
                 };
                 "[yaml]" = {
                   "editor.defaultFormatter" = "redhat.vscode-yaml";
@@ -225,10 +250,10 @@
                 };
                 "githubPullRequests.pullBranch" = "always";
                 "markdown.preview.fontFamily" = "'Aporetic Sans Mono'";
-                "nix.formatterPath" = [ (lib.getExe pkgs.nixfmt) ];
+                "nix.formatterPath" = [ (lib.getExe pkgs.master.nixfmt-rs) ];
                 "nix.serverPath" = lib.getExe pkgs.nixd;
                 "nix.enableLanguageServer" = true;
-                "nix.serverSettings".nixd.formatting.command = [ (lib.getExe pkgs.master.nixfmt-rs) ];
+                "nix.serverSettings.nixd.formatting.command" = [ (lib.getExe pkgs.master.nixfmt-rs) ];
                 "plantuml.previewSnapIndicators" = true;
                 "plantuml.render" = "Local";
                 "plantuml.server" = "https://www.plantuml.com/plantuml";
