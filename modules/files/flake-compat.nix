@@ -4,7 +4,10 @@
 }:
 {
   flake-file.inputs = {
-    files.url = "github:mightyiam/files";
+    files = {
+      url = "github:mightyiam/files";
+      flake = false;
+    };
     flake-compat = {
       url = "github:NixOS/flake-compat";
       flake = false;
@@ -12,7 +15,7 @@
   };
 
   imports = [
-    inputs.files.flakeModules.default
+    "${inputs.files}/flake-module.nix"
   ];
 
   perSystem =
