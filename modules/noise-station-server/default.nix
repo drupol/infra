@@ -39,6 +39,7 @@
               security = {
                 secret_key = "11111111111111111111";
               };
+              rendering.renderer_token = "11111111111111111111";
               feature_toggles = {
                 enable = "publicDashboards, panelTimeSettings, timeComparison, timeSeriesTable";
               };
