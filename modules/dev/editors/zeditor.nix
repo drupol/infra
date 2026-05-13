@@ -25,6 +25,7 @@
             "make"
             "material-icon-theme"
             "nix"
+            "oxc"
             "plantuml"
             "ruff"
             "toml"
@@ -92,34 +93,46 @@
             };
             languages = {
               CSS = {
-                formatter.external = {
-                  command = "${lib.getExe pkgs.oxfmt}";
-                };
+                formatter = [
+                  {
+                    language_server.name = "oxfmt";
+                  }
+                ];
               };
               HTML = {
-                formatter.external = {
-                  command = "${lib.getExe pkgs.oxfmt}";
-                };
+                formatter = [
+                  {
+                    language_server.name = "oxfmt";
+                  }
+                ];
               };
               TSX = {
-                formatter.external = {
-                  command = "${lib.getExe pkgs.oxfmt}";
-                };
+                formatter = [
+                  {
+                    language_server.name = "oxfmt";
+                  }
+                ];
               };
               JavaScript = {
-                formatter.external = {
-                  command = "${lib.getExe pkgs.oxfmt}";
-                };
+                formatter = [
+                  {
+                    language_server.name = "oxfmt";
+                  }
+                ];
               };
               JSON = {
-                formatter.external = {
-                  command = "${lib.getExe pkgs.oxfmt}";
-                };
+                formatter = [
+                  {
+                    language_server.name = "oxfmt";
+                  }
+                ];
               };
               Markdown = {
-                formatter.external = {
-                  command = "${lib.getExe pkgs.oxfmt}";
-                };
+                formatter = [
+                  {
+                    language_server.name = "oxfmt";
+                  }
+                ];
               };
               Nix = {
                 language_servers = [
@@ -187,6 +200,16 @@
               # };
               typos = {
                 binary.path = lib.getExe pkgs.typos-lsp;
+              };
+              oxfmt = {
+                binary = {
+                  path = lib.getExe pkgs.oxfmt;
+                  arguments = [ "--lsp" ];
+                };
+                initialization_options.settings = {
+                  fmt.configPath = ".oxfmtrc.json";
+                  run = "onSave";
+                };
               };
             };
             preview_tabs = {
