@@ -48,6 +48,7 @@
               ligatures = true;
             };
             buffer_font_size = 14;
+            cli_default_open_behavior = "new_window";
             edit_predictions = {
               disabled_globs = [
                 "**/.env*"
@@ -215,6 +216,9 @@
             preview_tabs = {
               enabled = true;
               enable_preview_from_file_finder = true;
+            };
+            project_panel = {
+              dock = "left";
             };
             show_edit_predictions = true;
             tabs = {
