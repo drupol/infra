@@ -50,6 +50,7 @@
             buffer_font_size = 14;
             cli_default_open_behavior = "new_window";
             edit_predictions = {
+              provider = "copilot";
               disabled_globs = [
                 "**/.env*"
                 "**/*.pem"
@@ -58,9 +59,6 @@
                 "**/*.crt"
                 "**/secrets.yml"
               ];
-            };
-            features = {
-              edit_prediction_provider = "copilot";
             };
             file_scan_exclusions = [
               "_build"
