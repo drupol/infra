@@ -91,6 +91,31 @@
               enabled = true;
             };
             languages = {
+              CSS = {
+                formatter.external = {
+                  command = "${lib.getExe pkgs.oxfmt}";
+                };
+              };
+              HTML = {
+                formatter.external = {
+                  command = "${lib.getExe pkgs.oxfmt}";
+                };
+              };
+              TSX = {
+                formatter.external = {
+                  command = "${lib.getExe pkgs.oxfmt}";
+                };
+              };
+              JavaScript = {
+                formatter.external = {
+                  command = "${lib.getExe pkgs.oxfmt}";
+                };
+              };
+              JSON = {
+                formatter.external = {
+                  command = "${lib.getExe pkgs.oxfmt}";
+                };
+              };
               Markdown = {
                 formatter.external = {
                   command = "${lib.getExe pkgs.oxfmt}";
