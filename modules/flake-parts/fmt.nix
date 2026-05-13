@@ -23,6 +23,7 @@
             enable = true;
             package = pkgs.unstable.nixfmt-rs;
           };
+          oxfmt.enable = true;
           shfmt.enable = true;
           statix.enable = true;
           yamlfmt.enable = true;
@@ -30,19 +31,10 @@
         settings = {
           on-unmatched = "warn";
           formatter = {
-            "json-sort" = {
+            json-sort = {
               command = lib.getExe pkgs.json-sort;
               options = [ "--fix" ];
               includes = [ "*.json" ];
-            };
-            "oxfmt" = {
-              command = lib.getExe pkgs.oxfmt;
-              includes = [
-                "*.json"
-                "*.yaml"
-                "*.js"
-                "*.md"
-              ];
             };
           };
         };
