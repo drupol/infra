@@ -21,7 +21,7 @@
           jsonfmt.enable = true;
           nixfmt = {
             enable = true;
-            package = pkgs.unstable.nixfmt-rs;
+            package = pkgs.nixfmt-rs;
           };
           oxfmt.enable = true;
           shfmt.enable = true;

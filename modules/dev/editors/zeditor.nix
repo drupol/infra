@@ -139,7 +139,7 @@
                   "!nil"
                 ];
                 formatter.external = {
-                  command = "${lib.getExe pkgs.master.nixfmt-rs}";
+                  command = "${lib.getExe pkgs.nixfmt-rs}";
                   arguments = [
                     "--quiet"
                     "--"
@@ -189,6 +189,18 @@
               #   };
               # };
               tinymist = {
+                initialization_options = {
+                  preview = {
+                    background = {
+                      enabled = true;
+                    };
+                  };
+                };
+                settings = {
+                  exportPdf = "onSave";
+                  outputPath = "$root/$name";
+                  formatterMode = "typstyle";
+                };
                 binary.path = lib.getExe pkgs.tinymist;
               };
               # ty = {

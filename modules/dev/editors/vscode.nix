@@ -1,7 +1,6 @@
 {
   lib,
   den,
-  inputs,
   ...
 }:
 {
@@ -26,17 +25,6 @@
     homeManager =
       { pkgs, ... }:
       {
-        nixpkgs = {
-          overlays = [
-            (final: _prev: {
-              master = import inputs.nixpkgs-master {
-                inherit (final) config;
-                inherit (final) system;
-              };
-            })
-          ];
-        };
-
         home.packages = with pkgs; [
           vscode-runner
           lean4
@@ -98,15 +86,13 @@
                   postInstall = ''
                     cd "$out/$installPrefix"
 
-                    jaq -e '
-                      .contributes.configuration.properties."oxc.path.oxlint" += {
-                        "default": "${lib.getExe pkgs.oxlint}"
-                      }
-                      |
-                      .contributes.configuration.properties."oxc.path.oxfmt" += {
-                        "default": "${lib.getExe pkgs.oxfmt}"
-                      }
-                    ' package.json | sponge package.json
+                    jaq \
+                      --arg oxlint "${lib.getExe pkgs.oxlint}" \
+                      --arg oxfmt "${lib.getExe pkgs.oxfmt}" \
+                      '
+                        .contributes.configuration.properties."oxc.path.oxlint".default = $oxlint |
+                        .contributes.configuration.properties."oxc.path.oxfmt".default = $oxfmt
+                      ' package.json | sponge package.json
                   '';
                 })
               ];
@@ -250,10 +236,10 @@
                 };
                 "githubPullRequests.pullBranch" = "always";
                 "markdown.preview.fontFamily" = "'Aporetic Sans Mono'";
-                "nix.formatterPath" = [ (lib.getExe pkgs.master.nixfmt-rs) ];
+                "nix.formatterPath" = [ (lib.getExe pkgs.nixfmt-rs) ];
                 "nix.serverPath" = lib.getExe pkgs.nixd;
                 "nix.enableLanguageServer" = true;
-                "nix.serverSettings.nixd.formatting.command" = [ (lib.getExe pkgs.master.nixfmt-rs) ];
+                "nix.serverSettings.nixd.formatting.command" = [ (lib.getExe pkgs.nixfmt-rs) ];
                 "plantuml.previewSnapIndicators" = true;
                 "plantuml.render" = "Local";
                 "plantuml.server" = "https://www.plantuml.com/plantuml";
