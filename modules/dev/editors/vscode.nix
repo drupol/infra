@@ -61,6 +61,7 @@
                 ms-vscode-remote.remote-ssh
                 ms-vsliveshare.vsliveshare
                 myriad-dreamin.tinymist
+                oxc.oxc-vscode
                 pkief.material-icon-theme
                 redhat.vscode-yaml
                 redhat.vscode-xml
@@ -70,31 +71,6 @@
                 usernamehw.errorlens
                 yzhang.markdown-all-in-one
                 zhuangtongfa.material-theme
-                (pkgs.vscode-utils.buildVscodeMarketplaceExtension {
-                  mktplcRef = {
-                    name = "oxc-vscode";
-                    publisher = "oxc";
-                    version = "1.55.0";
-                    hash = "sha256-QAuN9Qe1AErcGIbbqsYYO6kikgaEiX0Y3ddnNhuOB6Q=I me";
-                  };
-
-                  nativeBuildInputs = with pkgs; [
-                    jaq
-                    moreutils
-                  ];
-
-                  postInstall = ''
-                    cd "$out/$installPrefix"
-
-                    jaq \
-                      --arg oxlint "${lib.getExe pkgs.oxlint}" \
-                      --arg oxfmt "${lib.getExe pkgs.oxfmt}" \
-                      '
-                        .contributes.configuration.properties."oxc.path.oxlint".default = $oxlint |
-                        .contributes.configuration.properties."oxc.path.oxfmt".default = $oxfmt
-                      ' package.json | sponge package.json
-                  '';
-                })
               ];
               userSettings = {
                 "[css]" = {
