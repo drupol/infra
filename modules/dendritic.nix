@@ -1,6 +1,5 @@
 {
   inputs,
-  den,
   lib,
   ...
 }:
@@ -15,6 +14,5 @@
     (inputs.flake-file.flakeModules.dendritic or { })
   ];
 
-  den.schema.user.includes = [ den._.mutual-provider ];
   den.schema.user.classes = lib.mkDefault [ "homeManager" ];
 }
