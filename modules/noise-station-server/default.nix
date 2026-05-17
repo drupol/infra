@@ -1,7 +1,12 @@
 {
   den.aspects.noise-station-server = {
     nixos =
-      { pkgs, ... }:
+      {
+        pkgs,
+        config,
+        lib,
+        ...
+      }:
       {
         networking.firewall = {
           allowedTCPPorts = [
@@ -10,6 +15,19 @@
             8081 # Image Renderer
           ];
         };
+
+        systemd.services.grafana.serviceConfig.Environment = [
+          "GF_RENDERING_TOKEN=${config.services.grafana.settings.rendering.renderer_token}"
+          "GF_RENDERING_RENDERER_TOKEN=${config.services.grafana.settings.rendering.renderer_token}"
+        ];
+
+        # Set environment variables for grafana-image-renderer service
+        systemd.services.grafana-image-renderer.serviceConfig.Environment =
+          lib.mkIf config.services.grafana-image-renderer.enable
+            [
+              "AUTH_TOKEN=${config.services.grafana.settings.rendering.renderer_token}"
+              "RENDERING_TOKEN=${config.services.grafana.settings.rendering.renderer_token}"
+            ];
 
         services = {
           grafana-image-renderer = {
@@ -39,7 +57,7 @@
               security = {
                 secret_key = "11111111111111111111";
               };
-              rendering.renderer_token = "11111111111111111111";
+              rendering.renderer_token = builtins.hashString "sha256" "11111111111111111111";
               feature_toggles = {
                 enable = "publicDashboards, panelTimeSettings, timeComparison, timeSeriesTable";
               };
