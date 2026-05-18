@@ -12,6 +12,7 @@
           use-xdg-base-directories = true;
           trusted-users = [
             "root"
+            "@wheel"
           ];
           auto-optimise-store = true;
           experimental-features = [
