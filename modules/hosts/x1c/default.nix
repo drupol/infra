@@ -25,8 +25,6 @@
         desktop
         dev
         fwupd
-        lora
-        news
         primary
         shell
         sound
