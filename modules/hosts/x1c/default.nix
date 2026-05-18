@@ -24,18 +24,14 @@
         bluetooth
         desktop
         dev
-        education
         fwupd
-        games
-        email
         lora
-        messaging
         news
+        primary
         shell
         sound
         vpn
         wifi
-        work
       ];
     };
 
