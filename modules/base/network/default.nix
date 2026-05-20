@@ -11,19 +11,12 @@
     nixos = {
       networking = {
         dhcpcd.enable = false;
-
-        networkmanager = {
-          enable = true;
-        };
+        networkmanager.enable = true;
       };
 
-      systemd = {
-        network.wait-online.enable = false;
-      };
-
-      services.resolved = {
-        enable = true;
-      };
+      systemd.network.wait-online.enable = false;
+      boot.initrd.systemd.network.wait-online.enable = false;
+      services.resolved.enable = true;
     };
 
     user = {
