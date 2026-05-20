@@ -5,6 +5,7 @@
 {
   den.aspects.primary = {
     includes = [
+      den.aspects.ai-local
       den.aspects.education
       den.aspects.email
       den.aspects.games
