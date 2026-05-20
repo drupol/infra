@@ -18,7 +18,6 @@
       };
 
       systemd = {
-        services.NetworkManager-wait-online.enable = false;
         network.wait-online.enable = false;
       };
 

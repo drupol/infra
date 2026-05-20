@@ -11,6 +11,7 @@
       den.aspects.lora
       den.aspects.messaging
       den.aspects.news
+      den.aspects.virtualisation
       den.aspects.winbox
       den.aspects.work
     ];

@@ -19,7 +19,6 @@
         dev
         (facter ./facter.json)
         fwupd
-        games
         sound
         vpn
 
