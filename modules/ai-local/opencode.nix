@@ -3,7 +3,6 @@
     homeManager = {
       programs.opencode = {
         enable = true;
-        enableMcpIntegration = true;
         web = {
           enable = false;
         };
