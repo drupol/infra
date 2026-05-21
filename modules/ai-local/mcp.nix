@@ -45,6 +45,10 @@
               command = lib.getExe mcp-server-time;
               enabled = false;
             };
+            thunderbird-mcp = {
+              command = lib.getExe pkgs.thunderbird-mcp;
+              enabled = false;
+            };
           };
         };
       };
