@@ -6,14 +6,6 @@
   den.aspects.ai-local = {
     homeManager =
       { pkgs, ... }:
-      let
-        mcp-server-time = pkgs.mcp-server-time.overrideAttrs {
-          meta.mainProgram = "mcp-server-time";
-        };
-        mcp-server-sequential-thinking = pkgs.mcp-server-sequential-thinking.overrideAttrs {
-          meta.mainProgram = "mcp-server-sequential-thinking";
-        };
-      in
       {
         home.packages = [
           pkgs.influxdb2
@@ -35,7 +27,7 @@
             };
             mcp-server-sequential-thinking = {
               description = "Sequential Thinking MCP server for breaking down problems into structured steps.";
-              command = lib.getExe mcp-server-sequential-thinking;
+              command = lib.getExe pkgs.mcp-server-sequential-thinking;
               args = [ ];
               enabled = false;
             };
@@ -67,7 +59,7 @@
             };
             mcp-server-time = {
               description = "Time MCP server for current time lookups and timezone conversions.";
-              command = lib.getExe mcp-server-time;
+              command = lib.getExe pkgs.mcp-server-time;
               args = [ ];
               enabled = false;
             };
