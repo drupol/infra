@@ -6,12 +6,46 @@
           enable = true;
           host = "0.0.0.0";
           port = 8888;
+          openFirewall = true;
+          environment = {
+            NO_DOCS = "True";
+            NO_REDOC = "True";
+            DISABLE_ADMIN_UI = "True";
+            HOME = "/var/lib/litellm";
+            SCARF_NO_ANALYTICS = "True";
+            XDG_CACHE_HOME = "/var/cache/litellm";
+          };
+          environmentFile = "/home/pol/Code/drupol/litellm-secrets.env";
           settings = {
+            litellm_settings = {
+              check_provider_endpoint = true;
+              drop_params = true;
+            };
+
+            # TODO
+            # vector_store_registry = [
+            #   {
+            #     vector_store_name = "openai";
+            #     litellm_params = {
+            #       api_key = "os.environ/OPENAI_API_KEY";
+            #       custom_llm_provider = "openai";
+            #       vector_store_id = "os.environ/OPENAI_VECTOR_STORE_ID";
+            #     };
+            #   }
+            # ];
+
             model_list = [
               {
-                model_name = "*";
+                model_name = "ChatGPT 5.4 Mini";
                 litellm_params = {
-                  model = "openai/*";
+                  model = "openai/gpt-5.4-mini";
+                  api_key = "os.environ/OPENAI_API_KEY";
+                };
+              }
+              {
+                model_name = "ChatGPT 5.4 Nano";
+                litellm_params = {
+                  model = "openai/gpt-5.4-nano";
                   api_key = "os.environ/OPENAI_API_KEY";
                 };
               }
@@ -30,51 +64,62 @@
                 };
               }
               {
-                model_name = "deepseek-v3";
+                model_name = "ChatGPT embed small";
                 litellm_params = {
-                  model = "github/deepseek-v3";
-                  api_key = "os.environ/GITHUB_API_KEY";
+                  model = "openai/text-embedding-3-small";
+                  api_key = "os.environ/OPENAI_API_KEY";
                 };
               }
               {
-                model_name = "deepseek-r1";
+                model_name = "ChatGPT embed large";
                 litellm_params = {
-                  model = "github/deepseek-r1";
-                  api_key = "os.environ/GITHUB_API_KEY";
+                  model = "openai/text-embedding-3-large";
+                  api_key = "os.environ/OPENAI_API_KEY";
                 };
               }
               {
-                model_name = "Llama-3.3-70B-Instruct";
+                model_name = "Copilot text-embedding-3-small";
+                model_info = {
+                  mode = "embedding";
+                };
                 litellm_params = {
-                  model = "github/Llama-3.3-70B-Instruct";
-                  api_key = "os.environ/GITHUB_API_KEY";
+                  model = "github_copilot/text-embedding-3-small";
+                  extra_headers = {
+                    editor-plugin-version = "copilot/1.388.0";
+                    editor-version = "vscode/1.106.2";
+                  };
                 };
               }
               {
-                model_name = "Gemini 3.1 pro preview";
+                model_name = "Copilot text-embedding-3-large";
+                model_info = {
+                  mode = "embedding";
+                };
                 litellm_params = {
-                  model = "gemini/gemini-3.1-pro-preview";
-                  api_key = "os.environ/GEMINI_API_KEY";
+                  model = "github_copilot/text-embedding-3-large";
+                  extra_headers = {
+                    editor-plugin-version = "copilot/1.388.0";
+                    editor-version = "vscode/1.106.2";
+                  };
                 };
               }
-              {
-                model_name = "Gemini 3.1 Flash Lite Preview";
-                litellm_params = {
-                  model = "gemini/gemini-3.1-flash-lite-preview";
-                  api_key = "os.environ/GEMINI_API_KEY";
+            ]
+            ++ (
+              let
+                copilotModel = name: {
+                  model_name = "Copilot " + builtins.replaceStrings [ "." ] [ "-" ] name;
+                  litellm_params = {
+                    model = "github_copilot/${name}";
+                    extra_headers = {
+                      "editor-version" = "vscode/1.106.2";
+                      "Copilot-Integration-Id" = "vscode-chat";
+                    };
+                  };
                 };
-              }
-              {
-                model_name = "mistral/open-mistral-nemo";
-                litellm_params = {
-                  model = "mistral/open-mistral-nemo";
-                  api_key = "os.environ/MISTRAL_API_KEY";
-                };
-              }
-            ];
+              in
+              map copilotModel (import ./_copilot.nix)
+            );
           };
-          environmentFile = "/home/pol/Code/drupol/litellm-secrets.env";
-          openFirewall = true;
         };
       };
     };

@@ -32,6 +32,7 @@
             "ty"
             "typos"
             "typst"
+            "xml"
           ];
           userSettings = {
             auto_update = false;
