@@ -5,7 +5,7 @@
 {
   den.aspects.ai-local = {
     homeManager =
-      { pkgs, ... }:
+      { pkgs, config, ... }:
       {
         home.packages = [
           pkgs.influxdb2
@@ -36,6 +36,9 @@
               command = lib.getExe pkgs.mcp-server-memory;
               args = [ ];
               enabled = false;
+              env = {
+                MEMORY_FILE_PATH = "${config.xdg.configHome}/mcp/memory.jsonl";
+              };
             };
             mcp-server-git = {
               description = "Git MCP server for inspecting repositories and managing version control operations.";
@@ -46,7 +49,9 @@
             mcp-server-filesystem = {
               description = "Filesystem MCP server for listing, reading, and modifying files and directories.";
               command = lib.getExe pkgs.mcp-server-filesystem;
-              args = [ ];
+              args = [
+                config.home.homeDirectory
+              ];
               enabled = false;
             };
             mcp-server-fetch = {
