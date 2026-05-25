@@ -1,11 +1,19 @@
 {
+  inputs,
+  lib,
+  ...
+}:
+{
   den.aspects.base = {
     nixos = {
       nix = {
         # See https://discourse.nixos.org/t/24-05-add-flake-to-nix-path/46310/9
         # See https://hachyderm.io/@leftpaddotpy/112539055867932912
         channel.enable = false;
-        nixPath = [ "nixpkgs=flake:nixpkgs" ];
+        registry = {
+          nixpkgs.flake = inputs.nixpkgs;
+        };
+        nixPath = lib.mapAttrsToList (n: _: "${n}=flake:${n}") (lib.filterAttrs (_: lib.isType "flake") inputs);
 
         optimise.automatic = true;
         settings = {
