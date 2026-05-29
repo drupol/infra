@@ -215,7 +215,6 @@
                 "nix.formatterPath" = [ (lib.getExe pkgs.nixfmt-rs) ];
                 "nix.serverPath" = lib.getExe pkgs.nixd;
                 "nix.enableLanguageServer" = true;
-                "nix.serverSettings.nixd.formatting.command" = [ (lib.getExe pkgs.nixfmt-rs) ];
                 "plantuml.previewSnapIndicators" = true;
                 "plantuml.render" = "Local";
                 "plantuml.server" = "https://www.plantuml.com/plantuml";
@@ -249,7 +248,7 @@
                 "window.titleBarStyle" = "custom";
                 "window.zoomLevel" = 0;
                 "workbench.colorCustomizations" = { };
-                "workbench.colorTheme" = "GitHub Dark Default";
+                "workbench.colorTheme" = "Dark 2026";
                 "workbench.commandPalette.experimental.suggestCommands" = true;
                 "workbench.editor.enablePreview" = true; # Prevents temporary editor tabs
                 "workbench.editor.highlightModifiedTabs" = true;
