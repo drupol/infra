@@ -26,6 +26,7 @@
         dev
         fwupd
         primary
+        reticulum
         shell
         sound
         vpn
