@@ -12,7 +12,36 @@
       ])
     ];
 
-    nixos = {
+    nixos = { pkgs, ...}: {
+      imports = [
+        inputs.infra-private.nixosModules.reticulum-server
+        ./_rnsd-service.nix
+        ./_lxmd-service.nix
+      ];
+
+      nixpkgs = {
+        overlays = [
+          (final: _prev: {
+            master = import inputs.nixpkgs-master {
+              inherit (final) config;
+              inherit (final) system;
+            };
+          })
+        ];
+      };
+
+      services.rnsd = {
+        enable = true;
+        package = pkgs.master.rns;
+      };
+
+      services.lxmd = {
+        enable = true;
+        package = pkgs.master.python3Packages.lxmf.override {
+          propagateRns = true;
+        };
+      };
+
       networking.firewall.allowedTCPPorts = [
         4242
       ];
@@ -20,11 +49,6 @@
 
     homeManager =
       { pkgs, system, ... }:
-      let
-        lxmf = pkgs.master.python3Packages.lxmf.override {
-          propagateRns = true;
-        };
-      in
       {
         nixpkgs = {
           overlays = [
@@ -38,35 +62,10 @@
         };
 
         home.packages =
-          with pkgs.master.python3Packages;
+          with pkgs.master;
           [
             rns
-          ]
-          ++ [ lxmf ];
-
-        systemd.user.services.rnsd = {
-          Unit = {
-            Description = "Reticulum service";
-          };
-
-          Service = {
-            Type = "simple";
-            ExecStart = "${pkgs.master.rns}/bin/rnsd --service --verbose";
-            Restart = "always";
-          };
-        };
-
-        systemd.user.services.lxmf = {
-          Unit = {
-            Description = "Reticulum LXMD service";
-          };
-
-          Service = {
-            Type = "simple";
-            ExecStart = "${lxmf}/bin/lxmd --service --verbose";
-            Restart = "always";
-          };
-        };
+          ];
 
         systemd.user.services.rnsh = {
           Unit = {
