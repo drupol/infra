@@ -24,7 +24,13 @@ in
         description = "Path for lxmd state directory.";
       };
 
-      configFile = lib.mkOption {
+      rnsdConfigDir = lib.mkOption {
+        type = lib.types.path;
+        default = cfg.dataDir;
+        description = "Path to rnsd configuration directory.";
+      };
+
+      lxmdConfigFile = lib.mkOption {
         type = lib.types.path;
         description = "Path to lxmd configuration file. This file will be copied to the dataDir on service start.";
       };
@@ -52,7 +58,7 @@ in
           copyConfig = pkgs.writeShellApplication {
             name = "lxmd-copy-config-files";
             text = ''
-              install -Dm644 ${cfg.configFile} ${cfg.dataDir}/config
+              install -Dm644 ${cfg.lxmdConfigFile} ${cfg.dataDir}/config
               install -Dm644 ${cfg.identityFile} ${cfg.dataDir}/identity
             '';
           };
@@ -65,7 +71,7 @@ in
           DynamicUser = true;
 
           ExecStartPre = lib.getExe copyConfig;
-          ExecStart = "${cfg.package}/bin/lxmd --verbose --config ${cfg.dataDir}";
+          ExecStart = "${cfg.package}/bin/lxmd --verbose --config ${cfg.dataDir} --rnsconfig ${cfg.rnsdConfigDir}";
         };
     };
   };
