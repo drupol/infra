@@ -65,7 +65,7 @@ in
           DynamicUser = true;
 
           ExecStartPre = lib.getExe copyConfig;
-          ExecStart = "${cfg.package}/bin/lxmd --service --verbose --config ${cfg.dataDir}";
+          ExecStart = "${cfg.package}/bin/lxmd --verbose --config ${cfg.dataDir}";
         };
     };
   };

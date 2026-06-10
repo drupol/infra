@@ -72,7 +72,7 @@ in
           DynamicUser = true;
 
           ExecStartPre = lib.getExe copyConfig;
-          ExecStart = "${cfg.package}/bin/rnsd --service --verbose --config ${cfg.dataDir}";
+          ExecStart = "${cfg.package}/bin/rnsd --verbose --config ${cfg.dataDir}";
         };
     };
   };
