@@ -12,42 +12,43 @@
       ])
     ];
 
-    nixos = {
-      # imports = [
-      #   inputs.infra-private.nixosModules.reticulum-server
-      #   ./_rnsd-service.nix
-      #   ./_lxmd-service.nix
-      # ];
+    nixos =
+      { pkgs, ... }:
+      {
+        imports = [
+          inputs.infra-private.nixosModules.reticulum-server
+          ./_rnsd-service.nix
+          ./_lxmd-service.nix
+        ];
 
-      # nixpkgs = {
-      #   overlays = [
-      #     (final: _prev: {
-      #       master = import inputs.nixpkgs-master {
-      #         inherit (final) config;
-      #         inherit (final) system;
-      #       };
-      #     })
-      #   ];
-      # };
+        nixpkgs = {
+          overlays = [
+            (final: _prev: {
+              master = import inputs.nixpkgs-master {
+                inherit (final) config;
+                inherit (final) system;
+              };
+            })
+          ];
+        };
 
-      # TODO: On hold for the moment
-      # TODO: Find a way to share the /var/lib/rnsd directory between the rnsd service and the lxmd service
-      # services.rnsd = {
-      #   enable = false;
-      #   package = pkgs.master.rns;
-      # };
+        services.rnsd = {
+          enable = true;
+          package = pkgs.master.rns;
+          extraGroups = [ "dialout" ];
+        };
 
-      # services.lxmd = {
-      #   enable = false;
-      #   package = pkgs.master.python3Packages.lxmf.override {
-      #     propagateRns = true;
-      #   };
-      # };
+        services.lxmd = {
+          enable = true;
+          package = pkgs.master.python3Packages.lxmf.override {
+            propagateRns = true;
+          };
+        };
 
-      networking.firewall.allowedTCPPorts = [
-        4242
-      ];
-    };
+        networking.firewall.allowedTCPPorts = [
+          4242
+        ];
+      };
 
     homeManager =
       { pkgs, system, ... }:
@@ -74,30 +75,6 @@
             rns
           ]
           ++ [ lxmf ];
-
-        systemd.user.services.rnsd = {
-          Unit = {
-            Description = "Reticulum service";
-          };
-
-          Service = {
-            Type = "simple";
-            ExecStart = "${pkgs.master.rns}/bin/rnsd --verbose";
-            Restart = "always";
-          };
-        };
-
-        systemd.user.services.lxmf = {
-          Unit = {
-            Description = "Reticulum LXMD service";
-          };
-
-          Service = {
-            Type = "simple";
-            ExecStart = "${lxmf}/bin/lxmd --verbose --rnsconfig /home/pol/.config/reticulum";
-            Restart = "always";
-          };
-        };
 
         systemd.user.services.rnsh = {
           Unit = {
