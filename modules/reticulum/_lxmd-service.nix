@@ -105,7 +105,7 @@ in
 
           ExecStartPre = lib.getExe copyConfig;
           ExecStart =
-            "${cfg.package}/bin/lxmd --verbose --config ${cfg.dataDir}"
+            "${lib.getExe cfg.package} --verbose --config ${cfg.dataDir}"
             + lib.optionalString config.services.rnsd.enable " --rnsconfig ${config.services.rnsd.dataDir}";
         };
     };

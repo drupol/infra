@@ -29,6 +29,12 @@
                 inherit (final) system;
               };
             })
+            (final: _prev: {
+              nixpkgs-unstable = import inputs.nixpkgs-unstable {
+                inherit (final) config;
+                inherit (final) system;
+              };
+            })
           ];
         };
 
@@ -40,9 +46,7 @@
 
         services.lxmd = {
           enable = true;
-          package = pkgs.master.python3Packages.lxmf.override {
-            propagateRns = true;
-          };
+          package = pkgs.nixpkgs-unstable.rs-lxmf;
         };
 
         networking.firewall.allowedTCPPorts = [
