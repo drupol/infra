@@ -62,6 +62,12 @@
 
         hardware = {
           cpu.intel.npu.enable = true;
+          bluetooth.settings = {
+            General = {
+              ControllerMode = "dual";
+              Experimental = true;
+            };
+          };
         };
 
         # From https://wiki.nixos.org/wiki/Accelerated_Video_Playback
