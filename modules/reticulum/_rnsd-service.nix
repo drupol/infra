@@ -18,41 +18,15 @@ in
       enable = mkEnableOption "Enable rnsd";
       package = mkPackageOption pkgs "rns" { };
 
-      user = mkOption {
-        type =
-          with lib.types;
-          oneOf [
-            str
-            int
-          ];
-        default = "rnsd";
-        description = "The user rnsd will run as.";
-      };
-
-      group = mkOption {
-        type =
-          with lib.types;
-          oneOf [
-            str
-            int
-          ];
-        default = "reticulum";
-        description = "The group rnsd will run with.";
-      };
-
-      dataDir = mkOption {
-        type = lib.types.path;
-        default = "/var/lib/reticulum/rnsd";
-        description = "Path for rnsd state directory.";
-      };
-
       configFile = lib.mkOption {
-        type = lib.types.path;
+        type = lib.types.nullOr lib.types.str;
+        default = null;
         description = "Path to rnsd configuration file. This file will be copied to the dataDir on service start. Use `rnsd --exampleconfig` to get an example config file.";
       };
 
       transportIdentityFile = lib.mkOption {
-        type = lib.types.str;
+        type = lib.types.nullOr lib.types.str;
+        default = null;
         description = "Path to rnsd identity file. This file will be copied to the dataDir on service start.";
       };
 
@@ -61,50 +35,75 @@ in
         default = [ ];
         description = "Additional groups for the rnsd service user. E.g., add the `dialout` group to allow rnsd to access serial devices (e.g., `/dev/ttyACM0`).";
       };
+
+      healthCheck = {
+        enable = mkEnableOption "wait for rnsd to become healthy after startup";
+
+        intervalSeconds = mkOption {
+          type = lib.types.ints.positive;
+          default = 2;
+          description = "Delay in seconds between each `rnstatus` health check attempt.";
+        };
+
+        timeoutSeconds = mkOption {
+          type = lib.types.ints.positive;
+          default = 120;
+          description = "Maximum time in seconds to wait for `rnstatus` to succeed during startup.";
+        };
+      };
     };
   };
 
   config = lib.mkIf cfg.enable {
-    users.groups.${cfg.group} = { };
-    users.users.${cfg.user} = {
-      inherit (cfg) group;
-      description = "rnsd user";
-      isSystemUser = true;
-      home = cfg.dataDir;
-      createHome = true;
-    };
-
     systemd.services.rnsd = {
-      enable = true;
       description = "Reticulum Network Stack Daemon";
-      after = [ "network.target" ];
-      wants = [ "network-online.target" ];
-
-      environment = {
-        HOME = cfg.dataDir;
-      };
-
-      preStart = ''
-        mkdir -p "${cfg.dataDir}"
-      '';
+      wantedBy = [ "multi-user.target" ];
+      after = [
+        "network.target"
+      ];
 
       serviceConfig =
         let
           copyConfig = pkgs.writeShellApplication {
             name = "rnsd-copy-config-files";
+            text =
+              lib.optionalString (cfg.configFile != null) ''
+                install -Dm400 ${cfg.configFile} "$STATE_DIRECTORY"/config
+              ''
+              + lib.optionalString (cfg.transportIdentityFile != null) ''
+                install -Dm400 ${cfg.transportIdentityFile} "$STATE_DIRECTORY"/storage/transport_identity
+              '';
+          };
+
+          waitForHealthy = pkgs.writeShellApplication {
+            name = "rnsd-wait-for-health";
             text = ''
-              install -Dm400 ${cfg.configFile} ${cfg.dataDir}/config
-              install -Dm400 ${cfg.transportIdentityFile} ${cfg.dataDir}/storage/transport_identity
+              deadline=$((SECONDS + ${toString cfg.healthCheck.timeoutSeconds}))
+
+              until ${cfg.package}/bin/rnstatus >/dev/null 2>&1; do
+                if [ "$SECONDS" -ge "$deadline" ]; then
+                  echo "rnsd did not become healthy before timeout (${toString cfg.healthCheck.timeoutSeconds}s)" >&2
+                  exit 1
+                fi
+
+                sleep ${toString cfg.healthCheck.intervalSeconds}
+              done
             '';
           };
         in
         {
+          DynamicUser = true;
+          StateDirectory = "rnsd";
           SupplementaryGroups = cfg.extraGroups;
-          RuntimeDirectory = baseNameOf cfg.dataDir;
-          CacheDirectory = baseNameOf cfg.dataDir;
+          RuntimeDirectory = "rnsd";
+          CacheDirectory = "rnsd";
 
           ExecStartPre = lib.getExe copyConfig;
-          ExecStart = "${cfg.package}/bin/rnsd --verbose --config ${cfg.dataDir}";
+          ExecStart = "${cfg.package}/bin/rnsd --verbose --config $STATE_DIRECTORY";
+        }
+        // lib.optionalAttrs cfg.healthCheck.enable {
+          ExecStartPost = lib.getExe waitForHealthy;
+          TimeoutStartSec = cfg.healthCheck.timeoutSeconds + 5;
         };
     };
   };

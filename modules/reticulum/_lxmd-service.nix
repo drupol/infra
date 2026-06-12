@@ -18,42 +18,22 @@ in
       enable = mkEnableOption "Enable lxmd";
       package = mkPackageOption pkgs [ "python3Packages" "lxmf" ] { };
 
-      user = mkOption {
-        type =
-          with lib.types;
-          oneOf [
-            str
-            int
-          ];
-        default = "lxmd";
-        description = "The user lxmd will run as.";
-      };
-
-      group = mkOption {
-        type =
-          with lib.types;
-          oneOf [
-            str
-            int
-          ];
-        default = "reticulum";
-        description = "The group lxmd will run with.";
-      };
-
-      dataDir = mkOption {
-        type = lib.types.path;
-        default = "/var/lib/reticulum/lxmf";
-        description = "Path for lxmd state directory.";
+      rnsdConfigFile = lib.mkOption {
+        type = lib.types.nullOr lib.types.path;
+        default = null;
+        description = "Path to rnsd configuration file. This file will be copied to the stateDir on service start. Use `rnsd --exampleconfig` to get an example config file.";
       };
 
       configFile = lib.mkOption {
-        type = lib.types.path;
-        description = "Path to lxmd configuration file. This file will be copied to the dataDir on service start.";
+        type = lib.types.nullOr lib.types.path;
+        default = null;
+        description = "Path to lxmd configuration file. This file will be copied to the stateDir on service start.";
       };
 
       identityFile = lib.mkOption {
-        type = lib.types.path;
-        description = "Path to lxmd identity file. This file will be copied to the dataDir on service start.";
+        type = lib.types.nullOr lib.types.path;
+        default = null;
+        description = "Path to lxmd identity file. This file will be copied to the stateDir on service start.";
       };
 
       extraGroups = mkOption {
@@ -65,48 +45,36 @@ in
   };
 
   config = lib.mkIf cfg.enable {
-    users.groups.${cfg.group} = { };
-    users.users.${cfg.user} = {
-      inherit (cfg) group;
-      description = "lxmd user";
-      isSystemUser = true;
-      home = cfg.dataDir;
-      createHome = true;
-    };
-
     systemd.services.lxmd = {
-      enable = true;
       description = "Reticulum Network Lightweight Extensible Message Format Daemon";
       after = lib.optionals config.services.rnsd.enable [ "rnsd.service" ];
-      wants = lib.optionals config.services.rnsd.enable [ "rnsd.service" ];
-
-      environment = {
-        HOME = cfg.dataDir;
-      };
-
-      preStart = ''
-        mkdir -p "${cfg.dataDir}"
-      '';
 
       serviceConfig =
         let
           copyConfig = pkgs.writeShellApplication {
             name = "lxmd-copy-config-files";
-            text = ''
-              install -Dm400 ${cfg.configFile} ${cfg.dataDir}/config
-              install -Dm400 ${cfg.identityFile} ${cfg.dataDir}/identity
-            '';
+            text = lib.optionalString (cfg.rnsdConfigFile != null) ''
+                install -Dm400 ${cfg.rnsdConfigFile} "$STATE_DIRECTORY"/rnsd/config
+              '' +
+              lib.optionalString (cfg.configFile != null) ''
+                install -Dm400 ${cfg.configFile} "$STATE_DIRECTORY"/lxmd/config
+              ''
+              + lib.optionalString (cfg.identityFile != null) ''
+                install -Dm400 ${cfg.identityFile} "$STATE_DIRECTORY"/lxmd/identity
+              '';
           };
         in
         {
+          DynamicUser = true;
+          StateDirectory = "lxmd";
           SupplementaryGroups = cfg.extraGroups;
-          RuntimeDirectory = baseNameOf cfg.dataDir;
-          CacheDirectory = baseNameOf cfg.dataDir;
+          RuntimeDirectory = "lxmd";
+          CacheDirectory = "lxmd";
 
           ExecStartPre = lib.getExe copyConfig;
-          ExecStart =
-            "${cfg.package}/bin/lxmd --verbose --config ${cfg.dataDir}"
-            + lib.optionalString config.services.rnsd.enable " --rnsconfig ${config.services.rnsd.dataDir}";
+          ExecStart = ''
+            ${lib.getExe cfg.package} --verbose --config ''${STATE_DIRECTORY}/lxmd --rnsconfig ''${STATE_DIRECTORY}/rnsd
+          '';
         };
     };
   };
