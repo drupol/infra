@@ -21,26 +21,15 @@
           ./_lxmd-service.nix
         ];
 
-        nixpkgs = {
-          overlays = [
-            (final: _prev: {
-              master = import inputs.nixpkgs-master {
-                inherit (final) config;
-                inherit (final) system;
-              };
-            })
-          ];
-        };
-
         services.rnsd = {
           enable = true;
-          package = pkgs.master.rns;
+          package = pkgs.rns;
           extraGroups = [ "dialout" ];
         };
 
         services.lxmd = {
           enable = true;
-          package = pkgs.master.python3Packages.lxmf.override {
+          package = pkgs.python3Packages.lxmf.override {
             propagateRns = true;
           };
         };
@@ -51,24 +40,13 @@
       };
 
     homeManager =
-      { pkgs, system, ... }:
+      { pkgs, ... }:
       let
-        lxmf = pkgs.master.python3Packages.lxmf.override {
+        lxmf = pkgs.python3Packages.lxmf.override {
           propagateRns = true;
         };
       in
       {
-        nixpkgs = {
-          overlays = [
-            (final: _prev: {
-              master = import inputs.nixpkgs-master {
-                inherit (final) config;
-                inherit system;
-              };
-            })
-          ];
-        };
-
         home.packages =
           with pkgs;
           [
@@ -83,7 +61,7 @@
 
           Service = {
             Type = "simple";
-            ExecStart = "${pkgs.master.rns}/bin/rnsh -l -a afcdd5bf95ede3ba04cb4a946da866fb -- /bin/sh";
+            ExecStart = "${pkgs.rns}/bin/rnsh -l -a afcdd5bf95ede3ba04cb4a946da866fb -- /bin/sh";
             Restart = "always";
           };
         };
