@@ -1,6 +1,5 @@
 {
   den,
-  inputs,
   ...
 }:
 {
@@ -13,21 +12,14 @@
     ];
 
     homeManager =
-      { pkgs, lib, system, ... }:
       {
-        nixpkgs = {
-          overlays = [
-            (final: _prev: {
-              master = import inputs.nixpkgs-master {
-                inherit (final) config;
-                inherit system;
-              };
-            })
-          ];
-        };
-
+        pkgs,
+        lib,
+        ...
+      }:
+      {
         home.packages = [
-          pkgs.master.pkgsi686Linux.etlegacy
+          pkgs.pkgsi686Linux.etlegacy
         ];
 
         xdg.desktopEntries.et-fr-beginner-xps = {
@@ -40,7 +32,7 @@
 
         xdg.desktopEntries.et-fr-jaymod-xps = {
           name = "Enemy Territory @ Jaymod";
-          exec = "${lib.getExe pkgs.master.pkgsi686Linux.etlegacy} +connect 77.202.125.157:27962";
+          exec = "${lib.getExe pkgs.pkgsi686Linux.etlegacy} +connect 77.202.125.157:27962";
           icon = "etl";
           categories = [ "Game" ];
           terminal = false;
