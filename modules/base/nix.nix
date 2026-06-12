@@ -13,7 +13,9 @@
         registry = {
           nixpkgs.flake = inputs.nixpkgs;
         };
-        nixPath = lib.mapAttrsToList (n: _: "${n}=flake:${n}") (lib.filterAttrs (_: lib.isType "flake") inputs);
+        nixPath = lib.mapAttrsToList (n: _: "${n}=flake:${n}") (
+          lib.filterAttrs (_: lib.isType "flake") inputs
+        );
 
         optimise.automatic = true;
         settings = {
