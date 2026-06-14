@@ -8,15 +8,11 @@
     includes = [
       (den.provides.unfree [
         "lxmf"
+        "lxst"
         "rns"
+        "sideband"
       ])
     ];
-
-    nixos = {
-      networking.firewall.allowedTCPPorts = [
-        4242
-      ];
-    };
 
     homeManager =
       { pkgs, system, ... }:
@@ -32,9 +28,10 @@
           ];
         };
 
-        home.packages = with pkgs.master.python3Packages; [
-          nomadnet
+        home.packages = with pkgs; [
+          master.nomadnet
           rns
+          master.sideband
         ];
       };
   };
