@@ -6,6 +6,8 @@
 }:
 let
   cfg = config.services.lxmd;
+  settingsFormat = (import ./formats/configobj/_default.nix { inherit pkgs lib; }).format { };
+
   inherit (lib)
     mkEnableOption
     mkOption
@@ -18,16 +20,16 @@ in
       enable = mkEnableOption "Enable lxmd";
       package = mkPackageOption pkgs [ "python3Packages" "lxmf" ] { };
 
-      rnsdConfigFile = lib.mkOption {
-        type = lib.types.nullOr lib.types.path;
+      settings = lib.mkOption {
+        type = lib.types.nullOr settingsFormat.type;
         default = null;
-        description = "Path to rnsd configuration file. This file will be copied to the stateDir on service start. Use `rnsd --exampleconfig` to get an example config file.";
+        description = "Structured lxmd configuration. The generated file is copied to the dataDir on service start. Use `lxmd --exampleconfig` to get an example config file.";
       };
 
-      configFile = lib.mkOption {
-        type = lib.types.nullOr lib.types.path;
+      rnsdSettings = lib.mkOption {
+        type = lib.types.nullOr settingsFormat.type;
         default = null;
-        description = "Path to lxmd configuration file. This file will be copied to the stateDir on service start.";
+        description = "Structured rnsd configuration. The generated file is copied to the dataDir on service start. Use `rnsd --exampleconfig` to get an example config file.";
       };
 
       identityFile = lib.mkOption {
@@ -53,11 +55,12 @@ in
         let
           copyConfig = pkgs.writeShellApplication {
             name = "lxmd-copy-config-files";
-            text = lib.optionalString (cfg.rnsdConfigFile != null) ''
-                install -Dm400 ${cfg.rnsdConfigFile} "$STATE_DIRECTORY"/rnsd/config
-              '' +
-              lib.optionalString (cfg.configFile != null) ''
-                install -Dm400 ${cfg.configFile} "$STATE_DIRECTORY"/lxmd/config
+            text =
+              lib.optionalString (cfg.rnsdSettings != null) ''
+                install -Dm400 ${settingsFormat.generate "rnsd.conf" cfg.rnsdSettings} "$STATE_DIRECTORY"/rnsd/config
+              ''
+              + lib.optionalString (cfg.settings != null) ''
+                install -Dm400 ${settingsFormat.generate "lxmd.conf" cfg.settings} "$STATE_DIRECTORY"/lxmd/config
               ''
               + lib.optionalString (cfg.identityFile != null) ''
                 install -Dm400 ${cfg.identityFile} "$STATE_DIRECTORY"/lxmd/identity

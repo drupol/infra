@@ -53,10 +53,11 @@ in
         let
           copyConfig = pkgs.writeShellApplication {
             name = "nomadnet-copy-config-files";
-            text = lib.optionalString (cfg.rnsdConfigFile != null) ''
+            text =
+              lib.optionalString (cfg.rnsdConfigFile != null) ''
                 install -Dm400 ${cfg.rnsdConfigFile} "$STATE_DIRECTORY"/rnsd/config
-              '' +
-              lib.optionalString (cfg.configFile != null) ''
+              ''
+              + lib.optionalString (cfg.configFile != null) ''
                 install -Dm400 ${cfg.configFile} "$STATE_DIRECTORY"/nomadnet/config
               ''
               + lib.optionalString (cfg.identityFile != null) ''

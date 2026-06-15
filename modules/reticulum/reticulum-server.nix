@@ -14,6 +14,68 @@
 
     nixos =
       { pkgs, ... }:
+      let
+        rnsdSettings = {
+          reticulum = {
+            enable_transport = true;
+            share_instance = true;
+            instance_name = "default";
+            shared_instance_type = "unix";
+            discover_interfaces = true;
+            panic_on_interface_error = true;
+            publish_blackhole = true;
+            blackhole_sources = [
+              "521c87a83afb8f29e4455e77930b973b"
+              "68a4aa91ac350c4087564e8a69f84e86"
+            ];
+            blackhole_update_interval = 60;
+            logging = {
+              loglevel = 3;
+              logtimestamps = false;
+            };
+          };
+          interfaces = {
+            "RNode LoRa Interface" = {
+              type = "RNodeInterface";
+              enabled = true;
+              discoverable = true;
+              mode = "full";
+              port = "/dev/ttyACM0";
+              frequency = 869525000;
+              bandwidth = 250000;
+              txpower = 22;
+              spreadingfactor = 11;
+              codingrate = 5;
+              latitude = 50.597463;
+              longitude = 4.323678;
+              height = 50;
+              discovery_name = "Apollora Node";
+              announce_interval = 420;
+              airtime_limit_long = 10;
+            };
+            "rns.not-a-number.io" = {
+              type = "BackboneInterface";
+              enabled = true;
+              mode = "gateway";
+              discoverable = true;
+              listen_ip = "0.0.0.0";
+              listen_port = 4242;
+              reachable_on = "rns.not-a-number.io";
+              discovery_name = "Apollo RNS";
+              announce_interval = 420;
+              latitude = 50.597463;
+              longitude = 4.323678;
+              height = 50;
+            };
+            "RMap World" = {
+              type = "TCPClientInterface";
+              enabled = true;
+              target_host = "rmap.world";
+              target_port = 4242;
+            };
+          };
+        };
+      in
       {
         imports = [
           inputs.infra-private.nixosModules.reticulum-server
@@ -24,11 +86,38 @@
         services.rnsd = {
           enable = true;
           package = pkgs.rns;
+          settings = rnsdSettings;
           extraGroups = [ "dialout" ];
         };
 
         services.lxmd = {
           enable = true;
+          settings = {
+            propagation = {
+              enable_node = true;
+              node_name = "Apollo Propagation Node";
+              announce_interval = 420;
+              announce_at_start = true;
+              autopeer = true;
+              autopeer_maxdepth = 6;
+              propagation_message_max_accepted_size = 1024;
+              max_peers = 30;
+              auth_required = false;
+            };
+
+            lxmf = {
+              display_name = "Apollo LXMF Node";
+              announce_at_start = true;
+              announce_interval = 420;
+              delivery_transfer_max_accepted_size = 1000;
+            };
+
+            logging = {
+              loglevel = 3;
+              logtimestamps = false;
+            };
+          };
+          inherit rnsdSettings;
           package = pkgs.python3Packages.lxmf.override {
             propagateRns = true;
           };

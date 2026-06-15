@@ -6,6 +6,8 @@
 }:
 let
   cfg = config.services.rnsd;
+  settingsFormat = (import ./formats/configobj/_default.nix { inherit pkgs lib; }).format { };
+
   inherit (lib)
     mkEnableOption
     mkOption
@@ -18,10 +20,10 @@ in
       enable = mkEnableOption "Enable rnsd";
       package = mkPackageOption pkgs "rns" { };
 
-      configFile = lib.mkOption {
-        type = lib.types.nullOr lib.types.str;
+      settings = lib.mkOption {
+        type = lib.types.nullOr settingsFormat.type;
         default = null;
-        description = "Path to rnsd configuration file. This file will be copied to the dataDir on service start. Use `rnsd --exampleconfig` to get an example config file.";
+        description = "Structured rnsd configuration. The generated file is copied to the dataDir on service start. Use `rnsd --exampleconfig` to get an example config file.";
       };
 
       transportIdentityFile = lib.mkOption {
@@ -67,8 +69,8 @@ in
           copyConfig = pkgs.writeShellApplication {
             name = "rnsd-copy-config-files";
             text =
-              lib.optionalString (cfg.configFile != null) ''
-                install -Dm400 ${cfg.configFile} "$STATE_DIRECTORY"/config
+              lib.optionalString (cfg.settings != null) ''
+                install -Dm400 ${settingsFormat.generate "rnsd.conf" cfg.settings} "$STATE_DIRECTORY"/config
               ''
               + lib.optionalString (cfg.transportIdentityFile != null) ''
                 install -Dm400 ${cfg.transportIdentityFile} "$STATE_DIRECTORY"/storage/transport_identity
