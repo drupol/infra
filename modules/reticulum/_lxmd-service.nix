@@ -26,10 +26,18 @@ in
         description = "Structured lxmd configuration. The generated file is copied to the dataDir on service start. Use `lxmd --exampleconfig` to get an example config file.";
       };
 
-      rnsdSettings = lib.mkOption {
-        type = lib.types.nullOr settingsFormat.type;
-        default = null;
-        description = "Structured rnsd configuration. The generated file is copied to the dataDir on service start. Use `rnsd --exampleconfig` to get an example config file.";
+      rnsd = {
+        settings = lib.mkOption {
+          type = lib.types.nullOr settingsFormat.type;
+          default = null;
+          description = "Structured rnsd configuration. The generated file is copied to the dataDir on service start. Use `rnsd --exampleconfig` to get an example config file.";
+        };
+
+        transportIdentityFile = lib.mkOption {
+          type = lib.types.nullOr lib.types.str;
+          default = null;
+          description = "Path to rnsd identity file. This file will be copied to the dataDir on service start.";
+        };
       };
 
       identityFile = lib.mkOption {
@@ -56,8 +64,11 @@ in
           copyConfig = pkgs.writeShellApplication {
             name = "lxmd-copy-config-files";
             text =
-              lib.optionalString (cfg.rnsdSettings != null) ''
-                install -Dm400 ${settingsFormat.generate "rnsd.conf" cfg.rnsdSettings} "$STATE_DIRECTORY"/rnsd/config
+              lib.optionalString (cfg.rnsd.settings != null) ''
+                install -Dm400 ${settingsFormat.generate "rnsd.conf" cfg.rnsd.settings} "$STATE_DIRECTORY"/rnsd/config
+              ''
+              + lib.optionalString (cfg.rnsd.transportIdentityFile != null) ''
+                install -Dm400 ${cfg.rnsd.transportIdentityFile} "$STATE_DIRECTORY"/rnsd/storage/transport_identity
               ''
               + lib.optionalString (cfg.settings != null) ''
                 install -Dm400 ${settingsFormat.generate "lxmd.conf" cfg.settings} "$STATE_DIRECTORY"/lxmd/config
