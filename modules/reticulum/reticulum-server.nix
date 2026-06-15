@@ -13,13 +13,47 @@
     ];
 
     nixos =
-      { pkgs, ... }:
+      { pkgs, system, ... }:
       {
         imports = [
           inputs.infra-private.nixosModules.reticulum-server
           ./_rnsd-service.nix
           ./_lxmd-service.nix
+          ./_rnsh-service.nix
         ];
+
+        nixpkgs = {
+          overlays = [
+            (final: _prev: {
+              master = import inputs.nixpkgs-master {
+                inherit (final) config;
+                inherit system;
+              };
+            })
+          ];
+        };
+
+        services.rnsh = {
+          enable = true;
+          allowed_identities = [
+            "afcdd5bf95ede3ba04cb4a946da866fb"
+          ];
+          user = "pol";
+          group = "users";
+          createUser = false;
+          createGroup = false;
+          rnsd = {
+            settings = {
+              reticulum = {
+                require_shared_instance = true;
+                is_shared_instance = true;
+                enable_transport = true;
+                instance_name = "default";
+                shared_instance_type = "unix";
+              };
+            };
+          };
+        };
 
         services.rnsd = {
           enable = true;
@@ -117,6 +151,7 @@
           rnsd = {
             settings = {
               reticulum = {
+                require_shared_instance = true;
                 is_shared_instance = true;
                 enable_transport = true;
                 instance_name = "default";
@@ -148,18 +183,6 @@
             rns
           ]
           ++ [ lxmf ];
-
-        systemd.user.services.rnsh = {
-          Unit = {
-            Description = "Reticulum RNSH service";
-          };
-
-          Service = {
-            Type = "simple";
-            ExecStart = "${pkgs.rns}/bin/rnsh -l -a afcdd5bf95ede3ba04cb4a946da866fb -- /bin/sh";
-            Restart = "always";
-          };
-        };
       };
   };
 }

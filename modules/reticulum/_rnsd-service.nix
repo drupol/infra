@@ -6,7 +6,7 @@
 }:
 let
   cfg = config.services.rnsd;
-  settingsFormat = (import ./formats/configobj/_default.nix { inherit pkgs lib; }).format { };
+  settingsFormat = pkgs.master.formats.configobj { };
 
   inherit (lib)
     mkEnableOption

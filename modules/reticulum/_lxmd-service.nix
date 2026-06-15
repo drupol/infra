@@ -6,7 +6,7 @@
 }:
 let
   cfg = config.services.lxmd;
-  settingsFormat = (import ./formats/configobj/_default.nix { inherit pkgs lib; }).format { };
+  settingsFormat = pkgs.master.formats.configobj { };
 
   inherit (lib)
     mkEnableOption
@@ -41,7 +41,7 @@ in
       };
 
       identityFile = lib.mkOption {
-        type = lib.types.nullOr lib.types.path;
+        type = lib.types.nullOr lib.types.str;
         default = null;
         description = "Path to lxmd identity file. This file will be copied to the stateDir on service start.";
       };

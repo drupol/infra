@@ -1,6 +1,5 @@
 {
   den,
-  inputs,
   ...
 }:
 {
@@ -15,23 +14,12 @@
     ];
 
     homeManager =
-      { pkgs, system, ... }:
+      { pkgs, ... }:
       {
-        nixpkgs = {
-          overlays = [
-            (final: _prev: {
-              master = import inputs.nixpkgs-master {
-                inherit (final) config;
-                inherit system;
-              };
-            })
-          ];
-        };
-
         home.packages = with pkgs; [
-          master.nomadnet
+          nomadnet
           rns
-          master.sideband
+          sideband
         ];
       };
   };
