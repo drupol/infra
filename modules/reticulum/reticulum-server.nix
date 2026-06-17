@@ -149,7 +149,7 @@
               enable_node = true;
               node_name = "Apollo Propagation Node";
               announce_interval = 420;
-              announce_at_start = true;
+              announce_at_start = false;
               autopeer = true;
               autopeer_maxdepth = 6;
               propagation_message_max_accepted_size = 1024;
@@ -159,7 +159,7 @@
 
             lxmf = {
               display_name = "Apollo LXMF Node";
-              announce_at_start = true;
+              announce_at_start = false;
               announce_interval = 420;
               delivery_transfer_max_accepted_size = 1000;
             };
