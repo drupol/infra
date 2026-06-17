@@ -153,7 +153,7 @@
               autopeer = true;
               autopeer_maxdepth = 6;
               propagation_message_max_accepted_size = 1024;
-              max_peers = 30;
+              max_peers = 40;
               auth_required = false;
             };
 
@@ -190,10 +190,11 @@
             4242
             6009
           ];
-          allowedUDPPorts = [
-            27916
-            42671
-          ];
+          # For AutoInterface and multicast discovery
+          extraCommands = ''
+            iptables -A nixos-fw -p udp -m pkttype --pkt-type multicast -m udp -j nixos-fw-accept
+            ip6tables -A nixos-fw -p udp -m pkttype --pkt-type multicast -m udp -j nixos-fw-accept
+          '';
         };
       };
 
