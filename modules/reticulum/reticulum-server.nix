@@ -39,7 +39,6 @@
             "afcdd5bf95ede3ba04cb4a946da866fb"
           ];
           user = "pol";
-          group = "users";
           createUser = false;
           createGroup = false;
           rnsd = {
@@ -78,6 +77,10 @@
               };
             };
             interfaces = {
+              "Default Interface" = {
+                type = "AutoInterface";
+                enabled = true;
+              };
               "RNode LoRa Interface" = {
                 type = "RNodeInterface";
                 enabled = true;
@@ -114,6 +117,24 @@
                 type = "TCPClientInterface";
                 enabled = true;
                 target_host = "rmap.world";
+                target_port = 4242;
+              };
+              "rns.fyi" = {
+                type = "TCPClientInterface";
+                enabled = true;
+                target_host = "rns.fyi";
+                target_port = 4242;
+              };
+              "Berlin IPV4" = {
+                type = "BackboneInterface";
+                enabled = true;
+                target_host = "82.165.27.170";
+                target_port = 443;
+              };
+              "rns.sofia" = {
+                type = "BackboneInterface";
+                enabled = true;
+                target_host = "193.193.182.147";
                 target_port = 4242;
               };
             };
@@ -164,9 +185,16 @@
           };
         };
 
-        networking.firewall.allowedTCPPorts = [
-          4242
-        ];
+        networking.firewall = {
+          allowedTCPPorts = [
+            4242
+            6009
+          ];
+          allowedUDPPorts = [
+            27916
+            42671
+          ];
+        };
       };
 
     homeManager =
