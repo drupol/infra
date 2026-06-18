@@ -139,6 +139,7 @@ in
           StateDirectory = "rnsh";
           RuntimeDirectory = "rnsh";
           CacheDirectory = "rnsh";
+          ProtectSystem = "strict";
 
           ExecStartPre = lib.getExe copyConfig;
           ExecStart = ''

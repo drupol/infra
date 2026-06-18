@@ -20,6 +20,7 @@
           ./_rnsd-service.nix
           ./_lxmd-service.nix
           ./_rnsh-service.nix
+          ./_nomadnet-service.nix
         ];
 
         nixpkgs = {
@@ -33,14 +34,34 @@
           ];
         };
 
-        services.rnsh = {
+        services.nomadnet = {
           enable = true;
-          allowed_identities = [
-            "afcdd5bf95ede3ba04cb4a946da866fb"
-          ];
-          user = "pol";
-          createUser = false;
-          createGroup = false;
+          peerSettings = {
+            display_name = "Apollo Nomadnet User";
+            propagation_node = "f37b7ae147df4fdfebc72b030fd88c44";
+          };
+          settings = {
+            logging = {
+              loglevel = 4;
+            };
+            client = {
+              enable_client = false;
+              announce_at_start = false;
+              notify_on_new_message = false;
+              user_interface = null;
+              periodic_lxmf_sync = false;
+              try_propagation_on_send_fail = false;
+            };
+            node = {
+              enable_node = true;
+              announce_at_start = true;
+              announce_interval = 420;
+              disable_propagation = true;
+              node_name = "Apollo Nomadnet Node";
+              page_refresh_interval = 5;
+              file_refresh_interval = 5;
+            };
+          };
           rnsd = {
             settings = {
               reticulum = {
@@ -53,6 +74,27 @@
             };
           };
         };
+
+        # services.rnsh = {
+        #   enable = true;
+        #   allowed_identities = [
+        #     "afcdd5bf95ede3ba04cb4a946da866fb"
+        #   ];
+        #   user = "pol";
+        #   createUser = false;
+        #   createGroup = false;
+        #   rnsd = {
+        #     settings = {
+        #       reticulum = {
+        #         require_shared_instance = true;
+        #         is_shared_instance = true;
+        #         enable_transport = true;
+        #         instance_name = "default";
+        #         shared_instance_type = "unix";
+        #       };
+        #     };
+        #   };
+        # };
 
         services.rnsd = {
           enable = true;
@@ -80,12 +122,12 @@
               "Default Interface" = {
                 type = "AutoInterface";
                 enabled = true;
+                discoverable = true;
               };
               "RNode LoRa Interface" = {
                 type = "RNodeInterface";
                 enabled = true;
                 discoverable = true;
-                mode = "full";
                 port = "/dev/ttyACM0";
                 frequency = 869525000;
                 bandwidth = 250000;
