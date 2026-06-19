@@ -75,24 +75,25 @@ in
       description = "Reticulum Network Lightweight Extensible Message Format Daemon";
       wantedBy = [ "multi-user.target" ];
       after = lib.optionals config.services.rnsd.enable [ "rnsd.service" ];
+      wants = lib.optionals config.services.rnsd.enable [ "rnsd.service" ];
 
       preStart =
         let
           copySettings = lib.optionalString (cfg.settings != null) ''
-            install -Dm400 ${settingsFormat.generate "lxmd.conf" cfg.settings} "$STATE_DIRECTORY"/lxmd/config
+            install -Dm600 ${settingsFormat.generate "lxmd.conf" cfg.settings} "$STATE_DIRECTORY"/lxmd/config
           '';
           copyIdentity = lib.optionalString (cfg.identityFile != null) ''
-            install -Dm400 ${cfg.identityFile} "$STATE_DIRECTORY"/lxmd/identity
+            install -Dm600 ${cfg.identityFile} "$STATE_DIRECTORY"/lxmd/identity
           '';
           copyRnsdSettings = lib.optionalString (cfg.rnsd.settings != null) ''
-            install -Dm400 ${settingsFormat.generate "rnsd.conf" cfg.rnsd.settings} "$STATE_DIRECTORY"/rnsd/config
+            install -Dm600 ${settingsFormat.generate "rnsd.conf" cfg.rnsd.settings} "$STATE_DIRECTORY"/rnsd/config
           '';
           copyRnsdTransportIdentity = lib.optionalString (cfg.rnsd.transportIdentityFile != null) ''
-            install -Dm400 ${cfg.rnsd.transportIdentityFile} "$STATE_DIRECTORY"/rnsd/storage/transport_identity
+            install -Dm600 ${cfg.rnsd.transportIdentityFile} "$STATE_DIRECTORY"/rnsd/storage/transport_identity
           '';
           copyRnsdIdentities = lib.concatStringsSep "\n" (
             lib.mapAttrsToList (name: file: ''
-              install -Dm400 ${file} "$STATE_DIRECTORY"/lxmd/storage/identities/${name}
+              install -Dm600 ${file} "$STATE_DIRECTORY"/rnsd/storage/identities/${name}
             '') cfg.rnsd.identities
           );
         in
@@ -106,7 +107,7 @@ in
             text = ''
               deadline=$((SECONDS + ${toString cfg.healthCheck.timeoutSeconds}))
 
-              until lxmd >/dev/null 2>&1; do
+              until ${lib.getExe cfg.package} --status --config "$STATE_DIRECTORY"/lxmd --rnsconfig "$STATE_DIRECTORY"/rnsd >/dev/null 2>&1; do
                 if [ "$SECONDS" -ge "$deadline" ]; then
                   echo "lxmd did not become healthy before timeout (${toString cfg.healthCheck.timeoutSeconds}s)" >&2
                   exit 1

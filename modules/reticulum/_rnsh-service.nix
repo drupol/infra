@@ -111,47 +111,44 @@ in
       after = lib.optionals config.services.rnsd.enable [ "rnsd.service" ];
       environment.HOME = "/var/lib/rnsh";
 
-      serviceConfig =
+      preStart =
         let
-          copyConfig = pkgs.writeShellApplication {
-            name = "rnsh-copy-config-files";
-            text =
-              lib.optionalString (cfg.rnsd.settings != null) ''
-                install -Dm400 ${settingsFormat.generate "rnsd.conf" cfg.rnsd.settings} "$STATE_DIRECTORY"/rnsd/config
-              ''
-              + lib.optionalString (cfg.rnsd.transportIdentityFile != null) ''
-                install -Dm400 ${cfg.rnsd.transportIdentityFile} "$STATE_DIRECTORY"/rnsd/storage/transport_identity
-              ''
-              + lib.optionalString (cfg.allowed_identities != [ ]) ''
-                install -Dm400 /dev/stdin "$STATE_DIRECTORY"/.rnsh/allowed_identities << 'EOF'
-                ${lib.concatStringsSep "\n" cfg.allowed_identities}
-                EOF
-              ''
-              + lib.optionalString (cfg.identityFile != null) ''
-                install -Dm400 ${cfg.identityFile} "$STATE_DIRECTORY"/rnsd/storage/identities/rnsh.default
-                ls -la
-              '';
-          };
-        in
-        {
-          WorkingDirectory = "/var/lib/rnsh";
-          DynamicUser = cfg.user == null;
-          StateDirectory = "rnsh";
-          RuntimeDirectory = "rnsh";
-          CacheDirectory = "rnsh";
-          ProtectSystem = "strict";
-
-          ExecStartPre = lib.getExe copyConfig;
-          ExecStart = ''
-            ${lib.getExe' cfg.package "rnsh"} --identity ''${STATE_DIRECTORY}/rnsd/storage/identities/rnsh.default --verbose --listen --config ''${STATE_DIRECTORY}/rnsd
+          copyConfig = lib.optionalString (cfg.rnsd.settings != null) ''
+            install -Dm400 ${settingsFormat.generate "rnsd.conf" cfg.rnsd.settings} "$STATE_DIRECTORY"/rnsd/config
           '';
-        }
-        // lib.optionalAttrs (cfg.user != null) {
-          User = cfg.user;
-        }
-        // lib.optionalAttrs (cfg.group != null) {
-          Group = cfg.group;
-        };
+          copyTransportIdentity = lib.optionalString (cfg.rnsd.transportIdentityFile != null) ''
+            install -Dm400 ${cfg.rnsd.transportIdentityFile} "$STATE_DIRECTORY"/rnsd/storage/transport_identity
+          '';
+          copyAllowedIdentities = lib.optionalString (cfg.allowed_identities != [ ]) ''
+            install -Dm400 /dev/stdin "$STATE_DIRECTORY"/.rnsh/allowed_identities << 'EOF'
+            ${lib.concatStringsSep "\n" cfg.allowed_identities}
+            EOF
+          '';
+          copyIdentity = lib.optionalString (cfg.identityFile != null) ''
+            install -Dm400 ${cfg.identityFile} "$STATE_DIRECTORY"/rnsd/storage/identities/rnsh.default
+            ls -la
+          '';
+        in
+        copyConfig + copyTransportIdentity + copyAllowedIdentities + copyIdentity;
+
+      serviceConfig = {
+        WorkingDirectory = "/var/lib/rnsh";
+        DynamicUser = cfg.user == null;
+        StateDirectory = "rnsh";
+        RuntimeDirectory = "rnsh";
+        CacheDirectory = "rnsh";
+        ProtectSystem = "strict";
+
+        ExecStart = ''
+          ${lib.getExe' cfg.package "rnsh"} --identity ''${STATE_DIRECTORY}/rnsd/storage/identities/rnsh.default --verbose --listen --config ''${STATE_DIRECTORY}/rnsd
+        '';
+      }
+      // lib.optionalAttrs (cfg.user != null) {
+        User = cfg.user;
+      }
+      // lib.optionalAttrs (cfg.group != null) {
+        Group = cfg.group;
+      };
     };
   };
 

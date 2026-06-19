@@ -61,16 +61,35 @@ in
           Whether to open the UDP ports (27916, 42671) used for multicast peer discovery when the AutoInterface is enabled.
         '';
       };
+
+      enableUdevRules = lib.mkOption {
+        type = lib.types.bool;
+        default = true;
+        description = "Whether to install udev rules for automatically symlinking RNode devices (e.g., Heltec HT-n5262, RAK4631) to /dev/rnode.";
+      };
     };
   };
 
   config = lib.mkIf cfg.enable {
-    # Stable /dev/rnode symlink for Heltec HT-n5262 RNode (LoRa radio)
-    # Without this, the RNode lands on a non-deterministic /dev/ttyACMn that
-    # can change across reboots depending on USB enumeration order.
-    services.udev.extraRules = ''
-      SUBSYSTEM=="tty", ATTRS{idVendor}=="239a", ATTRS{idProduct}=="8071", SYMLINK+="rnode", MODE="0660", GROUP="dialout"
-    '';
+    services.udev.extraRules = lib.mkIf cfg.enableUdevRules (
+      let
+        devices = [
+          {
+            idVendor = "239a";
+            idProduct = "8071"; # Heltec HT-n5262
+          }
+          {
+            idVendor = "239a";
+            idProduct = "8029"; # RAK4631
+          }
+        ];
+
+        makeRule = dev: ''
+          SUBSYSTEM=="tty", ATTRS{idVendor}=="${dev.idVendor}", ATTRS{idProduct}=="${dev.idProduct}", SYMLINK+="rnode%n", MODE="0660", GROUP="dialout"
+        '';
+      in
+      builtins.concatStringsSep "\n" (map makeRule devices)
+    );
 
     systemd.services.rnsd = {
       description = "Reticulum Network Stack Daemon";
@@ -80,14 +99,14 @@ in
       preStart =
         let
           copySettings = lib.optionalString (cfg.settings != null) ''
-            install -Dm400 ${settingsFormat.generate "rnsd.conf" cfg.settings} "$STATE_DIRECTORY"/config
+            install -Dm600 ${settingsFormat.generate "rnsd.conf" cfg.settings} "$STATE_DIRECTORY"/config
           '';
           copyTransportIdentity = lib.optionalString (cfg.transportIdentityFile != null) ''
-            install -Dm400 ${cfg.transportIdentityFile} "$STATE_DIRECTORY"/storage/transport_identity
+            install -Dm600 ${cfg.transportIdentityFile} "$STATE_DIRECTORY"/storage/transport_identity
           '';
           copyIdentities = lib.concatStringsSep "\n" (
             lib.mapAttrsToList (name: file: ''
-              install -Dm400 ${file} "$STATE_DIRECTORY"/storage/identities/${name}
+              install -Dm600 ${file} "$STATE_DIRECTORY"/storage/identities/${name}
             '') cfg.identities
           );
         in
@@ -101,7 +120,7 @@ in
             text = ''
               deadline=$((SECONDS + ${toString cfg.healthCheck.timeoutSeconds}))
 
-              until rnstatus >/dev/null 2>&1; do
+              until rnstatus --config "$STATE_DIRECTORY" >/dev/null 2>&1; do
                 if [ "$SECONDS" -ge "$deadline" ]; then
                   echo "rnsd did not become healthy before timeout (${toString cfg.healthCheck.timeoutSeconds}s)" >&2
                   exit 1
@@ -128,7 +147,7 @@ in
         };
     };
 
-    networking.firewall = {
+    networking.firewall = lib.mkIf cfg.openMulticastPorts {
       extraCommands = lib.optionalString (!config.networking.nftables.enable) ''
         ip46tables -A nixos-fw -p udp -m pkttype --pkt-type multicast -m multiport --dports 27916,42671 -j nixos-fw-accept
       '';
