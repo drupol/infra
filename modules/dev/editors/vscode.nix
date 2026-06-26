@@ -186,7 +186,7 @@
                   "config.toml" = "config.*.toml,params.toml";
                 };
                 "extensions.autoCheckUpdates" = false;
-                "extensions.autoUpdate" = false;
+                "extensions.autoUpdate" = "off";
                 "extensions.ignoreRecommendations" = true;
                 "files.autoSave" = "afterDelay";
                 "files.autoSaveDelay" = 500;
