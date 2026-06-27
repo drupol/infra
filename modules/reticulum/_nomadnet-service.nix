@@ -6,7 +6,7 @@
 }:
 let
   cfg = config.services.nomadnet;
-  settingsFormat = pkgs.master.formats.configobj { };
+  settingsFormat = pkgs.formats.configobj { };
   peersettingsFormat =
     let
       python = pkgs.python3.withPackages (ps: [ ps.msgpack ]);

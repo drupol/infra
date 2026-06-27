@@ -6,7 +6,7 @@
 }:
 let
   cfg = config.services.rnsd;
-  settingsFormat = pkgs.master.formats.configobj { };
+  settingsFormat = pkgs.formats.configobj { };
 in
 {
   options = {

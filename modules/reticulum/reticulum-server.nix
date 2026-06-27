@@ -13,7 +13,7 @@
     ];
 
     nixos =
-      { pkgs, system, ... }:
+      { pkgs, ... }:
       {
         imports = [
           inputs.infra-private.nixosModules.reticulum-server
@@ -23,26 +23,16 @@
           ./_nomadnet-service.nix
         ];
 
-        nixpkgs = {
-          overlays = [
-            (final: _prev: {
-              master = import inputs.nixpkgs-master {
-                inherit (final) config;
-                inherit system;
-              };
-            })
-          ];
-        };
-
         services.nomadnet = {
           enable = true;
           peerSettings = {
-            display_name = "Apollo Propagation Node";
+            display_name = "Apollo Nomadnet Node";
             propagation_node = "f37b7ae147df4fdfebc72b030fd88c44";
           };
           settings = {
             logging = {
               loglevel = 4;
+              destination = "console";
             };
             client = {
               enable_client = false;
@@ -55,7 +45,7 @@
             node = {
               enable_node = true;
               announce_at_start = true;
-              announce_interval = 420;
+              announce_interval = 60;
               disable_propagation = true;
               node_name = "Apollo Nomadnet Node";
               page_refresh_interval = 5;
@@ -96,10 +86,53 @@
         #   };
         # };
 
+        services.lxmd = {
+          enable = true;
+          settings = {
+            propagation = {
+              enable_node = true;
+              node_name = "Apollo Propagation Node";
+              announce_interval = 60;
+              announce_at_start = true;
+              autopeer = true;
+              autopeer_maxdepth = 6;
+              propagation_message_max_accepted_size = 1024;
+              max_peers = 40;
+              auth_required = false;
+            };
+
+            lxmf = {
+              display_name = "Apollo LXMF Node";
+              announce_at_start = true;
+              announce_interval = 60;
+              delivery_transfer_max_accepted_size = 1000;
+            };
+
+            logging = {
+              loglevel = 4;
+              logtimestamps = false;
+            };
+          };
+          rnsd = {
+            settings = {
+              reticulum = {
+                require_shared_instance = true;
+                is_shared_instance = true;
+                enable_transport = true;
+                instance_name = "default";
+                shared_instance_type = "unix";
+              };
+            };
+          };
+          package = pkgs.python3Packages.lxmf.override {
+            propagateRns = true;
+          };
+        };
+
         services.rnsd = {
           enable = true;
-          package = pkgs.rns;
           openMulticastPorts = true;
+          enableUdevRules = true;
           settings = {
             reticulum = {
               enable_transport = true;
@@ -155,6 +188,12 @@
                 latitude = 50.597463;
                 longitude = 4.323678;
                 height = 50;
+              };
+              "Valleirug.nl" = {
+                type = "BackboneInterface";
+                enabled = true;
+                target_host = "rns.valleirug.nl";
+                target_port = 24242;
               };
               "RMap World" = {
                 type = "TCPClientInterface";
@@ -220,49 +259,6 @@
             };
           };
           extraGroups = [ "dialout" ];
-        };
-
-        services.lxmd = {
-          enable = true;
-          settings = {
-            propagation = {
-              enable_node = true;
-              node_name = "Apollo Propagation Node";
-              announce_interval = 420;
-              announce_at_start = false;
-              autopeer = true;
-              autopeer_maxdepth = 6;
-              propagation_message_max_accepted_size = 1024;
-              max_peers = 40;
-              auth_required = false;
-            };
-
-            lxmf = {
-              display_name = "Apollo LXMF Node";
-              announce_at_start = false;
-              announce_interval = 420;
-              delivery_transfer_max_accepted_size = 1000;
-            };
-
-            logging = {
-              loglevel = 4;
-              logtimestamps = false;
-            };
-          };
-          rnsd = {
-            settings = {
-              reticulum = {
-                require_shared_instance = true;
-                is_shared_instance = true;
-                enable_transport = true;
-                instance_name = "default";
-                shared_instance_type = "unix";
-              };
-            };
-          };
-          package = pkgs.python3Packages.lxmf.override {
-            propagateRns = true;
-          };
         };
 
         networking.firewall = {
