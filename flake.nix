@@ -13,10 +13,7 @@
       url = "github:nix-community/disko";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    files = {
-      url = "github:mightyiam/files";
-      flake = false;
-    };
+    files.url = "github:sini/files";
     flake-compat = {
       url = "github:NixOS/flake-compat";
       flake = false;
