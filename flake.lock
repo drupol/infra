@@ -58,17 +58,16 @@
       }
     },
     "files": {
-      "flake": false,
       "locked": {
-        "lastModified": 1780525181,
-        "narHash": "sha256-a7a7123pVQpWOVfZnffX+KFGIx8rTHC6pbNwk0ZYe1k=",
-        "owner": "mightyiam",
+        "lastModified": 1780084175,
+        "narHash": "sha256-hmXRqcp+rWLW8GEYgrBDFHPGziP1R59oQbG+Imji2kE=",
+        "owner": "sini",
         "repo": "files",
-        "rev": "72c3663bf84fcffbccc682949041189c1e5e5197",
+        "rev": "b79ab01ba5394ddf3c1d0fadafbcc1ccb9536c5f",
         "type": "github"
       },
       "original": {
-        "owner": "mightyiam",
+        "owner": "sini",
         "repo": "files",
         "type": "github"
       }
@@ -282,11 +281,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1782423922,
-        "narHash": "sha256-qPNd6lUohHP5gcJhqQ7rLV87RwIx0xYR2A4Frb9Zjc4=",
+        "lastModified": 1782657028,
+        "narHash": "sha256-PHTCpYZCMzJYS3phhywqRAZphKVr2zjvlGYa+H20ZZ4=",
         "owner": "nix-community",
         "repo": "home-manager",
-        "rev": "5d320ab301cfaaca7d32514f13815d19d109f5f4",
+        "rev": "4ad9aaae70c9aaab504127f926c0fa9cfbc2b365",
         "type": "github"
       },
       "original": {
@@ -447,11 +446,11 @@
         "nixpkgs": "nixpkgs_3"
       },
       "locked": {
-        "lastModified": 1782379505,
-        "narHash": "sha256-zPvPiU+a7pqtH47xrtZLNRABJKpOjfZQclDbcvNtH+I=",
+        "lastModified": 1782562157,
+        "narHash": "sha256-a7+T6QSeowynwZ1ZJJbP8T8ntAytvrui8kFGJmIZt2c=",
         "owner": "NixOS",
         "repo": "nixos-hardware",
-        "rev": "603d3afd1b6145bd66e97ae38a34d91c95df70cf",
+        "rev": "a9cf7546a938c737b079e738de73934a13de9784",
         "type": "github"
       },
       "original": {
@@ -491,11 +490,11 @@
     },
     "nixpkgs-master": {
       "locked": {
-        "lastModified": 1782481675,
-        "narHash": "sha256-pqeWCMtXb9zJaseuNHtDgKa+RND3Fg0XKAPEStOWRJo=",
+        "lastModified": 1782659910,
+        "narHash": "sha256-HaMtOEEkDbgijrI6RQUHdnnFib7DKd5wvTbR5x4RRV0=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "aa683f796d1ef34b1724f0d039ae31c1e2bd960d",
+        "rev": "397509d3ce90fe618425cab48a0cbdb33d1cdfad",
         "type": "github"
       },
       "original": {
@@ -505,13 +504,29 @@
         "type": "github"
       }
     },
+    "nixpkgs-pr-530406": {
+      "locked": {
+        "lastModified": 1782120038,
+        "narHash": "sha256-e/kvPhk6km3BrpkxWeeYc3PNS8koZMcsPMyk6TrMCR0=",
+        "owner": "drupol",
+        "repo": "nixpkgs",
+        "rev": "52de6b48aa0327a605a330d59dced60305bebda6",
+        "type": "github"
+      },
+      "original": {
+        "owner": "drupol",
+        "ref": "push-mntwnvrylymq",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
     "nixpkgs-unstable": {
       "locked": {
-        "lastModified": 1782175435,
-        "narHash": "sha256-EMzXKmnOtBQ2MnvpiNOm7E+kOMvdPrIKaeg52Tip2Uk=",
+        "lastModified": 1782545840,
+        "narHash": "sha256-PkBPmP5ofNtunCU7/tfn6wi9OLlzFGcHAqqmY+/mwUI=",
         "owner": "nixos",
         "repo": "nixpkgs",
-        "rev": "89570f24e97e614aa34aa9ab1c927b6578a43775",
+        "rev": "3d46470bb3030020f7e1361f33514854f5bfa86d",
         "type": "github"
       },
       "original": {
@@ -604,11 +619,11 @@
         "nixpkgs": "nixpkgs_5"
       },
       "locked": {
-        "lastModified": 1782481665,
-        "narHash": "sha256-HeIYelYedsTgR/P4CaHKMA05gWr/7l0mpEUxbQQT8Qg=",
+        "lastModified": 1782659017,
+        "narHash": "sha256-Sr3x+JOXhzSKH+LIlDDuJxl0qyF9laHiEWFnZAeBpUM=",
         "owner": "nix-community",
         "repo": "NUR",
-        "rev": "e1d9a9f6be1b7559e2d0e6aa4487d74d65d59960",
+        "rev": "97dbf1d833b3841c0241b8291551b40a045b9882",
         "type": "github"
       },
       "original": {
@@ -687,6 +702,7 @@
         "nixos-hardware": "nixos-hardware",
         "nixpkgs": "nixpkgs_4",
         "nixpkgs-master": "nixpkgs-master",
+        "nixpkgs-pr-530406": "nixpkgs-pr-530406",
         "nixpkgs-unstable": "nixpkgs-unstable",
         "nur": "nur",
         "pkgs-by-name-for-flake-parts": "pkgs-by-name-for-flake-parts_2",
