@@ -4,6 +4,11 @@
   ...
 }:
 {
+  flake-file.inputs = {
+    # https://github.com/NixOS/nixpkgs/pull/530406
+    nixpkgs-pr-530406.url = "github:drupol/nixpkgs/push-mntwnvrylymq";
+  };
+
   den.aspects.reticulum-server = {
     includes = [
       (den.provides.unfree [
@@ -17,8 +22,8 @@
       {
         imports = [
           inputs.infra-private.nixosModules.reticulum-server
-          ./_rnsd-service.nix
-          ./_lxmd-service.nix
+          "${inputs.nixpkgs-pr-530406}/nixos/modules/services/networking/rnsd.nix"
+          "${inputs.nixpkgs-pr-530406}/nixos/modules/services/networking/lxmd.nix"
           ./_rnsh-service.nix
           ./_nomadnet-service.nix
         ];
