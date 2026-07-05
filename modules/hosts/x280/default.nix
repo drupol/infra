@@ -61,6 +61,32 @@
             "Office"
           ];
         };
+        youtube = {
+          type = "Application";
+          name = "Youtube";
+          genericName = "Youtube";
+          comment = "Youtube";
+          exec = "firefox --new-window https://www.youtube.com";
+          icon = ./files/youtube.svg;
+          terminal = false;
+          categories = [
+            "Network"
+            "Office"
+          ];
+        };
+        facebook = {
+          type = "Application";
+          name = "Facebook";
+          genericName = "Social Network";
+          comment = "Facebook";
+          exec = "firefox --new-window https://www.facebook.com";
+          icon = ./files/facebook.svg;
+          terminal = false;
+          categories = [
+            "Network"
+            "Office"
+          ];
+        };
       };
     };
 
