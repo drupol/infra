@@ -71,7 +71,6 @@
           terminal = false;
           categories = [
             "Network"
-            "Office"
           ];
         };
         facebook = {
@@ -84,7 +83,6 @@
           terminal = false;
           categories = [
             "Network"
-            "Office"
           ];
         };
       };
