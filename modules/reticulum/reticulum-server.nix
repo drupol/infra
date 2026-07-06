@@ -166,6 +166,7 @@
               "RNode LoRa Interface" = {
                 type = "RNodeInterface";
                 enabled = true;
+                mode = "access_point";
                 discoverable = true;
                 port = "/dev/ttyACM0";
                 frequency = 869525000;
