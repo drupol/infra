@@ -38,9 +38,9 @@
           terminal = false;
         };
 
-        xdg.desktopEntries.et-fr-chti-clan = {
-          name = "Enemy Territory @ Chti Clan";
-          exec = "${lib.getExe pkgs.etlegacy} +connect 92.158.15.163:27960";
+        xdg.desktopEntries.et-red-and-black = {
+          name = "Enemy Territory @ Red & Black";
+          exec = "${lib.getExe pkgs.etlegacy} +connect 51.38.132.168:27960";
           icon = "etl";
           categories = [ "Game" ];
           terminal = false;
