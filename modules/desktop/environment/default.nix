@@ -51,6 +51,7 @@
       {
         home = {
           packages = with pkgs; [
+            freetube
             kdePackages.akonadi-search
             kdePackages.akregator
             kdePackages.ark
