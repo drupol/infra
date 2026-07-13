@@ -1,0 +1,9 @@
+preset = "nixpkgs-package"
+formatter = "off"
+
+[attrs]
+merge = true
+blank-lines = 1
+
+[lets]
+sort = true
