@@ -33,6 +33,7 @@
     };
     import-tree.url = "github:vic/import-tree";
     infra-private.url = "github:drupol/infra-private";
+    json-sort.url = "github:drupol/json-sort";
     make-shell.url = "github:nicknovitski/make-shell";
     nix-webapps.url = "github:TLATER/nix-webapps";
     nixos-facter-modules.url = "github:numtide/nixos-facter-modules";
