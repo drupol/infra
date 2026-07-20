@@ -12,23 +12,11 @@
         den.aspects.tools.provides.nix-trusted-user
       ];
 
-      meta = {
-        description = "user";
-        email = "";
-        name = "User";
-        username = "user";
-        key = ""; # ed25519/0x0AAF2901E8040715
-        keygrip = [
-        ];
-        authorizedKeys = [
-        ];
-      };
-
       nixos = {
         users.users.user = {
           inherit (config.meta) description;
-          isNormalUser = true;
           createHome = true;
+
           extraGroups = [
             "audio"
             "input"
@@ -36,8 +24,25 @@
             "sound"
             "tty"
           ];
+
           initialPassword = "id";
+          isNormalUser = true;
         };
+      };
+
+      meta = {
+        authorizedKeys = [
+        ];
+
+        description = "user";
+        email = "";
+        key = ""; # ed25519/0x0AAF2901E8040715
+
+        keygrip = [
+        ];
+
+        name = "User";
+        username = "user";
       };
     };
 }

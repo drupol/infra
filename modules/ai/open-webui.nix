@@ -10,11 +10,29 @@
     ];
 
     nixos = {
+      networking.firewall.allowedTCPPorts = [
+        80
+        443
+      ];
+
       services = {
+        caddy = {
+          enable = true;
+
+          virtualHosts = {
+            "http://".extraConfig = ''
+              reverse_proxy 127.0.0.1:8080
+            '';
+
+            "https://".extraConfig = ''
+              reverse_proxy 127.0.0.1:8080
+            '';
+          };
+        };
+
         open-webui = {
           enable = true;
-          host = "0.0.0.0";
-          port = 8080;
+
           environment = {
             CONTENT_EXTRACTION_ENGINE = "tika";
             DEVICE_TYPE = "cpu";
@@ -24,8 +42,8 @@
             ENABLE_RAG_WEB_LOADER_SSL_VERIFICATION = "False";
             ENABLE_RAG_WEB_SEARCH = "True";
             ENABLE_WEB_SEARCH = "True";
-            OLLAMA_BASE_URL = "http://127.0.0.1:11434";
             OLLAMA_API_BASE_URL = "http://127.0.0.1:11434/api";
+            OLLAMA_BASE_URL = "http://127.0.0.1:11434";
             OPENAI_API_BASE_URL = "http://127.0.0.1:8888/v1";
             OPENAI_API_KEY = "";
             PDF_EXTRACT_IMAGES = "True";
@@ -46,23 +64,11 @@
             WEBUI_NAME = "LLM @ Home";
             WEB_SEARCH_ENGINE = "searxng";
           };
-        };
 
-        caddy = {
-          enable = true;
-          virtualHosts."http://".extraConfig = ''
-            reverse_proxy 127.0.0.1:8080
-          '';
-          virtualHosts."https://".extraConfig = ''
-            reverse_proxy 127.0.0.1:8080
-          '';
+          host = "0.0.0.0";
+          port = 8080;
         };
       };
-
-      networking.firewall.allowedTCPPorts = [
-        80
-        443
-      ];
     };
   };
 }

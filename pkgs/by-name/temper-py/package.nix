@@ -1,12 +1,11 @@
 {
-  python3Packages,
   fetchFromGitHub,
+  python3Packages,
 }:
 
 python3Packages.buildPythonApplication {
   pname = "temper-py";
   version = "0.0.4-unstable-2025-01-31";
-  pyproject = true;
 
   src = fetchFromGitHub {
     owner = "ccwienk";
@@ -23,6 +22,7 @@ python3Packages.buildPythonApplication {
     pyserial
   ];
 
+  pyproject = true;
   pythonImportsCheck = [ "temper" ];
 
   meta = {

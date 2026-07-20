@@ -4,26 +4,6 @@
 }:
 {
   den.aspects.benix = {
-    includes = [
-      den.aspects.tools.provides.nix-trusted-user
-    ];
-
-    nixos = {
-      users.users.benix = {
-        description = "Benix User Group";
-        isNormalUser = true;
-        createHome = true;
-        extraGroups = [
-          "audio"
-          "input"
-          "networkmanager"
-          "sound"
-          "tty"
-        ];
-        initialPassword = "benix";
-      };
-    };
-
     homeManager =
       { pkgs, ... }:
       {
@@ -31,5 +11,27 @@
           cowsay
         ];
       };
+
+    includes = [
+      den.aspects.tools.provides.nix-trusted-user
+    ];
+
+    nixos = {
+      users.users.benix = {
+        createHome = true;
+        description = "Benix User Group";
+
+        extraGroups = [
+          "audio"
+          "input"
+          "networkmanager"
+          "sound"
+          "tty"
+        ];
+
+        initialPassword = "benix";
+        isNormalUser = true;
+      };
+    };
   };
 }

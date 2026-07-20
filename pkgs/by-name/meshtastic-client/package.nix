@@ -1,8 +1,8 @@
 {
   lib,
-  writeScriptBin,
-  meshtastic-web,
   caddy,
+  meshtastic-web,
+  writeScriptBin,
   ...
 }:
 

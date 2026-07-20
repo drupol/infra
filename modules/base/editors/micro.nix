@@ -1,9 +1,15 @@
 {
   den.aspects.base = {
     homeManager = {
+      home.sessionVariables = {
+        EDITOR = "micro";
+        VISUAL = "micro";
+      };
+
       programs = {
         micro = {
           enable = true;
+
           settings = {
             diffgutter = true;
             keymenu = true;
@@ -12,11 +18,6 @@
             tabstospaces = true;
           };
         };
-      };
-
-      home.sessionVariables = {
-        EDITOR = "micro";
-        VISUAL = "micro";
       };
     };
   };

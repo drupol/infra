@@ -1,10 +1,5 @@
 { inputs, ... }:
 {
-  flake-file.inputs = {
-    plasma-manager.url = "github:nix-community/plasma-manager";
-    plasma-manager.inputs.nixpkgs.follows = "nixpkgs";
-  };
-
   flake.modules = {
     homeManager.desktop = {
       imports = [
@@ -17,31 +12,43 @@
 
         profiles = {
           zellij = {
-            name = "Zellij";
             command = "/usr/bin/env zellij --layout welcome";
-            font = {
-              name = "Monospace";
-              size = 10;
-            };
+
             extraConfig = {
-              "General" = {
-                "TerminalCenter" = "true";
-                "TerminalMargin" = "2";
-              };
               "Appearance" = {
                 "BoldIntense" = "false";
                 "WordMode" = true;
                 "WordModeAscii" = false;
               };
+
+              "General" = {
+                "TerminalCenter" = "true";
+                "TerminalMargin" = "2";
+              };
+
               "Scrolling" = {
                 "HighlightScrolledLines" = "false";
                 "HistoryMode" = "0";
                 "ScrollBarPosition" = "2";
               };
             };
+
+            font = {
+              name = "Monospace";
+              size = 10;
+            };
+
+            name = "Zellij";
           };
         };
       };
+    };
+  };
+
+  flake-file.inputs = {
+    plasma-manager = {
+      inputs.nixpkgs.follows = "nixpkgs";
+      url = "github:nix-community/plasma-manager";
     };
   };
 }

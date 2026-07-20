@@ -1,185 +1,216 @@
 {
-  inputs,
   den,
+  inputs,
   ...
 }:
 {
-  flake-file.inputs = {
-    home-manager.url = "github:nix-community/home-manager";
-    home-manager.inputs.nixpkgs.follows = "nixpkgs";
-    disko = {
-      url = "github:nix-community/disko";
-      inputs.nixpkgs.follows = "nixpkgs";
+  den = {
+    aspects.x1c = {
+      nixos =
+        { pkgs, ... }:
+        {
+          imports = [
+            inputs.disko.nixosModules.disko
+            inputs.nixos-hardware.nixosModules.lenovo-thinkpad-x1-13th-gen
+          ];
+
+          boot = {
+            binfmt.emulatedSystems = [ "aarch64-linux" ];
+            kernelModules = [ "kvm-intel" ];
+
+            kernelParams = [
+              "quiet"
+              "splash"
+            ];
+
+            loader = {
+              efi.canTouchEfiVariables = true;
+              systemd-boot.enable = true;
+            };
+
+            plymouth.enable = true;
+          };
+
+          disko.devices = {
+            disk.ssd = {
+              content = {
+                partitions = {
+                  ESP = {
+                    content = {
+                      format = "vfat";
+                      mountpoint = "/boot";
+                      type = "filesystem";
+                    };
+
+                    size = "1000M";
+                    type = "EF00";
+                  };
+
+                  luks = {
+                    content = {
+                      content = {
+                        type = "lvm_pv";
+                        vg = "pool";
+                      };
+
+                      name = "crypted";
+                      settings.allowDiscards = true;
+                      type = "luks";
+                    };
+
+                    size = "100%";
+                  };
+                };
+
+                type = "gpt";
+              };
+
+              device = "/dev/disk/by-id/nvme-SAMSUNG_MZVLC1T0HFLU-00BLL_S7SDNF0Y868204";
+              type = "disk";
+            };
+
+            lvm_vg = {
+              pool = {
+                lvs = {
+                  home = {
+                    content = {
+                      format = "ext4";
+                      mountpoint = "/home";
+                      type = "filesystem";
+                    };
+
+                    size = "75%";
+                  };
+
+                  nix = {
+                    content = {
+                      format = "ext4";
+
+                      mountOptions = [
+                        "noatime"
+                      ];
+
+                      mountpoint = "/nix";
+                      type = "filesystem";
+                    };
+
+                    size = "100%FREE";
+                  };
+
+                  root = {
+                    content = {
+                      format = "ext4";
+
+                      mountOptions = [
+                        "defaults"
+                      ];
+
+                      mountpoint = "/";
+                      type = "filesystem";
+                    };
+
+                    size = "10G";
+                  };
+
+                  swap = {
+                    content = {
+                      randomEncryption = true;
+                      type = "swap";
+                    };
+
+                    size = "32G";
+                  };
+                };
+
+                type = "lvm_vg";
+              };
+            };
+          };
+
+          environment = {
+            # From https://wiki.nixos.org/wiki/Accelerated_Video_Playback
+            sessionVariables = {
+              LIBVA_DRIVER_NAME = "iHD";
+            };
+
+            systemPackages = [ pkgs.libva-utils ];
+          };
+
+          hardware = {
+            bluetooth.settings = {
+              General = {
+                ControllerMode = "dual";
+                Experimental = true;
+              };
+            };
+
+            cpu.intel.npu.enable = true;
+          };
+
+          # To share ethernet connection
+          networking.firewall.allowedUDPPorts = [
+            53
+            67
+          ];
+
+          services = {
+            avahi.enable = true;
+
+            fprintd = {
+              enable = true;
+            };
+
+            logind = {
+              settings.Login = {
+                # Only suspend on lid closed when laptop is disconnected
+                HandleLidSwitch = "ignore";
+                HandleLidSwitchDocked = "ignore";
+                HandleLidSwitchExternalPower = "lock";
+              };
+            };
+
+            thermald.enable = true;
+
+            xserver = {
+              xkb = {
+                layout = "us";
+              };
+            };
+          };
+        };
+
+      provides.to-users = {
+        includes = with den.aspects; [
+          base
+          (facter ./facter.json)
+          bluetooth
+          desktop
+          dev
+          fwupd
+          primary
+          reticulum
+          shell
+          sound
+          vpn
+          wifi
+        ];
+      };
     };
-    nixos-hardware.url = "github:NixOS/nixos-hardware/master";
+
+    hosts.x86_64-linux.x1c.users.pol = { };
   };
 
-  den.hosts.x86_64-linux.x1c.users.pol = { };
-
-  den.aspects.x1c = {
-    provides.to-users = {
-      includes = with den.aspects; [
-        base
-        (facter ./facter.json)
-        bluetooth
-        desktop
-        dev
-        fwupd
-        primary
-        reticulum
-        shell
-        sound
-        vpn
-        wifi
-      ];
+  flake-file.inputs = {
+    disko = {
+      inputs.nixpkgs.follows = "nixpkgs";
+      url = "github:nix-community/disko";
     };
 
-    nixos =
-      { pkgs, ... }:
-      {
-        imports = [
-          inputs.disko.nixosModules.disko
-          inputs.nixos-hardware.nixosModules.lenovo-thinkpad-x1-13th-gen
-        ];
+    home-manager = {
+      inputs.nixpkgs.follows = "nixpkgs";
+      url = "github:nix-community/home-manager";
+    };
 
-        boot = {
-          binfmt.emulatedSystems = [ "aarch64-linux" ];
-
-          plymouth.enable = true;
-
-          loader = {
-            systemd-boot.enable = true;
-            efi.canTouchEfiVariables = true;
-          };
-
-          kernelModules = [ "kvm-intel" ];
-
-          kernelParams = [
-            "quiet"
-            "splash"
-          ];
-        };
-
-        hardware = {
-          cpu.intel.npu.enable = true;
-          bluetooth.settings = {
-            General = {
-              ControllerMode = "dual";
-              Experimental = true;
-            };
-          };
-        };
-
-        # From https://wiki.nixos.org/wiki/Accelerated_Video_Playback
-        environment.sessionVariables = {
-          LIBVA_DRIVER_NAME = "iHD";
-        };
-        environment.systemPackages = [ pkgs.libva-utils ];
-
-        services = {
-          xserver = {
-            xkb = {
-              layout = "us";
-            };
-          };
-          thermald.enable = true;
-          avahi.enable = true;
-          fprintd = {
-            enable = true;
-          };
-          logind = {
-            settings.Login = {
-              # Only suspend on lid closed when laptop is disconnected
-              HandleLidSwitch = "ignore";
-              HandleLidSwitchDocked = "ignore";
-              HandleLidSwitchExternalPower = "lock";
-            };
-          };
-        };
-
-        # To share ethernet connection
-        networking.firewall.allowedUDPPorts = [
-          53
-          67
-        ];
-
-        disko.devices = {
-          disk.ssd = {
-            type = "disk";
-            device = "/dev/disk/by-id/nvme-SAMSUNG_MZVLC1T0HFLU-00BLL_S7SDNF0Y868204";
-            content = {
-              type = "gpt";
-              partitions = {
-                ESP = {
-                  type = "EF00";
-                  size = "1000M";
-                  content = {
-                    type = "filesystem";
-                    format = "vfat";
-                    mountpoint = "/boot";
-                  };
-                };
-                luks = {
-                  size = "100%";
-                  content = {
-                    type = "luks";
-                    name = "crypted";
-                    settings.allowDiscards = true;
-                    content = {
-                      type = "lvm_pv";
-                      vg = "pool";
-                    };
-                  };
-                };
-              };
-            };
-          };
-          lvm_vg = {
-            pool = {
-              type = "lvm_vg";
-              lvs = {
-                swap = {
-                  size = "32G";
-                  content = {
-                    type = "swap";
-                    randomEncryption = true;
-                  };
-                };
-                home = {
-                  size = "75%";
-                  content = {
-                    type = "filesystem";
-                    format = "ext4";
-                    mountpoint = "/home";
-                  };
-                };
-                nix = {
-                  size = "100%FREE";
-                  content = {
-                    type = "filesystem";
-                    format = "ext4";
-                    mountpoint = "/nix";
-                    mountOptions = [
-                      "noatime"
-                    ];
-                  };
-                };
-
-                root = {
-                  size = "10G";
-                  content = {
-                    type = "filesystem";
-                    format = "ext4";
-                    mountpoint = "/";
-                    mountOptions = [
-                      "defaults"
-                    ];
-                  };
-                };
-              };
-            };
-          };
-        };
-      };
+    nixos-hardware.url = "github:NixOS/nixos-hardware/master";
   };
 }

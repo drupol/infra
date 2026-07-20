@@ -1,4 +1,4 @@
 {
-  sshd.enable = true;
   desktop.enable = true;
+  sshd.enable = true;
 }

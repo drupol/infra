@@ -8,6 +8,9 @@
   ];
 
   perSystem = {
-    files.generateApp = true;
+    files = {
+      generateApp = true;
+      treefmt.enable = true;
+    };
   };
 }

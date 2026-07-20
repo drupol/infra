@@ -1,51 +1,5 @@
 {
   den.aspects.desktop = {
-    nixos =
-      { pkgs, ... }:
-      {
-        programs = {
-          kdeconnect.enable = true;
-          partition-manager.enable = true;
-        };
-
-        xdg = {
-          portal = {
-            enable = true;
-            config.common.default = "kde";
-            extraPortals = with pkgs; [ kdePackages.xdg-desktop-portal-kde ];
-          };
-        };
-
-        networking.firewall = rec {
-          allowedTCPPortRanges = [
-            {
-              from = 1714;
-              to = 1764;
-            }
-          ];
-          allowedUDPPortRanges = allowedTCPPortRanges;
-        };
-
-        services = {
-          xserver = {
-            enable = true;
-            xkb = {
-              options = "eurosign:e";
-            };
-          };
-          desktopManager = {
-            plasma6 = {
-              enable = true;
-            };
-          };
-          displayManager = {
-            sddm = {
-              enable = true;
-            };
-          };
-        };
-      };
-
     homeManager =
       { pkgs, ... }:
       {
@@ -74,6 +28,56 @@
             kdePackages.yakuake
             vlc
           ];
+        };
+      };
+
+    nixos =
+      { pkgs, ... }:
+      {
+        networking.firewall = rec {
+          allowedTCPPortRanges = [
+            {
+              from = 1714;
+              to = 1764;
+            }
+          ];
+
+          allowedUDPPortRanges = allowedTCPPortRanges;
+        };
+
+        programs = {
+          kdeconnect.enable = true;
+          partition-manager.enable = true;
+        };
+
+        services = {
+          desktopManager = {
+            plasma6 = {
+              enable = true;
+            };
+          };
+
+          displayManager = {
+            sddm = {
+              enable = true;
+            };
+          };
+
+          xserver = {
+            enable = true;
+
+            xkb = {
+              options = "eurosign:e";
+            };
+          };
+        };
+
+        xdg = {
+          portal = {
+            config.common.default = "kde";
+            enable = true;
+            extraPortals = with pkgs; [ kdePackages.xdg-desktop-portal-kde ];
+          };
         };
       };
   };

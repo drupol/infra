@@ -5,12 +5,9 @@
         starship = {
           enable = true;
           enableTransience = true;
-          settings = {
-            git_state = {
-              disabled = true;
-            };
 
-            git_status = {
+          settings = {
+            git_branch = {
               disabled = true;
             };
 
@@ -22,7 +19,11 @@
               disabled = true;
             };
 
-            git_branch = {
+            git_state = {
+              disabled = true;
+            };
+
+            git_status = {
               disabled = true;
             };
           };

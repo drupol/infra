@@ -4,10 +4,10 @@
       services = {
         tika = {
           enable = true;
-          listenAddress = "0.0.0.0";
-          port = 9998;
           configFile = ./tika-config.xml;
+          listenAddress = "0.0.0.0";
           openFirewall = true;
+          port = 9998;
         };
       };
     };

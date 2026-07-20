@@ -1,46 +1,67 @@
-{ inputs, lib, ... }:
+{ lib, inputs, ... }:
 {
-  flake-file.inputs = {
-    git-hooks.url = "github:cachix/git-hooks.nix";
-    git-hooks.inputs.nixpkgs.follows = "nixpkgs";
-    treefmt-nix.url = "github:numtide/treefmt-nix";
-    json-sort.url = "github:drupol/json-sort";
-  };
-
   imports = [
     inputs.treefmt-nix.flakeModule
     inputs.git-hooks.flakeModule
+    inputs.pedantix.flakeModules.default
   ];
 
+  flake-file.inputs = {
+    git-hooks = {
+      inputs.nixpkgs.follows = "nixpkgs";
+      url = "github:cachix/git-hooks.nix";
+    };
+
+    json-sort.url = "github:drupol/json-sort";
+    pedantix.url = "github:swarsel/pedantix";
+    treefmt-nix.url = "github:numtide/treefmt-nix";
+  };
+
   perSystem =
-    { self', pkgs, ... }:
+    { pkgs, self', ... }:
     {
+      pre-commit.settings.hooks.nix-fmt = {
+        enable = true;
+        entry = lib.getExe self'.formatter;
+      };
+
       treefmt = {
         imports = [
           inputs.json-sort.treefmtModules.default
         ];
-        projectRootFile = "flake.nix";
+
         programs = {
           deadnix.enable = true;
-          jsonfmt.enable = true;
           json-sort.enable = true;
+          jsonfmt.enable = true;
+
           nixfmt = {
             enable = true;
             package = pkgs.nixfmt-rs;
           };
+
           oxfmt.enable = true;
+
+          pedantix = {
+            enable = true;
+
+            excludes = [
+              "flake.nix"
+            ];
+
+            priority = -2;
+          };
+
           shfmt.enable = true;
           statix.enable = true;
           yamlfmt.enable = true;
         };
+
+        projectRootFile = "flake.nix";
+
         settings = {
           on-unmatched = "warn";
         };
-      };
-
-      pre-commit.settings.hooks.nix-fmt = {
-        enable = true;
-        entry = lib.getExe self'.formatter;
       };
     };
 }

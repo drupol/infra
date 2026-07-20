@@ -3,15 +3,44 @@
   ...
 }:
 {
-  flake-file.inputs = {
-    deploy-rs.url = "github:serokell/deploy-rs";
-    deploy-rs.inputs.nixpkgs.follows = "nixpkgs";
-    make-shell.url = "github:nicknovitski/make-shell";
-  };
-
   imports = [
     inputs.make-shell.flakeModules.default
   ];
+
+  flake =
+    { config, lib, ... }:
+    {
+      deploy.nodes = lib.mapAttrs' (
+        hostname: nixosConfiguration:
+        let
+          inherit (nixosConfiguration.config.nixpkgs.hostPlatform) system;
+        in
+        {
+          name = hostname;
+
+          value = {
+            inherit hostname;
+            fastConnection = false;
+
+            profiles.system = {
+              confirmTimeout = 300;
+              path = inputs.deploy-rs.lib.${system}.activate.nixos nixosConfiguration;
+              remoteBuild = true;
+              sshUser = "root";
+            };
+          };
+        }
+      ) config.nixosConfigurations;
+    };
+
+  flake-file.inputs = {
+    deploy-rs = {
+      inputs.nixpkgs.follows = "nixpkgs";
+      url = "github:serokell/deploy-rs";
+    };
+
+    make-shell.url = "github:nicknovitski/make-shell";
+  };
 
   perSystem =
     { pkgs, ... }:
@@ -21,29 +50,5 @@
           pkgs.deploy-rs
         ];
       };
-    };
-
-  flake =
-    { lib, config, ... }:
-    {
-      deploy.nodes = lib.mapAttrs' (
-        hostname: nixosConfiguration:
-        let
-          inherit (nixosConfiguration.config.nixpkgs.hostPlatform) system;
-        in
-        {
-          name = hostname;
-          value = {
-            inherit hostname;
-            fastConnection = false;
-            profiles.system = {
-              sshUser = "root";
-              remoteBuild = true;
-              confirmTimeout = 300;
-              path = inputs.deploy-rs.lib.${system}.activate.nixos nixosConfiguration;
-            };
-          };
-        }
-      ) config.nixosConfigurations;
     };
 }

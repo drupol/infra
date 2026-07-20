@@ -1,29 +1,34 @@
 {
   den.aspects.searx = {
     nixos = {
+      networking.firewall.allowedTCPPorts = [
+        3002
+      ];
+
       services = {
+        caddy = {
+          enable = true;
+
+          virtualHosts = {
+            "http://".extraConfig = ''
+              handle_path /searx/* {
+                reverse_proxy 127.0.0.1:3002
+              }
+            '';
+
+            "https://".extraConfig = ''
+              handle_path /searx/* {
+                reverse_proxy 127.0.0.1:3002
+              }
+            '';
+          };
+        };
+
         searx = {
           enable = true;
+
           settings = {
-            use_default_settings = true;
-
-            general = {
-              privacypolicy_url = false;
-              enable_metrics = true;
-              debug = false;
-            };
-
             default_doi_resolver = "sci-hub.se";
-
-            server = {
-              port = 3002;
-              bind_address = "0.0.0.0";
-              secret_key = "spotting-gumminess-chamomile-unsuited-purple";
-              image_proxy = true;
-              base_url = "/searx";
-              limiter = false;
-              public_instance = false;
-            };
 
             enabled_plugins = [
               "Hash plugin"
@@ -35,37 +40,39 @@
               "Open Access DOI rewrite"
             ];
 
+            general = {
+              debug = false;
+              enable_metrics = true;
+              privacypolicy_url = false;
+            };
+
             search = {
-              safe_search = 0; # 0 = None, 1 = Moderate, 2 = Strict
+              autocomplete = "google"; # "dbpedia", "duckduckgo", "google", "startpage", "swisscows", "qwant", "wikipedia" - leave blank to turn it off by default
+              default_lang = "en";
+
               formats = [
                 "html"
                 "json"
                 "rss"
               ];
-              autocomplete = "google"; # "dbpedia", "duckduckgo", "google", "startpage", "swisscows", "qwant", "wikipedia" - leave blank to turn it off by default
-              default_lang = "en";
+
+              safe_search = 0; # 0 = None, 1 = Moderate, 2 = Strict
             };
+
+            server = {
+              base_url = "/searx";
+              bind_address = "0.0.0.0";
+              image_proxy = true;
+              limiter = false;
+              port = 3002;
+              public_instance = false;
+              secret_key = "spotting-gumminess-chamomile-unsuited-purple";
+            };
+
+            use_default_settings = true;
           };
         };
-
-        caddy = {
-          enable = true;
-          virtualHosts."http://".extraConfig = ''
-            handle_path /searx/* {
-              reverse_proxy 127.0.0.1:3002
-            }
-          '';
-          virtualHosts."https://".extraConfig = ''
-            handle_path /searx/* {
-              reverse_proxy 127.0.0.1:3002
-            }
-          '';
-        };
       };
-
-      networking.firewall.allowedTCPPorts = [
-        3002
-      ];
     };
   };
 }

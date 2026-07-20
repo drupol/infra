@@ -43,6 +43,7 @@
     nixpkgs-pr-530406.url = "github:drupol/nixpkgs/push-mntwnvrylymq";
     nixpkgs-unstable.url = "github:/nixos/nixpkgs/nixpkgs-unstable";
     nur.url = "github:nix-community/NUR";
+    pedantix.url = "github:swarsel/pedantix";
     pkgs-by-name-for-flake-parts.url = "github:drupol/pkgs-by-name-for-flake-parts";
     plasma-manager = {
       url = "github:nix-community/plasma-manager";

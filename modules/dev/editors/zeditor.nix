@@ -13,6 +13,7 @@
 
         programs.zed-editor = {
           enable = true;
+
           extensions = [
             "docker-compose"
             "dockerfile"
@@ -34,24 +35,28 @@
             "typst"
             "xml"
           ];
+
           userSettings = {
             auto_update = false;
+
             autosave = {
               after_delay = {
                 milliseconds = 1000;
               };
             };
+
             base_keymap = "VSCode";
-            ensure_final_newline_on_save = true;
             buffer_font_family = "Aporetic Sans Mono";
+
             buffer_font_features = {
               calt = true;
               ligatures = true;
             };
+
             buffer_font_size = 14;
             cli_default_open_behavior = "new_window";
+
             edit_predictions = {
-              provider = "copilot";
               disabled_globs = [
                 "**/.env*"
                 "**/*.pem"
@@ -60,7 +65,12 @@
                 "**/*.crt"
                 "**/secrets.yml"
               ];
+
+              provider = "copilot";
             };
+
+            ensure_final_newline_on_save = true;
+
             file_scan_exclusions = [
               "_build"
               ".vscode"
@@ -79,18 +89,23 @@
               ".ropeproject"
               ".expert"
             ];
+
             file_types = {
               Dockerfile = [ "*Containerfile*" ];
             };
+
             format_on_save = "on";
+
             icon_theme = {
-              mode = "system";
-              light = "Material Icon Theme";
               dark = "Material Icon Theme";
+              light = "Material Icon Theme";
+              mode = "system";
             };
+
             inlay_hints = {
               enabled = true;
             };
+
             languages = {
               CSS = {
                 formatter = [
@@ -99,6 +114,7 @@
                   }
                 ];
               };
+
               HTML = {
                 formatter = [
                   {
@@ -106,20 +122,7 @@
                   }
                 ];
               };
-              TSX = {
-                formatter = [
-                  {
-                    language_server.name = "oxfmt";
-                  }
-                ];
-              };
-              JavaScript = {
-                formatter = [
-                  {
-                    language_server.name = "oxfmt";
-                  }
-                ];
-              };
+
               JSON = {
                 formatter = [
                   {
@@ -127,6 +130,15 @@
                   }
                 ];
               };
+
+              JavaScript = {
+                formatter = [
+                  {
+                    language_server.name = "oxfmt";
+                  }
+                ];
+              };
+
               Markdown = {
                 formatter = [
                   {
@@ -134,26 +146,40 @@
                   }
                 ];
               };
+
               Nix = {
-                language_servers = [
-                  "nixd"
-                  "!nil"
-                ];
                 formatter.external = {
-                  command = "${lib.getExe pkgs.nixfmt-rs}";
                   arguments = [
                     "--quiet"
                     "--"
                   ];
+
+                  command = "${lib.getExe pkgs.nixfmt-rs}";
                 };
+
+                language_servers = [
+                  "nixd"
+                  "!nil"
+                ];
+
                 show_edit_predictions = true;
               };
+
+              TSX = {
+                formatter = [
+                  {
+                    language_server.name = "oxfmt";
+                  }
+                ];
+              };
+
               Typst = {
                 formatter = {
                   language_server = {
                     name = "tinymist";
                   };
                 };
+
                 show_edit_predictions = true;
               };
               # Python = {
@@ -178,11 +204,26 @@
               #   show_edit_predictions = true;
               # };
             };
+
             load_direnv = "direct";
+
             lsp = {
               nixd = {
                 binary.path = lib.getExe pkgs.nixd;
               };
+
+              oxfmt = {
+                binary = {
+                  arguments = [ "--lsp" ];
+                  path = lib.getExe pkgs.oxfmt;
+                };
+
+                initialization_options.settings = {
+                  fmt.configPath = ".oxfmtrc.json";
+                  run = "onSave";
+                };
+              };
+
               # ruff = {
               #   binary = {
               #     path = lib.getExe pkgs.ruff;
@@ -190,6 +231,8 @@
               #   };
               # };
               tinymist = {
+                binary.path = lib.getExe pkgs.tinymist;
+
                 initialization_options = {
                   preview = {
                     background = {
@@ -197,13 +240,14 @@
                     };
                   };
                 };
+
                 settings = {
                   exportPdf = "onSave";
-                  outputPath = "$root/$name";
                   formatterMode = "typstyle";
+                  outputPath = "$root/$name";
                 };
-                binary.path = lib.getExe pkgs.tinymist;
               };
+
               # ty = {
               #   binary = {
               #     path = lib.getExe pkgs.ty;
@@ -213,40 +257,38 @@
               typos = {
                 binary.path = lib.getExe pkgs.typos-lsp;
               };
-              oxfmt = {
-                binary = {
-                  path = lib.getExe pkgs.oxfmt;
-                  arguments = [ "--lsp" ];
-                };
-                initialization_options.settings = {
-                  fmt.configPath = ".oxfmtrc.json";
-                  run = "onSave";
-                };
-              };
             };
+
             preview_tabs = {
-              enabled = true;
               enable_preview_from_file_finder = true;
+              enabled = true;
             };
+
             project_panel = {
               dock = "left";
             };
+
             show_edit_predictions = true;
+            tab_size = 2;
+
             tabs = {
               file_icons = true;
               git_status = true;
             };
-            tab_size = 2;
+
             telemetry = {
               diagnostics = false;
               metrics = false;
             };
+
             terminal.env = {
               EDITOR = "zeditor --wait";
               VISUAL = "zeditor --wait";
             };
+
             ui_font_family = "Aporetic Sans Mono";
             ui_font_size = 14;
+
             wrap_guides = [
               80
               120
