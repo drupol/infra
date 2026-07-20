@@ -29,10 +29,10 @@
         ];
 
         services.nomadnet = {
-          enable = true;
+          enable = false;
           peerSettings = {
             display_name = "Apollo Nomadnet Node";
-            propagation_node = "f37b7ae147df4fdfebc72b030fd88c44";
+            propagation_node = "7eb50a1dba9d2b17d77feeb84ed545f3"; # LXMF Propagation Node started on <7eb50a1dba9d2b17d77feeb84ed545f3>
           };
           settings = {
             logging = {
@@ -218,49 +218,42 @@
                 enabled = true;
                 remote = "82.165.27.170";
                 target_port = 443;
-                transport_identity = "226849a1caffd1f15946a51768f3366e";
               };
               "rns.sofia" = {
                 type = "BackboneInterface";
                 enabled = true;
                 target_host = "193.193.182.147";
                 target_port = 4242;
-                transport_identity = "f28806251f4c62021da8e55c687107a4";
               };
               "NL_UTR_Backbone" = {
                 type = "BackboneInterface";
                 enabled = true;
                 target_host = "rns.fonetic.studio";
                 target_port = 4242;
-                transport_identity = "313a9b5ef72526c4fe2df006bbfb98b2";
               };
               "Bern_IPv4" = {
                 type = "BackboneInterface";
                 enabled = true;
                 remote = "45.59.114.96";
                 target_port = 7822;
-                transport_identity = "521c87a83afb8f29e4455e77930b973b";
               };
               "Sowerby_Node" = {
                 type = "BackboneInterface";
                 enabled = true;
                 remote = "rns.shaun.rocks";
                 target_port = 4242;
-                transport_identity = "14b76dda6ddec31f8290f8a285d60410";
               };
               "wintermute" = {
                 type = "BackboneInterface";
                 enabled = true;
                 remote = "212.216.248.53";
                 target_port = 4242;
-                transport_identity = "355db5a0f3eb49bd55357654fde4a003";
               };
               "Hispagatos_org_HQ" = {
                 type = "BackboneInterface";
                 enabled = true;
                 remote = "reticulum.hispagatos.org";
                 target_port = 4242;
-                transport_identity = "305c8452b222c9d367bc9e482956a4fa";
               };
             };
           };
