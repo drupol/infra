@@ -1,4 +1,4 @@
 {
-  vpn.enable = true;
   sshd.enable = true;
+  vpn.enable = true;
 }

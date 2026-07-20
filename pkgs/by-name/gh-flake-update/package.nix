@@ -1,18 +1,17 @@
 {
-  stdenvNoCC,
   lib,
   bashly,
-  makeBinaryWrapper,
+  dix,
   gh,
   gitMinimal,
+  makeBinaryWrapper,
   shellcheck,
-  dix,
+  stdenvNoCC,
   versionCheckHook,
 }:
 stdenvNoCC.mkDerivation {
   pname = "gh-flake-update";
   version = "0.0.2";
-
   src = ./.;
 
   nativeBuildInputs = [
@@ -26,6 +25,20 @@ stdenvNoCC.mkDerivation {
     bashly build -q
 
     runHook postBuild
+  '';
+
+  doCheck = true;
+
+  nativeCheckInputs = [
+    shellcheck
+  ];
+
+  checkPhase = ''
+    runHook preCheck
+
+    shellcheck ./gh-flake-update
+
+    runHook postCheck
   '';
 
   installPhase = ''
@@ -43,18 +56,6 @@ stdenvNoCC.mkDerivation {
       }
 
     runHook postInstall
-  '';
-
-  doCheck = true;
-  nativeCheckInputs = [
-    shellcheck
-  ];
-  checkPhase = ''
-    runHook preCheck
-
-    shellcheck ./gh-flake-update
-
-    runHook postCheck
   '';
 
   doInstallCheck = true;

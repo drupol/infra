@@ -1,8 +1,10 @@
 {
   den.aspects.base = {
     nixos = {
-      services.orca.enable = false;
-      services.speechd.enable = false;
+      services = {
+        orca.enable = false;
+        speechd.enable = false;
+      };
     };
   };
 }

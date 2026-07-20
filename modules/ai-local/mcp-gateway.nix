@@ -8,11 +8,12 @@
       services.mcp-gateway = {
         enable = true;
         enableMcpIntegration = true;
+
         settings = {
           meta_mcp = {
-            enabled = true;
             cache_tools = true;
             cache_ttl = "400s";
+            enabled = true;
           };
         };
       };

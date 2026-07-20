@@ -3,10 +3,6 @@
   ...
 }:
 {
-  flake-file.inputs = {
-    make-shell.url = "github:nicknovitski/make-shell";
-  };
-
   imports = [
     inputs.make-shell.flakeModules.default
   ];
@@ -16,6 +12,7 @@
       programs = {
         nh = {
           enable = true;
+
           clean = {
             enable = true;
             extraArgs = "--keep 2";
@@ -23,6 +20,10 @@
         };
       };
     };
+  };
+
+  flake-file.inputs = {
+    make-shell.url = "github:nicknovitski/make-shell";
   };
 
   perSystem =

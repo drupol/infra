@@ -4,65 +4,71 @@
   ...
 }:
 {
-  den.hosts.x86_64-linux.apollo.users.pol = { };
+  den = {
+    aspects.apollo = {
+      nixos = {
+        boot = {
+          initrd.availableKernelModules = [
+            "ehci_pci"
+            "ahci"
+            "xhci_pci"
+            "firewire_ohci"
+            "usb_storage"
+            "usbhid"
+            "sd_mod"
+          ];
 
-  den.aspects.apollo = {
-    provides.to-users = {
-      includes = with den.aspects; [
-        base
-        (facter ./facter.json)
-        desktop
-        dev
-        guacamole
-        noise-station-server
-        openssh
-        reticulum-server
-        shell
-        tika
-        vpn
-        # Users
-        root
-      ];
-    };
+          # boot.loader.grub.efiSupport = true;
+          # boot.loader.grub.efiInstallAsRemovable = true;
+          # boot.loader.efi.efiSysMountPoint = "/boot/efi";
+          kernel = {
+            sysctl = {
+              "net.ipv4.conf.all.forwarding" = lib.mkForce true;
+              "net.ipv6.conf.all.forwarding" = lib.mkForce true;
+            };
+          };
 
-    nixos = {
-      boot = {
-        # Use the GRUB 2 boot loader.
-        loader.grub.enable = true;
-        loader.grub.device = "/dev/sda";
-        loader.grub.useOSProber = false;
+          kernelModules = [ "kvm-intel" ];
 
-        # boot.loader.grub.efiSupport = true;
-        # boot.loader.grub.efiInstallAsRemovable = true;
-        # boot.loader.efi.efiSysMountPoint = "/boot/efi";
-        kernel = {
-          sysctl = {
-            "net.ipv4.conf.all.forwarding" = lib.mkForce true;
-            "net.ipv6.conf.all.forwarding" = lib.mkForce true;
+          loader = {
+            grub = {
+              # Use the GRUB 2 boot loader.
+              enable = true;
+              device = "/dev/sda";
+              useOSProber = false;
+            };
           };
         };
 
-        initrd.availableKernelModules = [
-          "ehci_pci"
-          "ahci"
-          "xhci_pci"
-          "firewire_ohci"
-          "usb_storage"
-          "usbhid"
-          "sd_mod"
+        fileSystems."/" = {
+          device = "/dev/disk/by-uuid/6fb8e36f-069c-43db-a843-1e345b17ec04";
+          fsType = "ext4";
+        };
+
+        swapDevices = [
+          { device = "/dev/disk/by-uuid/f70058b0-0600-4a7c-a226-37bf10eb307d"; }
         ];
-
-        kernelModules = [ "kvm-intel" ];
       };
 
-      fileSystems."/" = {
-        device = "/dev/disk/by-uuid/6fb8e36f-069c-43db-a843-1e345b17ec04";
-        fsType = "ext4";
+      provides.to-users = {
+        includes = with den.aspects; [
+          base
+          (facter ./facter.json)
+          desktop
+          dev
+          guacamole
+          noise-station-server
+          openssh
+          reticulum-server
+          shell
+          tika
+          vpn
+          # Users
+          root
+        ];
       };
-
-      swapDevices = [
-        { device = "/dev/disk/by-uuid/f70058b0-0600-4a7c-a226-37bf10eb307d"; }
-      ];
     };
+
+    hosts.x86_64-linux.apollo.users.pol = { };
   };
 }

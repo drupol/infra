@@ -1,10 +1,5 @@
 { inputs, ... }:
 {
-  flake-file.inputs = {
-    plasma-manager.url = "github:nix-community/plasma-manager";
-    plasma-manager.inputs.nixpkgs.follows = "nixpkgs";
-  };
-
   den.aspects.desktop = {
     homeManager =
       { pkgs, ... }:
@@ -15,214 +10,6 @@
 
         programs.plasma = {
           enable = true;
-
-          fonts = {
-            fixedWidth = {
-              family = "Aporetic Sans Mono";
-              pointSize = 10;
-            };
-            general = {
-              family = "Aporetic Sans Mono";
-              pointSize = 10;
-            };
-            menu = {
-              family = "Aporetic Sans Mono";
-              pointSize = 10;
-            };
-            small = {
-              family = "Aporetic Sans Mono";
-              pointSize = 8;
-            };
-            toolbar = {
-              family = "Aporetic Sans Mono";
-              pointSize = 10;
-            };
-            windowTitle = {
-              family = "Aporetic Sans Mono";
-              pointSize = 10;
-            };
-          };
-
-          input = {
-            keyboard = {
-              layouts = [
-                {
-                  layout = "us";
-                }
-                {
-                  layout = "fr";
-                }
-                {
-                  layout = "be";
-                }
-              ];
-              repeatDelay = 600;
-              repeatRate = 25;
-            };
-          };
-
-          kwin = {
-            effects = {
-              blur.enable = false;
-              cube.enable = false;
-              desktopSwitching.animation = "off";
-              dimAdminMode.enable = false;
-              dimInactive.enable = false;
-              fallApart.enable = false;
-              fps.enable = false;
-              minimization.animation = "off";
-              shakeCursor.enable = false;
-              slideBack.enable = false;
-              snapHelper.enable = false;
-              translucency.enable = false;
-              windowOpenClose.animation = "off";
-              wobblyWindows.enable = false;
-            };
-          };
-
-          panels = [
-            {
-              location = "bottom";
-              hiding = "none";
-              height = 40;
-              floating = false;
-              widgets = [
-                {
-                  name = "org.kde.plasma.kicker"; # or "org.kde.plasma.kickoff"
-                  config = {
-                    General = {
-                      icon = "nix-snowflake-white";
-                    };
-                  };
-                }
-                {
-                  name = "org.kde.plasma.taskmanager";
-                  config = {
-                    General = {
-                      fill = false;
-                      launchers = [
-                        "applications:org.kde.konsole.desktop"
-                        "applications:org.kde.dolphin.desktop"
-                        "applications:firefox.desktop"
-                        "applications:thunderbird.desktop"
-                      ];
-                    };
-                  };
-                }
-                {
-                  name = "org.kde.plasma.panelspacer";
-                  config = {
-                    expanding = true;
-                  };
-                }
-                {
-                  name = "org.kde.plasma.pager";
-                  config = {
-                    General.displayedText = "Name";
-                  };
-                }
-                {
-                  name = "org.kde.plasma.panelspacer";
-                  config = {
-                    expanding = false;
-                  };
-                }
-                {
-                  systemTray.items = {
-                    hidden = [
-                      "org.kde.plasma.clipboard"
-                      "Yakuake"
-                      "KGpg"
-                      "Wallet Manager"
-                    ];
-                    shown = [
-                      "org.kde.plasma.bluetooth"
-                      "org.kde.plasma.keyboardlayout"
-                      "org.kde.plasma.volume"
-                      "org.kde.plasma.brightness"
-                      "org.kde.plasma.battery"
-                      "org.kde.plasma.weather"
-                      "org.kde.plasma.networkmanagement"
-                      "org.kde.kdeconnect"
-                    ];
-                  };
-                }
-                {
-                  name = "org.kde.plasma.digitalclock";
-                  config = {
-                    Appearance = {
-                      use24hFormat = true;
-                    };
-                  };
-                }
-                "org.kde.plasma.showdesktop"
-              ];
-            }
-          ];
-
-          workspace = {
-            enableMiddleClickPaste = true;
-            clickItemTo = "select";
-            colorScheme = "BreezeDark";
-            splashScreen.engine = "none";
-            splashScreen.theme = "none";
-            tooltipDelay = 1;
-            wallpaper = ../../../files/home/pol/Pictures/Backgrounds/Starry_Nebula_219.png;
-          };
-
-          desktop = {
-            icons = {
-              arrangement = "leftToRight";
-              alignment = "left";
-            };
-          };
-
-          shortcuts = {
-            yakuake = {
-              toggle-window-state = "Meta+Space";
-            };
-          };
-
-          powerdevil = {
-            general.pausePlayersOnSuspend = true;
-
-            AC = {
-              dimKeyboard.enable = true;
-              displayBrightness = 50;
-              keyboardBrightness = 30;
-              inhibitLidActionWhenExternalMonitorConnected = true;
-              powerProfile = "performance";
-              autoSuspend = {
-                idleTimeout = 1800;
-              };
-              turnOffDisplay = {
-                idleTimeout = 600;
-              };
-            };
-
-            battery = {
-              dimKeyboard.enable = true;
-              displayBrightness = 10;
-              keyboardBrightness = 0;
-              powerProfile = "powerSaving";
-              dimDisplay = {
-                enable = true;
-                idleTimeout = 60;
-              };
-              turnOffDisplay = {
-                idleTimeout = 120;
-              };
-              autoSuspend = {
-                action = "sleep";
-                idleTimeout = 140;
-              };
-            };
-
-            batteryLevels = {
-              lowLevel = 20;
-              criticalLevel = 5;
-            };
-          };
 
           configFile = {
             # Not working yet
@@ -249,11 +36,11 @@
 
             kdeglobals = {
               "KFileDialog Settings" = {
-                "Sort directories first" = true;
-                "Show Speedbar" = true;
-                "View Style" = "DetailTree";
-                "Show Inline Previews" = true;
                 "Breadcrumb Navigation" = true;
+                "Show Inline Previews" = true;
+                "Show Speedbar" = true;
+                "Sort directories first" = true;
+                "View Style" = "DetailTree";
               };
             };
 
@@ -261,6 +48,7 @@
               BusyCursorSettings = {
                 Bouncing = false;
               };
+
               FeedbackStyle = {
                 BusyCursor = false;
               };
@@ -274,13 +62,14 @@
 
             kwalletrc = {
               Wallet = {
-                Enabled = true;
-                "First Use" = false;
                 "Close When Idle" = false;
                 "Close on Screensaver" = false;
+                Enabled = true;
+                "First Use" = false;
                 "Leave Open" = true;
                 "Prompt on Open" = false;
               };
+
               "org.freedesktop.secrets"."apiEnabled" = true;
             };
 
@@ -305,6 +94,7 @@
               PlasmaToolTips = {
                 Delay = 1;
               };
+
               Theme = {
                 name = "breeze-dark";
               };
@@ -314,37 +104,263 @@
               Dialogs = {
                 FirstRun = false;
               };
-              Window = {
-                DynamicTabTitles = true;
-                KeepAbove = false;
-                KeepOpen = true;
-
-                ToggleToFocus = false;
-
-                Height = 90;
-                Width = 100;
-
-                ShowTabBar = true;
-              };
 
               Shortcuts = {
-                # Creates a new session with 2x2 terminal grid
-                new-session-quad = "Ctrl+Shift+Up";
-
-                # Switches between sessions
-                next-session = "Ctrl+Shift+Right";
-                previous-session = "Ctrl+Shift+Left";
-
-                # Switches between terminal within a session
-                next-terminal = "Shift+Right";
-                previous-terminal = "Shift+Left";
-
                 move-session-left = "Ctrl+Left";
                 move-session-right = "Ctrl+Right";
-
+                # Creates a new session with 2x2 terminal grid
+                new-session-quad = "Ctrl+Shift+Up";
+                # Switches between sessions
+                next-session = "Ctrl+Shift+Right";
+                # Switches between terminal within a session
+                next-terminal = "Shift+Right";
+                previous-session = "Ctrl+Shift+Left";
+                previous-terminal = "Shift+Left";
                 toggle-window-state = "Meta+Space";
               };
+
+              Window = {
+                DynamicTabTitles = true;
+                Height = 90;
+                KeepAbove = false;
+                KeepOpen = true;
+                ShowTabBar = true;
+                ToggleToFocus = false;
+                Width = 100;
+              };
             };
+          };
+
+          desktop = {
+            icons = {
+              alignment = "left";
+              arrangement = "leftToRight";
+            };
+          };
+
+          fonts = {
+            fixedWidth = {
+              family = "Aporetic Sans Mono";
+              pointSize = 10;
+            };
+
+            general = {
+              family = "Aporetic Sans Mono";
+              pointSize = 10;
+            };
+
+            menu = {
+              family = "Aporetic Sans Mono";
+              pointSize = 10;
+            };
+
+            small = {
+              family = "Aporetic Sans Mono";
+              pointSize = 8;
+            };
+
+            toolbar = {
+              family = "Aporetic Sans Mono";
+              pointSize = 10;
+            };
+
+            windowTitle = {
+              family = "Aporetic Sans Mono";
+              pointSize = 10;
+            };
+          };
+
+          input = {
+            keyboard = {
+              layouts = [
+                {
+                  layout = "us";
+                }
+                {
+                  layout = "fr";
+                }
+                {
+                  layout = "be";
+                }
+              ];
+
+              repeatDelay = 600;
+              repeatRate = 25;
+            };
+          };
+
+          kwin = {
+            effects = {
+              blur.enable = false;
+              cube.enable = false;
+              desktopSwitching.animation = "off";
+              dimAdminMode.enable = false;
+              dimInactive.enable = false;
+              fallApart.enable = false;
+              fps.enable = false;
+              minimization.animation = "off";
+              shakeCursor.enable = false;
+              slideBack.enable = false;
+              snapHelper.enable = false;
+              translucency.enable = false;
+              windowOpenClose.animation = "off";
+              wobblyWindows.enable = false;
+            };
+          };
+
+          panels = [
+            {
+              floating = false;
+              height = 40;
+              hiding = "none";
+              location = "bottom";
+
+              widgets = [
+                {
+                  config = {
+                    General = {
+                      icon = "nix-snowflake-white";
+                    };
+                  };
+
+                  name = "org.kde.plasma.kicker"; # or "org.kde.plasma.kickoff"
+                }
+                {
+                  config = {
+                    General = {
+                      fill = false;
+
+                      launchers = [
+                        "applications:org.kde.konsole.desktop"
+                        "applications:org.kde.dolphin.desktop"
+                        "applications:firefox.desktop"
+                        "applications:thunderbird.desktop"
+                      ];
+                    };
+                  };
+
+                  name = "org.kde.plasma.taskmanager";
+                }
+                {
+                  config = {
+                    expanding = true;
+                  };
+
+                  name = "org.kde.plasma.panelspacer";
+                }
+                {
+                  config = {
+                    General.displayedText = "Name";
+                  };
+
+                  name = "org.kde.plasma.pager";
+                }
+                {
+                  config = {
+                    expanding = false;
+                  };
+
+                  name = "org.kde.plasma.panelspacer";
+                }
+                {
+                  systemTray.items = {
+                    hidden = [
+                      "org.kde.plasma.clipboard"
+                      "Yakuake"
+                      "KGpg"
+                      "Wallet Manager"
+                    ];
+
+                    shown = [
+                      "org.kde.plasma.bluetooth"
+                      "org.kde.plasma.keyboardlayout"
+                      "org.kde.plasma.volume"
+                      "org.kde.plasma.brightness"
+                      "org.kde.plasma.battery"
+                      "org.kde.plasma.weather"
+                      "org.kde.plasma.networkmanagement"
+                      "org.kde.kdeconnect"
+                    ];
+                  };
+                }
+                {
+                  config = {
+                    Appearance = {
+                      use24hFormat = true;
+                    };
+                  };
+
+                  name = "org.kde.plasma.digitalclock";
+                }
+                "org.kde.plasma.showdesktop"
+              ];
+            }
+          ];
+
+          powerdevil = {
+            AC = {
+              autoSuspend = {
+                idleTimeout = 1800;
+              };
+
+              dimKeyboard.enable = true;
+              displayBrightness = 50;
+              inhibitLidActionWhenExternalMonitorConnected = true;
+              keyboardBrightness = 30;
+              powerProfile = "performance";
+
+              turnOffDisplay = {
+                idleTimeout = 600;
+              };
+            };
+
+            battery = {
+              autoSuspend = {
+                action = "sleep";
+                idleTimeout = 140;
+              };
+
+              dimDisplay = {
+                enable = true;
+                idleTimeout = 60;
+              };
+
+              dimKeyboard.enable = true;
+              displayBrightness = 10;
+              keyboardBrightness = 0;
+              powerProfile = "powerSaving";
+
+              turnOffDisplay = {
+                idleTimeout = 120;
+              };
+            };
+
+            batteryLevels = {
+              criticalLevel = 5;
+              lowLevel = 20;
+            };
+
+            general.pausePlayersOnSuspend = true;
+          };
+
+          shortcuts = {
+            yakuake = {
+              toggle-window-state = "Meta+Space";
+            };
+          };
+
+          workspace = {
+            clickItemTo = "select";
+            colorScheme = "BreezeDark";
+            enableMiddleClickPaste = true;
+
+            splashScreen = {
+              engine = "none";
+              theme = "none";
+            };
+
+            tooltipDelay = 1;
+            wallpaper = ../../../files/home/pol/Pictures/Backgrounds/Starry_Nebula_219.png;
           };
         };
 
@@ -352,5 +368,12 @@
           "${pkgs.kdePackages.yakuake}/share/applications/org.kde.yakuake.desktop"
         ];
       };
+  };
+
+  flake-file.inputs = {
+    plasma-manager = {
+      inputs.nixpkgs.follows = "nixpkgs";
+      url = "github:nix-community/plasma-manager";
+    };
   };
 }

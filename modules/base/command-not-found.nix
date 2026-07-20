@@ -1,10 +1,10 @@
 {
   den.aspects.base = {
-    nixos = {
+    homeManager = {
       programs.command-not-found.enable = false;
     };
 
-    homeManager = {
+    nixos = {
       programs.command-not-found.enable = false;
     };
   };

@@ -8,70 +8,88 @@
 
 let
   cfg = config.services.mcp-gateway;
-  yamlFormat = pkgs.formats.yaml { };
   defaultSettings = {
     server = {
       inherit (cfg) host port;
     };
   };
+  yamlFormat = pkgs.formats.yaml { };
 in
 {
   options.services.mcp-gateway = {
     enable = lib.mkEnableOption "MCP Gateway — universal MCP server multiplexer";
     package = lib.mkPackageOption pkgs "mcp-gateway" { };
 
-    host = lib.mkOption {
-      type = lib.types.str;
-      default = "127.0.0.1";
-      description = "Host";
-    };
+    enableConfigurationOnly = lib.mkOption {
+      default = false;
 
-    port = lib.mkOption {
-      type = lib.types.port;
-      default = 39400;
-      description = "Port the gateway listens on.";
+      description = ''
+        Whether to integrate the MCP server config from
+        {option}`programs.mcp.servers`.
+      '';
+
+      type = lib.types.bool;
     };
 
     enableMcpIntegration = lib.mkOption {
-      type = lib.types.bool;
       default = false;
+
       description = ''
         Whether to integrate the MCP server config from
         {option}`programs.mcp.servers`.
       '';
+
+      type = lib.types.bool;
     };
 
-    enableConfigurationOnly = lib.mkOption {
-      type = lib.types.bool;
-      default = false;
+    environmentFile = lib.mkOption {
+      default = null;
+
       description = ''
-        Whether to integrate the MCP server config from
-        {option}`programs.mcp.servers`.
+        Environment file as defined in {manpage}`systemd.exec(5)` passed to the service.
       '';
+
+      type = lib.types.nullOr lib.types.path;
     };
 
     excludeMCPs = lib.mkOption {
-      type = lib.types.listOf lib.types.str;
       default = [ "mcp-gateway" ];
+
       description = ''
         MCP(s) to exclude from {option}`programs.mcp.servers`.
 
         Useful when MCP-Gateway itself is present in the MCP server list to
         avoid self-referential configuration.
       '';
+
+      type = lib.types.listOf lib.types.str;
     };
 
-    environmentFile = lib.mkOption {
-      type = lib.types.nullOr lib.types.path;
-      default = null;
-      description = ''
-        Environment file as defined in {manpage}`systemd.exec(5)` passed to the service.
-      '';
+    host = lib.mkOption {
+      default = "127.0.0.1";
+      description = "Host";
+      type = lib.types.str;
+    };
+
+    port = lib.mkOption {
+      default = 39400;
+      description = "Port the gateway listens on.";
+      type = lib.types.port;
     };
 
     settings = lib.mkOption {
       inherit (yamlFormat) type;
       default = { };
+
+      description = ''
+        Settings for MCP Gateway.
+
+        Configuration written to
+        {file}`$XDG_CONFIG_HOME/mcp-gateway/gateway.yaml`.
+
+        Options are listed on the github: <https://github.com/MikkoParkkola/mcp-gateway/blob/main/gateway.example.yaml>.
+      '';
+
       example = lib.literalExpression ''
         {
           server = {
@@ -89,15 +107,6 @@ in
             };
           };
         };
-      '';
-
-      description = ''
-        Settings for MCP Gateway.
-
-        Configuration written to
-        {file}`$XDG_CONFIG_HOME/mcp-gateway/gateway.yaml`.
-
-        Options are listed on the github: <https://github.com/MikkoParkkola/mcp-gateway/blob/main/gateway.example.yaml>.
       '';
     };
   };
@@ -129,26 +138,26 @@ in
       );
     in
     lib.mkIf cfg.enable {
-      xdg.configFile."mcp-gateway/gateway.yaml" = {
-        source = yamlFormat.generate "gateway.yaml" (
-          finalSettings // { backends = (finalSettings.backends or { }) // transformedMcpServers; }
-        );
-      };
-
       systemd.user.services.mcp-gateway = {
-        Unit = {
-          Description = "MCP Gateway";
-        };
-
         Service = {
-          Type = "simple";
           ExecStart = "${lib.getExe cfg.package} serve --config %h/.config/mcp-gateway/gateway.yaml";
           Restart = "on-failure";
           RestartSec = 5;
+          Type = "simple";
         }
         // lib.optionalAttrs (cfg.environmentFile != null) {
           EnvironmentFile = cfg.environmentFile;
         };
+
+        Unit = {
+          Description = "MCP Gateway";
+        };
+      };
+
+      xdg.configFile."mcp-gateway/gateway.yaml" = {
+        source = yamlFormat.generate "gateway.yaml" (
+          finalSettings // { backends = (finalSettings.backends or { }) // transformedMcpServers; }
+        );
       };
     };
 }

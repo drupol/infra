@@ -4,13 +4,6 @@
 }:
 {
   den.aspects.work = {
-    includes = [
-      (den.provides.unfree [
-        "aws-workspaces"
-        "workspacesclient"
-      ])
-    ];
-
     homeManager =
       { pkgs, ... }:
       {
@@ -18,5 +11,12 @@
           aws-workspaces
         ];
       };
+
+    includes = [
+      (den.provides.unfree [
+        "aws-workspaces"
+        "workspacesclient"
+      ])
+    ];
   };
 }

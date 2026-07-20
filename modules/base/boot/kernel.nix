@@ -1,7 +1,7 @@
 {
   den.aspects.base = {
     nixos =
-      { pkgs, lib, ... }:
+      { lib, pkgs, ... }:
       {
         boot.kernelPackages = lib.mkDefault pkgs.linuxPackages_latest;
       };

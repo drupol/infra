@@ -4,16 +4,6 @@
 }:
 {
   den.aspects.dev = {
-    includes = [
-      (den.provides.unfree [ "antigravity" ])
-    ];
-
-    nixos = {
-      services = {
-        gnome.gnome-keyring.enable = true;
-      };
-    };
-
     homeManager =
       { pkgs, ... }:
       {
@@ -23,5 +13,15 @@
           antigravity-fhs
         ];
       };
+
+    includes = [
+      (den.provides.unfree [ "antigravity" ])
+    ];
+
+    nixos = {
+      services = {
+        gnome.gnome-keyring.enable = true;
+      };
+    };
   };
 }

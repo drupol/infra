@@ -5,17 +5,16 @@
         enable = true;
         # attachExistingSession = true;
         enableFishIntegration = true;
+
         settings = {
+          copy_on_select = true;
+          default_layout = "welcome";
+          default_mode = "locked";
+          mouse_mode = true;
+          pane_frames = true;
           # See https://zellij.dev/documentation/options.html
           show_startup_tips = false;
-          default_mode = "locked";
-
-          pane_frames = true;
           simplified_ui = false;
-          default_layout = "welcome";
-
-          mouse_mode = true;
-          copy_on_select = true;
         };
       };
     };
@@ -26,10 +25,12 @@
         console = {
           earlySetup = true;
           font = "ter-124b";
-          useXkbConfig = true;
+
           packages = with pkgs; [
             terminus_font
           ];
+
+          useXkbConfig = true;
         };
       };
   };

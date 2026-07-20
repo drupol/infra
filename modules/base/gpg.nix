@@ -7,6 +7,7 @@
         programs = {
           gpg = {
             enable = true;
+
             settings = {
               default-key = den.aspects.${config.home.username}.meta.key;
             };
