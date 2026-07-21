@@ -4,17 +4,33 @@
   ...
 }:
 {
+  flake-file.inputs = {
+    # https://github.com/NixOS/nixpkgs/pull/530406
+    nixpkgs-pr-530406.url = "github:drupol/nixpkgs/push-mntwnvrylymq";
+  };
+
   den.aspects.reticulum-server = {
     homeManager =
-      { pkgs, ... }:
+      { pkgs, system, ... }:
       let
-        lxmf = pkgs.python3Packages.lxmf.override {
+        lxmf = pkgs.master.python3Packages.lxmf.override {
           propagateRns = true;
         };
       in
       {
+        nixpkgs = {
+          overlays = [
+            (final: _prev: {
+              master = import inputs.nixpkgs-master {
+                inherit (final) config;
+                inherit system;
+              };
+            })
+          ];
+        };
+
         home.packages =
-          with pkgs;
+          with pkgs.master;
           [
             rns
           ]
@@ -29,7 +45,7 @@
     ];
 
     nixos =
-      { pkgs, ... }:
+      { pkgs, system, ... }:
       {
         imports = [
           inputs.infra-private.nixosModules.reticulum-server
@@ -38,6 +54,17 @@
           ./_rnsh-service.nix
           ./_nomadnet-service.nix
         ];
+
+        nixpkgs = {
+          overlays = [
+            (final: _prev: {
+              master = import inputs.nixpkgs-master {
+                inherit (final) config;
+                inherit system;
+              };
+            })
+          ];
+        };
 
         networking.firewall = {
           allowedTCPPorts = [
@@ -76,7 +103,7 @@
           lxmd = {
             enable = true;
 
-            package = pkgs.python3Packages.lxmf.override {
+            package = pkgs.master.python3Packages.lxmf.override {
               propagateRns = true;
             };
 
@@ -171,6 +198,7 @@
             enableUdevRules = true;
             extraGroups = [ "dialout" ];
             openMulticastPorts = true;
+            package = pkgs.master.rns;
 
             settings = {
               interfaces = {
@@ -310,10 +338,5 @@
           };
         };
       };
-  };
-
-  flake-file.inputs = {
-    # https://github.com/NixOS/nixpkgs/pull/530406
-    nixpkgs-pr-530406.url = "github:drupol/nixpkgs/push-mntwnvrylymq";
   };
 }
