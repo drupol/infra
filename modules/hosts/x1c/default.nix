@@ -4,6 +4,20 @@
   ...
 }:
 {
+  flake-file.inputs = {
+    disko = {
+      inputs.nixpkgs.follows = "nixpkgs";
+      url = "github:nix-community/disko";
+    };
+
+    home-manager = {
+      inputs.nixpkgs.follows = "nixpkgs";
+      url = "github:nix-community/home-manager";
+    };
+
+    nixos-hardware.url = "github:NixOS/nixos-hardware/master";
+  };
+
   den = {
     aspects.x1c = {
       nixos =
@@ -198,19 +212,5 @@
     };
 
     hosts.x86_64-linux.x1c.users.pol = { };
-  };
-
-  flake-file.inputs = {
-    disko = {
-      inputs.nixpkgs.follows = "nixpkgs";
-      url = "github:nix-community/disko";
-    };
-
-    home-manager = {
-      inputs.nixpkgs.follows = "nixpkgs";
-      url = "github:nix-community/home-manager";
-    };
-
-    nixos-hardware.url = "github:NixOS/nixos-hardware/master";
   };
 }

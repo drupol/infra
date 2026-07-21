@@ -3,6 +3,10 @@
   ...
 }:
 {
+  flake-file.inputs = {
+    nur.url = "github:nix-community/NUR";
+  };
+
   den.aspects.desktop = {
     homeManager =
       { pkgs, ... }:
@@ -17,12 +21,13 @@
           in
           {
             enable = true;
-            package = pkgs.firefox.override { pkcs11Modules = [ pkgs.eid-mw ]; };
 
             nativeMessagingHosts = [
               pkgs.browserpass
               pkgs.web-eid-app
             ];
+
+            package = pkgs.firefox.override { pkcs11Modules = [ pkgs.eid-mw ]; };
 
             profiles.default = {
               extensions.packages = [
@@ -226,9 +231,5 @@
             };
           };
       };
-  };
-
-  flake-file.inputs = {
-    nur.url = "github:nix-community/NUR";
   };
 }

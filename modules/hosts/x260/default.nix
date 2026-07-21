@@ -40,10 +40,10 @@
           };
 
           "/nix" = {
-            options = [ "noatime" ];
             device = "/dev/disk/by-uuid/1c6de7e9-6a0d-47c5-ac8b-47f0ba6eecc2";
             fsType = "ext4";
             neededForBoot = true;
+            options = [ "noatime" ];
           };
         };
 

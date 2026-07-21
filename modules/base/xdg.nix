@@ -10,14 +10,14 @@
         };
 
         xdg = {
-          enable = true;
           autostart.enable = true;
+          enable = true;
           mime.enable = true;
           mimeApps.enable = true;
 
           userDirs = {
-            enable = true;
             createDirectories = true;
+            enable = true;
             music = null;
             publicShare = null;
             setSessionVariables = true;

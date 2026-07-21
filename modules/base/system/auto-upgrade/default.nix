@@ -2,8 +2,8 @@
   den.aspects.base = {
     nixos = {
       system.autoUpgrade = {
-        enable = false;
         allowReboot = true;
+        enable = false;
         flake = "github:drupol/infra";
       };
     };

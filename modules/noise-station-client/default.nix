@@ -8,13 +8,13 @@
     nixos =
       { pkgs, ... }:
       {
-        environment.systemPackages = [ pkgs.local.temper ];
-
         nixpkgs = {
           overlays = [
             inputs.self.overlays.default
           ];
         };
+
+        environment.systemPackages = [ pkgs.local.temper ];
 
         services = {
           telegraf =

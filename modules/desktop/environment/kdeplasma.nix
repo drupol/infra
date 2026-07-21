@@ -1,5 +1,12 @@
 { inputs, ... }:
 {
+  flake-file.inputs = {
+    plasma-manager = {
+      inputs.nixpkgs.follows = "nixpkgs";
+      url = "github:nix-community/plasma-manager";
+    };
+  };
+
   den.aspects.desktop = {
     homeManager =
       { pkgs, ... }:
@@ -9,8 +16,6 @@
         ];
 
         programs.plasma = {
-          enable = true;
-
           configFile = {
             # Not working yet
             # See: https://github.com/nix-community/plasma-manager/issues/539
@@ -137,6 +142,8 @@
               arrangement = "leftToRight";
             };
           };
+
+          enable = true;
 
           fonts = {
             fixedWidth = {
@@ -368,12 +375,5 @@
           "${pkgs.kdePackages.yakuake}/share/applications/org.kde.yakuake.desktop"
         ];
       };
-  };
-
-  flake-file.inputs = {
-    plasma-manager = {
-      inputs.nixpkgs.follows = "nixpkgs";
-      url = "github:nix-community/plasma-manager";
-    };
   };
 }

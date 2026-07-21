@@ -32,9 +32,9 @@
 
           loader = {
             grub = {
+              device = "/dev/sda";
               # Use the GRUB 2 boot loader.
               enable = true;
-              device = "/dev/sda";
               useOSProber = false;
             };
           };

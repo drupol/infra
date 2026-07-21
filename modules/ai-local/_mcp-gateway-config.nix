@@ -16,9 +16,58 @@ let
   yamlFormat = pkgs.formats.yaml { };
 in
 {
+  config =
+    let
+      finalSettings = lib.attrsets.recursiveUpdate defaultSettings cfg.settings;
+
+      transformedMcpServers = lib.optionalAttrs (cfg.enableMcpIntegration && config.programs.mcp.enable) (
+        lib.mapAttrs (
+          _name: server:
+          lib.optionalAttrs (server ? command) {
+            command = "${lib.concatStringsSep " " ([ server.command ] ++ (server.args or [ ]))}";
+          }
+          // lib.optionalAttrs (server ? url) {
+            http_url = server.url;
+          }
+          // {
+            #enabled = server.enabled;
+            enabled = true;
+          }
+          // lib.optionalAttrs (server ? env) {
+            inherit (server) env;
+          }
+          // lib.optionalAttrs (server ? description) {
+            inherit (server) description;
+          }
+        ) (lib.filterAttrs (k: _v: !(lib.elem k cfg.excludeMCPs)) config.programs.mcp.servers)
+      );
+    in
+    lib.mkIf cfg.enable {
+      systemd.user.services.mcp-gateway = {
+        Service = {
+          ExecStart = "${lib.getExe cfg.package} serve --config %h/.config/mcp-gateway/gateway.yaml";
+          Restart = "on-failure";
+          RestartSec = 5;
+          Type = "simple";
+        }
+        // lib.optionalAttrs (cfg.environmentFile != null) {
+          EnvironmentFile = cfg.environmentFile;
+        };
+
+        Unit = {
+          Description = "MCP Gateway";
+        };
+      };
+
+      xdg.configFile."mcp-gateway/gateway.yaml" = {
+        source = yamlFormat.generate "gateway.yaml" (
+          finalSettings // { backends = (finalSettings.backends or { }) // transformedMcpServers; }
+        );
+      };
+    };
+
   options.services.mcp-gateway = {
     enable = lib.mkEnableOption "MCP Gateway — universal MCP server multiplexer";
-    package = lib.mkPackageOption pkgs "mcp-gateway" { };
 
     enableConfigurationOnly = lib.mkOption {
       default = false;
@@ -71,6 +120,8 @@ in
       type = lib.types.str;
     };
 
+    package = lib.mkPackageOption pkgs "mcp-gateway" { };
+
     port = lib.mkOption {
       default = 39400;
       description = "Port the gateway listens on.";
@@ -110,54 +161,4 @@ in
       '';
     };
   };
-
-  config =
-    let
-      finalSettings = lib.attrsets.recursiveUpdate defaultSettings cfg.settings;
-
-      transformedMcpServers = lib.optionalAttrs (cfg.enableMcpIntegration && config.programs.mcp.enable) (
-        lib.mapAttrs (
-          _name: server:
-          lib.optionalAttrs (server ? command) {
-            command = "${lib.concatStringsSep " " ([ server.command ] ++ (server.args or [ ]))}";
-          }
-          // lib.optionalAttrs (server ? url) {
-            http_url = server.url;
-          }
-          // {
-            #enabled = server.enabled;
-            enabled = true;
-          }
-          // lib.optionalAttrs (server ? env) {
-            inherit (server) env;
-          }
-          // lib.optionalAttrs (server ? description) {
-            inherit (server) description;
-          }
-        ) (lib.filterAttrs (k: _v: !(lib.elem k cfg.excludeMCPs)) config.programs.mcp.servers)
-      );
-    in
-    lib.mkIf cfg.enable {
-      systemd.user.services.mcp-gateway = {
-        Service = {
-          ExecStart = "${lib.getExe cfg.package} serve --config %h/.config/mcp-gateway/gateway.yaml";
-          Restart = "on-failure";
-          RestartSec = 5;
-          Type = "simple";
-        }
-        // lib.optionalAttrs (cfg.environmentFile != null) {
-          EnvironmentFile = cfg.environmentFile;
-        };
-
-        Unit = {
-          Description = "MCP Gateway";
-        };
-      };
-
-      xdg.configFile."mcp-gateway/gateway.yaml" = {
-        source = yamlFormat.generate "gateway.yaml" (
-          finalSettings // { backends = (finalSettings.backends or { }) // transformedMcpServers; }
-        );
-      };
-    };
 }

@@ -1,5 +1,9 @@
 { inputs, ... }:
 {
+  flake-file.inputs = {
+    nixos-facter-modules.url = "github:numtide/nixos-facter-modules";
+  };
+
   den.aspects.facter = facterReportPath: {
     nixos =
       { pkgs, ... }:
@@ -14,10 +18,6 @@
           };
         };
       };
-  };
-
-  flake-file.inputs = {
-    nixos-facter-modules.url = "github:numtide/nixos-facter-modules";
   };
 
 }

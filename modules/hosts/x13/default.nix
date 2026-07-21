@@ -4,6 +4,10 @@
   ...
 }:
 {
+  flake-file.inputs = {
+    nixos-hardware.url = "github:NixOS/nixos-hardware/master";
+  };
+
   den = {
     aspects.x13 = {
       nixos = {
@@ -98,9 +102,5 @@
     };
 
     hosts.x86_64-linux.x13.users.pol = { };
-  };
-
-  flake-file.inputs = {
-    nixos-hardware.url = "github:NixOS/nixos-hardware/master";
   };
 }

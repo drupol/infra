@@ -3,6 +3,15 @@
   ...
 }:
 {
+  flake-file.inputs = {
+    deploy-rs = {
+      inputs.nixpkgs.follows = "nixpkgs";
+      url = "github:serokell/deploy-rs";
+    };
+
+    make-shell.url = "github:nicknovitski/make-shell";
+  };
+
   imports = [
     inputs.make-shell.flakeModules.default
   ];
@@ -32,15 +41,6 @@
         }
       ) config.nixosConfigurations;
     };
-
-  flake-file.inputs = {
-    deploy-rs = {
-      inputs.nixpkgs.follows = "nixpkgs";
-      url = "github:serokell/deploy-rs";
-    };
-
-    make-shell.url = "github:nicknovitski/make-shell";
-  };
 
   perSystem =
     { pkgs, ... }:

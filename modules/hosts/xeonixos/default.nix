@@ -10,6 +10,8 @@
         { config, pkgs, ... }:
         {
 
+          nixpkgs.config.nvidia.acceptLicense = true;
+
           boot = {
             initrd.availableKernelModules = [
               "ehci_pci"
@@ -35,9 +37,9 @@
 
             loader = {
               grub = {
+                device = "/dev/sdb";
                 # Use the GRUB 2 boot loader.
                 enable = true;
-                device = "/dev/sdb";
                 useOSProber = false;
               };
             };
@@ -52,12 +54,11 @@
 
           hardware = {
             nvidia = {
-              package = config.boot.kernelPackages.nvidiaPackages.legacy_390;
               open = false;
+              package = config.boot.kernelPackages.nvidiaPackages.legacy_390;
             };
           };
 
-          nixpkgs.config.nvidia.acceptLicense = true;
           services.xserver.videoDrivers = [ "nvidia" ];
 
           swapDevices = [

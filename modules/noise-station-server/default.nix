@@ -18,25 +18,22 @@
 
         services = {
           grafana = {
-            enable = true;
-
             declarativePlugins = [
               pkgs.grafanaPlugins.mesak-imagesave-panel
               pkgs.grafana-image-renderer
             ];
 
+            enable = true;
             openFirewall = true;
 
             provision = {
-              enable = true;
-
               dashboards.settings = {
                 apiVersion = 1;
 
                 providers = [
                   {
-                    options.path = ./dashboards;
                     name = "default";
+                    options.path = ./dashboards;
                   }
                 ];
               };
@@ -63,6 +60,8 @@
                   user = "admin";
                 }
               ];
+
+              enable = true;
             };
 
             settings = {

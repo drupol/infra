@@ -231,8 +231,8 @@
             swapDevices = [ { device = "/dev/disk/by-uuid/005040e5-7773-438e-8ede-f3f63a242d7d"; } ];
 
             system.autoUpgrade = lib.mkForce {
-              enable = true;
               allowReboot = true;
+              enable = true;
               flake = "git+https://github.com/drupol/infra";
             };
 

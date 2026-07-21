@@ -1,11 +1,5 @@
 { lib, inputs, ... }:
 {
-  imports = [
-    inputs.treefmt-nix.flakeModule
-    inputs.git-hooks.flakeModule
-    inputs.pedantix.flakeModules.default
-  ];
-
   flake-file.inputs = {
     git-hooks = {
       inputs.nixpkgs.follows = "nixpkgs";
@@ -16,6 +10,12 @@
     pedantix.url = "github:swarsel/pedantix";
     treefmt-nix.url = "github:numtide/treefmt-nix";
   };
+
+  imports = [
+    inputs.treefmt-nix.flakeModule
+    inputs.git-hooks.flakeModule
+    inputs.pedantix.flakeModules.default
+  ];
 
   perSystem =
     { pkgs, self', ... }:

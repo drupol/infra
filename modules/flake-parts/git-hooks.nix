@@ -1,10 +1,5 @@
 { inputs, ... }:
 {
-  imports = [
-    inputs.git-hooks.flakeModule
-    inputs.make-shell.flakeModules.default
-  ];
-
   flake-file.inputs = {
     git-hooks = {
       inputs.nixpkgs.follows = "nixpkgs";
@@ -13,6 +8,11 @@
 
     make-shell.url = "github:nicknovitski/make-shell";
   };
+
+  imports = [
+    inputs.git-hooks.flakeModule
+    inputs.make-shell.flakeModules.default
+  ];
 
   perSystem =
     { config, ... }:

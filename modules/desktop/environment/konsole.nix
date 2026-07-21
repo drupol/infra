@@ -1,5 +1,12 @@
 { inputs, ... }:
 {
+  flake-file.inputs = {
+    plasma-manager = {
+      inputs.nixpkgs.follows = "nixpkgs";
+      url = "github:nix-community/plasma-manager";
+    };
+  };
+
   flake.modules = {
     homeManager.desktop = {
       imports = [
@@ -7,8 +14,8 @@
       ];
 
       programs.konsole = {
-        enable = true;
         defaultProfile = "Zellij";
+        enable = true;
 
         profiles = {
           zellij = {
@@ -42,13 +49,6 @@
           };
         };
       };
-    };
-  };
-
-  flake-file.inputs = {
-    plasma-manager = {
-      inputs.nixpkgs.follows = "nixpkgs";
-      url = "github:nix-community/plasma-manager";
     };
   };
 }

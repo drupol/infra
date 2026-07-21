@@ -14,69 +14,6 @@ let
   settingsFormat = pkgs.formats.configobj { };
 in
 {
-  options = {
-    services.rnsh = {
-      enable = mkEnableOption "Enable rnsh";
-      package = mkPackageOption pkgs "rns" { };
-
-      allowed_identities = lib.mkOption {
-        default = [ ];
-        description = "List of allowed identities allowed to connect to this rnsh instance. These will be written to /var/lib/rnsh/allowed_identities, one hash per line.";
-        type = lib.types.listOf lib.types.str;
-      };
-
-      command = lib.mkOption {
-        default = "/bin/sh";
-        description = "Command to run for each incoming connection";
-        type = lib.types.str;
-      };
-
-      createGroup = mkOption {
-        default = false;
-        description = "Whether to create the rnsh system group. Uses `services.rnsh.group` when set, otherwise `services.rnsh.user`.";
-        type = lib.types.bool;
-      };
-
-      createUser = mkOption {
-        default = false;
-        description = "Whether to create `services.rnsh.user` as a system user.";
-        type = lib.types.bool;
-      };
-
-      group = mkOption {
-        default = null;
-        description = "Group under which rnsh runs. This requires `services.rnsh.user` to be set.";
-        type = lib.types.nullOr lib.types.str;
-      };
-
-      identityFile = lib.mkOption {
-        default = null;
-        description = "Path to identity file.";
-        type = lib.types.nullOr lib.types.str;
-      };
-
-      rnsd = {
-        settings = lib.mkOption {
-          default = null;
-          description = "Structured rnsd configuration. The generated file is copied to the dataDir on service start. Use `rnsd --exampleconfig` to get an example config file.";
-          type = lib.types.nullOr settingsFormat.type;
-        };
-
-        transportIdentityFile = lib.mkOption {
-          default = null;
-          description = "Path to rnsd identity file. This file will be copied to the dataDir on service start.";
-          type = lib.types.nullOr lib.types.str;
-        };
-      };
-
-      user = mkOption {
-        default = null;
-        description = "User account under which rnsh runs. When set, DynamicUser is disabled.";
-        type = lib.types.nullOr lib.types.str;
-      };
-    };
-  };
-
   config = lib.mkIf cfg.enable {
     assertions = [
       {
@@ -150,6 +87,70 @@ in
           home = "/var/lib/rnsh";
           isSystemUser = true;
         };
+      };
+    };
+  };
+
+  options = {
+    services.rnsh = {
+      allowed_identities = lib.mkOption {
+        default = [ ];
+        description = "List of allowed identities allowed to connect to this rnsh instance. These will be written to /var/lib/rnsh/allowed_identities, one hash per line.";
+        type = lib.types.listOf lib.types.str;
+      };
+
+      command = lib.mkOption {
+        default = "/bin/sh";
+        description = "Command to run for each incoming connection";
+        type = lib.types.str;
+      };
+
+      createGroup = mkOption {
+        default = false;
+        description = "Whether to create the rnsh system group. Uses `services.rnsh.group` when set, otherwise `services.rnsh.user`.";
+        type = lib.types.bool;
+      };
+
+      createUser = mkOption {
+        default = false;
+        description = "Whether to create `services.rnsh.user` as a system user.";
+        type = lib.types.bool;
+      };
+
+      enable = mkEnableOption "Enable rnsh";
+
+      group = mkOption {
+        default = null;
+        description = "Group under which rnsh runs. This requires `services.rnsh.user` to be set.";
+        type = lib.types.nullOr lib.types.str;
+      };
+
+      identityFile = lib.mkOption {
+        default = null;
+        description = "Path to identity file.";
+        type = lib.types.nullOr lib.types.str;
+      };
+
+      package = mkPackageOption pkgs "rns" { };
+
+      rnsd = {
+        settings = lib.mkOption {
+          default = null;
+          description = "Structured rnsd configuration. The generated file is copied to the dataDir on service start. Use `rnsd --exampleconfig` to get an example config file.";
+          type = lib.types.nullOr settingsFormat.type;
+        };
+
+        transportIdentityFile = lib.mkOption {
+          default = null;
+          description = "Path to rnsd identity file. This file will be copied to the dataDir on service start.";
+          type = lib.types.nullOr lib.types.str;
+        };
+      };
+
+      user = mkOption {
+        default = null;
+        description = "User account under which rnsh runs. When set, DynamicUser is disabled.";
+        type = lib.types.nullOr lib.types.str;
       };
     };
   };
