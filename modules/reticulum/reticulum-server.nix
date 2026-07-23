@@ -255,7 +255,7 @@
                   height = 50;
                   latitude = 50.597463;
                   longitude = 4.323678;
-                  mode = "access_point";
+                  mode = "gateway";
                   port = "/dev/ttyACM0";
                   spreadingfactor = 11;
                   txpower = 22;
