@@ -540,11 +540,11 @@
         "nixpkgs": "nixpkgs"
       },
       "locked": {
-        "lastModified": 1784810975,
-        "narHash": "sha256-6A42dD++KZ/JbKqa8YXq+rES28MQGWYmIvRcbMRdQv8=",
+        "lastModified": 1784909410,
+        "narHash": "sha256-JP30ZlFk0lGWg6ZknGaOVFzI5TOp4EtYjWgRrCZIRio=",
         "owner": "drupol",
         "repo": "infra-private",
-        "rev": "8bfda16785fcda0b691743845aad3718c9c325ec",
+        "rev": "47bb1bf38be9d92e3e3ee44c3210754bc83beafd",
         "type": "github"
       },
       "original": {
@@ -715,11 +715,11 @@
     },
     "nixpkgs-pr-530406": {
       "locked": {
-        "lastModified": 1784127843,
-        "narHash": "sha256-pC7Gi9xrDl5EBsSXES+9mk5e3iC1GS9n3f+8/Z//gnA=",
+        "lastModified": 1784908135,
+        "narHash": "sha256-39KwEOfZmn/oWWNuD7QNcrXOln5iR+VxXFMAYKr0tfo=",
         "owner": "drupol",
         "repo": "nixpkgs",
-        "rev": "10ae89a506bcdb5a753fd032f10252ca950df50f",
+        "rev": "be36232d8a0385457f0e18c9c16356033b75e8a3",
         "type": "github"
       },
       "original": {
