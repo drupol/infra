@@ -18,4 +18,4 @@ attrs.first = ["includes", "nixos", "homeManager"]
 
 [[overrides]]
 path = "den.aspects.*.**"
-attrs.first = ["imports", "nixpkgs"]
+attrs.first = ["imports", "nixpkgs", "includes"]

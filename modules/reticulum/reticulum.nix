@@ -4,6 +4,15 @@
 }:
 {
   den.aspects.reticulum = {
+    includes = [
+      (den.provides.unfree [
+        "lxmf"
+        "lxst"
+        "rns"
+        "sideband"
+      ])
+    ];
+
     homeManager =
       { pkgs, ... }:
       let
@@ -19,14 +28,5 @@
           sideband
         ];
       };
-
-    includes = [
-      (den.provides.unfree [
-        "lxmf"
-        "lxst"
-        "rns"
-        "sideband"
-      ])
-    ];
   };
 }

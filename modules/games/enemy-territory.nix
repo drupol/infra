@@ -4,6 +4,13 @@
 }:
 {
   den.aspects.games = {
+    includes = [
+      (den.provides.unfree [
+        "etlegacy"
+        "etlegacy-assets"
+      ])
+    ];
+
     homeManager =
       {
         lib,
@@ -43,13 +50,6 @@
           };
         };
       };
-
-    includes = [
-      (den.provides.unfree [
-        "etlegacy"
-        "etlegacy-assets"
-      ])
-    ];
 
     nixos = {
       # Only to play enemy territory with Jaymod

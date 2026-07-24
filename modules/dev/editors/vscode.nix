@@ -5,6 +5,16 @@
 }:
 {
   den.aspects.dev = {
+    includes = [
+      (den.provides.unfree [
+        "vscode"
+        "vscode-extension-bmewburn-vscode-intelephense-client"
+        "vscode-extension-ms-vscode-remote-remote-containers"
+        "vscode-extension-ms-vscode-remote-remote-ssh"
+        "vscode-extension-ms-vsliveshare-vsliveshare"
+      ])
+    ];
+
     homeManager =
       { pkgs, ... }:
       {
@@ -278,16 +288,6 @@
           };
         };
       };
-
-    includes = [
-      (den.provides.unfree [
-        "vscode"
-        "vscode-extension-bmewburn-vscode-intelephense-client"
-        "vscode-extension-ms-vscode-remote-remote-containers"
-        "vscode-extension-ms-vscode-remote-remote-ssh"
-        "vscode-extension-ms-vsliveshare-vsliveshare"
-      ])
-    ];
 
     nixos = {
       services = {

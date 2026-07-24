@@ -4,6 +4,10 @@
 }:
 {
   den.aspects.benix = {
+    includes = [
+      den.aspects.tools.provides.nix-trusted-user
+    ];
+
     homeManager =
       { pkgs, ... }:
       {
@@ -11,10 +15,6 @@
           cowsay
         ];
       };
-
-    includes = [
-      den.aspects.tools.provides.nix-trusted-user
-    ];
 
     nixos = {
       users.users.benix = {

@@ -10,6 +10,13 @@
   };
 
   den.aspects.reticulum-server = {
+    includes = [
+      (den.provides.unfree [
+        "lxmf"
+        "rns"
+      ])
+    ];
+
     homeManager =
       { pkgs, ... }:
       let
@@ -25,13 +32,6 @@
           ]
           ++ [ lxmf ];
       };
-
-    includes = [
-      (den.provides.unfree [
-        "lxmf"
-        "rns"
-      ])
-    ];
 
     nixos =
       { pkgs, ... }:

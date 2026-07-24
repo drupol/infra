@@ -15,6 +15,12 @@
   den.aspects.pol =
     { config, ... }:
     {
+      includes = [
+        den.provides.define-user
+        den.provides.primary-user
+        den.aspects.tools.provides.nix-trusted-user
+      ];
+
       homeManager = {
         # Remove this part if no access to the private repository.
         imports = [
@@ -39,12 +45,6 @@
           };
         };
       };
-
-      includes = [
-        den.provides.define-user
-        den.provides.primary-user
-        den.aspects.tools.provides.nix-trusted-user
-      ];
 
       user = {
         createHome = true;

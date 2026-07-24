@@ -4,6 +4,10 @@
 }:
 {
   den.aspects.dev = {
+    includes = [
+      (den.provides.unfree [ "antigravity-ide" ])
+    ];
+
     homeManager =
       { pkgs, ... }:
       {
@@ -13,10 +17,6 @@
           antigravity-ide-fhs
         ];
       };
-
-    includes = [
-      (den.provides.unfree [ "antigravity-ide" ])
-    ];
 
     nixos = {
       services = {
