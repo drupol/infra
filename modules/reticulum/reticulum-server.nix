@@ -11,26 +11,15 @@
 
   den.aspects.reticulum-server = {
     homeManager =
-      { pkgs, system, ... }:
+      { pkgs, ... }:
       let
-        lxmf = pkgs.master.python3Packages.lxmf.override {
+        lxmf = pkgs.python3Packages.lxmf.override {
           propagateRns = true;
         };
       in
       {
-        nixpkgs = {
-          overlays = [
-            (final: _prev: {
-              master = import inputs.nixpkgs-master {
-                inherit (final) config;
-                inherit system;
-              };
-            })
-          ];
-        };
-
         home.packages =
-          with pkgs.master;
+          with pkgs;
           [
             rns
           ]
@@ -45,7 +34,7 @@
     ];
 
     nixos =
-      { pkgs, system, ... }:
+      { pkgs, ... }:
       {
         imports = [
           inputs.infra-private.nixosModules.reticulum-server
@@ -54,17 +43,6 @@
           ./_rnsh-service.nix
           ./_nomadnet-service.nix
         ];
-
-        nixpkgs = {
-          overlays = [
-            (final: _prev: {
-              master = import inputs.nixpkgs-master {
-                inherit (final) config;
-                inherit system;
-              };
-            })
-          ];
-        };
 
         networking.firewall = {
           allowedTCPPorts = [
@@ -103,7 +81,7 @@
           lxmd = {
             enable = true;
 
-            package = pkgs.master.python3Packages.lxmf.override {
+            package = pkgs.python3Packages.lxmf.override {
               propagateRns = true;
             };
 
@@ -198,20 +176,19 @@
             enableUdevRules = true;
             extraGroups = [ "dialout" ];
             openMulticastPorts = true;
-            package = pkgs.master.rns;
 
             settings = {
               interfaces = {
                 "Berlin IPV4" = {
                   enabled = true;
-                  remote = "82.165.27.170";
+                  target_host = "82.165.27.170";
                   target_port = 443;
                   type = "BackboneInterface";
                 };
 
                 "Bern_IPv4" = {
                   enabled = true;
-                  remote = "45.59.114.96";
+                  target_host = "45.59.114.96";
                   target_port = 7822;
                   type = "BackboneInterface";
                 };
@@ -224,7 +201,7 @@
 
                 "Hispagatos_org_HQ" = {
                   enabled = true;
-                  remote = "reticulum.hispagatos.org";
+                  target_host = "reticulum.hispagatos.org";
                   target_port = 4242;
                   type = "BackboneInterface";
                 };
@@ -264,7 +241,7 @@
 
                 "Sowerby_Node" = {
                   enabled = true;
-                  remote = "rns.shaun.rocks";
+                  target_host = "rns.shaun.rocks";
                   target_port = 4242;
                   type = "BackboneInterface";
                 };
@@ -307,7 +284,7 @@
 
                 "wintermute" = {
                   enabled = true;
-                  remote = "212.216.248.53";
+                  target_host = "212.216.248.53";
                   target_port = 4242;
                   type = "BackboneInterface";
                 };
