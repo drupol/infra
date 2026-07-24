@@ -314,7 +314,7 @@
               displayBrightness = 50;
               inhibitLidActionWhenExternalMonitorConnected = true;
               keyboardBrightness = 30;
-              powerProfile = "performance";
+              powerProfile = "balanced"; # performance, powerSaving
 
               turnOffDisplay = {
                 idleTimeout = 600;
