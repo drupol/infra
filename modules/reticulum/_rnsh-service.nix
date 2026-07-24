@@ -45,15 +45,16 @@ in
           copyConfig = lib.optionalString (cfg.rnsd.settings != null) ''
             install -Dm400 ${settingsFormat.generate "rnsd.conf" cfg.rnsd.settings} "$STATE_DIRECTORY"/rnsd/config
           '';
-          copyIdentity = lib.optionalString (cfg.identityFile != null) ''
-            install -Dm400 ${cfg.identityFile} "$STATE_DIRECTORY"/rnsd/storage/identities/rnsh.default
-            ls -la
-          '';
-          copyTransportIdentity = lib.optionalString (cfg.rnsd.transportIdentityFile != null) ''
-            install -Dm400 ${cfg.rnsd.transportIdentityFile} "$STATE_DIRECTORY"/rnsd/storage/transport_identity
+          copyRnsdIdentities = lib.concatStringsSep "\n" (
+            lib.mapAttrsToList (name: file: ''
+              install -Dm400 ${file} "$STATE_DIRECTORY"/rnsd/storage/identities/${name}
+            '') cfg.rnsd.identities
+          );
+          copyRnsdIdentity = lib.optionalString (cfg.rnsd.identityFile != null) ''
+            install -Dm400 ${cfg.rnsd.identityFile} "$STATE_DIRECTORY"/rnsd/storage/transport_identity
           '';
         in
-        copyConfig + copyTransportIdentity + copyAllowedIdentities + copyIdentity;
+        copyConfig + copyRnsdIdentities + copyAllowedIdentities + copyRnsdIdentity;
 
       serviceConfig = {
         CacheDirectory = "rnsh";
@@ -125,27 +126,27 @@ in
         type = lib.types.nullOr lib.types.str;
       };
 
-      identityFile = lib.mkOption {
-        default = null;
-        description = "Path to identity file.";
-        type = lib.types.nullOr lib.types.str;
-      };
-
-      package = mkPackageOption pkgs "rns" { };
-
       rnsd = {
+        identityFile = lib.mkOption {
+          default = null;
+          description = "Path to rnsd identity file. This file will be copied to the dataDir on service start.";
+          type = lib.types.nullOr lib.types.str;
+        };
+
+        identities = mkOption {
+          default = { };
+          description = "Map of identity names to paths of identity files. Each identity file will be copied to $STATE_DIRECTORY/storage/identities/{name}.";
+          type = lib.types.attrsOf lib.types.str;
+        };
+
         settings = lib.mkOption {
           default = null;
           description = "Structured rnsd configuration. The generated file is copied to the dataDir on service start. Use `rnsd --exampleconfig` to get an example config file.";
           type = lib.types.nullOr settingsFormat.type;
         };
-
-        transportIdentityFile = lib.mkOption {
-          default = null;
-          description = "Path to rnsd identity file. This file will be copied to the dataDir on service start.";
-          type = lib.types.nullOr lib.types.str;
-        };
       };
+
+      package = mkPackageOption pkgs "rns" { };
 
       user = mkOption {
         default = null;
