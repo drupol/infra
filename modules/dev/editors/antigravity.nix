@@ -10,12 +10,12 @@
         home.packages = with pkgs; [
           # Using the FHS version to allow installation of extensions
           # I don't really need Nix to manage extensions for me
-          antigravity-fhs
+          antigravity-ide-fhs
         ];
       };
 
     includes = [
-      (den.provides.unfree [ "antigravity" ])
+      (den.provides.unfree [ "antigravity-ide" ])
     ];
 
     nixos = {
