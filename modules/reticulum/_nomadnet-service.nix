@@ -53,13 +53,9 @@ in
               install -Dm400 ${file} "$STATE_DIRECTORY"/rnsd/storage/identities/${name}
             '') cfg.rnsd.identities
           );
-          copyRnsdTransportIdentity = lib.optionalString (cfg.rnsd.transportIdentityFile != null) ''
-            install -Dm400 ${cfg.rnsd.transportIdentityFile} "$STATE_DIRECTORY"/rnsd/storage/transport_identity
-          '';
         in
         copyRnsdConfig
         + copyConfig
-        + copyRnsdTransportIdentity
         + copyIdentity
         + copyPeerSettings
         + copyRnsdIdentities;
@@ -135,12 +131,6 @@ in
           default = null;
           description = "Structured rnsd configuration. The generated file is copied to the dataDir on service start. Use `rnsd --exampleconfig` to get an example config file.";
           type = lib.types.nullOr settingsFormat.type;
-        };
-
-        transportIdentityFile = lib.mkOption {
-          default = null;
-          description = "Path to rnsd identity file. This file will be copied to the dataDir on service start.";
-          type = lib.types.nullOr lib.types.str;
         };
       };
 
