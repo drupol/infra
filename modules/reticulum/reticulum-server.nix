@@ -276,6 +276,13 @@
                   type = "TCPClientInterface";
                 };
 
+                "rns.reticulum-wf.nl" = {
+                  enabled = true;
+                  target_host = "rns.reticulum-wf.nl";
+                  target_port = 4242;
+                  type = "TCPClientInterface";
+                };
+
                 "rns.fyi" = {
                   enabled = true;
                   target_host = "rns.fyi";
