@@ -1,5 +1,6 @@
 {
   den,
+  inputs,
   ...
 }:
 {
@@ -14,17 +15,30 @@
     ];
 
     homeManager =
-      { pkgs, ... }:
+      { pkgs, system, ... }:
       let
         lxmf = pkgs.python3Packages.lxmf.override {
           propagateRns = true;
         };
       in
       {
-        home.packages = with pkgs; [
+        nixpkgs = {
+          overlays = [
+            (final: _prev: {
+              master = import inputs.nixpkgs-master {
+                inherit (final) config;
+                inherit system;
+              };
+            })
+          ];
+        };
+
+        home.packages = with pkgs.master; [
           lxmf
           nomadnet
-          rns
+          (rns.overridePythonAttrs ({
+            src = /home/pol/Code/tmp/markqvist/reticulum;
+          }))
           sideband
         ];
       };
