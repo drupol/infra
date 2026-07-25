@@ -45,9 +45,6 @@ in
           copyPeerSettings = ''
             install -Dm400 ${peersettingsFormat cfg.peerSettings} "$STATE_DIRECTORY"/nomadnet/storage/peersettings
           '';
-          copyRnsdIdentity = lib.optionalString (cfg.rnsdIdentityFile != null) ''
-            install -Dm400 ${cfg.rnsdIdentityFile} "$STATE_DIRECTORY"/rnsd/storage/transport_identity
-          '';
           copyRnsdConfig = lib.optionalString config.services.rnsd.enable ''
             install -Dm400 ${settingsFormat.generate "rnsd.conf" cfg.rnsd.settings} "$STATE_DIRECTORY"/rnsd/config
           '';
@@ -56,6 +53,9 @@ in
               install -Dm400 ${file} "$STATE_DIRECTORY"/rnsd/storage/identities/${name}
             '') cfg.rnsd.identities
           );
+          copyRnsdIdentity = lib.optionalString (cfg.rnsdIdentityFile != null) ''
+            install -Dm400 ${cfg.rnsdIdentityFile} "$STATE_DIRECTORY"/rnsd/storage/transport_identity
+          '';
         in
         copyRnsdConfig
         + copyConfig
@@ -125,16 +125,16 @@ in
       };
 
       rnsd = {
-        identityFile = lib.mkOption {
-          default = null;
-          description = "Path to rnsd identity file. This file will be copied to the dataDir on service start.";
-          type = lib.types.nullOr lib.types.str;
-        };
-
         identities = mkOption {
           default = { };
           description = "Map of identity names to paths of identity files. Each identity file will be copied to $STATE_DIRECTORY/storage/identities/{name}.";
           type = lib.types.attrsOf lib.types.str;
+        };
+
+        identityFile = lib.mkOption {
+          default = null;
+          description = "Path to rnsd identity file. This file will be copied to the dataDir on service start.";
+          type = lib.types.nullOr lib.types.str;
         };
 
         settings = lib.mkOption {

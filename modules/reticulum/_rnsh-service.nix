@@ -126,17 +126,19 @@ in
         type = lib.types.nullOr lib.types.str;
       };
 
-      rnsd = {
-        identityFile = lib.mkOption {
-          default = null;
-          description = "Path to rnsd identity file. This file will be copied to the dataDir on service start.";
-          type = lib.types.nullOr lib.types.str;
-        };
+      package = mkPackageOption pkgs "rns" { };
 
+      rnsd = {
         identities = mkOption {
           default = { };
           description = "Map of identity names to paths of identity files. Each identity file will be copied to $STATE_DIRECTORY/storage/identities/{name}.";
           type = lib.types.attrsOf lib.types.str;
+        };
+
+        identityFile = lib.mkOption {
+          default = null;
+          description = "Path to rnsd identity file. This file will be copied to the dataDir on service start.";
+          type = lib.types.nullOr lib.types.str;
         };
 
         settings = lib.mkOption {
@@ -145,8 +147,6 @@ in
           type = lib.types.nullOr settingsFormat.type;
         };
       };
-
-      package = mkPackageOption pkgs "rns" { };
 
       user = mkOption {
         default = null;
