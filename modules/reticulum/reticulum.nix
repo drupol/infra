@@ -36,9 +36,7 @@
         home.packages = with pkgs.master; [
           lxmf
           nomadnet
-          (rns.overridePythonAttrs ({
-            src = /home/pol/Code/tmp/markqvist/reticulum;
-          }))
+          rns
           sideband
         ];
       };
