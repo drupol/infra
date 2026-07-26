@@ -40,7 +40,6 @@
     nixos-hardware.url = "github:NixOS/nixos-hardware/master";
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
     nixpkgs-master.url = "github:NixOS/nixpkgs/master";
-    nixpkgs-pr-530406.url = "github:drupol/nixpkgs/push-mntwnvrylymq";
     nixpkgs-unstable.url = "github:/nixos/nixpkgs/nixpkgs-unstable";
     nur.url = "github:nix-community/NUR";
     pedantix.url = "github:swarsel/pedantix";

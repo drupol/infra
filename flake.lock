@@ -713,22 +713,6 @@
         "type": "github"
       }
     },
-    "nixpkgs-pr-530406": {
-      "locked": {
-        "lastModified": 1784908135,
-        "narHash": "sha256-39KwEOfZmn/oWWNuD7QNcrXOln5iR+VxXFMAYKr0tfo=",
-        "owner": "drupol",
-        "repo": "nixpkgs",
-        "rev": "be36232d8a0385457f0e18c9c16356033b75e8a3",
-        "type": "github"
-      },
-      "original": {
-        "owner": "drupol",
-        "ref": "push-mntwnvrylymq",
-        "repo": "nixpkgs",
-        "type": "github"
-      }
-    },
     "nixpkgs-unstable": {
       "locked": {
         "lastModified": 1784812282,
@@ -996,7 +980,6 @@
         "nixos-hardware": "nixos-hardware",
         "nixpkgs": "nixpkgs_6",
         "nixpkgs-master": "nixpkgs-master",
-        "nixpkgs-pr-530406": "nixpkgs-pr-530406",
         "nixpkgs-unstable": "nixpkgs-unstable",
         "nur": "nur",
         "pedantix": "pedantix",

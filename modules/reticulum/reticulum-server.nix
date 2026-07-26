@@ -4,11 +4,6 @@
   ...
 }:
 {
-  flake-file.inputs = {
-    # https://github.com/NixOS/nixpkgs/pull/530406
-    nixpkgs-pr-530406.url = "github:drupol/nixpkgs/push-mntwnvrylymq";
-  };
-
   den.aspects.reticulum-server = {
     includes = [
       (den.provides.unfree [
@@ -49,8 +44,8 @@
       {
         imports = [
           inputs.infra-private.nixosModules.reticulum-server
-          "${inputs.nixpkgs-pr-530406}/nixos/modules/services/networking/rnsd.nix"
-          "${inputs.nixpkgs-pr-530406}/nixos/modules/services/networking/lxmd.nix"
+          "${inputs.nixpkgs-master}/nixos/modules/services/networking/rnsd.nix"
+          "${inputs.nixpkgs-master}/nixos/modules/services/networking/lxmd.nix"
           ./_rnsh-service.nix
           ./_nomadnet-service.nix
         ];
@@ -276,13 +271,6 @@
                   type = "TCPClientInterface";
                 };
 
-                "rns.reticulum-wf.nl" = {
-                  enabled = true;
-                  target_host = "rns.reticulum-wf.nl";
-                  target_port = 4242;
-                  type = "TCPClientInterface";
-                };
-
                 "rns.fyi" = {
                   enabled = true;
                   target_host = "rns.fyi";
@@ -303,6 +291,13 @@
                   mode = "gateway";
                   reachable_on = "rns.not-a-number.io";
                   type = "BackboneInterface";
+                };
+
+                "rns.reticulum-wf.nl" = {
+                  enabled = true;
+                  target_host = "rns.reticulum-wf.nl";
+                  target_port = 4242;
+                  type = "TCPClientInterface";
                 };
 
                 "rns.sofia" = {
