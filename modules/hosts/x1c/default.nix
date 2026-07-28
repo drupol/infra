@@ -199,22 +199,20 @@
           ];
         };
 
-      provides.to-users = {
-        includes = with den.aspects; [
-          base
-          (facter ./facter.json)
-          bluetooth
-          desktop
-          dev
-          fwupd
-          primary
-          reticulum
-          shell
-          sound
-          vpn
-          wifi
-        ];
-      };
+      includes = with den.aspects; [
+        base
+        (facter ./facter.json)
+        bluetooth
+        desktop
+        dev
+        fwupd
+        primary
+        reticulum
+        shell
+        sound
+        vpn
+        wifi
+      ];
     };
 
     hosts.x86_64-linux.x1c.users.pol = { };

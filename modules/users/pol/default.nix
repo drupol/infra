@@ -19,6 +19,7 @@
         den.provides.define-user
         den.provides.primary-user
         den.aspects.tools.provides.nix-trusted-user
+        den.batteries.host-aspects
       ];
 
       homeManager = {
