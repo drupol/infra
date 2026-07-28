@@ -35,6 +35,10 @@
     infra-private.url = "github:drupol/infra-private";
     json-sort.url = "github:drupol/json-sort";
     make-shell.url = "github:nicknovitski/make-shell";
+    mattpocock-skills = {
+      url = "github:mattpocock/skills";
+      flake = false;
+    };
     nix-webapps.url = "github:TLATER/nix-webapps";
     nixos-facter-modules.url = "github:numtide/nixos-facter-modules";
     nixos-hardware.url = "github:NixOS/nixos-hardware/master";
