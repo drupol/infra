@@ -126,6 +126,7 @@
                 default-command = [
                   "--ignore-working-copy"
                   "log"
+                  "--reversed"
                   "-T"
                   "builtin_log_oneline"
                 ];
