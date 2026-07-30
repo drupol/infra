@@ -20,6 +20,21 @@
 
   den = {
     aspects.x1c = {
+      includes = with den.aspects; [
+        base
+        (facter ./facter.json)
+        bluetooth
+        desktop
+        dev
+        fwupd
+        primary
+        reticulum
+        shell
+        sound
+        vpn
+        wifi
+      ];
+
       nixos =
         { pkgs, ... }:
         {
@@ -198,21 +213,6 @@
             "w /sys/class/power_supply/BAT0/charge_control_end_threshold - - - - 80"
           ];
         };
-
-      includes = with den.aspects; [
-        base
-        (facter ./facter.json)
-        bluetooth
-        desktop
-        dev
-        fwupd
-        primary
-        reticulum
-        shell
-        sound
-        vpn
-        wifi
-      ];
     };
 
     hosts.x86_64-linux.x1c.users.pol = { };
