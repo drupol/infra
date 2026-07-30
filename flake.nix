@@ -46,11 +46,19 @@
     nixpkgs-master.url = "github:NixOS/nixpkgs/master";
     nixpkgs-unstable.url = "github:/nixos/nixpkgs/nixpkgs-unstable";
     nur.url = "github:nix-community/NUR";
+    obra-superpowers = {
+      url = "github:obra/superpowers";
+      flake = false;
+    };
     pedantix.url = "github:swarsel/pedantix";
     pkgs-by-name-for-flake-parts.url = "github:drupol/pkgs-by-name-for-flake-parts";
     plasma-manager = {
       url = "github:nix-community/plasma-manager";
       inputs.nixpkgs.follows = "nixpkgs";
+    };
+    trailofbits-skills = {
+      url = "github:trailofbits/skills";
+      flake = false;
     };
     treefmt-nix.url = "github:numtide/treefmt-nix";
   };
