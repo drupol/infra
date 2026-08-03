@@ -26,8 +26,7 @@
       let
         # Stolen from https://github.com/shazow/nixfiles/blob/main/vms/agentspace/skills/flake.nix
         withAllSkills =
-          name:
-          skillsPath:
+          name: skillsPath:
           let
             # 1. Read the contents of the target folder.
             # builtins.readDir returns an attribute set like: { "git-skill" = "directory"; "README.md" = "regular"; }

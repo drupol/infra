@@ -6,6 +6,22 @@
 {
   den = {
     aspects.apollo = {
+      includes = with den.aspects; [
+        base
+        (facter ./facter.json)
+        desktop
+        dev
+        guacamole
+        noise-station-server
+        openssh
+        reticulum-server
+        shell
+        tika
+        vpn
+        # Users
+        root
+      ];
+
       nixos = {
         boot = {
           initrd.availableKernelModules = [
@@ -50,23 +66,6 @@
         ];
       };
 
-      provides.to-users = {
-        includes = with den.aspects; [
-          base
-          (facter ./facter.json)
-          desktop
-          dev
-          guacamole
-          noise-station-server
-          openssh
-          reticulum-server
-          shell
-          tika
-          vpn
-          # Users
-          root
-        ];
-      };
     };
 
     hosts.x86_64-linux.apollo.users.pol = { };

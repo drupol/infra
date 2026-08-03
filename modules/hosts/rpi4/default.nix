@@ -6,6 +6,19 @@
 {
   den = {
     aspects.rpi4 = {
+      includes = with den.aspects; [
+        base
+        bluetooth
+        (facter ./facter.json)
+        noise-station-client
+        openssh
+        # rpi4-sdimage
+        shell
+        vpn
+        # Users
+        root
+      ];
+
       nixos =
         { pkgs, ... }:
         {
@@ -66,21 +79,6 @@
             startAt = "*:0/15";
           };
         };
-
-      provides.to-users = {
-        includes = with den.aspects; [
-          base
-          bluetooth
-          (facter ./facter.json)
-          noise-station-client
-          openssh
-          # rpi4-sdimage
-          shell
-          vpn
-          # Users
-          root
-        ];
-      };
     };
 
     hosts.aarch64-linux.rpi4.users.pol = { };

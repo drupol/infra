@@ -49,6 +49,7 @@
               "flake.nix"
             ];
 
+            package = pkgs.pedantix;
             priority = -2;
           };
 
