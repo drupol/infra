@@ -44,8 +44,6 @@
       {
         imports = [
           inputs.infra-private.nixosModules.reticulum-server
-          "${inputs.nixpkgs-master}/nixos/modules/services/networking/rnsd.nix"
-          "${inputs.nixpkgs-master}/nixos/modules/services/networking/lxmd.nix"
           ./_rnsh-service.nix
           ./_nomadnet-service.nix
         ];
