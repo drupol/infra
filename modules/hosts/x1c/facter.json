@@ -392,7 +392,7 @@
     ],
     "camera": [
       {
-        "attached_to": 43,
+        "attached_to": 42,
         "base_class": {
           "hex": "010f",
           "name": "Camera",
@@ -455,7 +455,7 @@
         "driver_modules": ["uvcvideo"],
         "drivers": ["uvcvideo"],
         "hotplug": "usb",
-        "index": 42,
+        "index": 41,
         "model": "8SSC21K64613V1SR57F13CN Integrated Camera",
         "module_alias": "usb:v30C9p005Fd1018dcEFdsc02dp01ic0Eisc01ip01in02",
         "resources": [
@@ -487,7 +487,7 @@
         }
       },
       {
-        "attached_to": 43,
+        "attached_to": 42,
         "base_class": {
           "hex": "010f",
           "name": "Camera",
@@ -582,7 +582,7 @@
         }
       },
       {
-        "attached_to": 43,
+        "attached_to": 42,
         "base_class": {
           "hex": "010f",
           "name": "Camera",
@@ -677,7 +677,7 @@
         }
       },
       {
-        "attached_to": 43,
+        "attached_to": 42,
         "base_class": {
           "hex": "010f",
           "name": "Camera",
@@ -740,7 +740,7 @@
         "driver_modules": ["uvcvideo"],
         "drivers": ["uvcvideo"],
         "hotplug": "usb",
-        "index": 50,
+        "index": 51,
         "model": "8SSC21K64613V1SR57F13CN Integrated Camera",
         "module_alias": "usb:v30C9p005Fd1018dcEFdsc02dp01ic0Eisc02ip01in01",
         "resources": [
@@ -769,6 +769,87 @@
           "hex": "30c9",
           "name": "8SSC21K64613V1SR57F13CN",
           "value": 12489
+        }
+      }
+    ],
+    "chip_card": [
+      {
+        "attached_to": 42,
+        "base_class": {
+          "hex": "010e",
+          "name": "Chipcard Reader",
+          "value": 270
+        },
+        "bus_type": {
+          "hex": "0086",
+          "name": "USB",
+          "value": 134
+        },
+        "class_list": ["chip_card", "usb"],
+        "detail": {
+          "device_class": {
+            "hex": "0000",
+            "name": "per_interface",
+            "value": 0
+          },
+          "device_protocol": 0,
+          "device_subclass": {
+            "hex": "0000",
+            "name": "per_interface",
+            "value": 0
+          },
+          "interface_alternate_setting": 0,
+          "interface_class": {
+            "hex": "000b",
+            "name": "smart_card",
+            "value": 11
+          },
+          "interface_number": 2,
+          "interface_protocol": 0,
+          "interface_subclass": {
+            "hex": "0000",
+            "name": "per_interface",
+            "value": 0
+          }
+        },
+        "device": {
+          "hex": "0116",
+          "name": "Yubikey NEO OTP+U2F+CCID",
+          "value": 278
+        },
+        "driver": "usbfs",
+        "driver_module": "usbcore",
+        "driver_modules": ["usbcore"],
+        "drivers": ["usbfs"],
+        "hotplug": "usb",
+        "index": 50,
+        "model": "Yubico Yubikey NEO OTP+U2F+CCID",
+        "module_alias": "usb:v1050p0116d0340dc00dsc00dp00ic0Bisc00ip00in02",
+        "resources": [
+          {
+            "bits": 0,
+            "handshake": 0,
+            "parity": 0,
+            "speed": 12000000,
+            "stop_bits": 0,
+            "type": "baud"
+          }
+        ],
+        "revision": {
+          "hex": "0000",
+          "name": "3.40",
+          "value": 0
+        },
+        "slot": {
+          "bus": 0,
+          "number": 0
+        },
+        "sysfs_bus_id": "3-6:1.2",
+        "sysfs_id": "/devices/pci0000:00/0000:00:14.0/usb3/3-6/3-6:1.2",
+        "vendor": {
+          "hex": "1050",
+          "name": "Yubico",
+          "value": 4176
         }
       }
     ],
@@ -907,6 +988,7 @@
           "split_lock_detect",
           "user_shstk",
           "avx_vnni",
+          "lass",
           "lam",
           "wbnoinvd",
           "dtherm",
@@ -950,6 +1032,7 @@
         "power_management": [""],
         "siblings": 8,
         "stepping": 1,
+        "tlb_size": 31499,
         "units": 128,
         "vendor_name": "GenuineIntel",
         "write_protect": false
@@ -978,7 +1061,7 @@
         "driver_module": "nvme",
         "driver_modules": ["nvme"],
         "drivers": ["nvme"],
-        "index": 40,
+        "index": 39,
         "model": "SAMSUNG MZVLC1T0HFLU-00BLL",
         "resources": [
           {
@@ -1149,9 +1232,9 @@
         "driver_modules": ["usbcore"],
         "drivers": ["hub"],
         "hotplug": "usb",
-        "index": 43,
-        "model": "Linux 6.18.7 xhci-hcd xHCI Host Controller",
-        "module_alias": "usb:v1D6Bp0002d0618dc09dsc00dp01ic09isc00ip00in00",
+        "index": 42,
+        "model": "Linux 7.1.5 xhci-hcd xHCI Host Controller",
+        "module_alias": "usb:v1D6Bp0002d0701dc09dsc00dp01ic09isc00ip00in00",
         "resources": [
           {
             "bits": 0,
@@ -1164,7 +1247,7 @@
         ],
         "revision": {
           "hex": "0000",
-          "name": "6.18",
+          "name": "7.01",
           "value": 0
         },
         "serial": "0000:00:14.0",
@@ -1176,7 +1259,7 @@
         "sysfs_id": "/devices/pci0000:00/0000:00:14.0/usb3/3-0:1.0",
         "vendor": {
           "hex": "1d6b",
-          "name": "Linux 6.18.7 xhci-hcd",
+          "name": "Linux 7.1.5 xhci-hcd",
           "value": 7531
         }
       },
@@ -1230,11 +1313,11 @@
         "drivers": ["hub"],
         "hotplug": "usb",
         "index": 46,
-        "model": "Linux 6.18.7 xhci-hcd xHCI Host Controller",
-        "module_alias": "usb:v1D6Bp0003d0618dc09dsc00dp03ic09isc00ip00in00",
+        "model": "Linux 7.1.5 xhci-hcd xHCI Host Controller",
+        "module_alias": "usb:v1D6Bp0003d0701dc09dsc00dp03ic09isc00ip00in00",
         "revision": {
           "hex": "0000",
-          "name": "6.18",
+          "name": "7.01",
           "value": 0
         },
         "serial": "0000:00:14.0",
@@ -1246,12 +1329,12 @@
         "sysfs_id": "/devices/pci0000:00/0000:00:14.0/usb4/4-0:1.0",
         "vendor": {
           "hex": "1d6b",
-          "name": "Linux 6.18.7 xhci-hcd",
+          "name": "Linux 7.1.5 xhci-hcd",
           "value": 7531
         }
       },
       {
-        "attached_to": 43,
+        "attached_to": 42,
         "base_class": {
           "hex": "010a",
           "name": "Hub",
@@ -1378,8 +1461,8 @@
         "drivers": ["hub"],
         "hotplug": "usb",
         "index": 49,
-        "model": "Linux 6.18.7 xhci-hcd xHCI Host Controller",
-        "module_alias": "usb:v1D6Bp0002d0618dc09dsc00dp01ic09isc00ip00in00",
+        "model": "Linux 7.1.5 xhci-hcd xHCI Host Controller",
+        "module_alias": "usb:v1D6Bp0002d0701dc09dsc00dp01ic09isc00ip00in00",
         "resources": [
           {
             "bits": 0,
@@ -1392,7 +1475,7 @@
         ],
         "revision": {
           "hex": "0000",
-          "name": "6.18",
+          "name": "7.01",
           "value": 0
         },
         "serial": "0000:00:0d.0",
@@ -1404,7 +1487,7 @@
         "sysfs_id": "/devices/pci0000:00/0000:00:0d.0/usb1/1-0:1.0",
         "vendor": {
           "hex": "1d6b",
-          "name": "Linux 6.18.7 xhci-hcd",
+          "name": "Linux 7.1.5 xhci-hcd",
           "value": 7531
         }
       },
@@ -1457,12 +1540,12 @@
         "driver_modules": ["usbcore"],
         "drivers": ["hub"],
         "hotplug": "usb",
-        "index": 51,
-        "model": "Linux 6.18.7 xhci-hcd xHCI Host Controller",
-        "module_alias": "usb:v1D6Bp0003d0618dc09dsc00dp03ic09isc00ip00in00",
+        "index": 53,
+        "model": "Linux 7.1.5 xhci-hcd xHCI Host Controller",
+        "module_alias": "usb:v1D6Bp0003d0701dc09dsc00dp03ic09isc00ip00in00",
         "revision": {
           "hex": "0000",
-          "name": "6.18",
+          "name": "7.01",
           "value": 0
         },
         "serial": "0000:00:0d.0",
@@ -1474,8 +1557,105 @@
         "sysfs_id": "/devices/pci0000:00/0000:00:0d.0/usb2/2-0:1.0",
         "vendor": {
           "hex": "1d6b",
-          "name": "Linux 6.18.7 xhci-hcd",
+          "name": "Linux 7.1.5 xhci-hcd",
           "value": 7531
+        }
+      }
+    ],
+    "keyboard": [
+      {
+        "attached_to": 42,
+        "base_class": {
+          "hex": "0108",
+          "name": "Keyboard",
+          "value": 264
+        },
+        "bus_type": {
+          "hex": "0086",
+          "name": "USB",
+          "value": 134
+        },
+        "class_list": ["keyboard", "usb"],
+        "detail": {
+          "device_class": {
+            "hex": "0000",
+            "name": "per_interface",
+            "value": 0
+          },
+          "device_protocol": 0,
+          "device_subclass": {
+            "hex": "0000",
+            "name": "per_interface",
+            "value": 0
+          },
+          "interface_alternate_setting": 0,
+          "interface_class": {
+            "hex": "0003",
+            "name": "hid",
+            "value": 3
+          },
+          "interface_number": 0,
+          "interface_protocol": 1,
+          "interface_subclass": {
+            "hex": "0001",
+            "name": "audio",
+            "value": 1
+          }
+        },
+        "device": {
+          "hex": "0116",
+          "name": "Yubikey NEO OTP+U2F+CCID",
+          "value": 278
+        },
+        "driver": "usbhid",
+        "driver_info": {
+          "type": "keyboard",
+          "xkb_model": "pc104",
+          "xkb_rules": "xfree86"
+        },
+        "driver_module": "usbhid",
+        "driver_modules": ["usbhid"],
+        "drivers": ["usbhid"],
+        "hotplug": "usb",
+        "index": 52,
+        "model": "Yubico Yubikey NEO OTP+U2F+CCID",
+        "module_alias": "usb:v1050p0116d0340dc00dsc00dp00ic03isc01ip01in00",
+        "resources": [
+          {
+            "bits": 0,
+            "handshake": 0,
+            "parity": 0,
+            "speed": 12000000,
+            "stop_bits": 0,
+            "type": "baud"
+          }
+        ],
+        "revision": {
+          "hex": "0000",
+          "name": "3.40",
+          "value": 0
+        },
+        "slot": {
+          "bus": 0,
+          "number": 0
+        },
+        "sub_class": {
+          "hex": "0000",
+          "name": "Keyboard",
+          "value": 0
+        },
+        "sysfs_bus_id": "3-6:1.0",
+        "sysfs_id": "/devices/pci0000:00/0000:00:14.0/usb3/3-6/3-6:1.0",
+        "unix_device_names": [
+          "/dev/input/by-id/usb-Yubico_Yubikey_NEO_OTP+U2F+CCID-event-kbd",
+          "/dev/input/by-path/pci-0000:00:14.0-usb-0:6:1.0-event-kbd",
+          "/dev/input/by-path/pci-0000:00:14.0-usbv2-0:6:1.0-event-kbd",
+          "/dev/input/event2"
+        ],
+        "vendor": {
+          "hex": "1050",
+          "name": "Yubico",
+          "value": 4176
         }
       }
     ],
@@ -1546,7 +1726,7 @@
           "hex": "cfa8",
           "value": 53160
         },
-        "index": 54,
+        "index": 57,
         "sub_class": {
           "hex": "0001",
           "name": "bus",
@@ -1590,7 +1770,7 @@
         "driver_modules": ["iwlwifi"],
         "drivers": ["iwlwifi"],
         "index": 19,
-        "model": "Intel Ethernet controller",
+        "model": "Intel Network controller",
         "module_alias": "pci:v00008086d0000A840sv00008086sd000000E0bc02sc80i00",
         "resources": [
           {
@@ -1611,9 +1791,9 @@
           "number": 20
         },
         "sub_class": {
-          "hex": "0000",
-          "name": "Ethernet controller",
-          "value": 0
+          "hex": "0080",
+          "name": "Network controller",
+          "value": 128
         },
         "sub_device": {
           "hex": "00e0",
@@ -1627,7 +1807,7 @@
         "sysfs_bus_id": "0000:00:14.3",
         "sysfs_id": "/devices/pci0000:00/0000:00:14.3",
         "sysfs_iommu_group_id": 10,
-        "unix_device_names": ["wlp0s20f3"],
+        "unix_device_names": ["wlan0"],
         "vendor": {
           "hex": "8086",
           "name": "Intel Corporation",
@@ -1644,7 +1824,7 @@
           "value": 263
         },
         "class_list": ["network_interface"],
-        "index": 52,
+        "index": 54,
         "model": "Loopback network interface",
         "sub_class": {
           "hex": "0000",
@@ -1666,8 +1846,8 @@
         "driver_module": "iwlwifi",
         "driver_modules": ["iwlwifi"],
         "drivers": ["iwlwifi"],
-        "index": 53,
-        "model": "Ethernet network interface",
+        "index": 55,
+        "model": "WLAN network interface",
         "resources": [
           {
             "address": 51,
@@ -1679,13 +1859,13 @@
           }
         ],
         "sub_class": {
-          "hex": "0001",
-          "name": "Ethernet",
-          "value": 1
+          "hex": "000a",
+          "name": "WLAN",
+          "value": 10
         },
         "sysfs_device_link": "/devices/pci0000:00/0000:00:14.3",
-        "sysfs_id": "/class/net/wlp0s20f3",
-        "unix_device_names": ["wlp0s20f3"]
+        "sysfs_id": "/class/net/wlan0",
+        "unix_device_names": ["wlan0"]
       }
     ],
     "pci": [
@@ -2555,47 +2735,9 @@
     "system": {
       "form_factor": "laptop"
     },
-    "unknown": [
-      {
-        "attached_to": 0,
-        "base_class": {
-          "hex": "0007",
-          "name": "Communication controller",
-          "value": 7
-        },
-        "class_list": ["unknown"],
-        "device": {
-          "hex": "0000",
-          "name": "16550A",
-          "value": 0
-        },
-        "index": 39,
-        "model": "16550A",
-        "pci_interface": {
-          "hex": "0002",
-          "name": "16550",
-          "value": 2
-        },
-        "resources": [
-          {
-            "access": "read_write",
-            "base": 8224,
-            "enabled": true,
-            "range": 0,
-            "type": "io"
-          }
-        ],
-        "sub_class": {
-          "hex": "0000",
-          "name": "Serial controller",
-          "value": 0
-        },
-        "unix_device_names": ["/dev/ttyS0"]
-      }
-    ],
     "usb": [
       {
-        "attached_to": 43,
+        "attached_to": 42,
         "base_class": {
           "hex": "0000",
           "name": "Unclassified device",
@@ -2654,7 +2796,7 @@
           "value": 95
         },
         "hotplug": "usb",
-        "index": 41,
+        "index": 40,
         "model": "8SSC21K64613V1SR57F13CN Integrated Camera",
         "module_alias": "usb:v30C9p005Fd1018dcEFdsc02dp01icFEisc01ip01in04",
         "resources": [
@@ -2688,6 +2830,90 @@
           "hex": "30c9",
           "name": "8SSC21K64613V1SR57F13CN",
           "value": 12489
+        }
+      },
+      {
+        "attached_to": 42,
+        "base_class": {
+          "hex": "0000",
+          "name": "Unclassified device",
+          "value": 0
+        },
+        "bus_type": {
+          "hex": "0086",
+          "name": "USB",
+          "value": 134
+        },
+        "class_list": ["usb", "unknown"],
+        "detail": {
+          "device_class": {
+            "hex": "0000",
+            "name": "per_interface",
+            "value": 0
+          },
+          "device_protocol": 0,
+          "device_subclass": {
+            "hex": "0000",
+            "name": "per_interface",
+            "value": 0
+          },
+          "interface_alternate_setting": 0,
+          "interface_class": {
+            "hex": "0003",
+            "name": "hid",
+            "value": 3
+          },
+          "interface_number": 1,
+          "interface_protocol": 0,
+          "interface_subclass": {
+            "hex": "0000",
+            "name": "per_interface",
+            "value": 0
+          }
+        },
+        "device": {
+          "hex": "0116",
+          "name": "Yubikey NEO OTP+U2F+CCID",
+          "value": 278
+        },
+        "driver": "usbhid",
+        "driver_module": "usbhid",
+        "driver_modules": ["usbhid"],
+        "drivers": ["usbhid"],
+        "hotplug": "usb",
+        "index": 43,
+        "model": "Yubico Yubikey NEO OTP+U2F+CCID",
+        "module_alias": "usb:v1050p0116d0340dc00dsc00dp00ic03isc00ip00in01",
+        "resources": [
+          {
+            "bits": 0,
+            "handshake": 0,
+            "parity": 0,
+            "speed": 12000000,
+            "stop_bits": 0,
+            "type": "baud"
+          }
+        ],
+        "revision": {
+          "hex": "0000",
+          "name": "3.40",
+          "value": 0
+        },
+        "slot": {
+          "bus": 0,
+          "number": 0
+        },
+        "sub_class": {
+          "hex": "0000",
+          "name": "Unclassified device",
+          "value": 0
+        },
+        "sysfs_bus_id": "3-6:1.1",
+        "sysfs_id": "/devices/pci0000:00/0000:00:14.0/usb3/3-6/3-6:1.1",
+        "vendor": {
+          "hex": "1050",
+          "name": "Yubico",
+          "value": 4176
         }
       },
       {
@@ -2917,7 +3143,7 @@
         },
         "class_list": ["usb_controller", "pci"],
         "detail": {
-          "command": 1026,
+          "command": 1030,
           "function": 0,
           "header_type": 0,
           "prog_if": 48,
