@@ -42,8 +42,8 @@
             ENABLE_RAG_WEB_LOADER_SSL_VERIFICATION = "False";
             ENABLE_RAG_WEB_SEARCH = "True";
             ENABLE_WEB_SEARCH = "True";
-            OLLAMA_API_BASE_URL = "http://127.0.0.1:11434/api";
-            OLLAMA_BASE_URL = "http://127.0.0.1:11434";
+            OLLAMA_API_BASE_URL = "http://192.168.2.116:11434/api";
+            OLLAMA_BASE_URL = "http://192.168.2.116:11434";
             OPENAI_API_BASE_URL = "http://127.0.0.1:8888/v1";
             OPENAI_API_KEY = "";
             PDF_EXTRACT_IMAGES = "True";
@@ -51,7 +51,7 @@
             RAG_EMBEDDING_MODEL = "openai/text-embedding-3-small";
             RAG_EMBEDDING_MODEL_AUTO_UPDATE = "True";
             RAG_FILE_MAX_COUNT = "2";
-            RAG_OLLAMA_API_BASE_URL = "http://127.0.0.1:11434";
+            RAG_OLLAMA_API_BASE_URL = "http://192.168.2.116:11434";
             RAG_OPENAI_API_BASE_URL = "http://127.0.0.1:8888/v1";
             RAG_RERANKING_MODEL = "BAAI/bge-reranker-v2-m3";
             RAG_TEXT_SPLITTER = "token";
