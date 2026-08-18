@@ -1,10 +1,16 @@
 { lib, ... }:
 {
-  boot.loader.efi.canTouchEfiVariables = true;
-  # Bootloader.
-  boot.loader.systemd-boot.enable = true;
-  # 4G is way too small...
-  boot.tmp.useTmpfs = lib.mkForce false;
+  boot = {
+    loader = {
+      efi.canTouchEfiVariables = true;
+      # Bootloader.
+      systemd-boot.enable = true;
+    };
+
+    # 4G is way too small...
+    tmp.useTmpfs = lib.mkForce false;
+  };
+
   # The global useDHCP flag is deprecated, therefore explicitly set to false here.
   # Per-interface useDHCP will be mandatory in the future, so this generated config
   # replicates the default behaviour.
@@ -20,6 +26,7 @@
   # };
   console.useXkbConfig = true;
   hardware.bluetooth.enable = true;
+
   # List services that you want to enable:
   # services.cron = {
   #   enable = false;
@@ -29,31 +36,45 @@
   # };
   networking = {
     hostName = "minimac";
+
     networkmanager = {
       enable = true;
     };
+
     useDHCP = false;
   };
+
   powerManagement.enable = true;
-  # Enable CUPS to print documents.
-  # services.printing.enable = true;
-  security.rtkit.enable = true;
-  security.sudo.wheelNeedsPassword = false; # Use 'sudo' without a password
+
+  security = {
+    # Enable CUPS to print documents.
+    # services.printing.enable = true;
+    rtkit.enable = true;
+    sudo.wheelNeedsPassword = false; # Use 'sudo' without a password
+  };
+
   services = {
     pipewire = {
-      alsa.enable = true;
-      alsa.support32Bit = true;
       enable = true;
+
+      alsa = {
+        enable = true;
+        support32Bit = true;
+      };
+
       pulse.enable = true;
     };
+
     xserver = {
       enable = true;
+
       xkb = {
-        layout = "gb";
         options = "eurosign:e";
+        layout = "gb";
       };
     };
   };
+
   services.avahi.enable = true;
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions

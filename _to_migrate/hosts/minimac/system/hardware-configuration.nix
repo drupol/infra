@@ -1,41 +1,54 @@
 {
   config,
-  inputs,
   lib,
   modulesPath,
+  inputs,
   ...
 }:
 {
-  boot.extraModulePackages = [ config.boot.kernelPackages.broadcom_sta ];
-  boot.initrd.availableKernelModules = [
-    "ohci_pci"
-    "ehci_pci"
-    "ahci"
-    "firewire_ohci"
-    "usb_storage"
-    "usbhid"
-    "sd_mod"
-    "sr_mod"
-    "sdhci_pci"
-  ];
-  boot.initrd.kernelModules = [ ];
-  boot.kernelModules = [
-    "kvm-intel"
-    "wl"
-  ];
-  fileSystems."/" = {
-    device = "/dev/disk/by-uuid/4b8ff738-fe53-403a-ba16-a851b41b8c78";
-    fsType = "ext4";
-  };
-  fileSystems."/boot" = {
-    device = "/dev/disk/by-uuid/151D-2898";
-    fsType = "vfat";
-  };
-  hardware.cpu.intel.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
   imports = [
     inputs.nixos-hardware.nixosModules.apple-macmini-4-1
     (modulesPath + "/installer/scan/not-detected.nix")
   ];
+
+  boot = {
+    extraModulePackages = [ config.boot.kernelPackages.broadcom_sta ];
+
+    initrd = {
+      availableKernelModules = [
+        "ohci_pci"
+        "ehci_pci"
+        "ahci"
+        "firewire_ohci"
+        "usb_storage"
+        "usbhid"
+        "sd_mod"
+        "sr_mod"
+        "sdhci_pci"
+      ];
+
+      kernelModules = [ ];
+    };
+
+    kernelModules = [
+      "kvm-intel"
+      "wl"
+    ];
+  };
+
+  fileSystems = {
+    "/" = {
+      device = "/dev/disk/by-uuid/4b8ff738-fe53-403a-ba16-a851b41b8c78";
+      fsType = "ext4";
+    };
+
+    "/boot" = {
+      device = "/dev/disk/by-uuid/151D-2898";
+      fsType = "vfat";
+    };
+  };
+
+  hardware.cpu.intel.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
   # Enables DHCP on each ethernet and wireless interface. In case of scripted networking
   # (the default) this is the recommended approach. When using systemd-networkd it's
   # still possible to use this option, but it's recommended to use it in conjunction

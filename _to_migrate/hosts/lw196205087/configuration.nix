@@ -5,7 +5,11 @@
     stateVersion = "22.05";
     username = "${user}";
   };
+
   targets.genericLinux.enable = true;
-  xdg.enable = true;
-  xdg.mime.enable = true;
+
+  xdg = {
+    enable = true;
+    mime.enable = true;
+  };
 }

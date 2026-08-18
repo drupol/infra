@@ -1,10 +1,15 @@
 {
-  # boot.loader.grub.useOSProber = true;
-  boot.loader.efi.canTouchEfiVariables = true;
-  # Use the GRUB 2 boot loader.
-  # boot.loader.grub.enable = true;
-  # boot.loader.grub.version = 2;
-  boot.loader.systemd-boot.enable = true;
+  boot = {
+    loader = {
+      # boot.loader.grub.useOSProber = true;
+      efi.canTouchEfiVariables = true;
+      # Use the GRUB 2 boot loader.
+      # boot.loader.grub.enable = true;
+      # boot.loader.grub.version = 2;
+      systemd-boot.enable = true;
+    };
+  };
+
   # boot.loader.grub.efiSupport = true;
   # boot.loader.grub.efiInstallAsRemovable = true;
   # boot.loader.efi.efiSysMountPoint = "/boot/efi";
@@ -22,6 +27,7 @@
   # };
   console.useXkbConfig = true;
   hardware.bluetooth.enable = true;
+
   # List services that you want to enable:
   # services.cron = {
   #   enable = false;
@@ -31,31 +37,45 @@
   # };
   networking = {
     hostName = "elitebook820";
+
     networkmanager = {
       enable = true;
     };
+
     useDHCP = false;
   };
+
   powerManagement.enable = true;
-  # Enable CUPS to print documents.
-  # services.printing.enable = true;
-  security.rtkit.enable = true;
-  security.sudo.wheelNeedsPassword = false; # Use 'sudo' without a password
+
+  security = {
+    # Enable CUPS to print documents.
+    # services.printing.enable = true;
+    rtkit.enable = true;
+    sudo.wheelNeedsPassword = false; # Use 'sudo' without a password
+  };
+
   services = {
     pipewire = {
-      alsa.enable = true;
-      alsa.support32Bit = true;
       enable = true;
+
+      alsa = {
+        enable = true;
+        support32Bit = true;
+      };
+
       pulse.enable = true;
     };
+
     xserver = {
       enable = true;
+
       xkb = {
-        layout = "be";
         options = "eurosign:e";
+        layout = "be";
       };
     };
   };
+
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions
   # on your system were taken. It‘s perfectly fine and recommended to leave

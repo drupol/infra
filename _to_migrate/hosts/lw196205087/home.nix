@@ -11,14 +11,17 @@
       recursive = true;
       text = "";
     }; # Credits to https://store.kde.org/p/1272202
+
     ".face" = {
       recursive = true;
       source = ./. + "/../../files/home/pol/.face";
     };
+
     ".face.icon" = {
       recursive = true;
       source = ./. + "/../../files/home/pol/.face";
     };
+
     "Pictures/Backgrounds/" = {
       recursive = true;
       source = ./. + "/../../files/home/pol/Pictures/Backgrounds/";
@@ -29,25 +32,32 @@
     bat = {
       enable = true;
     };
+
     browserpass = {
-      browsers = [ "firefox" ];
       enable = true;
+      browsers = [ "firefox" ];
     };
+
     command-not-found = {
       enable = false;
     };
+
     direnv = {
       enable = true;
       nix-direnv.enable = true;
     };
+
     eza = {
       enable = true;
     };
+
     firefox = {
       enable = true;
+
       profiles.default = {
         id = 0;
         name = "Default";
+
         settings = {
           # Disable all sorts of telemetry
           "browser.newtabpage.activity-stream.feeds.telemetry" = false;
@@ -88,8 +98,10 @@
         };
       };
     };
+
     fish = {
       enable = true;
+
       plugins = [
         {
           name = "bobthefish";
@@ -100,6 +112,7 @@
           src = pkgs.z-src;
         }
       ];
+
       shellAliases = {
         ".." = "cd ..";
         "..." = "cd ../..";
@@ -109,7 +122,10 @@
         ls = "eza";
       };
     };
+
     git = {
+      enable = true;
+
       aliases = {
         # From https://gist.github.com/pksunkara/988716
         a = "add --all";
@@ -313,68 +329,85 @@
         wp = "show -p";
         wr = "show -p --no-color";
       };
+
       difftastic = {
         enable = true;
       };
-      enable = true;
+
       extraConfig = {
         branch = {
           autosetupmerge = "always";
         };
+
         color = {
           ui = "auto";
         };
+
         commit = {
           gpgsign = true;
         };
+
         core = {
           autocrlf = "input";
           editor = "micro";
           excludesfile = "~/.gitignore_global";
           safecrlf = "warn";
         };
+
         diff = {
           mnemonicprefix = true;
         };
+
         include = {
           path = "~/.gitconfig.local";
         };
+
         init = {
           defaultBranch = "main";
         };
+
         merge = {
           commit = "no";
           conflictstyle = "diff3";
           ff = "no";
           tool = "splice";
         };
+
         pull = {
           default = "current";
           rebase = true;
         };
+
         push = {
           autoSetupRemote = true;
           default = "current";
         };
+
         rerere = {
           enabled = true;
         };
+
         signing = {
           key = "0AAF2901E8040715";
           signByDefault = true;
         };
       };
+
       userEmail = "pol.dellaiera@protonmail.com";
       userName = "Pol Dellaiera";
     };
+
     home-manager = {
       enable = true;
     };
+
     htop = {
       enable = true;
     };
+
     password-store = {
       enable = true;
+
       settings = {
         PASSWORD_STORE_DIR = "${config.xdg.configHome}/.password-store";
       };
