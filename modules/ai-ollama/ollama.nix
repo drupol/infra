@@ -1,5 +1,5 @@
 {
-  den.aspects.ai = {
+  den.aspects.ai-ollama = {
     nixos = {
       services = {
         ollama = {

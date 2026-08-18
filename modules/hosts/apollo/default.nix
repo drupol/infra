@@ -7,6 +7,7 @@
   den = {
     aspects.apollo = {
       includes = with den.aspects; [
+        ai-ollama
         base
         (facter ./facter.json)
         desktop
