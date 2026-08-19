@@ -34,9 +34,9 @@
         home.packages =
           with pkgs.master;
           [
+            lxmf
             rns
-          ]
-          ++ [ lxmf ];
+          ];
       };
 
     nixos =
