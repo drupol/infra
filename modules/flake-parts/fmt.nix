@@ -47,6 +47,7 @@
 
             excludes = [
               "flake.nix"
+              "default.nix"
             ];
 
             package = pkgs.pedantix;
