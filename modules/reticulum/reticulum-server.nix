@@ -269,12 +269,12 @@
                   type = "TCPClientInterface";
                 };
 
-                "rns.fyi" = {
-                  enabled = true;
-                  target_host = "rns.fyi";
-                  target_port = 4242;
-                  type = "TCPClientInterface";
-                };
+                # "rns.fyi" = {
+                #   enabled = true;
+                #   target_host = "rns.fyi";
+                #   target_port = 4242;
+                #   type = "TCPClientInterface";
+                # };
 
                 "rns.not-a-number.io" = {
                   announce_interval = 420;
@@ -325,7 +325,7 @@
                 instance_name = "default";
 
                 logging = {
-                  loglevel = 4;
+                  loglevel = 7;
                   logtimestamps = false;
                 };
 
