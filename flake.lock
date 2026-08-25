@@ -517,11 +517,11 @@
         "nixpkgs": "nixpkgs"
       },
       "locked": {
-        "lastModified": 1784910580,
-        "narHash": "sha256-crF3oulUFoBl9fxGtQMpjEqEbgjjlcvQe5AttEaa8/4=",
+        "lastModified": 1787674727,
+        "narHash": "sha256-OXRtUVErSpjRcfEPyOAdcpL/0jbuHguWHOpNu5za6kk=",
         "owner": "drupol",
         "repo": "infra-private",
-        "rev": "a925da8d9bb1c30b7e269d08f3e89583e4441a4d",
+        "rev": "7389de45ad2dffd78a7d2b48045c122f8e15217b",
         "type": "github"
       },
       "original": {

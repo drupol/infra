@@ -1,5 +1,6 @@
 {
   den,
+  inputs,
   ...
 }:
 {
@@ -10,6 +11,10 @@
     ];
 
     nixos = {
+      imports = [
+        inputs.infra-private.nixosModules.ai
+      ];
+
       networking.firewall.allowedTCPPorts = [
         80
         443
@@ -45,7 +50,6 @@
             OLLAMA_API_BASE_URL = "http://192.168.2.116:11434/api";
             OLLAMA_BASE_URL = "http://192.168.2.116:11434";
             OPENAI_API_BASE_URL = "https://api.openai.com/v1";
-            OPENAI_API_KEY = "";
             PDF_EXTRACT_IMAGES = "True";
             RAG_EMBEDDING_ENGINE = "openai";
             RAG_EMBEDDING_MODEL = "text-embedding-3-large";
