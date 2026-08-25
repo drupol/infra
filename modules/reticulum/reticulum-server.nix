@@ -1,6 +1,7 @@
 {
   den,
   inputs,
+  lib,
   ...
 }:
 {
@@ -40,7 +41,7 @@
       };
 
     nixos =
-      { pkgs, system, ... }:
+      { pkgs, system, config, ... }:
       {
         imports = [
           inputs.infra-private.nixosModules.reticulum-server
@@ -71,6 +72,8 @@
             ip6tables -A nixos-fw -p udp -m pkttype --pkt-type multicast -m udp -j nixos-fw-accept
           '';
         };
+
+        systemd.services.rnsd.serviceConfig.ExecStart = lib.mkForce "${lib.getExe' pkgs.rns "rnsd"} --config $STATE_DIRECTORY --service --verbose";
 
         services = {
           # services.rnsh = {
@@ -233,7 +236,7 @@
                   enabled = true;
                   target_host = "rmap.world";
                   target_port = 4242;
-                  type = "TCPClientInterface";
+                  type = "BackboneInterface";
                 };
 
                 "RNode LoRa Interface" = {
@@ -266,7 +269,7 @@
                   enabled = true;
                   target_host = "rns.valleirug.nl";
                   target_port = 24242;
-                  type = "TCPClientInterface";
+                  type = "BackboneInterface";
                 };
 
                 # "rns.fyi" = {
@@ -295,7 +298,7 @@
                   enabled = true;
                   target_host = "rns.reticulum-wf.nl";
                   target_port = 4242;
-                  type = "TCPClientInterface";
+                  type = "BackboneInterface";
                 };
 
                 "rns.sofia" = {
