@@ -73,7 +73,7 @@
           '';
         };
 
-        systemd.services.rnsd.serviceConfig.ExecStart = lib.mkForce "${lib.getExe' pkgs.rns "rnsd"} --config $STATE_DIRECTORY --service --verbose";
+        # systemd.services.rnsd.serviceConfig.ExecStart = lib.mkForce "${lib.getExe' pkgs.rns "rnsd"} --config $STATE_DIRECTORY --service --verbose";
 
         services = {
           # services.rnsh = {
@@ -328,11 +328,11 @@
                 instance_name = "default";
 
                 logging = {
-                  loglevel = 7;
+                  loglevel = 8;
                   logtimestamps = false;
                 };
 
-                panic_on_interface_error = true;
+                panic_on_interface_error = false;
                 publish_blackhole = true;
                 share_instance = true;
                 shared_instance_type = "unix";
