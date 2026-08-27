@@ -1,5 +1,5 @@
 {
-  den.aspects.education = {
+  infra.education = {
     homeManager =
       {
         pkgs,

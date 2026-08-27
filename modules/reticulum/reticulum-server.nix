@@ -4,14 +4,7 @@
   ...
 }:
 {
-  den.aspects.reticulum-server = {
-    includes = [
-      (den.provides.unfree [
-        "lxmf"
-        "rns"
-      ])
-    ];
-
+  infra.reticulum-server = {
     homeManager =
       { pkgs, system, ... }:
       let
@@ -20,6 +13,10 @@
         };
       in
       {
+        home.packages = with pkgs.master; [
+          lxmf
+          rns
+        ];
         nixpkgs = {
           overlays = [
             (final: _prev: {
@@ -30,38 +27,24 @@
             })
           ];
         };
-
-        home.packages = with pkgs.master; [
-          lxmf
-          rns
-        ];
       };
-
+    includes = [
+      (den.provides.unfree [
+        "lxmf"
+        "rns"
+      ])
+    ];
     nixos =
       {
-        config,
         pkgs,
         system,
         ...
       }:
       {
         imports = [
-          inputs.infra-private.nixosModules.reticulum-server
           ./_rnsh-service.nix
           ./_nomadnet-service.nix
         ];
-
-        nixpkgs = {
-          overlays = [
-            (final: _prev: {
-              master = import inputs.nixpkgs-master {
-                inherit (final) config;
-                inherit system;
-              };
-            })
-          ];
-        };
-
         networking.firewall = {
           allowedTCPPorts = [
             4242
@@ -74,9 +57,17 @@
             ip6tables -A nixos-fw -p udp -m pkttype --pkt-type multicast -m udp -j nixos-fw-accept
           '';
         };
-
+        nixpkgs = {
+          overlays = [
+            (final: _prev: {
+              master = import inputs.nixpkgs-master {
+                inherit (final) config;
+                inherit system;
+              };
+            })
+          ];
+        };
         # systemd.services.rnsd.serviceConfig.ExecStart = lib.mkForce "${lib.getExe' pkgs.rns "rnsd"} --config $STATE_DIRECTORY --service --verbose";
-
         services = {
           # services.rnsh = {
           #   enable = true;

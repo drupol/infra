@@ -1,5 +1,5 @@
 {
-  den,
+  infra,
   inputs,
   ...
 }:
@@ -20,7 +20,7 @@
 
   den = {
     aspects.x1c = {
-      includes = with den.aspects; [
+      includes = with infra; [
         base
         (facter ./facter.json)
         bluetooth

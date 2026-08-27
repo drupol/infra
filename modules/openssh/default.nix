@@ -1,5 +1,5 @@
 {
-  den.aspects.openssh = {
+  infra.openssh = {
     nixos = {
       services = {
         openssh = {

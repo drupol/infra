@@ -1,20 +1,20 @@
 {
-  den,
+  infra,
   ...
 }:
 {
-  den.aspects.primary = {
+  infra.primary = {
     includes = [
-      den.aspects.ai-local
-      den.aspects.education
-      den.aspects.email
-      den.aspects.games
-      den.aspects.lora
-      den.aspects.messaging
-      den.aspects.news
-      den.aspects.virtualisation
-      den.aspects.winbox
-      den.aspects.work
+      infra.ai-local
+      infra.education
+      infra.email
+      infra.games
+      infra.lora
+      infra.messaging
+      infra.news
+      infra.virtualisation
+      infra.winbox
+      infra.work
     ];
   };
 }

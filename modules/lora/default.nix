@@ -3,7 +3,7 @@
   ...
 }:
 {
-  den.aspects.lora = {
+  infra.lora = {
     homeManager =
       { pkgs, ... }:
       {

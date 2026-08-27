@@ -1,6 +1,7 @@
 {
   lib,
   den,
+  infra,
   ...
 }:
 {
@@ -9,8 +10,6 @@
       nixos =
         { config, pkgs, ... }:
         {
-
-          nixpkgs.config.nvidia.acceptLicense = true;
 
           boot = {
             initrd.availableKernelModules = [
@@ -59,6 +58,7 @@
             };
           };
 
+          nixpkgs.config.nvidia.acceptLicense = true;
           services.xserver.videoDrivers = [ "nvidia" ];
 
           swapDevices = [
@@ -67,7 +67,7 @@
         };
 
       provides.to-users = {
-        includes = with den.aspects; [
+        includes = with infra; [
           base
           desktop
           dev

@@ -1,9 +1,9 @@
 {
-  den,
+  infra,
   ...
 }:
 {
-  den.aspects.dev = {
+  infra.dev = {
     homeManager =
       { config, ... }:
       {
@@ -284,13 +284,13 @@
               };
 
               signing = {
-                inherit (den.aspects.${config.home.username}.meta) key;
+                inherit (infra.${config.home.username}.meta) key;
                 signByDefault = true;
               };
 
               user = {
-                inherit (den.aspects.${config.home.username}.meta) email;
-                name = den.aspects.${config.home.username}.meta.fullname;
+                inherit (infra.${config.home.username}.meta) email;
+                name = infra.${config.home.username}.meta.fullname;
               };
             };
           };

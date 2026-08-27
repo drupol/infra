@@ -1,6 +1,6 @@
 { inputs, ... }:
 {
-  den.aspects.base = {
+  infra.base = {
     nixos =
       { config, ... }:
       {

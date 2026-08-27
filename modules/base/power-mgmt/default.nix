@@ -1,6 +1,6 @@
 { lib, ... }:
 {
-  den.aspects.base = {
+  infra.base = {
     nixos = {
       powerManagement = {
         cpuFreqGovernor = lib.mkDefault "powersave";

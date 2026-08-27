@@ -1,13 +1,13 @@
 {
-  den,
+  infra,
   ...
 }:
 {
-  den.aspects.root =
+  infra.root =
     { config, ... }:
     {
       includes = [
-        den.aspects.tools.provides.nix-trusted-user
+        infra.tools.provides.nix-trusted-user
       ];
 
       nixos = {

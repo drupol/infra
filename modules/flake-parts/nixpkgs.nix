@@ -6,9 +6,10 @@
 {
   flake-file.inputs = {
     nix-webapps.url = "github:TLATER/nix-webapps";
-    nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
+    nixpkgs.url = "https://channels.nixos.org/nixos-unstable/nixexprs.tar.xz";
     nixpkgs-master.url = "github:NixOS/nixpkgs/master";
-    nixpkgs-unstable.url = "github:/nixos/nixpkgs/nixpkgs-unstable";
+    nixpkgs-stable.url = "https://channels.nixos.org/nixos-26.05/nixexprs.tar.xz";
+    nixpkgs-unstable.url = "https://channels.nixos.org/nixos-unstable/nixexprs.tar.xz";
     pkgs-by-name-for-flake-parts.url = "github:drupol/pkgs-by-name-for-flake-parts";
   };
 
@@ -38,6 +39,12 @@
           })
           (final: _prev: {
             unstable = import inputs.nixpkgs-unstable {
+              inherit (final) config;
+              inherit system;
+            };
+          })
+          (final: _prev: {
+            stable = import inputs.nixpkgs-stable {
               inherit (final) config;
               inherit system;
             };

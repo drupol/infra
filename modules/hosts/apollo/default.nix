@@ -1,12 +1,12 @@
 {
   lib,
-  den,
+  infra,
   ...
 }:
 {
   den = {
     aspects.apollo = {
-      includes = with den.aspects; [
+      includes = with infra; [
         ai-ollama
         base
         (facter ./facter.json)

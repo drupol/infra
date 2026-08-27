@@ -1,5 +1,5 @@
 {
-  den.aspects.fwupd = {
+  infra.fwupd = {
     nixos = {
       services = {
         fwupd = {

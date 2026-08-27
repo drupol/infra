@@ -17,7 +17,7 @@
       make-shells.default.packages = with pkgs; [ nh ];
     };
 
-  den.aspects.base = {
+  infra.base = {
     nixos = {
       programs = {
         nh = {

@@ -1,5 +1,5 @@
 {
-  den.aspects.tika = {
+  infra.tika = {
     nixos = {
       services = {
         tika = {

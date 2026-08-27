@@ -1,11 +1,11 @@
 {
-  den,
+  infra,
   ...
 }:
 {
-  den.aspects.benix = {
+  infra.benix = {
     includes = [
-      den.aspects.tools.provides.nix-trusted-user
+      infra.tools.provides.nix-trusted-user
     ];
 
     homeManager =

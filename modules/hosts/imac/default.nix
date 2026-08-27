@@ -1,5 +1,6 @@
 {
   den,
+  infra,
   ...
 }:
 {
@@ -19,13 +20,6 @@
       nixos =
         { config, pkgs, ... }:
         {
-          nixpkgs = {
-            config = {
-              allowBroken = true;
-              nvidia.acceptLicense = true;
-            };
-          };
-
           boot = {
             blacklistedKernelModules = [
               "nouveau"
@@ -89,6 +83,13 @@
             };
           };
 
+          nixpkgs = {
+            config = {
+              allowBroken = true;
+              nvidia.acceptLicense = true;
+            };
+          };
+
           security.rtkit.enable = true;
 
           services = {
@@ -117,7 +118,7 @@
         };
 
       provides.to-users = {
-        includes = with den.aspects; [
+        includes = with infra; [
           base
           bluetooth
           desktop

@@ -1,5 +1,5 @@
 {
-  den.aspects.guacamole = {
+  infra.guacamole = {
     nixos = {
       networking = {
         firewall = {

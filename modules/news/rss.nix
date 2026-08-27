@@ -1,5 +1,5 @@
 {
-  den.aspects.news = {
+  infra.news = {
     homeManager =
       { pkgs, ... }:
       {

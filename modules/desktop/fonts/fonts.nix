@@ -1,5 +1,5 @@
 {
-  den.aspects.desktop = {
+  infra.desktop = {
     homeManager = {
       fonts = {
         fontconfig = {

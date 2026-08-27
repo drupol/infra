@@ -1,5 +1,5 @@
 {
-  den.aspects.vpn = {
+  infra.vpn = {
     nixos =
       { config, ... }:
       {

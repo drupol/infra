@@ -1,5 +1,5 @@
 {
-  den.aspects.virtualisation = {
+  infra.virtualisation = {
     homeManager = {
       services.podman = {
         enable = true;

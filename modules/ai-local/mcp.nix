@@ -3,7 +3,7 @@
   ...
 }:
 {
-  den.aspects.ai-local = {
+  infra.ai-local = {
     homeManager =
       { config, pkgs, ... }:
       {

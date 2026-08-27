@@ -4,7 +4,7 @@
     nixos-facter-modules.url = "github:numtide/nixos-facter-modules";
   };
 
-  den.aspects.facter = facterReportPath: {
+  infra.facter = facterReportPath: {
     nixos =
       { pkgs, ... }:
       {

@@ -1,5 +1,5 @@
 {
-  den.aspects.email = {
+  infra.email = {
     homeManager =
       { pkgs, ... }:
       {

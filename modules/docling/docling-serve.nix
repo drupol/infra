@@ -1,5 +1,5 @@
 {
-  den.aspects.docling = {
+  infra.docling = {
     nixos =
       { pkgs, ... }:
       {
