@@ -289,7 +289,7 @@
                   listen_ip = "0.0.0.0";
                   listen_port = 4242;
                   longitude = 4.323678;
-                  mode = "gateway";
+                  mode = "access_point";
                   reachable_on = "rns.not-a-number.io";
                   type = "BackboneInterface";
                 };
