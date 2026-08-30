@@ -265,11 +265,11 @@
                   type = "BackboneInterface";
                 };
 
-                "Valleirug.nl" = {
+                "valleirug server" = {
                   enabled = true;
                   target_host = "rns.valleirug.nl";
                   target_port = 24242;
-                  type = "BackboneInterface";
+                  type = "TCPClientInterface";
                 };
 
                 # "rns.fyi" = {
