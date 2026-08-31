@@ -251,7 +251,7 @@
                   height = 50;
                   latitude = 50.597463;
                   longitude = 4.323678;
-                  mode = "gateway";
+                  mode = "access_point";
                   port = "/dev/ttyACM0";
                   spreadingfactor = 11;
                   txpower = 22;
@@ -289,7 +289,7 @@
                   listen_ip = "0.0.0.0";
                   listen_port = 4242;
                   longitude = 4.323678;
-                  mode = "access_point";
+                  mode = "gateway";
                   reachable_on = "rns.not-a-number.io";
                   type = "BackboneInterface";
                 };
