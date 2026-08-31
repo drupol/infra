@@ -148,15 +148,6 @@
               };
 
               Nix = {
-                formatter.external = {
-                  arguments = [
-                    "--quiet"
-                    "--"
-                  ];
-
-                  command = "${lib.getExe pkgs.nixfmt-rs}";
-                };
-
                 language_servers = [
                   "nixd"
                   "!nil"
