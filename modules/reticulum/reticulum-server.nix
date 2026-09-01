@@ -1,7 +1,6 @@
 {
   den,
   inputs,
-  lib,
   ...
 }:
 {
@@ -32,16 +31,19 @@
           ];
         };
 
-        home.packages =
-          with pkgs.master;
-          [
-            lxmf
-            rns
-          ];
+        home.packages = with pkgs.master; [
+          lxmf
+          rns
+        ];
       };
 
     nixos =
-      { pkgs, system, config, ... }:
+      {
+        config,
+        pkgs,
+        system,
+        ...
+      }:
       {
         imports = [
           inputs.infra-private.nixosModules.reticulum-server
@@ -265,20 +267,12 @@
                   type = "BackboneInterface";
                 };
 
-                "valleirug server" = {
-                  enabled = true;
-                  target_host = "rns.valleirug.nl";
-                  target_port = 24242;
-                  type = "TCPClientInterface";
-                };
-
                 # "rns.fyi" = {
                 #   enabled = true;
                 #   target_host = "rns.fyi";
                 #   target_port = 4242;
                 #   type = "TCPClientInterface";
                 # };
-
                 "rns.not-a-number.io" = {
                   announce_interval = 420;
                   discoverable = true;
@@ -306,6 +300,13 @@
                   target_host = "193.193.182.147";
                   target_port = 4242;
                   type = "BackboneInterface";
+                };
+
+                "valleirug server" = {
+                  enabled = true;
+                  target_host = "rns.valleirug.nl";
+                  target_port = 24242;
+                  type = "TCPClientInterface";
                 };
 
                 "wintermute" = {

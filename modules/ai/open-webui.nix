@@ -51,10 +51,10 @@
             OLLAMA_BASE_URL = "http://192.168.2.116:11434";
             OPENAI_API_BASE_URL = "https://api.openai.com/v1";
             PDF_EXTRACT_IMAGES = "True";
+            RAG_EMBEDDING_CONCURRENT_REQUESTS = "5";
             RAG_EMBEDDING_ENGINE = "openai";
             RAG_EMBEDDING_MODEL = "text-embedding-3-large";
             RAG_EMBEDDING_MODEL_AUTO_UPDATE = "True";
-            RAG_EMBEDDING_CONCURRENT_REQUESTS = "5";
             RAG_FILE_MAX_COUNT = "2";
             RAG_OLLAMA_API_BASE_URL = "http://192.168.2.116:11434";
             RAG_OPENAI_API_BASE_URL = "https://api.openai.com/v1";
