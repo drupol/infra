@@ -131,6 +131,8 @@
                   "builtin_log_oneline"
                 ];
 
+                diff-editor = ":builtin";
+
                 graph.style = "square";
                 pager = ":builtin";
                 paginate = "auto";
