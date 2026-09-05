@@ -13,9 +13,9 @@ path = "**"
 attrs.first = ["flake-file", "imports", "flake", "perSystem"]
 
 [[overrides]]
-path = "den.aspects.**"
+path = "infra.**"
 attrs.first = ["includes", "nixos", "homeManager"]
 
 [[overrides]]
-path = "den.aspects.*.**"
+path = "infra.*.**"
 attrs.first = ["imports", "nixpkgs", "includes"]

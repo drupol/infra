@@ -1,6 +1,6 @@
 {
   lib,
-  den,
+  infra,
   ...
 }:
 {
@@ -25,7 +25,7 @@
                       in
                       "${desktopFile}/share/applications/${v.name}.desktop";
                   };
-                }) (den.aspects.user.meta.desktopEntries or { })
+                }) (infra.user.meta.desktopEntries or { })
               )
             );
 
@@ -72,7 +72,7 @@
               };
             };
 
-            xdg.desktopEntries = den.aspects.user.meta.desktopEntries;
+            xdg.desktopEntries = infra.user.meta.desktopEntries;
 
           };
 
@@ -231,9 +231,9 @@
             swapDevices = [ { device = "/dev/disk/by-uuid/005040e5-7773-438e-8ede-f3f63a242d7d"; } ];
 
             system.autoUpgrade = lib.mkForce {
+              flake = "git+https://github.com/drupol/infra";
               allowReboot = true;
               enable = true;
-              flake = "git+https://github.com/drupol/infra";
             };
 
             # Source: https://wiki.nixos.org/wiki/Web_eID
@@ -243,7 +243,7 @@
           };
 
         provides.to-users = {
-          includes = with den.aspects; [
+          includes = with infra; [
             base
             bluetooth
             desktop

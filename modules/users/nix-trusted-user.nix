@@ -1,5 +1,5 @@
 {
-  den.aspects.tools.provides.nix-trusted-user = {
+  infra.tools.provides.nix-trusted-user = {
     nixos =
       { user, ... }:
       {

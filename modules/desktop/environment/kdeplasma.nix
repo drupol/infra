@@ -7,7 +7,7 @@
     };
   };
 
-  den.aspects.desktop = {
+  infra.desktop = {
     homeManager =
       { pkgs, ... }:
       {

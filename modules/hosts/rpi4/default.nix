@@ -1,12 +1,12 @@
 {
-  den,
+  infra,
   inputs,
   ...
 }:
 {
   den = {
     aspects.rpi4 = {
-      includes = with den.aspects; [
+      includes = with infra; [
         base
         bluetooth
         (facter ./facter.json)
@@ -22,26 +22,6 @@
       nixos =
         { pkgs, ... }:
         {
-          nixpkgs = {
-            overlays = [
-              (final: _prev: {
-                master = import inputs.nixpkgs-master {
-                  inherit (final) config system;
-                };
-              })
-              # Disable U-Boot "Hit any key" prompt. Default bootdelay=2 waits for keypress.
-              # -2 skips autoboot delay entirely. Combined with boot.loader.timeout=0
-              # for extlinux menu, this gives instant boot on headless systems.
-              (_final: prev: {
-                ubootRaspberryPi4_64bit = prev.ubootRaspberryPi4_64bit.override {
-                  extraConfig = ''
-                    CONFIG_BOOTDELAY=-2
-                  '';
-                };
-              })
-            ];
-          };
-
           boot = {
             # Prevent issues like: brcmfmac: brcmf_set_channel: set chanspec 0xd026 fail, reason -52
             kernelParams = [
@@ -67,6 +47,26 @@
           };
 
           networking.networkmanager.wifi.powersave = false;
+
+          nixpkgs = {
+            overlays = [
+              (final: _prev: {
+                master = import inputs.nixpkgs-master {
+                  inherit (final) config system;
+                };
+              })
+              # Disable U-Boot "Hit any key" prompt. Default bootdelay=2 waits for keypress.
+              # -2 skips autoboot delay entirely. Combined with boot.loader.timeout=0
+              # for extlinux menu, this gives instant boot on headless systems.
+              (_final: prev: {
+                ubootRaspberryPi4_64bit = prev.ubootRaspberryPi4_64bit.override {
+                  extraConfig = ''
+                    CONFIG_BOOTDELAY=-2
+                  '';
+                };
+              })
+            ];
+          };
 
           systemd.services.restart-network-manager = {
             description = "Restart NetworkManager to fix connection drops";

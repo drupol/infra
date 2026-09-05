@@ -4,7 +4,7 @@
   ...
 }:
 {
-  den.aspects.base = {
+  infra.base = {
     nixos = {
       nix = {
         # See https://discourse.nixos.org/t/24-05-add-flake-to-nix-path/46310/9

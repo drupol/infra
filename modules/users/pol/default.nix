@@ -1,33 +1,20 @@
 {
   den,
-  inputs,
+  infra,
   ...
 }:
 {
-  flake-file.inputs = {
-    # This is a private repository.
-    # If you want to clone this project, it won't work unless you have access to it.
-    # To remove it, remove all the occurrences of `inputs.infra-private` in all the
-    # files of this project.
-    infra-private.url = "github:drupol/infra-private";
-  };
-
-  den.aspects.pol =
+  infra.pol =
     { config, ... }:
     {
       includes = [
-        den.provides.define-user
-        den.provides.primary-user
-        den.aspects.tools.provides.nix-trusted-user
+        den.batteries.define-user
+        den.batteries.primary-user
+        infra.tools.provides.nix-trusted-user
         den.batteries.host-aspects
       ];
 
       homeManager = {
-        # Remove this part if no access to the private repository.
-        imports = [
-          (if inputs ? infra-private then inputs.infra-private.homeModules.pol else { })
-        ];
-
         home.file = {
           ".face" = {
             recursive = true;

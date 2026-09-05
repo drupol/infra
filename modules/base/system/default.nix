@@ -2,7 +2,7 @@ let
   stateVersion = "26.11";
 in
 {
-  den.aspects.base = {
+  infra.base = {
     homeManager = {
       home = {
         inherit stateVersion;

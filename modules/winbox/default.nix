@@ -3,7 +3,7 @@
   ...
 }:
 {
-  den.aspects.winbox = {
+  infra.winbox = {
     includes = [
       (den.provides.unfree [ "winbox" ])
     ];

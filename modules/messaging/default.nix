@@ -3,7 +3,7 @@
   ...
 }:
 {
-  den.aspects.messaging = {
+  infra.messaging = {
     homeManager =
       { pkgs, ... }:
       {

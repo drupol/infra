@@ -1,6 +1,6 @@
-{ den, ... }:
+{ infra, ... }:
 {
-  den.aspects.base = {
+  infra.base = {
     homeManager =
       { config, ... }:
       {
@@ -9,7 +9,7 @@
             enable = true;
 
             settings = {
-              default-key = den.aspects.${config.home.username}.meta.key;
+              default-key = infra.${config.home.username}.meta.key;
             };
           };
         };
@@ -18,7 +18,7 @@
           gpg-agent = {
             enable = true;
             enableSshSupport = true;
-            sshKeys = den.aspects.${config.home.username}.meta.keygrip;
+            sshKeys = infra.${config.home.username}.meta.keygrip;
           };
         };
       };

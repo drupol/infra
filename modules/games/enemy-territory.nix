@@ -3,7 +3,7 @@
   ...
 }:
 {
-  den.aspects.games = {
+  infra.games = {
     includes = [
       (den.provides.unfree [
         "etlegacy"

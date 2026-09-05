@@ -1,9 +1,9 @@
 {
-  den,
+  infra,
   ...
 }:
 {
-  den.aspects.base = {
+  infra.base = {
     homeManager =
       { config, pkgs, ... }:
       {
@@ -14,7 +14,7 @@
 
             settings = {
               PASSWORD_STORE_DIR = "${config.xdg.configHome}/.password-store";
-              PASSWORD_STORE_KEY = den.aspects.${config.home.username}.meta.key;
+              PASSWORD_STORE_KEY = infra.${config.home.username}.meta.key;
             };
           };
         };

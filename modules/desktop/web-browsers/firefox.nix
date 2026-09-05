@@ -7,7 +7,7 @@
     nur.url = "github:nix-community/NUR";
   };
 
-  den.aspects.desktop = {
+  infra.desktop = {
     homeManager =
       { pkgs, ... }:
       {

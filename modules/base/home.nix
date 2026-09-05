@@ -1,5 +1,5 @@
 {
-  den.aspects.base = {
+  infra.base = {
     homeManager = {
       home = {
         sessionPath = [ "$HOME/.local/bin" ];

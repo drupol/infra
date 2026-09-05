@@ -1,5 +1,5 @@
 {
-  den.aspects.searx = {
+  infra.searx = {
     nixos = {
       networking.firewall.allowedTCPPorts = [
         3002

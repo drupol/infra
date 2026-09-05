@@ -3,7 +3,7 @@
   ...
 }:
 {
-  den.aspects.base = {
+  infra.base = {
     includes = [
       den.provides.hostname
     ];

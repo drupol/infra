@@ -1,5 +1,5 @@
 {
-  den.aspects.base = {
+  infra.base = {
     homeManager = {
       programs.command-not-found.enable = false;
     };

@@ -1,5 +1,5 @@
 {
-  den.aspects.base = {
+  infra.base = {
     nixos = {
       security.rtkit.enable = true;
     };

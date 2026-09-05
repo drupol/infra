@@ -1,5 +1,5 @@
 {
-  den.aspects.base = {
+  infra.base = {
     nixos = {
       # https://mastodon.online/@nomeata/109915786344697931
       documentation = {

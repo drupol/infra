@@ -32,7 +32,7 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     import-tree.url = "github:vic/import-tree";
-    infra-private.url = "github:drupol/infra-private";
+    infra-private.url = "/home/pol/Code/drupol/infra-private/";
     json-sort.url = "github:drupol/json-sort";
     make-shell.url = "github:nicknovitski/make-shell";
     mattpocock-skills = {

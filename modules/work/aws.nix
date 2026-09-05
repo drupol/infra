@@ -3,7 +3,7 @@
   ...
 }:
 {
-  den.aspects.work = {
+  infra.work = {
     includes = [
       (den.provides.unfree [
         "aws-workspaces"

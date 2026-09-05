@@ -4,7 +4,7 @@
   ...
 }:
 {
-  den.aspects.reticulum = {
+  infra.reticulum = {
     includes = [
       (den.provides.unfree [
         "lxmf"

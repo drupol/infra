@@ -1,5 +1,5 @@
 {
-  den.aspects.ai = {
+  infra.ai = {
     nixos = {
       services = {
         litellm = {

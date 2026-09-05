@@ -4,7 +4,7 @@
   ...
 }:
 {
-  den.aspects.noise-station-client = {
+  infra.noise-station-client = {
     nixos =
       { pkgs, ... }:
       {

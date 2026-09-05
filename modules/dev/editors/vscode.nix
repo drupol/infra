@@ -4,7 +4,7 @@
   ...
 }:
 {
-  den.aspects.dev = {
+  infra.dev = {
     includes = [
       (den.provides.unfree [
         "vscode"

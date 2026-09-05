@@ -1,5 +1,5 @@
 {
-  den.aspects.ai-local = {
+  infra.ai-local = {
     homeManager = {
       programs.opencode = {
         enable = true;

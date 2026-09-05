@@ -1,5 +1,5 @@
 {
-  den.aspects.dev = {
+  infra.dev = {
     homeManager = {
       programs.mergiraf = {
         enable = true;

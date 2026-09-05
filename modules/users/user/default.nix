@@ -1,15 +1,16 @@
 {
   den,
+  infra,
   ...
 }:
 {
-  den.aspects.user =
+  infra.user =
     { config, ... }:
     {
       includes = [
-        den.provides.define-user
-        den.provides.primary-user
-        den.aspects.tools.provides.nix-trusted-user
+        den.batteries.define-user
+        den.batteries.primary-user
+        infra.tools.provides.nix-trusted-user
       ];
 
       nixos = {

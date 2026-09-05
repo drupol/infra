@@ -3,7 +3,7 @@
   ...
 }:
 {
-  den.aspects.dev = {
+  infra.dev = {
     homeManager =
       { pkgs, ... }:
       {

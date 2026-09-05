@@ -1,5 +1,5 @@
 {
-  den.aspects.noise-station-server = {
+  infra.noise-station-server = {
     nixos =
       {
         config,

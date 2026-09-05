@@ -1,5 +1,5 @@
 {
-  den.aspects.ai-local = {
+  infra.ai-local = {
     homeManager = {
       imports = [
         ./_mcp-gateway-config.nix

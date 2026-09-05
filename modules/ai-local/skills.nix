@@ -20,7 +20,7 @@
     };
   };
 
-  den.aspects.ai-local = {
+  infra.ai-local = {
     homeManager =
       { lib, ... }:
       let

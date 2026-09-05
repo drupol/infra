@@ -1,5 +1,5 @@
 {
-  den,
+  infra,
   ...
 }:
 {
@@ -62,7 +62,7 @@
       };
 
       provides.to-users = {
-        includes = with den.aspects; [
+        includes = with infra; [
           base
           bluetooth
           desktop

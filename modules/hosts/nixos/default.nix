@@ -1,6 +1,6 @@
 {
   lib,
-  den,
+  infra,
   ...
 }:
 {
@@ -65,7 +65,7 @@
       };
 
       provides.to-users = {
-        includes = with den.aspects; [
+        includes = with infra; [
           ai
           base
           dev

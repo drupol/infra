@@ -1,5 +1,5 @@
 {
-  den.aspects.shell = {
+  infra.shell = {
     homeManager = {
       programs = {
         direnv = {

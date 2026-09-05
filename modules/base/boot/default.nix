@@ -1,5 +1,5 @@
 {
-  den.aspects.base = {
+  infra.base = {
     nixos = {
       boot = {
         initrd.systemd.enable = true;

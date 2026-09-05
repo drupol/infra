@@ -1,20 +1,16 @@
 {
   den,
-  inputs,
+  infra,
   ...
 }:
 {
-  den.aspects.ai = {
+  infra.ai = {
     includes = [
       (den.provides.unfree [ "open-webui" ])
-      den.aspects.searx
+      infra.searx
     ];
 
     nixos = {
-      imports = [
-        inputs.infra-private.nixosModules.ai
-      ];
-
       networking.firewall.allowedTCPPorts = [
         80
         443
