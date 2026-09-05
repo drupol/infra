@@ -468,13 +468,13 @@
       "locked": {
         "lastModified": 1788467110,
         "narHash": "sha256-ljEMTXP/rH0tOvDzc9gzwww6KcHRPRnEHzd9lK48V7s=",
-        "owner": "vic",
+        "owner": "denful",
         "repo": "import-tree",
         "rev": "eb1b52eaecc57f7c136d07ae8a93e724dfecac46",
         "type": "github"
       },
       "original": {
-        "owner": "vic",
+        "owner": "denful",
         "repo": "import-tree",
         "type": "github"
       }
@@ -692,11 +692,11 @@
     },
     "nixpkgs-master": {
       "locked": {
-        "lastModified": 1788632559,
-        "narHash": "sha256-KbbEbQSDAR++Qp7KaP+1csSjm6H6Fi85ayaxEau6IAA=",
+        "lastModified": 1788633852,
+        "narHash": "sha256-vEztgjrErvqzqoHJsQcnCoaHxr29WLeig4HMy3hqLjQ=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "29c8f019bb8c5d859642993361152ca93151be6c",
+        "rev": "a1c7529cd42fdfc3098b2444a0f48ed8e954a689",
         "type": "github"
       },
       "original": {
@@ -847,11 +847,11 @@
         "nixpkgs": "nixpkgs_7"
       },
       "locked": {
-        "lastModified": 1788632554,
-        "narHash": "sha256-eNsk3tqxOlujrALp0jY7BV+Z2oxwd6AbvFK85hZLYRE=",
+        "lastModified": 1788634206,
+        "narHash": "sha256-oGS3GYpDwGTZ2oaI4rIrJinZ4RCNw0jYJ1FshA8szrE=",
         "owner": "nix-community",
         "repo": "NUR",
-        "rev": "c56077c42c17bf44c931e33e8703656c7a2e2412",
+        "rev": "b1daa238a98b9d60d560b461616581c97d706c79",
         "type": "github"
       },
       "original": {

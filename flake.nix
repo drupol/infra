@@ -31,7 +31,7 @@
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    import-tree.url = "github:vic/import-tree";
+    import-tree.url = "github:denful/import-tree";
     infra-private.url = "github:drupol/infra-private";
     json-sort.url = "github:drupol/json-sort";
     make-shell.url = "github:nicknovitski/make-shell";
