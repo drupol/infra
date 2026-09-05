@@ -1,4 +1,8 @@
 {
+  inputs,
+  ...
+}:
+{
   flake-file.inputs = {
     files = {
       url = "github:sini/files";
@@ -10,6 +14,11 @@
     };
   };
 
+  imports = [
+    inputs.files.flakeModule
+  ];
+
+  # Revisit this when https://github.com/NixOS/flake-compat/pull/91 has landed
   perSystem = {
     files.file."default.nix".text = ''
       (import (
