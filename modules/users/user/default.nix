@@ -12,22 +12,20 @@
         den.aspects.tools.provides.nix-trusted-user
       ];
 
-      nixos = {
-        users.users.user = {
-          inherit (config.meta) description;
-          createHome = true;
+      user = {
+        inherit (config.meta) description;
+        createHome = true;
 
-          extraGroups = [
-            "audio"
-            "input"
-            "networkmanager"
-            "sound"
-            "tty"
-          ];
+        extraGroups = [
+          "audio"
+          "input"
+          "networkmanager"
+          "sound"
+          "tty"
+        ];
 
-          initialPassword = "id";
-          isNormalUser = true;
-        };
+        initialPassword = "id";
+        isNormalUser = true;
       };
 
       meta = {

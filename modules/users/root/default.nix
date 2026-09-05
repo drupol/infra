@@ -10,11 +10,9 @@
         den.aspects.tools.provides.nix-trusted-user
       ];
 
-      nixos = {
-        users.users.root = {
-          initialPassword = "id";
-          openssh.authorizedKeys.keys = config.meta.authorizedKeys;
-        };
+      user = {
+        initialPassword = "id";
+        openssh.authorizedKeys.keys = config.meta.authorizedKeys;
       };
 
       meta = {

@@ -16,22 +16,20 @@
         ];
       };
 
-    nixos = {
-      users.users.benix = {
-        createHome = true;
-        description = "Benix User Group";
+    user = {
+      createHome = true;
+      description = "Benix User Group";
 
-        extraGroups = [
-          "audio"
-          "input"
-          "networkmanager"
-          "sound"
-          "tty"
-        ];
+      extraGroups = [
+        "audio"
+        "input"
+        "networkmanager"
+        "sound"
+        "tty"
+      ];
 
-        initialPassword = "benix";
-        isNormalUser = true;
-      };
+      initialPassword = "benix";
+      isNormalUser = true;
     };
   };
 }
