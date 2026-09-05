@@ -6,6 +6,18 @@
 {
   den = {
     aspects.nixos = {
+      includes = with den.aspects; [
+        ai
+        base
+        dev
+        (facter ./facter.json)
+        openssh
+        shell
+        vpn
+        # Users
+        root
+      ];
+
       nixos = {
         boot = {
           initrd.availableKernelModules = [
@@ -62,20 +74,6 @@
         };
 
         swapDevices = [ { device = "/dev/disk/by-uuid/87129bb6-05de-4828-8031-2673a2be7ed4"; } ];
-      };
-
-      provides.to-users = {
-        includes = with den.aspects; [
-          ai
-          base
-          dev
-          (facter ./facter.json)
-          openssh
-          shell
-          vpn
-          # Users
-          root
-        ];
       };
     };
 
