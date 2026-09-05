@@ -132,7 +132,6 @@
                 ];
 
                 diff-editor = ":builtin";
-
                 graph.style = "square";
                 pager = ":builtin";
                 paginate = "auto";

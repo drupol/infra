@@ -11,7 +11,50 @@
 
           command = lib.getExe pkgs.oxfmt;
         };
-
+        tasksSettingsJsonc = [
+          {
+            # args = [ ];
+            # Current working directory, defaults to current project root.
+            # cwd = "/path/to/working/directory";
+            allow_concurrent_runs = false;
+            command = lib.getExe pkgs.pedantix;
+            # One of: "never", "always", "on_success".
+            hide = "never";
+            label = "Pedantix";
+            # One of: "always", "no_focus", "never".
+            reveal = "always";
+            # One of: "none", "all", "current".
+            save = "none";
+            # Shell configuration.
+            shell = "system";
+            # Whether to show the command line.
+            show_command = true;
+            # Whether to show the task summary.
+            show_summary = true;
+            # tags = [ ];
+          }
+          {
+            # args = [ ];
+            # Current working directory, defaults to current project root.
+            # cwd = "/path/to/working/directory";
+            allow_concurrent_runs = false;
+            command = "nix fmt -- --no-cache";
+            # One of: "never", "always", "on_success".
+            hide = "never";
+            label = "Nix FMT";
+            # One of: "always", "no_focus", "never".
+            reveal = "always";
+            # One of: "none", "all", "current".
+            save = "none";
+            # Shell configuration.
+            shell = "system";
+            # Whether to show the command line.
+            show_command = true;
+            # Whether to show the task summary.
+            show_summary = true;
+            # tags = [ ];
+          }
+        ];
         userSettings = {
           auto_update = false;
 
@@ -242,65 +285,6 @@
             120
           ];
         };
-
-        tasksSettingsJsonc = [
-          {
-            label = "Pedantix";
-            command = lib.getExe pkgs.pedantix;
-            # args = [ ];
-            # Current working directory, defaults to current project root.
-            # cwd = "/path/to/working/directory";
-            allow_concurrent_runs = false;
-
-            # One of: "always", "no_focus", "never".
-            reveal = "always";
-
-            # One of: "never", "always", "on_success".
-            hide = "never";
-
-            # Shell configuration.
-            shell = "system";
-
-            # Whether to show the task summary.
-            show_summary = true;
-
-            # Whether to show the command line.
-            show_command = true;
-
-            # One of: "none", "all", "current".
-            save = "none";
-
-            # tags = [ ];
-          }
-          {
-            label = "Nix FMT";
-            command = "nix fmt -- --no-cache";
-            # args = [ ];
-            # Current working directory, defaults to current project root.
-            # cwd = "/path/to/working/directory";
-            allow_concurrent_runs = false;
-
-            # One of: "always", "no_focus", "never".
-            reveal = "always";
-
-            # One of: "never", "always", "on_success".
-            hide = "never";
-
-            # Shell configuration.
-            shell = "system";
-
-            # Whether to show the task summary.
-            show_summary = true;
-
-            # Whether to show the command line.
-            show_command = true;
-
-            # One of: "none", "all", "current".
-            save = "none";
-
-            # tags = [ ];
-          }
-        ];
       in
       {
         home = {
@@ -309,6 +293,7 @@
               recursive = true;
               text = builtins.toJSON userSettings;
             };
+
             ".config/gram/tasks.jsonc" = {
               recursive = true;
               text = builtins.toJSON tasksSettingsJsonc;

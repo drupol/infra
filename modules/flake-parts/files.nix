@@ -3,6 +3,12 @@
   ...
 }:
 {
+  flake-file.inputs = {
+    files = {
+      url = "github:sini/files";
+    };
+  };
+
   imports = [
     inputs.files.flakeModule
   ];
