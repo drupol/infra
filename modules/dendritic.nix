@@ -11,8 +11,9 @@
   };
 
   imports = [
-    (inputs.den.flakeModules.dendritic or { })
-    (inputs.flake-file.flakeModules.dendritic or { })
+    inputs.den.flakeModules.dendritic
+    inputs.flake-file.flakeModules.dendritic
+    inputs.flake-file.flakeModules.auto-follow
   ];
 
   den.schema.user.classes = lib.mkDefault [ "homeManager" ];
