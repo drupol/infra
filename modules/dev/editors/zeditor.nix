@@ -6,6 +6,16 @@
   den.aspects.dev = {
     homeManager =
       { pkgs, ... }:
+      let
+        oxfmt.external = {
+          arguments = [
+            "--stdin-filepath"
+            "{buffer_path}"
+          ];
+
+          command = lib.getExe pkgs.oxfmt;
+        };
+      in
       {
         home.packages = with pkgs; [
           lean4
@@ -94,7 +104,20 @@
               Dockerfile = [ "*Containerfile*" ];
             };
 
-            format_on_save = "on";
+            format_on_save = "off";
+
+            git = {
+              branch_picker = {
+                show_author_name = true;
+              };
+
+              git_gutter = "tracked_files";
+
+              inline_blame = {
+                enabled = true;
+                show_commit_summary = true;
+              };
+            };
 
             icon_theme = {
               dark = "Material Icon Theme";
@@ -108,46 +131,50 @@
 
             languages = {
               CSS = {
-                formatter = [
-                  {
-                    language_server.name = "oxfmt";
-                  }
-                ];
-              };
-
-              HTML = {
-                formatter = [
-                  {
-                    language_server.name = "oxfmt";
-                  }
-                ];
+                formatter = oxfmt;
               };
 
               JSON = {
-                formatter = [
-                  {
-                    language_server.name = "oxfmt";
-                  }
-                ];
+                formatter = oxfmt;
+              };
+
+              JSONC = {
+                formatter = oxfmt;
               };
 
               JavaScript = {
-                formatter = [
-                  {
-                    language_server.name = "oxfmt";
-                  }
-                ];
+                formatter = oxfmt;
               };
 
               Markdown = {
-                formatter = [
-                  {
-                    language_server.name = "oxfmt";
-                  }
-                ];
+                formatter = oxfmt;
               };
 
               Nix = {
+                formatter = [
+                  {
+                    external = {
+                      arguments = [
+                        "--quiet"
+                        "-"
+                      ];
+
+                      command = lib.getExe pkgs.nixfmt-rs;
+                    };
+                  }
+                  {
+                    external = {
+                      arguments = [
+                        "--formatter"
+                        "off"
+                        "-"
+                      ];
+
+                      command = lib.getExe pkgs.pedantix;
+                    };
+                  }
+                ];
+
                 language_servers = [
                   "nixd"
                   "!nil"
@@ -157,11 +184,11 @@
               };
 
               TSX = {
-                formatter = [
-                  {
-                    language_server.name = "oxfmt";
-                  }
-                ];
+                formatter = oxfmt;
+              };
+
+              TypeScript = {
+                formatter = oxfmt;
               };
 
               Typst = {
@@ -173,27 +200,10 @@
 
                 show_edit_predictions = true;
               };
-              # Python = {
-              #   language_servers = [
-              #     "ty"
-              #     "ruff"
-              #   ];
-              #   format_on_save = "on";
-              #   formatter = [
-              #     {
-              #       code_action = "source.fixAll.ruff";
-              #     }
-              #     {
-              #       code_action = "source.organizeImports.ruff";
-              #     }
-              #     {
-              #       language_server = {
-              #         name = "ruff";
-              #       };
-              #     }
-              #   ];
-              #   show_edit_predictions = true;
-              # };
+
+              YAML = {
+                formatter = oxfmt;
+              };
             };
 
             load_direnv = "direct";
@@ -203,24 +213,6 @@
                 binary.path = lib.getExe pkgs.nixd;
               };
 
-              oxfmt = {
-                binary = {
-                  arguments = [ "--lsp" ];
-                  path = lib.getExe pkgs.oxfmt;
-                };
-
-                initialization_options.settings = {
-                  fmt.configPath = ".oxfmtrc.json";
-                  run = "onSave";
-                };
-              };
-
-              # ruff = {
-              #   binary = {
-              #     path = lib.getExe pkgs.ruff;
-              #     arguments = [ "server" ];
-              #   };
-              # };
               tinymist = {
                 binary.path = lib.getExe pkgs.tinymist;
 
@@ -239,12 +231,6 @@
                 };
               };
 
-              # ty = {
-              #   binary = {
-              #     path = lib.getExe pkgs.ty;
-              #     arguments = [ "server" ];
-              #   };
-              # };
               typos = {
                 binary.path = lib.getExe pkgs.typos-lsp;
               };
