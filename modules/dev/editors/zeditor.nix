@@ -162,17 +162,6 @@
                       command = lib.getExe pkgs.nixfmt-rs;
                     };
                   }
-                  {
-                    external = {
-                      arguments = [
-                        "--formatter"
-                        "off"
-                        "-"
-                      ];
-
-                      command = lib.getExe pkgs.pedantix;
-                    };
-                  }
                 ];
 
                 language_servers = [
