@@ -5,7 +5,7 @@
 {
   den.aspects.dev = {
     homeManager =
-      { pkgs, ... }:
+      { pkgs, config, ... }:
       let
         oxfmt.external = {
           arguments = [
@@ -248,9 +248,20 @@
               metrics = false;
             };
 
-            terminal.env = {
-              EDITOR = "zeditor --wait";
-              VISUAL = "zeditor --wait";
+            terminal = {
+              shell = {
+                with_arguments = {
+                  program = lib.getExe config.programs.fish.package;
+                  args = [
+                    "--interactive"
+                    "--login"
+                  ];
+                };
+              };
+              env = {
+                EDITOR = "zeditor --wait";
+                VISUAL = "zeditor --wait";
+              };
             };
 
             ui_font_family = "Aporetic Sans Mono";
