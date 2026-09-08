@@ -65,6 +65,7 @@
 
             buffer_font_size = 14;
             cli_default_open_behavior = "new_window";
+            disable_ai = true;
 
             edit_predictions = {
               disabled_globs = [
