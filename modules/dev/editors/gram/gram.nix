@@ -255,9 +255,20 @@
             metrics = false;
           };
 
-          terminal.env = {
-            EDITOR = "gram --wait";
-            VISUAL = "gram --wait";
+          terminal = {
+            shell = {
+              with_arguments = {
+                program = lib.getExe config.programs.fish.package;
+                args = [
+                  "--interactive"
+                  "--login"
+                ];
+              };
+            };
+            env = {
+              EDITOR = "gram --wait";
+              VISUAL = "gram --wait";
+            };
           };
 
           theme = {
