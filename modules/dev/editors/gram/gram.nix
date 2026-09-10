@@ -1,7 +1,12 @@
 {
   den.aspects.dev = {
     homeManager =
-      { lib, pkgs, ... }:
+      {
+        lib,
+        pkgs,
+        config,
+        ...
+      }:
       let
         oxfmt.external = {
           arguments = [
