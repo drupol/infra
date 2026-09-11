@@ -17,7 +17,7 @@
     homeManager =
       { pkgs, system, ... }:
       let
-        lxmf = pkgs.python3Packages.lxmf.override {
+        lxmf = pkgs.master.python3Packages.lxmf.override {
           propagateRns = true;
         };
       in
@@ -37,7 +37,6 @@
           lxmf
           nomadnet
           rns
-          sideband
         ];
       };
   };
