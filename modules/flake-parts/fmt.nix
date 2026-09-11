@@ -62,6 +62,21 @@
         projectRootFile = "flake.nix";
 
         settings = {
+          formatter = {
+            toml = {
+              command = lib.getExe pkgs.taplo;
+              includes = [ "*.toml" ];
+
+              options = [
+                "format"
+                "--config"
+                "${../../taplo.toml}"
+                "--stdin-filepath"
+              ];
+            };
+          };
+
+          no-cache = true;
           on-unmatched = "warn";
         };
       };

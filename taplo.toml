@@ -1,0 +1,5 @@
+[formatting]
+align_entries       = true
+allowed_blank_lines = 0
+indent_tables       = true
+reorder_keys        = true
