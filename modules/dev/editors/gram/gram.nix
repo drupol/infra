@@ -2,9 +2,9 @@
   den.aspects.dev = {
     homeManager =
       {
+        config,
         lib,
         pkgs,
-        config,
         ...
       }:
       let
@@ -261,18 +261,20 @@
           };
 
           terminal = {
+            env = {
+              EDITOR = "gram --wait";
+              VISUAL = "gram --wait";
+            };
+
             shell = {
               with_arguments = {
-                program = lib.getExe config.programs.fish.package;
                 args = [
                   "--interactive"
                   "--login"
                 ];
+
+                program = lib.getExe config.programs.fish.package;
               };
-            };
-            env = {
-              EDITOR = "gram --wait";
-              VISUAL = "gram --wait";
             };
           };
 
