@@ -20,7 +20,6 @@
       {
         home.packages = with pkgs; [
           vscode-runner
-          lean4
           json-sort
         ];
 

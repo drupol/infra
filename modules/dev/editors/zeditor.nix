@@ -17,10 +17,6 @@
         };
       in
       {
-        home.packages = with pkgs; [
-          lean4
-        ];
-
         programs.zed-editor = {
           enable = true;
 
