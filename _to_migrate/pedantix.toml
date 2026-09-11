@@ -1,9 +1,7 @@
-preset = "nixos-module"
 formatter = "off"
-
+preset    = "nixos-module"
 [attrs]
-merge = true
 blank-lines = 1
-
+merge       = true
 [lets]
 sort = true

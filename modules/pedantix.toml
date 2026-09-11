@@ -1,21 +1,16 @@
-preset = "nixos-module"
 formatter = "off"
-
+preset    = "nixos-module"
 [attrs]
-merge = true
 blank-lines = 1
-
+merge       = true
 [lets]
 sort = true
-
 [[overrides]]
-path = "**"
 attrs.first = ["flake-file", "imports", "flake", "perSystem"]
-
+path        = "**"
 [[overrides]]
-path = "den.aspects.**"
 attrs.first = ["includes", "nixos", "homeManager"]
-
+path        = "den.aspects.**"
 [[overrides]]
-path = "den.aspects.*.**"
 attrs.first = ["imports", "nixpkgs", "includes"]
+path        = "den.aspects.*.**"
