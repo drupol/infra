@@ -34,21 +34,26 @@
     nixos =
       { pkgs, ... }:
       {
-        networking.firewall = rec {
-          allowedTCPPortRanges = [
-            {
-              from = 1714;
-              to = 1764;
-            }
-          ];
-
-          allowedUDPPortRanges = allowedTCPPortRanges;
-        };
+        networking.firewall =
+          let
+            winboxPorts = [
+              {
+                from = 1714;
+                to = 1764;
+              }
+            ];
+          in
+          {
+            allowedTCPPortRanges = winboxPorts;
+            allowedUDPPortRanges = winboxPorts;
+          };
 
         programs = {
           kdeconnect.enable = true;
           partition-manager.enable = true;
         };
+
+        programs.kde-pim.enable = false;
 
         services = {
           desktopManager = {

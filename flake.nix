@@ -1,4 +1,4 @@
-# DO-NOT-EDIT. This file was auto-generated using github:vic/flake-file.
+# DO-NOT-EDIT. This file was auto-generated using github:denful/flake-file.
 # Use `nix run .#write-flake` to regenerate it.
 {
   outputs = inputs: inputs.flake-parts.lib.mkFlake { inherit inputs; } (inputs.import-tree ./modules);
@@ -9,8 +9,10 @@
     };
     deploy-rs = {
       url = "github:serokell/deploy-rs";
-      inputs.nixpkgs.follows = "nixpkgs";
-      inputs.flake-compat.follows = "flake-compat";
+      inputs = {
+        flake-compat.follows = "flake-compat";
+        nixpkgs.follows = "nixpkgs";
+      };
     };
     disko = {
       url = "github:nix-community/disko";
@@ -32,8 +34,10 @@
     };
     git-hooks = {
       url = "github:cachix/git-hooks.nix";
-      inputs.nixpkgs.follows = "nixpkgs";
-      inputs.flake-compat.follows = "flake-compat";
+      inputs = {
+        flake-compat.follows = "flake-compat";
+        nixpkgs.follows = "nixpkgs";
+      };
     };
     home-manager = {
       url = "github:nix-community/home-manager";
@@ -44,21 +48,12 @@
     };
     infra-private = {
       url = "github:drupol/infra-private";
-      inputs.flake-parts.follows = "flake-parts";
-      inputs.home-manager.follows = "home-manager";
-      inputs.import-tree.follows = "import-tree";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-    json-sort = {
-      url = "github:drupol/json-sort";
-      inputs.flake-compat.follows = "flake-compat";
-      inputs.flake-parts.follows = "flake-parts";
-      inputs.git-hooks.follows = "git-hooks";
-      inputs.import-tree.follows = "import-tree";
-      inputs.make-shell.follows = "make-shell";
-      inputs.nixpkgs.follows = "nixpkgs";
-      inputs.pkgs-by-name-for-flake-parts.follows = "pkgs-by-name-for-flake-parts";
-      inputs.treefmt-nix.follows = "treefmt-nix";
+      inputs = {
+        flake-parts.follows = "flake-parts";
+        home-manager.follows = "home-manager";
+        import-tree.follows = "import-tree";
+        nixpkgs.follows = "nixpkgs";
+      };
     };
     make-shell = {
       url = "github:nicknovitski/make-shell";
@@ -70,9 +65,11 @@
     };
     nix-webapps = {
       url = "github:TLATER/nix-webapps";
-      inputs.flake-parts.follows = "flake-parts";
-      inputs.nixpkgs.follows = "nixpkgs";
-      inputs.pkgs-by-name-for-flake-parts.follows = "pkgs-by-name-for-flake-parts";
+      inputs = {
+        flake-parts.follows = "flake-parts";
+        nixpkgs.follows = "nixpkgs";
+        pkgs-by-name-for-flake-parts.follows = "pkgs-by-name-for-flake-parts";
+      };
     };
     nixos-facter-modules = {
       url = "github:numtide/nixos-facter-modules";
@@ -92,8 +89,10 @@
     };
     nur = {
       url = "github:nix-community/NUR";
-      inputs.flake-parts.follows = "flake-parts";
-      inputs.nixpkgs.follows = "nixpkgs";
+      inputs = {
+        flake-parts.follows = "flake-parts";
+        nixpkgs.follows = "nixpkgs";
+      };
     };
     obra-superpowers = {
       url = "github:obra/superpowers";
@@ -101,18 +100,22 @@
     };
     pedantix = {
       url = "github:swarsel/pedantix";
-      inputs.flake-parts.follows = "flake-parts";
-      inputs.nixpkgs.follows = "nixpkgs";
-      inputs.treefmt-nix.follows = "treefmt-nix";
-      inputs.git-hooks-nix.inputs.flake-compat.follows = "flake-compat";
+      inputs = {
+        flake-parts.follows = "flake-parts";
+        git-hooks-nix.inputs.flake-compat.follows = "flake-compat";
+        nixpkgs.follows = "nixpkgs";
+        treefmt-nix.follows = "treefmt-nix";
+      };
     };
     pkgs-by-name-for-flake-parts = {
       url = "github:drupol/pkgs-by-name-for-flake-parts";
     };
     plasma-manager = {
       url = "github:nix-community/plasma-manager";
-      inputs.nixpkgs.follows = "nixpkgs";
-      inputs.home-manager.follows = "home-manager";
+      inputs = {
+        home-manager.follows = "home-manager";
+        nixpkgs.follows = "nixpkgs";
+      };
     };
     trailofbits-skills = {
       url = "github:trailofbits/skills";

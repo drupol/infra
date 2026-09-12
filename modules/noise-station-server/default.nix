@@ -21,6 +21,19 @@
             declarativePlugins = [
               pkgs.grafanaPlugins.mesak-imagesave-panel
               pkgs.grafana-image-renderer
+              # Until https://github.com/NixOS/nixpkgs/pull/572149 gets merged
+              (pkgs.grafanaPlugins.grafanaPlugin {
+                pname = "influxdb";
+                version = "13.1.7";
+                zipHash = "sha256-66E6M2iGgjmXwM0je3LZSPJ5BEgmeBXIUp+p6RvODuQ=";
+
+                meta = {
+                  description = "Support for InfluxDB data sources";
+                  license = lib.licenses.agpl3Only;
+                  maintainers = with lib.maintainers; [ drupol ];
+                  platforms = lib.platforms.unix;
+                };
+              })
             ];
 
             enable = true;

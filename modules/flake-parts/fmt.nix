@@ -6,7 +6,6 @@
       url = "github:cachix/git-hooks.nix";
     };
 
-    json-sort.url = "github:drupol/json-sort";
     pedantix.url = "github:swarsel/pedantix";
     treefmt-nix.url = "github:numtide/treefmt-nix";
   };
@@ -26,10 +25,6 @@
       };
 
       treefmt = {
-        imports = [
-          inputs.json-sort.treefmtModules.default
-        ];
-
         programs = {
           deadnix.enable = true;
           json-sort.enable = true;

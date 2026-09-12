@@ -4,10 +4,14 @@
   ...
 }:
 {
-  flake-file.inputs = {
-    flake-file.url = "github:denful/flake-file";
-    den.url = "github:denful/den";
-    import-tree.url = "github:denful/import-tree";
+  flake-file = {
+    formatter = pkgs: pkgs.nixfmt-rs;
+
+    inputs = {
+      flake-file.url = "github:denful/flake-file";
+      den.url = "github:denful/den";
+      import-tree.url = "github:denful/import-tree";
+    };
   };
 
   imports = [
