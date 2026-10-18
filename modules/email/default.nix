@@ -5,13 +5,12 @@
       {
         programs.thunderbird = {
           enable = true;
-          # Importing ggp key with `pkgs.thunderbird` doesn't work.
-          # Works without any issues with `pkgs.thunderbird-bin`.
           package = pkgs.thunderbird;
 
           profiles.default = {
             isDefault = true;
             withExternalGnupg = true;
+            unifiedFolders.enable = true;
           };
 
           settings =
