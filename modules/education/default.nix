@@ -1,14 +1,5 @@
 {
   den.aspects.education = {
-    homeManager =
-      {
-        pkgs,
-        ...
-      }:
-      {
-        home.packages = with pkgs; [ zotero ];
-      };
-
     nixos = {
       programs = {
         noisetorch = {
