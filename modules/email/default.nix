@@ -9,8 +9,8 @@
 
           profiles.default = {
             isDefault = true;
-            withExternalGnupg = true;
             unifiedFolders.enable = true;
+            withExternalGnupg = true;
           };
 
           settings =

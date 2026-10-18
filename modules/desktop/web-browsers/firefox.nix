@@ -29,6 +29,12 @@
 
             package = pkgs.firefox.override { pkcs11Modules = [ pkgs.eid-mw ]; };
 
+            policies = {
+              DisablePocket = true;
+              DisableTelemetry = true;
+              DontCheckDefaultBrowser = true;
+            };
+
             profiles.default = {
               extensions.packages = [
                 pkgs.nur.repos.rycee.firefox-addons.belgium-eid
@@ -154,6 +160,7 @@
                 "browser.urlbar.update2.engineAliasRefresh" = true;
                 "cookiebanners.service.mode" = 2;
                 "datareporting.healthreport.uploadEnabled" = false;
+                "datareporting.policy.dataSubmissionEnabled" = false;
                 # Allow copy to clipboard
                 "dom.events.asyncClipboard.clipboardItem" = true;
                 # Enable HTTPS-Only Mode
@@ -167,11 +174,8 @@
                 "extensions.getAddons.showPane" = false;
                 # 0321: disable recommendations in about:addons' Extensions and Themes panes [FF68+] **
                 "extensions.htmlaboutaddons.recommendations.enabled" = false;
-                "extensions.pocket.api" = "";
                 "extensions.pocket.enabled" = false;
-                "extensions.pocket.oAuthConsumerKey" = "";
                 "extensions.pocket.showHome" = false;
-                "extensions.pocket.site" = "";
                 "findbar.modalHighlight" = true;
                 "font.default.x-western" = "sans-serif";
                 "font.language.group" = "x-western";
@@ -183,6 +187,7 @@
                 "font.size.fixed.x-western" = 14;
                 "font.size.monospace.x-western" = 14;
                 "font.size.variable.x-western" = 14;
+                "general.smoothScroll" = true;
                 "layout.css.system-ui.enabled" = false;
                 # Enable hardware video decoding (requires VAAPI support in the GPU driver and the presence of the `vainfo` (libva-utils) utility in the system).
                 "media.ffmpeg.vaapi.enabled" = true;
@@ -206,6 +211,7 @@
                 # Privacy settings
                 "privacy.donottrackheader.enabled" = true;
                 "privacy.donottrackheader.value" = 1;
+                "privacy.fingerprintingProtection" = true;
                 "privacy.partition.network_state.ocsp_cache" = true;
                 "privacy.trackingprotection.enabled" = true;
                 "privacy.trackingprotection.socialtracking.enabled" = true;
