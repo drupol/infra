@@ -11,6 +11,9 @@
         "vscode-extension-ms-vscode-remote-remote-containers"
         "vscode-extension-ms-vscode-remote-remote-ssh"
         "vscode-extension-ms-vsliveshare-vsliveshare"
+        "antigravity-acp"
+        "kiro-cli"
+        "kiro-cli-unwrapped"
       ])
     ];
 
@@ -21,37 +24,48 @@
           enableExtensionUpdateCheck = false;
           enableUpdateCheck = false;
 
-          extensions = with pkgs.vscode-extensions; [
-            bbenoist.nix
-            christian-kohler.path-intellisense
-            coder.coder-remote
-            codezombiech.gitignore
-            donjayamanne.githistory
-            editorconfig.editorconfig
-            github.copilot-chat
-            github.github-vscode-theme
-            github.vscode-pull-request-github
-            golang.go
-            jebbs.plantuml
-            jkillian.custom-local-formatters
-            jnoortheen.nix-ide
-            leanprover.lean4
-            mkhl.direnv
-            ms-vscode-remote.remote-containers
-            ms-vscode-remote.remote-ssh
-            ms-vsliveshare.vsliveshare
-            myriad-dreamin.tinymist
-            oxc.oxc-vscode
-            pkief.material-icon-theme
-            redhat.vscode-yaml
-            redhat.vscode-xml
-            rust-lang.rust-analyzer
-            tamasfe.even-better-toml
-            tekumara.typos-vscode
-            usernamehw.errorlens
-            yzhang.markdown-all-in-one
-            zhuangtongfa.material-theme
-          ];
+          extensions =
+            with pkgs.vscode-extensions;
+            [
+              bbenoist.nix
+              christian-kohler.path-intellisense
+              coder.coder-remote
+              codezombiech.gitignore
+              cuelangorg.vscode-cue
+              donjayamanne.githistory
+              editorconfig.editorconfig
+              github.copilot-chat
+              github.github-vscode-theme
+              github.vscode-pull-request-github
+              golang.go
+              jebbs.plantuml
+              jkillian.custom-local-formatters
+              jnoortheen.nix-ide
+              leanprover.lean4
+              mkhl.direnv
+              ms-vscode-remote.remote-containers
+              ms-vscode-remote.remote-ssh
+              ms-vsliveshare.vsliveshare
+              myriad-dreamin.tinymist
+              oxc.oxc-vscode
+              pkief.material-icon-theme
+              redhat.vscode-yaml
+              redhat.vscode-xml
+              rust-lang.rust-analyzer
+              tamasfe.even-better-toml
+              tekumara.typos-vscode
+              usernamehw.errorlens
+              yzhang.markdown-all-in-one
+              zhuangtongfa.material-theme
+            ]
+            ++ pkgs.vscode-utils.extensionsFromVscodeMarketplace [
+              {
+                hash = "sha256-rvjqvp0xHgfIo06qqMKpZd240GoA8J1lH6tUVX3lUTk=";
+                name = "acp-client";
+                publisher = "formulahendry";
+                version = "0.2.0";
+              }
+            ];
 
           userSettings = {
             "[css]" = {
@@ -149,6 +163,33 @@
             "[yaml]" = {
               "editor.defaultFormatter" = "redhat.vscode-yaml";
             };
+
+            "acp.agents" = {
+              "CLI Codex" = {
+                command = lib.getExe pkgs.codex-acp;
+              };
+
+              "CLI Gemini" = {
+                command = lib.getExe pkgs.antigravity-acp;
+              };
+
+              "CLI Kiro" = {
+                args = [
+                  "acp"
+                ];
+
+                command = lib.getExe pkgs.kiro-cli;
+              };
+
+              # "CLI OpenCode" = {
+              #   args = [
+              #     "acp"
+              #   ];
+
+              #   command = lib.getExe pkgs.opencode;
+              # };
+            };
+            "acp.autoApprovePermissions" = "allowAll";
 
             "chat.mcp.access" = "all";
             "chat.mcp.autostart" = "newAndOutdated";
