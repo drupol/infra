@@ -1,6 +1,7 @@
 {
   lib,
   inputs,
+  den,
   ...
 }:
 {
@@ -21,4 +22,5 @@
   ];
 
   den.schema.user.classes = lib.mkDefault [ "homeManager" ];
+  den.schema.host.includes = [ den.batteries.user-aspects ];
 }
