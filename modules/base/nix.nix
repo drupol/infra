@@ -5,7 +5,11 @@
 }:
 {
   den.aspects.base = {
-    nixos = {
+    nixos = {pkgs, ...}: {
+      environment.systemPackages = [
+        pkgs.rom
+      ];
+
       nix = {
         # See https://discourse.nixos.org/t/24-05-add-flake-to-nix-path/46310/9
         # See https://hachyderm.io/@leftpaddotpy/112539055867932912

@@ -194,6 +194,7 @@
             "chat.mcp.access" = "all";
             "chat.mcp.autostart" = "newAndOutdated";
             "chat.mcp.gallery.enabled" = false;
+            "cue.cueCommand" = lib.getExe pkgs.cue;
             "debug.console.fontFamily" = "'Aporetic Sans Mono'";
             "diffEditor.ignoreTrimWhitespace" = false;
             "editor.bracketPairColorization.enabled" = true;

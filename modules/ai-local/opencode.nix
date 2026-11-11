@@ -10,7 +10,7 @@
         };
 
         web = {
-          enable = false;
+          enable = true;
         };
       };
     };

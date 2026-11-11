@@ -82,7 +82,7 @@
 
                   execd = {
                     command = [
-                      "${lib.getExe pkgs.local.dt8852}"
+                      "${lib.getExe pkgs.dt8852}"
                       "live"
                       "--range"
                       "R_30_80"
