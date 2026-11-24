@@ -1,126 +1,13 @@
 # DO-NOT-EDIT. This file was auto-generated using github:denful/flake-file.
 # Use `nix run .#write-flake` to regenerate it.
 {
-  outputs = inputs: inputs.flake-parts.lib.mkFlake { inherit inputs; } (inputs.import-tree ./modules);
+  outputs =
+    { self, ... }@args:
+    let
+      inputs = ((import ./.tack) { overrides = args.tackOverrides or { }; }) // {
+        inherit self;
+      };
 
-  inputs = {
-    den = {
-      url = "github:denful/den";
-    };
-    deploy-rs = {
-      url = "github:serokell/deploy-rs";
-      inputs = {
-        flake-compat.follows = "flake-compat";
-        nixpkgs.follows = "nixpkgs";
-      };
-    };
-    disko = {
-      url = "github:nix-community/disko";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-    files = {
-      url = "github:sini/files";
-    };
-    flake-compat = {
-      url = "github:NixOS/flake-compat";
-      flake = false;
-    };
-    flake-file = {
-      url = "github:denful/flake-file";
-    };
-    flake-parts = {
-      url = "github:hercules-ci/flake-parts";
-      inputs.nixpkgs-lib.follows = "nixpkgs";
-    };
-    git-hooks = {
-      url = "github:cachix/git-hooks.nix";
-      inputs = {
-        flake-compat.follows = "flake-compat";
-        nixpkgs.follows = "nixpkgs";
-      };
-    };
-    home-manager = {
-      url = "github:nix-community/home-manager";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-    import-tree = {
-      url = "github:denful/import-tree";
-    };
-    infra-private = {
-      url = "github:drupol/infra-private";
-      inputs = {
-        flake-parts.follows = "flake-parts";
-        home-manager.follows = "home-manager";
-        import-tree.follows = "import-tree";
-        nixpkgs.follows = "nixpkgs";
-      };
-    };
-    make-shell = {
-      url = "github:nicknovitski/make-shell";
-      inputs.flake-compat.follows = "flake-compat";
-    };
-    mattpocock-skills = {
-      url = "github:mattpocock/skills";
-      flake = false;
-    };
-    nix-webapps = {
-      url = "github:TLATER/nix-webapps";
-      inputs = {
-        flake-parts.follows = "flake-parts";
-        nixpkgs.follows = "nixpkgs";
-        pkgs-by-name-for-flake-parts.follows = "pkgs-by-name-for-flake-parts";
-      };
-    };
-    nixos-hardware = {
-      url = "github:NixOS/nixos-hardware/master";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-    nixpkgs = {
-      url = "https://channels.nixos.org/nixos-unstable/nixexprs.tar.zst";
-    };
-    nixpkgs-master = {
-      url = "github:NixOS/nixpkgs/master";
-    };
-    nixpkgs-unstable = {
-      url = "https://channels.nixos.org/nixos-unstable/nixexprs.tar.zst";
-    };
-    nur = {
-      url = "github:nix-community/NUR";
-      inputs = {
-        flake-parts.follows = "flake-parts";
-        nixpkgs.follows = "nixpkgs";
-      };
-    };
-    obra-superpowers = {
-      url = "github:obra/superpowers";
-      flake = false;
-    };
-    pedantix = {
-      url = "github:swarsel/pedantix";
-      inputs = {
-        flake-parts.follows = "flake-parts";
-        git-hooks-nix.inputs.flake-compat.follows = "flake-compat";
-        nixpkgs.follows = "nixpkgs";
-        treefmt-nix.follows = "treefmt-nix";
-      };
-    };
-    pkgs-by-name-for-flake-parts = {
-      url = "github:drupol/pkgs-by-name-for-flake-parts";
-    };
-    plasma-manager = {
-      url = "github:nix-community/plasma-manager";
-      inputs = {
-        home-manager.follows = "home-manager";
-        nixpkgs.follows = "nixpkgs";
-      };
-    };
-    trailofbits-skills = {
-      url = "github:trailofbits/skills";
-      flake = false;
-    };
-    treefmt-nix = {
-      url = "github:numtide/treefmt-nix";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-  };
+    in
+    inputs.flake-parts.lib.mkFlake { inherit inputs; } (inputs.import-tree ./modules);
 }

@@ -5,7 +5,7 @@
 }:
 {
   den.aspects.base = {
-    nixos = {pkgs, ...}: {
+    nixos = { pkgs, ... }: {
       environment.systemPackages = [
         pkgs.rom
       ];
