@@ -1,0 +1,102 @@
+# tack pins
+# edit by hand or with tack add / rm / alias
+# nix reads pins.lock.json
+# this file drives tack update
+
+# shorturl schemes
+# scheme rest expands rest into {path}
+[shorturls]
+# gh = "github:{path}"
+
+# all_follow maps input names to the top-level pin they follow
+# opt out per-input with exclude_follow
+[all_follow]
+flake-parts                  = "flake-parts"
+git-hooks-nix                = "git-hooks"
+home-manager                 = "home-manager"
+import-tree                  = "import-tree"
+nixpkgs                      = "nixpkgs-master"
+pkgs-by-name-for-flake-parts = "pkgs-by-name-for-flake-parts"
+treefmt-nix                  = "treefmt-nix"
+flake-compat                 = "flake-compat"
+
+[inputs]
+
+[inputs.den]
+url = "github:denful/den"
+
+[inputs.deploy-rs]
+url = "github:serokell/deploy-rs"
+
+[inputs.disko]
+url = "github:nix-community/disko"
+
+[inputs.files]
+url = "github:sini/files"
+
+[inputs.flake-compat]
+url = "github:NixOS/flake-compat"
+type = "fetch"
+
+[inputs.flake-parts]
+url = "github:hercules-ci/flake-parts"
+
+[inputs.git-hooks]
+url = "github:cachix/git-hooks.nix"
+
+[inputs.home-manager]
+url = "github:nix-community/home-manager"
+
+[inputs.import-tree]
+url = "github:denful/import-tree"
+
+[inputs.infra-private]
+url = "github:drupol/infra-private"
+
+[inputs.make-shell]
+url = "github:nicknovitski/make-shell"
+
+[inputs.mattpocock-skills]
+url = "github:mattpocock/skills"
+type = "fetch"
+
+[inputs.nix-webapps]
+url = "github:TLATER/nix-webapps"
+
+[inputs.nixos-hardware]
+url = "github:NixOS/nixos-hardware/master"
+
+[inputs.nixpkgs]
+url = "https://channels.nixos.org/nixos-unstable/nixexprs.tar.zst"
+
+[inputs.nixpkgs-master]
+url = "github:NixOS/nixpkgs/master"
+
+[inputs.nixpkgs-unstable]
+url = "https://channels.nixos.org/nixos-unstable/nixexprs.tar.zst"
+
+[inputs.nur]
+url = "github:nix-community/NUR"
+
+[inputs.obra-superpowers]
+url = "github:obra/superpowers"
+type = "fetch"
+
+[inputs.pedantix]
+url = "github:swarsel/pedantix"
+
+[inputs.pkgs-by-name-for-flake-parts]
+url = "github:drupol/pkgs-by-name-for-flake-parts"
+
+[inputs.plasma-manager]
+url = "github:nix-community/plasma-manager"
+
+[inputs.trailofbits-skills]
+url = "github:trailofbits/skills"
+type = "fetch"
+
+[inputs.treefmt-nix]
+url = "github:numtide/treefmt-nix"
+
+[inputs.flake-file]
+url = "github:denful/flake-file"
