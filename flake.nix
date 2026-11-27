@@ -71,9 +71,6 @@
         pkgs-by-name-for-flake-parts.follows = "pkgs-by-name-for-flake-parts";
       };
     };
-    nixos-facter-modules = {
-      url = "github:numtide/nixos-facter-modules";
-    };
     nixos-hardware = {
       url = "github:NixOS/nixos-hardware/master";
       inputs.nixpkgs.follows = "nixpkgs";
